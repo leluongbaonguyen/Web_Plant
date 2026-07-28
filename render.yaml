@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: lich-sinh-hoat-web
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 20.19.0
