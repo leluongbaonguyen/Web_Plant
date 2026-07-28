@@ -39,11 +39,24 @@ function MainAppContent() {
   // Toasts
   const [toasts, setToasts] = useState([]);
 
-  // Time & Sound Alerts
+  // Time & Sound Alerts (Persisted in localStorage)
   const [currentTime, setCurrentTime] = useState(new Date());
-  const [soundEnabled, setSoundEnabled] = useState(true);
-  const [soundMode, setSoundMode] = useState('special_60s');
-  const [desktopNotifyEnabled, setDesktopNotifyEnabled] = useState(false);
+  const [soundEnabled, setSoundEnabled] = useState(() => {
+    return localStorage.getItem('sound_enabled') !== 'false';
+  });
+  const [soundMode, setSoundMode] = useState(() => {
+    return localStorage.getItem('sound_mode') || 'special_60s';
+  });
+  const [desktopNotifyEnabled, setDesktopNotifyEnabled] = useState(() => {
+    if (typeof window !== 'undefined' && 'Notification' in window) {
+      const saved = localStorage.getItem('desktop_notify_enabled');
+      if (saved !== null) {
+        return saved === 'true' && Notification.permission === 'granted';
+      }
+      return Notification.permission === 'granted';
+    }
+    return false;
+  });
   const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
   const [showRoleModal, setShowRoleModal] = useState(false);
   const [showSecretAdminModal, setShowSecretAdminModal] = useState(false);
@@ -195,22 +208,36 @@ function MainAppContent() {
     }, 800);
   };
 
-  // Toggle desktop notifications
+  // Sync sound settings to localStorage
+  useEffect(() => {
+    localStorage.setItem('sound_enabled', String(soundEnabled));
+  }, [soundEnabled]);
+
+  useEffect(() => {
+    localStorage.setItem('sound_mode', soundMode);
+  }, [soundMode]);
+
+  // Toggle desktop notifications (Persisted & Synced)
   const toggleDesktopNotifications = async () => {
     if (!('Notification' in window)) {
       addToast('Trình duyệt không hỗ trợ thông báo desktop', 'error');
       return;
     }
     if (Notification.permission === 'granted') {
-      setDesktopNotifyEnabled(!desktopNotifyEnabled);
-      addToast(!desktopNotifyEnabled ? 'Đã bật thông báo desktop' : 'Đã tắt thông báo desktop');
+      const nextState = !desktopNotifyEnabled;
+      setDesktopNotifyEnabled(nextState);
+      localStorage.setItem('desktop_notify_enabled', String(nextState));
+      addToast(nextState ? 'Đã bật & ghi nhớ cài đặt thông báo Desktop!' : 'Đã tắt thông báo Desktop');
     } else {
       const perm = await Notification.requestPermission();
       if (perm === 'granted') {
         setDesktopNotifyEnabled(true);
-        addToast('Đã cấp quyền thông báo desktop!', 'success');
+        localStorage.setItem('desktop_notify_enabled', 'true');
+        addToast('Đã cấp quyền & lưu cài đặt thông báo Desktop!', 'success');
       } else {
-        addToast('Bạn đã từ chối quyền thông báo', 'error');
+        setDesktopNotifyEnabled(false);
+        localStorage.setItem('desktop_notify_enabled', 'false');
+        addToast('Bạn đã từ chối quyền thông báo trên trình duyệt', 'error');
       }
     }
   };

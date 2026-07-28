@@ -1,0 +1,17 @@
+{
+  "_kangaroo_meta": {
+    "vault": "audit_vault",
+    "lastHopTime": "2026-07-28T19:30:25.297Z",
+    "checksum": "kng-1785267025297-hj9uu2"
+  },
+  "payload": [
+    {
+      "id": "log-1785267025294-b8ry",
+      "timestamp": "2026-07-28T19:30:25.294Z",
+      "event": "KANGAROO_SYNC_FORCE",
+      "details": "Admin kích hoạt ép buộc đồng bộ dữ liệu vào Kangaroo Vault DB Engine",
+      "username": "admin",
+      "ip": "::1"
+    }
+  ]
+}
