@@ -199,9 +199,38 @@ function NoteModal({ isOpen, initialValue, onSave, onClose }) {
 
 /* Notification & Reminders Drawer Modal */
 function NotificationModal({ isOpen, onClose, liveScheduleStatus, soundEnabled, setSoundEnabled, desktopNotifyEnabled, toggleDesktopNotifications, onMarkDone }) {
+  const [customTitle, setCustomTitle] = useState('');
+  const [customMessage, setCustomMessage] = useState('');
+  const [delayMinutes, setDelayMinutes] = useState(0);
+
   if (!isOpen) return null;
   const { currentSlot, overdueSlots, upcomingSlots } = liveScheduleStatus;
   const todayKey = getCurrentDayKey();
+
+  function handleSendCustomNotification() {
+    const title = customTitle.trim() || '🔔 Nhắc nhở trực tiếp từ ChronoFlow';
+    const body = customMessage.trim() || 'Đã đến lúc kiểm tra công việc và lịch sinh hoạt của bạn!';
+
+    if (delayMinutes > 0) {
+      if (soundEnabled) playChimeSound();
+      if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification('⏰ Đã lên lịch thông báo', { body: `Sẽ thông báo "${title}" sau ${delayMinutes} phút.`, icon: '/favicon.ico' });
+      }
+      setTimeout(() => {
+        if (soundEnabled) playChimeSound();
+        if ('Notification' in window && Notification.permission === 'granted') {
+          new Notification(title, { body, icon: '/favicon.ico' });
+        }
+      }, delayMinutes * 60 * 1000);
+    } else {
+      if (soundEnabled) playChimeSound();
+      if ('Notification' in window && Notification.permission === 'granted') {
+        new Notification(title, { body, icon: '/favicon.ico' });
+      }
+    }
+    setCustomTitle('');
+    setCustomMessage('');
+  }
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-end bg-slate-950/80 p-4 backdrop-blur-md animate-fadeIn">
@@ -239,6 +268,47 @@ function NotificationModal({ isOpen, onClose, liveScheduleStatus, soundEnabled, 
               <Bell className="h-4 w-4 text-emerald-400" />
               <span>{desktopNotifyEnabled ? 'Desktop: BẬT' : 'Desktop: TẮT'}</span>
             </button>
+          </div>
+
+          {/* Custom Direct Notification Dispatcher */}
+          <div className="rounded-2xl border border-indigo-500/30 bg-indigo-950/30 p-4 space-y-3">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-300 flex items-center gap-1.5">
+              <Sparkles className="h-4 w-4 text-indigo-400" /> Gửi thông báo trực tiếp đến màn hình
+            </h4>
+            <input
+              type="text"
+              placeholder="Tiêu đề thông báo (VD: Đến giờ học bài / Tập thể dục)..."
+              value={customTitle}
+              onChange={(e) => setCustomTitle(e.target.value)}
+              className="w-full rounded-xl border border-slate-700 bg-slate-900/90 p-2.5 text-xs text-slate-100 placeholder-slate-500 focus:border-indigo-500 focus:outline-none"
+            />
+            <textarea
+              rows={2}
+              placeholder="Nội dung thông báo chi tiết..."
+              value={customMessage}
+              onChange={(e) => setCustomMessage(e.target.value)}
+              className="w-full rounded-xl border border-slate-700 bg-slate-900/90 p-2.5 text-xs text-slate-100 placeholder-slate-500 focus:border-indigo-500 focus:outline-none"
+            />
+            <div className="flex items-center justify-between gap-2">
+              <select
+                value={delayMinutes}
+                onChange={(e) => setDelayMinutes(Number(e.target.value))}
+                className="rounded-xl border border-slate-700 bg-slate-900/90 p-2 text-xs text-slate-200 focus:outline-none"
+              >
+                <option value={0}>Gửi ngay bây giờ</option>
+                <option value={1}>Hẹn gửi sau 1 phút</option>
+                <option value={5}>Hẹn gửi sau 5 phút</option>
+                <option value={15}>Hẹn gửi sau 15 phút</option>
+                <option value={30}>Hẹn gửi sau 30 phút</option>
+              </select>
+
+              <button
+                onClick={handleSendCustomNotification}
+                className="rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 px-4 py-2 text-xs font-bold text-white hover:from-indigo-500 hover:to-purple-500 shadow-md transition flex items-center gap-1"
+              >
+                <Zap className="h-3.5 w-3.5" /> Gửi Ngay
+              </button>
+            </div>
           </div>
 
           {/* Current Active Task Section */}
