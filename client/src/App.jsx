@@ -1065,6 +1065,23 @@ export default function App() {
     setPlan((cur) => ({ ...cur, summary: { ...cur.summary, [field]: value } }));
   }
 
+  function updateDailyEvaluation(dayKey, field, value) {
+    setPlan((cur) => {
+      const dailyEvaluations = cur.dailyEvaluations || {};
+      const dayData = dailyEvaluations[dayKey] || { score: 8, mood: 'Tốt', wins: '', notes: '', improvements: '' };
+      return {
+        ...cur,
+        dailyEvaluations: {
+          ...dailyEvaluations,
+          [dayKey]: {
+            ...dayData,
+            [field]: value,
+          },
+        },
+      };
+    });
+  }
+
   async function exportWord() {
     try {
       setSaveStatus('Đang tạo DOCX...');
@@ -1377,7 +1394,9 @@ export default function App() {
         {activeTab === 'goals' && (
           <GoalsView plan={plan} updateGoal={updateGoal} addGoal={addGoal} removeGoal={removeGoal} stats={stats} />
         )}
-        {activeTab === 'summary' && <SummaryView plan={plan} updateSummary={updateSummary} stats={stats} />}
+        {activeTab === 'summary' && (
+          <SummaryView plan={plan} updateSummary={updateSummary} updateDailyEvaluation={updateDailyEvaluation} stats={stats} />
+        )}
         {activeTab === 'docs' && <DocumentationView />}
       </main>
 
@@ -2254,117 +2273,360 @@ function GoalsView({ plan, updateGoal, addGoal, removeGoal, stats }) {
 }
 
 /* ==========================================
-   4. SUMMARY VIEW COMPONENT
+   4. ULTRA-DETAILED SUMMARY & DAILY EVALUATION VIEW
    ========================================== */
-function SummaryView({ plan, updateSummary, stats }) {
+function SummaryView({ plan, updateSummary, updateDailyEvaluation, stats }) {
+  const [viewMode, setViewMode] = useState('daily'); // 'daily' | 'weekly'
+  const [selectedDayKey, setSelectedDayKey] = useState(getCurrentDayKey());
+
+  const currentDayInfo = DAYS.find((d) => d.key === selectedDayKey) || DAYS[0];
+
+  const dailyEvals = plan.dailyEvaluations || {};
+  const currentDayEval = dailyEvals[selectedDayKey] || {
+    score: 8,
+    mood: 'Tốt 🌟',
+    wins: '',
+    notes: '',
+    improvements: '',
+  };
+
   const fields = [
-    { key: 'wins', label: '🏆 Thành Tựu Nổi Bật', placeholder: 'Những việc đã hoàn thành xuất sắc, kỷ lục cá nhân đạt được trong tuần...' },
+    { key: 'wins', label: '🏆 Thành Tựu Nổi Bật Trong Tuần', placeholder: 'Những việc đã hoàn thành xuất sắc, kỷ lục cá nhân đạt được trong tuần...' },
     { key: 'incomplete', label: '🎯 Việc Chưa Hoàn Thành & Nguyên Nhân', placeholder: 'Nêu rõ lý do chưa đạt và phương án xử lý kế tiếp...' },
-    { key: 'lessons', label: '💡 Bài Học Kinh Nghiệm', placeholder: 'Điều gì hoạt động hiệu quả? Điều gì cần tối ưu hoặc dừng lại...' },
+    { key: 'lessons', label: '💡 Bài Học Kinh Nghiệm Quý Giá', placeholder: 'Điều gì hoạt động hiệu quả? Điều gì cần tối ưu hoặc dừng lại...' },
     { key: 'nextWeek', label: '🚀 Kế Hoạch & Ưu Tiên Tuần Tiếp Theo', placeholder: 'Top 3 ưu tiên lớn nhất cho tuần tới...' },
   ];
 
   const moods = [
-    { label: 'Rất tốt', emoji: '🚀' },
-    { label: 'Tốt', emoji: '🌟' },
-    { label: 'Bình thường', emoji: '🧘' },
-    { label: 'Mệt mỏi', emoji: '🔋' },
-    { label: 'Cần phục hồi', emoji: '💤' },
+    { label: 'Tuyệt vời', emoji: '🤩', energy: '100%' },
+    { label: 'Tốt', emoji: '🌟', energy: '80%' },
+    { label: 'Bình thường', emoji: '🧘', energy: '60%' },
+    { label: 'Mệt mỏi', emoji: '🔋', energy: '40%' },
+    { label: 'Cần phục hồi', emoji: '💤', energy: '20%' },
   ];
+
+  // Dynamic feedback message for daily score slider
+  const getScoreFeedback = (score) => {
+    if (score >= 9) return { text: 'Ngày làm việc bứt phá xuất sắc! 🔥 Mọi thứ đều tối ưu!', color: 'text-emerald-400' };
+    if (score >= 7) return { text: 'Tiến độ rất tốt và ổn định! 🚀 Hãy duy trì phong độ!', color: 'text-indigo-400' };
+    if (score >= 5) return { text: 'Đạt mức trung bình khá 🎯 Cần tập trung thêm một chút.', color: 'text-amber-400' };
+    return { text: 'Cần nạp lại năng lượng 🌱 Hãy nghỉ ngơi và chuẩn bị tốt hơn.', color: 'text-rose-400' };
+  };
+
+  const scoreInfo = getScoreFeedback(currentDayEval.score);
 
   return (
     <div className="space-y-6 animate-fadeIn">
+      {/* View Switcher Header */}
       <section className="glass-panel rounded-3xl border border-slate-800 p-6 space-y-4">
-        <h2 className="text-3xl font-extrabold font-heading text-slate-100 flex items-center gap-3">
-          <Award className="h-8 w-8 text-purple-400" /> Tổng Kết & Đánh Giá Cuối Tuần
-        </h2>
-        <p className="text-sm text-slate-400">Nhìn lại tiến độ thực tế, rút ra bài học và sẵn sàng cho tuần bứt phá mới</p>
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div>
+            <h2 className="text-3xl font-extrabold font-heading text-slate-100 flex items-center gap-3">
+              <Award className="h-8 w-8 text-purple-400" /> Nhật Ký Ghi Chú & Đánh Giá Cuối Ngày
+            </h2>
+            <p className="mt-1 text-sm text-slate-400">Ghi lại thành tựu công việc hàng ngày, cảm xúc và bài học kinh nghiệm phát triển bản thân</p>
+          </div>
 
-        <div className="grid gap-4 sm:grid-cols-3 pt-2">
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
-            <div className="text-xs text-slate-400 font-bold uppercase">Hiệu suất lịch</div>
-            <div className="mt-1 text-2xl font-extrabold font-mono-code text-indigo-400">{stats.rate}%</div>
-          </div>
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
-            <div className="text-xs text-slate-400 font-bold uppercase">Công việc hoàn thành</div>
-            <div className="mt-1 text-2xl font-extrabold font-mono-code text-emerald-400">
-              {stats.done}/{stats.total}
-            </div>
-          </div>
-          <div className="rounded-2xl border border-slate-800 bg-slate-900/60 p-4">
-            <div className="text-xs text-slate-400 font-bold uppercase">Mục tiêu đạt được</div>
-            <div className="mt-1 text-2xl font-extrabold font-mono-code text-purple-400">
-              {stats.goalsDone}/{plan.weeklyGoals.length}
-            </div>
+          {/* Tab Mode Pills */}
+          <div className="flex items-center gap-2 rounded-2xl bg-slate-900/90 border border-slate-800 p-1.5 shadow-inner">
+            <button
+              onClick={() => setViewMode('daily')}
+              className={cx(
+                'flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition-all',
+                viewMode === 'daily'
+                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
+                  : 'text-slate-400 hover:text-slate-200'
+              )}
+            >
+              <Calendar className="h-4 w-4" /> Đánh Giá & Note Ngày
+            </button>
+            <button
+              onClick={() => setViewMode('weekly')}
+              className={cx(
+                'flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition-all',
+                viewMode === 'weekly'
+                  ? 'bg-gradient-to-r from-indigo-600 to-purple-600 text-white shadow-md'
+                  : 'text-slate-400 hover:text-slate-200'
+              )}
+            >
+              <Award className="h-4 w-4" /> Tổng Kết Cuối Tuần
+            </button>
           </div>
         </div>
       </section>
 
-      {/* Self Evaluation & Mood Selector */}
-      <section className="glass-panel rounded-3xl border border-slate-800 p-6 space-y-6">
-        <div className="grid gap-6 md:grid-cols-2">
-          {/* Score Slider */}
-          <div className="space-y-2">
-            <div className="flex justify-between items-center">
-              <label className="text-sm font-bold text-slate-200">Điểm Tự Đánh Giá Tuần</label>
-              <span className="font-mono-code text-2xl font-black text-indigo-400">{plan.summary.score}/10</span>
-            </div>
-            <input
-              type="range"
-              min="0"
-              max="10"
-              step="1"
-              className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
-              value={plan.summary.score}
-              onChange={(e) => updateSummary('score', Number(e.target.value))}
-            />
-            <div className="flex justify-between text-[11px] text-slate-500 font-bold">
-              <span>0 (Kém)</span>
-              <span>5 (Đạt)</span>
-              <span>10 (Xuất sắc)</span>
-            </div>
-          </div>
-
-          {/* Mood Selector */}
-          <div className="space-y-2">
-            <label className="text-sm font-bold text-slate-200">Tâm Trạng Chung Trong Tuần</label>
-            <div className="flex flex-wrap gap-2 pt-1">
-              {moods.map((m) => (
+      {/* Mode 1: Daily Reflection & Work Notes */}
+      {viewMode === 'daily' && (
+        <div className="space-y-6 animate-fadeIn">
+          {/* Day Selector Pills */}
+          <div className="flex items-center gap-2 overflow-x-auto pb-2 custom-scrollbar">
+            {DAYS.map((day) => {
+              const dayRate = stats.dayRates[day.key] || 0;
+              const isSelected = selectedDayKey === day.key;
+              const evalData = dailyEvals[day.key];
+              return (
                 <button
-                  key={m.label}
-                  type="button"
-                  onClick={() => updateSummary('mood', m.label)}
+                  key={day.key}
+                  onClick={() => setSelectedDayKey(day.key)}
                   className={cx(
-                    'flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-bold transition',
-                    plan.summary.mood === m.label
-                      ? 'border-purple-500 bg-purple-950/60 text-purple-200 shadow-lg shadow-purple-500/20'
-                      : 'border-slate-800 bg-slate-900/60 text-slate-400 hover:bg-slate-800'
+                    'flex flex-col items-center gap-1 rounded-2xl px-4 py-3 text-xs font-bold transition-all border shrink-0 min-w-[100px]',
+                    isSelected
+                      ? 'bg-gradient-to-b from-indigo-950 to-purple-950 border-indigo-500/60 text-white shadow-xl shadow-indigo-600/20 scale-[1.03]'
+                      : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:border-slate-700 hover:text-slate-200'
                   )}
                 >
-                  <span>{m.emoji}</span>
-                  <span>{m.label}</span>
+                  <span className="text-[10px] uppercase font-mono-code tracking-wider text-slate-400">{day.short}</span>
+                  <span className="text-sm font-extrabold">{day.label}</span>
+                  <div className="mt-1 flex items-center gap-1.5 text-[10px]">
+                    <span className="font-mono-code text-indigo-300">{dayRate}%</span>
+                    {evalData?.mood && <span>{evalData.mood.slice(0, 2)}</span>}
+                  </div>
                 </button>
-              ))}
-            </div>
+              );
+            })}
           </div>
-        </div>
-      </section>
 
-      {/* 4 Reflection Cards */}
-      <section className="grid gap-6 md:grid-cols-2">
-        {fields.map((f) => (
-          <div key={f.key} className="glass-panel rounded-3xl border border-slate-800 p-6 space-y-3">
-            <label className="text-base font-bold font-heading text-slate-100">{f.label}</label>
-            <textarea
-              rows={5}
-              className="w-full rounded-2xl border border-slate-800 bg-slate-950 p-4 text-sm text-slate-200 placeholder-slate-600 focus:border-indigo-500 focus:outline-none"
-              placeholder={f.placeholder}
-              value={plan.summary[f.key]}
-              onChange={(e) => updateSummary(f.key, e.target.value)}
-            />
-          </div>
-        ))}
-      </section>
+          {/* Daily Evaluation Card */}
+          <section className="glass-panel rounded-3xl border border-indigo-500/30 bg-gradient-to-br from-slate-900 via-slate-900 to-indigo-950/40 p-6 space-y-6 shadow-2xl">
+            <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-600/20 border border-indigo-500/30 text-indigo-400 font-bold text-lg font-heading">
+                  {currentDayInfo.short}
+                </div>
+                <div>
+                  <h3 className="text-xl font-extrabold font-heading text-slate-100">
+                    Nhật Ký & Đánh Giá: <span className="text-indigo-400">{currentDayInfo.label}</span>
+                  </h3>
+                  <p className="text-xs text-slate-400">
+                    Tỉ lệ hoàn thành lịch: <strong className="text-emerald-400 font-mono-code">{stats.dayRates[selectedDayKey]}%</strong> • Trọng tâm: "{plan.dailyFocus?.[selectedDayKey] || 'Chưa ghi trọng tâm'}"
+                  </p>
+                </div>
+              </div>
+
+              <div className="rounded-2xl border border-indigo-500/20 bg-indigo-950/50 px-4 py-2 text-right">
+                <div className="text-[10px] uppercase font-bold text-indigo-300">Đánh giá chung</div>
+                <div className="text-base font-extrabold text-white font-heading">
+                  {currentDayEval.score}/10 Điểm • {currentDayEval.mood}
+                </div>
+              </div>
+            </div>
+
+            {/* Score & Mood Grid */}
+            <div className="grid gap-6 md:grid-cols-2">
+              {/* Daily Rating Slider */}
+              <div className="space-y-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+                <div className="flex justify-between items-center">
+                  <label className="text-sm font-bold text-slate-200 flex items-center gap-2">
+                    <Sparkles className="h-4 w-4 text-amber-400" /> Điểm Tự Đánh Giá Trong Ngày
+                  </label>
+                  <span className="font-mono-code text-3xl font-black text-indigo-400">{currentDayEval.score}<span className="text-sm text-slate-500 font-normal">/10</span></span>
+                </div>
+
+                <input
+                  type="range"
+                  min="1"
+                  max="10"
+                  step="1"
+                  className="w-full h-2.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                  value={currentDayEval.score}
+                  onChange={(e) => updateDailyEvaluation(selectedDayKey, 'score', Number(e.target.value))}
+                />
+
+                <div className="flex justify-between text-[11px] text-slate-500 font-bold">
+                  <span>1 (Cần nỗ lực)</span>
+                  <span>5 (Đạt yêu cầu)</span>
+                  <span>10 (Hoàn hảo)</span>
+                </div>
+
+                <div className={cx('text-xs font-semibold pt-1 italic', scoreInfo.color)}>
+                  {scoreInfo.text}
+                </div>
+              </div>
+
+              {/* Mood & Energy Selector */}
+              <div className="space-y-3 rounded-2xl border border-slate-800 bg-slate-900/60 p-5">
+                <label className="text-sm font-bold text-slate-200 flex items-center gap-2">
+                  <Coffee className="h-4 w-4 text-purple-400" /> Mức Năng Lượng & Cảm Xúc
+                </label>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                  {moods.map((m) => {
+                    const isSelected = (currentDayEval.mood || '').includes(m.label);
+                    return (
+                      <button
+                        key={m.label}
+                        type="button"
+                        onClick={() => updateDailyEvaluation(selectedDayKey, 'mood', `${m.label} ${m.emoji}`)}
+                        className={cx(
+                          'flex items-center gap-2 rounded-xl border p-2.5 text-xs font-bold transition-all text-left',
+                          isSelected
+                            ? 'border-purple-500 bg-purple-950/80 text-purple-200 shadow-md scale-105'
+                            : 'border-slate-800 bg-slate-950/60 text-slate-400 hover:bg-slate-800 hover:text-slate-200'
+                        )}
+                      >
+                        <span className="text-lg">{m.emoji}</span>
+                        <div>
+                          <div>{m.label}</div>
+                          <div className="text-[9px] font-normal text-slate-500">{m.energy}</div>
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Work Notes & Daily Reflection Inputs */}
+            <div className="grid gap-6 md:grid-cols-3 pt-2">
+              {/* Detailed Work Log */}
+              <div className="md:col-span-2 space-y-2">
+                <label className="text-sm font-bold text-slate-200 flex items-center gap-2">
+                  <FileText className="h-4 w-4 text-indigo-400" /> Nhật Ký Ghi Chú Công Việc Chi Tiết
+                </label>
+                <textarea
+                  rows={6}
+                  className="w-full rounded-2xl border border-slate-800 bg-slate-950 p-4 text-sm text-slate-200 placeholder-slate-600 focus:border-indigo-500 focus:outline-none"
+                  placeholder="Ghi lại các việc đã hoàn thành, cuộc họp, thông tin quan trọng hoặc kết quả đạt được trong ngày..."
+                  value={currentDayEval.notes || ''}
+                  onChange={(e) => updateDailyEvaluation(selectedDayKey, 'notes', e.target.value)}
+                />
+              </div>
+
+              {/* Wins & Improvements Column */}
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                    <CheckCircle2 className="h-4 w-4" /> Top 3 Thành Tựu Hôm Nay
+                  </label>
+                  <textarea
+                    rows={2.5}
+                    className="w-full rounded-xl border border-slate-800 bg-slate-950 p-3 text-xs text-slate-200 placeholder-slate-600 focus:border-emerald-500 focus:outline-none"
+                    placeholder="1. Xong bài tập...&#10;2. Tập gym 45p..."
+                    value={currentDayEval.wins || ''}
+                    onChange={(e) => updateDailyEvaluation(selectedDayKey, 'wins', e.target.value)}
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <label className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                    <Target className="h-4 w-4" /> Điểm Cần Tối Ưu Cho Ngày Mai
+                  </label>
+                  <textarea
+                    rows={2.5}
+                    className="w-full rounded-xl border border-slate-800 bg-slate-950 p-3 text-xs text-slate-200 placeholder-slate-600 focus:border-amber-500 focus:outline-none"
+                    placeholder="Ngủ sớm hơn 30 phút, tập trung hơn khi làm việc..."
+                    value={currentDayEval.improvements || ''}
+                    onChange={(e) => updateDailyEvaluation(selectedDayKey, 'improvements', e.target.value)}
+                  />
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      )}
+
+      {/* Mode 2: Weekly Master Overview */}
+      {viewMode === 'weekly' && (
+        <div className="space-y-6 animate-fadeIn">
+          {/* Weekly Energy & Progress Bar Chart */}
+          <section className="glass-panel rounded-3xl border border-slate-800 p-6 space-y-4">
+            <h3 className="text-lg font-bold font-heading text-slate-100 flex items-center gap-2">
+              <TrendingUp className="h-5 w-5 text-indigo-400" /> Biểu Đồ Hiệu Suất Sinh Hoạt 7 Ngày
+            </h3>
+
+            <div className="grid grid-cols-7 gap-2 pt-4 items-end h-44 border-b border-slate-800 pb-4">
+              {DAYS.map((day) => {
+                const dayRate = stats.dayRates[day.key] || 0;
+                return (
+                  <div key={day.key} className="flex flex-col items-center gap-2 h-full justify-end">
+                    <span className="text-[11px] font-mono-code font-bold text-indigo-300">{dayRate}%</span>
+                    <div className="w-full bg-slate-800 rounded-t-xl overflow-hidden h-28 flex items-end p-0.5">
+                      <div
+                        className={cx(
+                          'w-full rounded-t-lg transition-all duration-700',
+                          dayRate >= 80
+                            ? 'bg-gradient-to-t from-emerald-600 to-teal-400'
+                            : dayRate >= 50
+                            ? 'bg-gradient-to-t from-indigo-600 to-purple-500'
+                            : 'bg-gradient-to-t from-amber-600 to-orange-400'
+                        )}
+                        style={{ height: `${Math.max(dayRate, 8)}%` }}
+                      />
+                    </div>
+                    <span className="text-xs font-bold text-slate-300">{day.short}</span>
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+
+          {/* Self Evaluation & Mood Selector */}
+          <section className="glass-panel rounded-3xl border border-slate-800 p-6 space-y-6">
+            <div className="grid gap-6 md:grid-cols-2">
+              {/* Score Slider */}
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <label className="text-sm font-bold text-slate-200">Điểm Tự Đánh Giá Toàn Tuần</label>
+                  <span className="font-mono-code text-2xl font-black text-indigo-400">{plan.summary.score}/10</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="10"
+                  step="1"
+                  className="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                  value={plan.summary.score}
+                  onChange={(e) => updateSummary('score', Number(e.target.value))}
+                />
+                <div className="flex justify-between text-[11px] text-slate-500 font-bold">
+                  <span>0 (Kém)</span>
+                  <span>5 (Đạt)</span>
+                  <span>10 (Xuất sắc)</span>
+                </div>
+              </div>
+
+              {/* Mood Selector */}
+              <div className="space-y-2">
+                <label className="text-sm font-bold text-slate-200">Tâm Trạng Chủ Đạo Trong Tuần</label>
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {moods.map((m) => (
+                    <button
+                      key={m.label}
+                      type="button"
+                      onClick={() => updateSummary('mood', m.label)}
+                      className={cx(
+                        'flex items-center gap-1.5 rounded-xl border px-3 py-2 text-xs font-bold transition',
+                        plan.summary.mood === m.label
+                          ? 'border-purple-500 bg-purple-950/60 text-purple-200 shadow-lg shadow-purple-500/20'
+                          : 'border-slate-800 bg-slate-900/60 text-slate-400 hover:bg-slate-800'
+                      )}
+                    >
+                      <span>{m.emoji}</span>
+                      <span>{m.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* 4 Reflection Cards */}
+          <section className="grid gap-6 md:grid-cols-2">
+            {fields.map((f) => (
+              <div key={f.key} className="glass-panel rounded-3xl border border-slate-800 p-6 space-y-3">
+                <label className="text-base font-bold font-heading text-slate-100">{f.label}</label>
+                <textarea
+                  rows={5}
+                  className="w-full rounded-2xl border border-slate-800 bg-slate-950 p-4 text-sm text-slate-200 placeholder-slate-600 focus:border-indigo-500 focus:outline-none"
+                  placeholder={f.placeholder}
+                  value={plan.summary[f.key]}
+                  onChange={(e) => updateSummary(f.key, e.target.value)}
+                />
+              </div>
+            ))}
+          </section>
+        </div>
+      )}
     </div>
   );
 }
