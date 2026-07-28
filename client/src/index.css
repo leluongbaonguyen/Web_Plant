@@ -12,6 +12,18 @@
     background-color: #0f172a;
     color: #f8fafc;
     min-height: 100vh;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    overflow-x: hidden;
+  }
+}
+
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="time"],
+  select,
+  textarea {
+    font-size: 16px !important;
   }
 }
 
