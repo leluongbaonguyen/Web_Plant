@@ -8,6 +8,7 @@ import { readPlan, resetPlan, writePlan } from './store.js';
 import { sanitizePlan } from './validation.js';
 import { appendAuditLog, readAuditLogs, readUsers, writeUsers } from './db.js';
 import { getKangarooTelemetry, readKangarooVault, syncAllToKangaroo, writeKangarooVault } from './kangarooDb.js';
+import { checkRateLimit, createSecurityToken, hasPermission, PERMISSION_MATRIX, verifySecurityToken } from './security.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -16,15 +17,44 @@ const port = Number(process.env.PORT || 4000);
 app.use(cors({ origin: true, credentials: false }));
 app.use(express.json({ limit: '2mb' }));
 
-// Middleware kiểm tra và gán vai trò người dùng (x-user-role)
+// Middleware kiểm tra và gán vai trò & Security Token
 app.use((req, _res, next) => {
-  const rawRole = (req.headers['x-user-role'] || 'admin').toString().toLowerCase();
-  const validRoles = ['admin', 'editor', 'viewer'];
-  req.userRole = validRoles.includes(rawRole) ? rawRole : 'viewer';
+  const authHeader = req.headers['authorization'];
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const token = authHeader.substring(7);
+    const decoded = verifySecurityToken(token);
+    if (decoded) {
+      req.userRole = decoded.role;
+      req.user = decoded;
+    }
+  }
+
+  if (!req.userRole) {
+    const rawRole = (req.headers['x-user-role'] || 'admin').toString().toLowerCase();
+    const validRoles = ['admin', 'editor', 'viewer'];
+    req.userRole = validRoles.includes(rawRole) ? rawRole : 'viewer';
+  }
   next();
 });
 
-// Middleware yêu cầu quyền hạn cụ thể
+// Middleware kiểm tra Granular Permission
+function requirePermission(permName) {
+  return (req, res, next) => {
+    if (!hasPermission(req.userRole, permName)) {
+      appendAuditLog('ACCESS_DENIED', `Từ chối truy cập cho vai trò '${req.userRole}': Yêu cầu quyền '${permName}'`, req.userRole, req.ip);
+      return res.status(403).json({
+        ok: false,
+        error: 'FORBIDDEN_SECURITY_GUARD',
+        message: `Quyền truy cập bị từ chối: Vai trò '${req.userRole.toUpperCase()}' không có quyền '${permName}'.`,
+        requiredPermission: permName,
+        currentRole: req.userRole,
+      });
+    }
+    next();
+  };
+}
+
+// Legacy Middleware yêu cầu vai trò
 function requireRole(...allowedRoles) {
   return (req, res, next) => {
     if (!allowedRoles.includes(req.userRole)) {
@@ -303,8 +333,15 @@ app.post('/api/kangaroo/sync', async (req, res, next) => {
 // AGENT / USER MANAGEMENT & PERSISTENT DATABASE API
 // ====================================================
 
-// Đăng nhập Tài Khoản Tác Nhân / Admin Bắt Buộc
+// Đăng nhập Tài Khoản Tác Nhân / Admin Bắt Buộc (Bảo vệ bởi Rate Limit & HMAC Token)
 app.post('/api/auth/login', (req, res) => {
+  // Brute-force rate limit protection
+  const limitCheck = checkRateLimit(req.ip);
+  if (limitCheck.blocked) {
+    appendAuditLog('SECURITY_THREAT_BLOCKED', limitCheck.message, 'UNKNOWN', req.ip);
+    return res.status(429).json({ ok: false, message: limitCheck.message });
+  }
+
   const { username, password } = req.body || {};
   const users = readUsers();
 
@@ -324,10 +361,13 @@ app.post('/api/auth/login', (req, res) => {
     });
   }
 
-  appendAuditLog('AUTH_LOGIN_SUCCESS', `Tác nhân '${user.fullName}' (${user.role.toUpperCase()}) đăng nhập thành công`, user.username, req.ip);
+  const securityToken = createSecurityToken(user);
+  appendAuditLog('AUTH_LOGIN_SUCCESS', `Tác nhân '${user.fullName}' (${user.role.toUpperCase()}) đăng nhập thành công với Token HMAC`, user.username, req.ip);
 
   res.json({
     ok: true,
+    token: securityToken,
+    permissions: PERMISSION_MATRIX[user.role] || [],
     user: {
       id: user.id,
       username: user.username,

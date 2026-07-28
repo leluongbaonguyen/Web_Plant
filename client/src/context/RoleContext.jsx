@@ -4,6 +4,33 @@ import { ROLES } from '../constants/index.js';
 
 const RoleContext = createContext(null);
 
+export const PERMISSION_MATRIX = {
+  admin: [
+    'PERM_READ_SCHEDULE',
+    'PERM_EDIT_CELL',
+    'PERM_DELETE_SLOT',
+    'PERM_MANAGE_GOALS',
+    'PERM_MANAGE_AGENTS',
+    'PERM_RESET_SYSTEM',
+    'PERM_KANGAROO_SYNC',
+    'PERM_VIEW_AUDIT_LOGS',
+    'PERM_EXPORT_WORD',
+    'PERM_SYSTEM_UPGRADE',
+    'PERM_MAINTENANCE_TOGGLE',
+    'PERM_BACKUP_RESTORE',
+  ],
+  editor: [
+    'PERM_READ_SCHEDULE',
+    'PERM_EDIT_CELL',
+    'PERM_MANAGE_GOALS',
+    'PERM_EXPORT_WORD',
+  ],
+  viewer: [
+    'PERM_READ_SCHEDULE',
+    'PERM_EXPORT_WORD',
+  ],
+};
+
 export function RoleProvider({ children }) {
   const [role, setRole] = useState(getApiRole() || 'admin');
 
@@ -19,15 +46,22 @@ export function RoleProvider({ children }) {
   };
 
   const roleInfo = ROLES[role] || ROLES.admin;
+  const activePermissions = PERMISSION_MATRIX[role] || PERMISSION_MATRIX.viewer;
+
+  const hasPerm = (permName) => activePermissions.includes(permName);
 
   const permissions = {
-    canEditCells: role === 'admin' || role === 'editor',
-    canManageGoals: role === 'admin' || role === 'editor',
-    canManageSummary: role === 'admin' || role === 'editor',
-    canManageSlots: role === 'admin',
-    canResetSystem: role === 'admin',
-    canBackupRestore: role === 'admin',
-    canExport: true,
+    canEditCells: hasPerm('PERM_EDIT_CELL'),
+    canManageGoals: hasPerm('PERM_MANAGE_GOALS'),
+    canManageSummary: hasPerm('PERM_MANAGE_GOALS'),
+    canManageSlots: hasPerm('PERM_DELETE_SLOT'),
+    canResetSystem: hasPerm('PERM_RESET_SYSTEM'),
+    canBackupRestore: hasPerm('PERM_BACKUP_RESTORE'),
+    canManageAgents: hasPerm('PERM_MANAGE_AGENTS'),
+    canKangarooSync: hasPerm('PERM_KANGAROO_SYNC'),
+    canExport: hasPerm('PERM_EXPORT_WORD'),
+    activePermissions,
+    hasPerm,
   };
 
   return (
@@ -40,6 +74,7 @@ export function RoleProvider({ children }) {
         isAdmin: role === 'admin',
         isEditor: role === 'editor',
         isViewer: role === 'viewer',
+        hasPerm,
       }}
     >
       {children}
