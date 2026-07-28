@@ -159,6 +159,35 @@ function playSpecialAlarmSound(durationSeconds = 60, onTick = null, onEnd = null
 
 
 
+async function dispatchMobileLockScreenNotification(title, body) {
+  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+
+  const options = {
+    body,
+    icon: '/favicon.ico',
+    badge: '/favicon.ico',
+    vibrate: [300, 100, 300, 100, 300],
+    tag: 'chronoflow-reminder',
+    renotify: true,
+  };
+
+  if ('serviceWorker' in navigator) {
+    try {
+      const reg = await navigator.serviceWorker.ready;
+      if (reg && reg.showNotification) {
+        await reg.showNotification(title, options);
+        return;
+      }
+    } catch {
+      // Fallback
+    }
+  }
+
+  try {
+    new Notification(title, options);
+  } catch {}
+}
+
 const DAYS = [
   { key: 'monday', label: 'Thứ Hai', short: 'T2' },
   { key: 'tuesday', label: 'Thứ Ba', short: 'T3' },
@@ -312,20 +341,14 @@ function NotificationModal({
 
     if (delayMinutes > 0) {
       triggerSoundNotification();
-      if ('Notification' in window && Notification.permission === 'granted') {
-        new Notification('⏰ Đã lên lịch thông báo', { body: `Sẽ thông báo "${title}" sau ${delayMinutes} phút.`, icon: '/favicon.ico' });
-      }
+      dispatchMobileLockScreenNotification('⏰ Đã lên lịch thông báo', `Sẽ thông báo "${title}" sau ${delayMinutes} phút.`);
       setTimeout(() => {
         triggerSoundNotification();
-        if ('Notification' in window && Notification.permission === 'granted') {
-          new Notification(title, { body, icon: '/favicon.ico' });
-        }
+        dispatchMobileLockScreenNotification(title, body);
       }, delayMinutes * 60 * 1000);
     } else {
       triggerSoundNotification();
-      if ('Notification' in window && Notification.permission === 'granted') {
-        new Notification(title, { body, icon: '/favicon.ico' });
-      }
+      dispatchMobileLockScreenNotification(title, body);
     }
     setCustomTitle('');
     setCustomMessage('');
@@ -740,6 +763,13 @@ export default function App() {
     return { currentSlot, nextSlot, overdueSlots, upcomingSlots };
   }, [plan, currentTime]);
 
+  // Register ServiceWorker for PWA & mobile lock screen notification support
+  useEffect(() => {
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/sw.js').catch(() => {});
+    }
+  }, []);
+
   // Trigger live activity notifications when new slot starts
   useEffect(() => {
     if (!liveScheduleStatus.currentSlot) return;
@@ -749,11 +779,8 @@ export default function App() {
       const msg = `⏰ Bắt đầu: ${cell.text} (${slot.start} - ${slot.end})`;
       addToast(msg, 'info');
       triggerSoundNotification();
-      if (desktopNotifyEnabled && 'Notification' in window && Notification.permission === 'granted') {
-        new Notification('🔔 ChronoFlow - Nhắc Nhở Trực Tiếp', {
-          body: msg,
-          icon: '/favicon.ico',
-        });
+      if (desktopNotifyEnabled) {
+        dispatchMobileLockScreenNotification('🔔 ChronoFlow - Nhắc Nhở Trực Tiếp', msg);
       }
     }
   }, [liveScheduleStatus.currentSlot, soundEnabled, soundMode, desktopNotifyEnabled, lastNotifiedSlotId]);

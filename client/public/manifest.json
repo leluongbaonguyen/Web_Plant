@@ -1,0 +1,17 @@
+{
+  "short_name": "ChronoFlow",
+  "name": "ChronoFlow - Quản Lý Lịch Sinh Hoạt",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#090d16",
+  "theme_color": "#4f46e5",
+  "display": "standalone",
+  "orientation": "portrait",
+  "description": "Ứng dụng quản lý lịch sinh hoạt chuyên nghiệp và nhắc nhở thời gian thực."
+}
