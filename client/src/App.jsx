@@ -1,7 +1,9 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import {
   Activity,
+  AlertTriangle,
   Award,
+  Bell,
   BookOpen,
   Briefcase,
   Calendar,
@@ -16,6 +18,7 @@ import {
   FileText,
   Filter,
   Heart,
+  Info,
   Layers,
   Moon,
   Plus,
@@ -34,9 +37,43 @@ import {
   TrendingUp,
   Upload,
   User,
+  Volume2,
+  VolumeX,
   Zap,
 } from 'lucide-react';
 import { getPlan, getWordFile, resetPlan as resetPlanApi, savePlan } from './api.js';
+
+function timeToMinutes(timeStr) {
+  if (!timeStr) return 0;
+  const [h, m] = timeStr.split(':').map(Number);
+  return (h || 0) * 60 + (m || 0);
+}
+
+function getCurrentDayKey() {
+  const dayIndex = new Date().getDay();
+  const map = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  return map[dayIndex];
+}
+
+function playChimeSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(880, ctx.currentTime + 0.3);
+    gain.gain.setValueAtTime(0.15, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.5);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.5);
+  } catch {
+    // Ignore audio restrictions
+  }
+}
+
 
 const DAYS = [
   { key: 'monday', label: 'Thứ Hai', short: 'T2' },
@@ -160,6 +197,211 @@ function NoteModal({ isOpen, initialValue, onSave, onClose }) {
   );
 }
 
+/* Notification & Reminders Drawer Modal */
+function NotificationModal({ isOpen, onClose, liveScheduleStatus, soundEnabled, setSoundEnabled, desktopNotifyEnabled, toggleDesktopNotifications, onMarkDone }) {
+  if (!isOpen) return null;
+  const { currentSlot, overdueSlots, upcomingSlots } = liveScheduleStatus;
+  const todayKey = getCurrentDayKey();
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-end bg-slate-950/80 p-4 backdrop-blur-md animate-fadeIn">
+      <div className="glass-panel h-full w-full max-w-md rounded-3xl border border-slate-700 bg-slate-900/95 p-6 shadow-2xl space-y-5 flex flex-col justify-between overflow-y-auto">
+        <div className="space-y-4">
+          <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+            <h3 className="text-xl font-bold font-heading text-slate-100 flex items-center gap-2">
+              <Bell className="h-6 w-6 text-indigo-400 animate-bounce" /> Trung Tâm Nhắc Nhở Trực Tiếp
+            </h3>
+            <button onClick={onClose} className="rounded-full bg-slate-800 p-1.5 text-slate-400 hover:text-white transition">
+              ×
+            </button>
+          </div>
+
+          {/* Alert Toggles */}
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              onClick={() => setSoundEnabled(!soundEnabled)}
+              className={cx(
+                'flex items-center justify-center gap-2 rounded-xl p-3 text-xs font-bold transition border',
+                soundEnabled ? 'bg-indigo-950/70 border-indigo-500/40 text-indigo-300' : 'bg-slate-800/60 border-slate-700 text-slate-400'
+              )}
+            >
+              {soundEnabled ? <Volume2 className="h-4 w-4 text-indigo-400" /> : <VolumeX className="h-4 w-4 text-slate-500" />}
+              <span>{soundEnabled ? 'Âm thanh: BẬT' : 'Âm thanh: TẮT'}</span>
+            </button>
+
+            <button
+              onClick={toggleDesktopNotifications}
+              className={cx(
+                'flex items-center justify-center gap-2 rounded-xl p-3 text-xs font-bold transition border',
+                desktopNotifyEnabled ? 'bg-emerald-950/70 border-emerald-500/40 text-emerald-300' : 'bg-slate-800/60 border-slate-700 text-slate-400'
+              )}
+            >
+              <Bell className="h-4 w-4 text-emerald-400" />
+              <span>{desktopNotifyEnabled ? 'Desktop: BẬT' : 'Desktop: TẮT'}</span>
+            </button>
+          </div>
+
+          {/* Current Active Task Section */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+              <Zap className="h-4 w-4 text-emerald-400" /> Đang diễn ra ngay lúc này
+            </h4>
+            {currentSlot ? (
+              <div className="rounded-2xl border border-emerald-500/40 bg-emerald-950/30 p-4 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold font-mono-code text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-md">
+                    {currentSlot.slot.start} - {currentSlot.slot.end} (Còn {currentSlot.minutesLeft} phút)
+                  </span>
+                  <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span>
+                </div>
+                <div className="text-base font-bold text-slate-100">{currentSlot.cell.text}</div>
+                {currentSlot.cell.notes && <div className="text-xs text-slate-300 italic">{currentSlot.cell.notes}</div>}
+                <button
+                  onClick={() => onMarkDone(currentSlot.slot.id, todayKey, true)}
+                  className="w-full mt-2 rounded-xl bg-emerald-600 py-2 text-xs font-bold text-white hover:bg-emerald-500 transition shadow-lg shadow-emerald-600/30 flex items-center justify-center gap-1.5"
+                >
+                  <CheckCircle2 className="h-4 w-4" /> Đánh dấu hoàn thành
+                </button>
+              </div>
+            ) : (
+              <div className="rounded-2xl border border-slate-800 bg-slate-900/40 p-4 text-xs text-slate-400 text-center">
+                Không có lịch hoạt động cố định nào vào thời điểm hiện tại.
+              </div>
+            )}
+          </div>
+
+          {/* Overdue Tasks Section */}
+          {overdueSlots.length > 0 && (
+            <div className="space-y-2">
+              <h4 className="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                <AlertTriangle className="h-4 w-4" /> Chưa hoàn thành hôm nay ({overdueSlots.length})
+              </h4>
+              <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
+                {overdueSlots.map(({ slot, cell }) => (
+                  <div key={slot.id} className="flex items-center justify-between rounded-xl border border-amber-500/30 bg-amber-950/20 p-3 text-xs">
+                    <div>
+                      <div className="font-bold text-slate-200">{cell.text}</div>
+                      <div className="text-[11px] text-amber-400/80 font-mono-code">{slot.start} - {slot.end}</div>
+                    </div>
+                    <button
+                      onClick={() => onMarkDone(slot.id, todayKey, true)}
+                      className="rounded-lg bg-amber-600/80 px-2.5 py-1 text-[11px] font-bold text-white hover:bg-amber-500 transition"
+                    >
+                      Xong
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Upcoming Tasks Section */}
+          <div className="space-y-2">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+              <Clock className="h-4 w-4 text-indigo-400" /> Công việc sắp tới hôm nay
+            </h4>
+            <div className="space-y-2 max-h-48 overflow-y-auto custom-scrollbar">
+              {upcomingSlots.length > 0 ? (
+                upcomingSlots.map(({ slot, cell, minutesUntilStart }) => (
+                  <div key={slot.id} className="flex items-center justify-between rounded-xl border border-slate-800 bg-slate-900/60 p-3 text-xs">
+                    <div>
+                      <div className="font-bold text-slate-200">{cell.text}</div>
+                      <div className="text-[11px] text-slate-400 font-mono-code">{slot.start} - {slot.end}</div>
+                    </div>
+                    <span className="rounded-full bg-indigo-500/10 border border-indigo-500/30 px-2 py-0.5 text-[11px] font-bold text-indigo-300">
+                      Sau {minutesUntilStart} phút
+                    </span>
+                  </div>
+                ))
+              ) : (
+                <div className="rounded-xl border border-slate-800 bg-slate-900/40 p-3 text-xs text-slate-500 text-center">
+                  Đã hết lịch dự kiến trong ngày.
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <button
+          onClick={onClose}
+          className="w-full rounded-2xl bg-indigo-600 py-3 text-sm font-bold text-white hover:bg-indigo-500 transition shadow-lg shadow-indigo-600/30"
+        >
+          Đóng Trung Tâm Nhắc Nhở
+        </button>
+      </div>
+    </div>
+  );
+}
+
+/* Live Activity Banner */
+function LiveReminderBanner({ liveScheduleStatus, onOpenReminders, onMarkDone }) {
+  const { currentSlot, nextSlot, overdueSlots } = liveScheduleStatus;
+  const todayKey = getCurrentDayKey();
+
+  return (
+    <div className="no-print rounded-2xl border border-indigo-500/30 bg-gradient-to-r from-indigo-950/80 via-slate-900/90 to-purple-950/80 p-4 shadow-xl backdrop-blur-xl flex flex-wrap items-center justify-between gap-4">
+      <div className="flex items-center gap-3">
+        <div className="relative flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-indigo-600/30 border border-indigo-400/40 text-indigo-300">
+          <Bell className="h-5 w-5 animate-pulse" />
+          {(currentSlot || overdueSlots.length > 0) && (
+            <span className="absolute -top-1 -right-1 h-3 w-3 rounded-full bg-emerald-400 animate-ping"></span>
+          )}
+        </div>
+
+        <div>
+          {currentSlot ? (
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1">
+                <span className="h-2 w-2 rounded-full bg-emerald-400 animate-ping"></span> ĐANG DIỄN RA:
+              </span>
+              <span className="text-sm font-extrabold text-slate-100">{currentSlot.cell.text}</span>
+              <span className="text-xs font-mono-code text-indigo-300 bg-indigo-900/50 px-2 py-0.5 rounded border border-indigo-500/30">
+                {currentSlot.slot.start} - {currentSlot.slot.end} (Còn {currentSlot.minutesLeft}m)
+              </span>
+            </div>
+          ) : nextSlot ? (
+            <div className="flex items-center gap-2 flex-wrap">
+              <span className="text-xs font-bold uppercase tracking-wider text-sky-400 flex items-center gap-1">
+                <Clock className="h-3.5 w-3.5" /> SẮP TỚI:
+              </span>
+              <span className="text-sm font-bold text-slate-200">{nextSlot.cell.text}</span>
+              <span className="text-xs font-mono-code text-sky-300 bg-sky-900/50 px-2 py-0.5 rounded border border-sky-500/30">
+                Bắt đầu lúc {nextSlot.slot.start} (sau {nextSlot.minutesUntilStart}m)
+              </span>
+            </div>
+          ) : (
+            <div className="text-sm text-slate-300 font-medium">Không có hoạt động cố định diễn ra ngay lúc này.</div>
+          )}
+        </div>
+      </div>
+
+      <div className="flex items-center gap-3">
+        {currentSlot && (
+          <button
+            onClick={() => onMarkDone(currentSlot.slot.id, todayKey, true)}
+            className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-emerald-500 shadow-md transition"
+          >
+            <CheckCircle2 className="h-4 w-4" /> Hoàn thành ngay
+          </button>
+        )}
+
+        <button
+          onClick={onOpenReminders}
+          className="flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800/80 px-3.5 py-2 text-xs font-bold text-indigo-300 hover:bg-slate-700 transition"
+        >
+          <Bell className="h-4 w-4 text-indigo-400" />
+          <span>Trung tâm nhắc nhở</span>
+          {overdueSlots.length > 0 && (
+            <span className="rounded-full bg-amber-500 px-1.5 py-0.5 text-[10px] font-black text-slate-950">
+              {overdueSlots.length}
+            </span>
+          )}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export default function App() {
   const [plan, setPlan] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -173,6 +415,12 @@ export default function App() {
   const [categoryFilter, setCategoryFilter] = useState('all');
   const [toasts, setToasts] = useState([]);
   const [currentTime, setCurrentTime] = useState(new Date());
+
+  // Direct Reminders & Notification States
+  const [soundEnabled, setSoundEnabled] = useState(true);
+  const [desktopNotifyEnabled, setDesktopNotifyEnabled] = useState(false);
+  const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
+  const [lastNotifiedSlotId, setLastNotifiedSlotId] = useState(null);
 
   // Note Modal State
   const [activeNoteCell, setActiveNoteCell] = useState(null); // { slotId, dayKey, text }
@@ -193,6 +441,84 @@ export default function App() {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
     return () => clearInterval(timer);
   }, []);
+
+  // Real-time schedule scanner for live task status & reminders
+  const liveScheduleStatus = useMemo(() => {
+    if (!plan) return { currentSlot: null, nextSlot: null, overdueSlots: [], upcomingSlots: [] };
+    const todayKey = getCurrentDayKey();
+    const nowMinutes = timeToMinutes(
+      `${new Date().getHours().toString().padStart(2, '0')}:${new Date().getMinutes().toString().padStart(2, '0')}`
+    );
+
+    let currentSlot = null;
+    let nextSlot = null;
+    const overdueSlots = [];
+    const upcomingSlots = [];
+
+    for (const slot of plan.schedule) {
+      const cell = slot.cells[todayKey];
+      if (!cell?.text?.trim()) continue;
+
+      const startMin = timeToMinutes(slot.start);
+      const endMin = timeToMinutes(slot.end);
+
+      if (nowMinutes >= startMin && nowMinutes < endMin) {
+        currentSlot = { slot, cell, minutesLeft: endMin - nowMinutes };
+      } else if (startMin > nowMinutes) {
+        upcomingSlots.push({ slot, cell, minutesUntilStart: startMin - nowMinutes });
+      } else if (endMin <= nowMinutes && !cell.done) {
+        overdueSlots.push({ slot, cell });
+      }
+    }
+
+    if (upcomingSlots.length) {
+      upcomingSlots.sort((a, b) => a.minutesUntilStart - b.minutesUntilStart);
+      nextSlot = upcomingSlots[0];
+    }
+
+    return { currentSlot, nextSlot, overdueSlots, upcomingSlots };
+  }, [plan, currentTime]);
+
+  // Trigger live activity notifications when new slot starts
+  useEffect(() => {
+    if (!liveScheduleStatus.currentSlot) return;
+    const { slot, cell } = liveScheduleStatus.currentSlot;
+    if (lastNotifiedSlotId !== slot.id) {
+      setLastNotifiedSlotId(slot.id);
+      const msg = `⏰ Bắt đầu: ${cell.text} (${slot.start} - ${slot.end})`;
+      addToast(msg, 'info');
+      if (soundEnabled) playChimeSound();
+      if (desktopNotifyEnabled && 'Notification' in window && Notification.permission === 'granted') {
+        new Notification('🔔 ChronoFlow - Nhắc Nhở Trực Tiếp', {
+          body: msg,
+          icon: '/favicon.ico',
+        });
+      }
+    }
+  }, [liveScheduleStatus.currentSlot, soundEnabled, desktopNotifyEnabled, lastNotifiedSlotId]);
+
+  function toggleDesktopNotifications() {
+    if (!('Notification' in window)) {
+      addToast('Trình duyệt của bạn không hỗ trợ thông báo desktop.', 'error');
+      return;
+    }
+    if (Notification.permission === 'granted') {
+      setDesktopNotifyEnabled(!desktopNotifyEnabled);
+      addToast(!desktopNotifyEnabled ? 'Đã bật thông báo Desktop' : 'Đã tắt thông báo Desktop', 'info');
+    } else if (Notification.permission !== 'denied') {
+      Notification.requestPermission().then((permission) => {
+        if (permission === 'granted') {
+          setDesktopNotifyEnabled(true);
+          addToast('Đã cấp quyền & bật thông báo Desktop thành công!', 'success');
+        } else {
+          addToast('Chưa cấp quyền thông báo Desktop', 'error');
+        }
+      });
+    } else {
+      addToast('Quyền thông báo đã bị chặn trong cài đặt trình duyệt.', 'error');
+    }
+  }
+
 
   // Fetch Initial Plan
   useEffect(() => {
@@ -542,6 +868,20 @@ export default function App() {
             </div>
 
             <button
+              onClick={() => setShowNotificationDrawer(true)}
+              className="relative flex items-center gap-1.5 rounded-xl border border-indigo-500/40 bg-indigo-950/60 px-3.5 py-2 text-xs font-bold text-indigo-200 hover:bg-indigo-900/80 transition shadow-lg shadow-indigo-600/20"
+              title="Trung tâm thông báo & nhắc nhở"
+            >
+              <Bell className="h-4 w-4 text-indigo-400 animate-pulse" />
+              <span>Nhắc nhở</span>
+              {(liveScheduleStatus.currentSlot || liveScheduleStatus.overdueSlots.length > 0) && (
+                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-[10px] font-black text-slate-950 animate-bounce">
+                  {(liveScheduleStatus.currentSlot ? 1 : 0) + liveScheduleStatus.overdueSlots.length}
+                </span>
+              )}
+            </button>
+
+            <button
               onClick={() => window.print()}
               className="flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800/80 px-3.5 py-2 text-xs font-bold text-slate-200 hover:bg-slate-700 transition"
               title="In hoặc Lưu PDF"
@@ -621,8 +961,33 @@ export default function App() {
         </nav>
       </header>
 
+      {/* Notification Drawer Modal */}
+      <NotificationModal
+        isOpen={showNotificationDrawer}
+        onClose={() => setShowNotificationDrawer(false)}
+        liveScheduleStatus={liveScheduleStatus}
+        soundEnabled={soundEnabled}
+        setSoundEnabled={setSoundEnabled}
+        desktopNotifyEnabled={desktopNotifyEnabled}
+        toggleDesktopNotifications={toggleDesktopNotifications}
+        onMarkDone={(slotId, dayKey, isDone) => {
+          updateCell(slotId, dayKey, 'done', isDone);
+          addToast('Đã đánh dấu hoàn thành!', 'success');
+        }}
+      />
+
       {/* Main Content Area */}
       <main className="mx-auto max-w-[1850px] p-6 space-y-6">
+        {/* Live Reminder & Activity Tracker Banner */}
+        <LiveReminderBanner
+          liveScheduleStatus={liveScheduleStatus}
+          onOpenReminders={() => setShowNotificationDrawer(true)}
+          onMarkDone={(slotId, dayKey, isDone) => {
+            updateCell(slotId, dayKey, 'done', isDone);
+            addToast('Đã đánh dấu hoàn thành!', 'success');
+          }}
+        />
+
         {activeTab === 'dashboard' && <DashboardView plan={plan} stats={stats} setActiveTab={setActiveTab} updateGoal={updateGoal} />}
         {activeTab === 'schedule' && (
           <ScheduleView
