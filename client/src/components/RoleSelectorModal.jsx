@@ -1,11 +1,36 @@
-import { Shield, ShieldAlert, ShieldCheck, Eye, Edit3, Lock, Check, X } from 'lucide-react';
+import { useState } from 'react';
+import { Shield, ShieldAlert, ShieldCheck, Eye, Edit3, Lock, Check, X, KeyRound, UserCheck } from 'lucide-react';
 import { useRole } from '../context/RoleContext.jsx';
 import { ROLES, cx } from '../constants/index.js';
+import { loginAgent } from '../api.js';
 
 export function RoleSelectorModal({ isOpen, onClose }) {
   const { role, switchRole } = useRole();
 
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [loginMsg, setLoginMsg] = useState({ text: '', type: '' });
+  const [loading, setLoading] = useState(false);
+
   if (!isOpen) return null;
+
+  const handleAccountLogin = async (e) => {
+    e.preventDefault();
+    setLoginMsg({ text: '', type: '' });
+    try {
+      setLoading(true);
+      const res = await loginAgent(username, password);
+      if (res.ok && res.user) {
+        switchRole(res.user.role);
+        setLoginMsg({ text: `🎉 Đã đăng nhập thành công với vai trò ${res.user.fullName} (${res.user.role.toUpperCase()})`, type: 'success' });
+        setTimeout(() => onClose(), 1200);
+      }
+    } catch (err) {
+      setLoginMsg({ text: err.message || 'Mật khẩu hoặc tên đăng nhập không đúng!', type: 'error' });
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const matrix = [
     { name: 'Xem lịch, tìm kiếm, lọc & in', admin: true, editor: true, viewer: true },
@@ -27,14 +52,67 @@ export function RoleSelectorModal({ isOpen, onClose }) {
               <ShieldCheck className="h-6 w-6" />
             </div>
             <div>
-              <h3 className="text-xl font-bold font-heading text-slate-100">Quản Lý Quyền & Vai Trò (RBAC)</h3>
-              <p className="text-xs text-slate-400">Chọn vai trò để trải nghiệm cơ chế phân quyền bảo mật của hệ thống</p>
+              <h3 className="text-xl font-bold font-heading text-slate-100">Đăng Nhập Quản Lý & Vai Trò (RBAC)</h3>
+              <p className="text-xs text-slate-400">Đăng nhập tài khoản Admin/Tác nhân hoặc chọn vai trò trực tiếp để thử nghiệm</p>
             </div>
           </div>
           <button onClick={onClose} className="rounded-full bg-slate-800 p-2 text-slate-400 hover:text-white transition">
             <X className="h-5 w-5" />
           </button>
         </div>
+
+        {/* Account Authentication Box */}
+        <form onSubmit={handleAccountLogin} className="rounded-2xl border border-indigo-500/30 bg-indigo-950/30 p-4 space-y-3">
+          <div className="flex items-center gap-2 text-xs font-bold text-indigo-300">
+            <UserCheck className="h-4 w-4 text-indigo-400" />
+            <span>Đăng Nhập Bắt Buộc Tài Khoản Admin / Tác Nhân:</span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
+            <input
+              type="text"
+              required
+              placeholder="Username (admin, editor, viewer)..."
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100 placeholder-slate-500"
+            />
+            <input
+              type="password"
+              required
+              placeholder="Mật khẩu (Mặc định admin: 888)..."
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100 placeholder-slate-500"
+            />
+          </div>
+
+          {loginMsg.text && (
+            <div className={cx('rounded-xl p-2 text-xs font-bold', loginMsg.type === 'error' ? 'bg-red-950/60 text-red-300 border border-red-500/40' : 'bg-emerald-950/60 text-emerald-300 border border-emerald-500/40')}>
+              {loginMsg.text}
+            </div>
+          )}
+
+          <div className="flex justify-end gap-2">
+            <button
+              type="button"
+              onClick={() => {
+                setUsername('admin');
+                setPassword('888');
+              }}
+              className="rounded-xl border border-slate-700 bg-slate-800 px-3 py-1.5 text-[11px] font-bold text-slate-300 hover:bg-slate-700"
+            >
+              Điền mẫu Admin (888)
+            </button>
+            <button
+              type="submit"
+              disabled={loading}
+              className="rounded-xl bg-indigo-600 px-4 py-1.5 text-xs font-bold text-white hover:bg-indigo-500 shadow-md transition"
+            >
+              {loading ? 'Đang xác thực...' : 'Đăng Nhập Vai Trò'}
+            </button>
+          </div>
+        </form>
 
         {/* Role Cards Selection */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-3">

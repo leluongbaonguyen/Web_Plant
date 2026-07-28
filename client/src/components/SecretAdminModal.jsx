@@ -1,26 +1,43 @@
 import { useState, useEffect } from 'react';
-import { Activity, AlertTriangle, ArrowUpCircle, CheckCircle2, Cpu, Database, EyeOff, KeyRound, Lock, RefreshCw, ShieldAlert, ShieldCheck, Terminal, X, Zap } from 'lucide-react';
-import { getTelemetryInfo, loginStealthAdmin, toggleMaintenanceMode, triggerSystemUpgrade } from '../api.js';
+import { Activity, AlertTriangle, ArrowUpCircle, CheckCircle2, Cpu, Database, EyeOff, KeyRound, Lock, Plus, RefreshCw, ShieldAlert, ShieldCheck, Terminal, Trash2, UserPlus, Users, Edit3, X, Zap } from 'lucide-react';
+import { createAgent, deleteAgent, getAgentsList, getTelemetryInfo, loginStealthAdmin, toggleMaintenanceMode, triggerSystemUpgrade, updateAgent } from '../api.js';
 import { cx } from '../constants/index.js';
 
 export function SecretAdminModal({ isOpen, onClose, addToast }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passcode, setPasscode] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  const [activeAdminTab, setActiveAdminTab] = useState('upgrade'); // 'upgrade' | 'diagnostics' | 'logs'
+  const [activeAdminTab, setActiveAdminTab] = useState('agents'); // 'agents' | 'upgrade' | 'diagnostics' | 'logs'
   const [telemetry, setTelemetry] = useState(null);
+  const [agents, setAgents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [isUpgrading, setIsUpgrading] = useState(false);
   const [upgradeProgress, setUpgradeProgress] = useState(0);
 
-  // Load telemetry when authenticated
-  const loadTelemetry = async () => {
+  // New Agent Form State
+  const [showAgentModal, setShowAgentModal] = useState(false);
+  const [editingAgent, setEditingAgent] = useState(null);
+  const [agentForm, setAgentForm] = useState({
+    username: '',
+    password: '',
+    fullName: '',
+    role: 'editor',
+    avatar: '👤',
+    status: 'ACTIVE',
+  });
+
+  // Load telemetry & agents when authenticated
+  const loadTelemetryAndAgents = async () => {
     try {
       setLoading(true);
-      const data = await getTelemetryInfo();
-      setTelemetry(data);
+      const [telemetryData, agentsData] = await Promise.all([
+        getTelemetryInfo(),
+        getAgentsList(),
+      ]);
+      setTelemetry(telemetryData);
+      if (agentsData?.agents) setAgents(agentsData.agents);
     } catch (err) {
-      setErrorMsg('Lỗi tải thông số chẩn đoán hệ thống: ' + err.message);
+      setErrorMsg('Lỗi tải dữ liệu tác nhân hệ thống: ' + err.message);
     } finally {
       setLoading(false);
     }
@@ -28,7 +45,7 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
 
   useEffect(() => {
     if (isOpen && isAuthenticated) {
-      loadTelemetry();
+      loadTelemetryAndAgents();
     }
   }, [isOpen, isAuthenticated]);
 
@@ -44,7 +61,7 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
       if (res.ok) {
         setIsAuthenticated(true);
         if (addToast) addToast('🔒 Đã đăng nhập ẩn Tác nhân Super Admin thành công!', 'success');
-        loadTelemetry();
+        loadTelemetryAndAgents();
       }
     } catch (err) {
       setErrorMsg(err.message || 'Mã đăng nhập ẩn không chính xác!');
@@ -75,7 +92,7 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
         setUpgradeProgress(100);
         setIsUpgrading(false);
         if (addToast) addToast(`🎉 ${res.message}`, 'success');
-        await loadTelemetry();
+        await loadTelemetryAndAgents();
       }, 2000);
     } catch (err) {
       setIsUpgrading(false);
@@ -89,10 +106,63 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
       const currentMode = Boolean(telemetry?.system?.maintenanceMode);
       const res = await toggleMaintenanceMode(!currentMode);
       if (addToast) addToast(res.message, res.maintenanceMode ? 'error' : 'success');
-      await loadTelemetry();
+      await loadTelemetryAndAgents();
     } catch (err) {
       if (addToast) addToast(`Lỗi chuyển đổi chế độ bảo trì: ${err.message}`, 'error');
     }
+  };
+
+  // AGENT CRUD HANDLERS
+  const handleSaveAgent = async (e) => {
+    e.preventDefault();
+    try {
+      setLoading(true);
+      if (editingAgent) {
+        // Update Agent
+        const res = await updateAgent(editingAgent.id, agentForm);
+        setAgents(res.agents);
+        if (addToast) addToast(`Đã cập nhật Tác nhân '${agentForm.fullName}'!`, 'success');
+      } else {
+        // Create Agent
+        const res = await createAgent(agentForm);
+        setAgents(res.agents);
+        if (addToast) addToast(`Đã tạo thành công Tác nhân '${agentForm.fullName}'!`, 'success');
+      }
+      setShowAgentModal(false);
+      setEditingAgent(null);
+      setAgentForm({ username: '', password: '', fullName: '', role: 'editor', avatar: '👤', status: 'ACTIVE' });
+    } catch (err) {
+      if (addToast) addToast(`Lỗi: ${err.message}`, 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteAgent = async (id, name) => {
+    if (!confirm(`Bạn có chắc chắn muốn xóa Tác nhân '${name}' khỏi cơ sở dữ liệu?`)) return;
+    try {
+      setLoading(true);
+      const res = await deleteAgent(id);
+      setAgents(res.agents);
+      if (addToast) addToast(`Đã xóa Tác nhân '${name}'!`, 'success');
+    } catch (err) {
+      if (addToast) addToast(`Lỗi xóa Tác nhân: ${err.message}`, 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const openEditAgentModal = (agent) => {
+    setEditingAgent(agent);
+    setAgentForm({
+      username: agent.username,
+      password: agent.password,
+      fullName: agent.fullName,
+      role: agent.role,
+      avatar: agent.avatar || '👤',
+      status: agent.status || 'ACTIVE',
+    });
+    setShowAgentModal(true);
   };
 
   return (
@@ -107,13 +177,13 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-xl font-black font-heading text-slate-100 uppercase tracking-tight">
-                  Tác Nhân Super Admin & Đăng Nhập Ẩn
+                  Tác Nhân Super Admin & Quản Lý Cơ Sở Dữ Liệu
                 </h3>
                 <span className="rounded-full bg-red-500/20 border border-red-500/40 px-2 py-0.5 text-[10px] font-black text-red-300">
                   STEALTH MODE
                 </span>
               </div>
-              <p className="text-xs text-slate-400">Giao diện quản trị tối cao & Trung tâm quản lý nâng cấp hệ thống</p>
+              <p className="text-xs text-slate-400">Giao diện quản trị tối cao, quản lý tác nhân & bảo vệ cơ sở dữ liệu 100%</p>
             </div>
           </div>
 
@@ -130,8 +200,8 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
             </div>
 
             <div className="space-y-1">
-              <h4 className="text-lg font-bold text-slate-100">Xác Thực Mã Đăng Nhập Ẩn</h4>
-              <p className="text-xs text-slate-400">Nhập mã bảo vệ bí mật của Tác Nhân Super Admin để mở khóa hệ thống</p>
+              <h4 className="text-lg font-bold text-slate-100">Xác Thực Mã Đăng Nhập Ẩn Admin</h4>
+              <p className="text-xs text-slate-400">Nhập mật khẩu bí mật của Tác Nhân Super Admin để mở khóa toàn quyền quản trị</p>
             </div>
 
             <form onSubmit={handleLogin} className="space-y-4">
@@ -178,8 +248,20 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
           /* PHASE 2: SUPER ADMIN MANAGEMENT CONSOLE */
           <div className="space-y-6">
             {/* Admin Tabs Bar */}
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <div className="flex items-center gap-2">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-3 flex-wrap gap-2">
+              <div className="flex items-center gap-2 flex-wrap">
+                <button
+                  onClick={() => setActiveAdminTab('agents')}
+                  className={cx(
+                    'flex items-center gap-2 rounded-xl px-4 py-2 text-xs font-bold transition',
+                    activeAdminTab === 'agents'
+                      ? 'bg-emerald-600/20 text-emerald-300 border border-emerald-500/40'
+                      : 'text-slate-400 hover:bg-slate-800'
+                  )}
+                >
+                  <Users className="h-4 w-4 text-emerald-400" /> Quản Lý Tác Nhân ({agents.length})
+                </button>
+
                 <button
                   onClick={() => setActiveAdminTab('upgrade')}
                   className={cx(
@@ -201,7 +283,7 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
                       : 'text-slate-400 hover:bg-slate-800'
                   )}
                 >
-                  <Cpu className="h-4 w-4 text-indigo-400" /> Chẩn Đoán Chi Tiết
+                  <Cpu className="h-4 w-4 text-indigo-400" /> Chẩn Đoán & DB
                 </button>
 
                 <button
@@ -213,19 +295,203 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
                       : 'text-slate-400 hover:bg-slate-800'
                   )}
                 >
-                  <Terminal className="h-4 w-4 text-purple-400" /> Nhật Ký Sự Kiện ({telemetry?.logs?.length || 0})
+                  <Terminal className="h-4 w-4 text-purple-400" /> Nhật Ký Sự Kiện
                 </button>
               </div>
 
               <button
-                onClick={loadTelemetry}
+                onClick={loadTelemetryAndAgents}
                 className="flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-slate-200"
               >
                 <RefreshCw className={cx('h-3.5 w-3.5', loading ? 'animate-spin' : '')} /> Làm mới
               </button>
             </div>
 
-            {/* TAB 1: SYSTEM UPGRADE CONSOLE */}
+            {/* TAB 1: AGENT MANAGEMENT (SỬA, XÓA, TẠO TÁC NHÂN) */}
+            {activeAdminTab === 'agents' && (
+              <div className="space-y-4">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h4 className="text-sm font-bold text-slate-100">Danh Sách Tác Nhân Quản Lý Trong Hệ Thống</h4>
+                    <p className="text-xs text-slate-400">Admin có quyền thêm, sửa tài khoản, cấp lại mật khẩu hoặc xóa tác nhân khỏi DB</p>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      setEditingAgent(null);
+                      setAgentForm({ username: '', password: '', fullName: '', role: 'editor', avatar: '👤', status: 'ACTIVE' });
+                      setShowAgentModal(true);
+                    }}
+                    className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-bold text-white hover:bg-emerald-500 shadow-md shadow-emerald-600/30 transition"
+                  >
+                    <UserPlus className="h-4 w-4" /> Thêm Tác Nhân Mới
+                  </button>
+                </div>
+
+                {/* Agents Grid List */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                  {agents.map((agent) => (
+                    <div
+                      key={agent.id}
+                      className="glass-panel rounded-2xl border border-slate-800 bg-slate-900/80 p-4 space-y-3 relative group hover:border-indigo-500/40 transition"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="flex items-center gap-3">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-800 text-xl shadow-inner">
+                            {agent.avatar || '👤'}
+                          </div>
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <h5 className="font-bold text-slate-100 text-sm">{agent.fullName}</h5>
+                              <span
+                                className={cx(
+                                  'rounded-full px-2 py-0.5 text-[10px] font-black uppercase',
+                                  agent.role === 'admin'
+                                    ? 'bg-red-500/20 text-red-300 border border-red-500/40'
+                                    : agent.role === 'editor'
+                                    ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40'
+                                    : 'bg-slate-700 text-slate-300'
+                                )}
+                              >
+                                {agent.role}
+                              </span>
+                            </div>
+                            <p className="text-xs text-slate-400 font-mono-code">
+                              Tài khoản: <span className="text-slate-200 font-bold">@{agent.username}</span> | Pass: <span className="text-emerald-400">{agent.password}</span>
+                            </p>
+                          </div>
+                        </div>
+
+                        <div className="flex items-center gap-1">
+                          <button
+                            onClick={() => openEditAgentModal(agent)}
+                            className="rounded-lg bg-slate-800 p-1.5 text-slate-300 hover:text-indigo-400 hover:bg-slate-700 transition"
+                            title="Sửa tác nhân"
+                          >
+                            <Edit3 className="h-4 w-4" />
+                          </button>
+
+                          {agent.username !== 'admin' && (
+                            <button
+                              onClick={() => handleDeleteAgent(agent.id, agent.fullName)}
+                              className="rounded-lg bg-slate-800 p-1.5 text-slate-400 hover:text-red-400 hover:bg-slate-700 transition"
+                              title="Xóa tác nhân khỏi DB"
+                            >
+                              <Trash2 className="h-4 w-4" />
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="flex items-center justify-between text-[11px] text-slate-500 border-t border-slate-800/80 pt-2">
+                        <span>Trạng thái: <span className={agent.status === 'DISABLED' ? 'text-red-400 font-bold' : 'text-emerald-400 font-bold'}>{agent.status || 'ACTIVE'}</span></span>
+                        <span>Tạo lúc: {agent.createdAt ? new Date(agent.createdAt).toLocaleDateString() : 'Ban đầu'}</span>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Add / Edit Agent Modal Sub-Dialog */}
+                {showAgentModal && (
+                  <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 p-4 backdrop-blur-sm">
+                    <div className="glass-panel max-w-md w-full rounded-3xl border border-indigo-500/40 bg-slate-900 p-6 space-y-4 shadow-2xl">
+                      <div className="flex justify-between items-center border-b border-slate-800 pb-3">
+                        <h4 className="font-bold text-slate-100 text-sm">
+                          {editingAgent ? `Sửa Thông Tin Tác Nhân '${editingAgent.fullName}'` : 'Thêm Tác Nhân Quản Lý Mới'}
+                        </h4>
+                        <button onClick={() => setShowAgentModal(false)} className="text-slate-400 hover:text-white">
+                          <X className="h-4 w-4" />
+                        </button>
+                      </div>
+
+                      <form onSubmit={handleSaveAgent} className="space-y-3 text-xs">
+                        <div>
+                          <label className="block text-slate-400 font-bold mb-1">Họ và Tên Tác Nhân</label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="Ví dụ: Nguyễn Văn A"
+                            value={agentForm.fullName}
+                            onChange={(e) => setAgentForm({ ...agentForm, fullName: e.target.value })}
+                            className="w-full rounded-xl border border-slate-700 bg-slate-950 p-2.5 text-slate-100"
+                          />
+                        </div>
+
+                        {!editingAgent && (
+                          <div>
+                            <label className="block text-slate-400 font-bold mb-1">Tên Đăng Nhập (Username)</label>
+                            <input
+                              type="text"
+                              required
+                              placeholder="Ví dụ: nva_editor"
+                              value={agentForm.username}
+                              onChange={(e) => setAgentForm({ ...agentForm, username: e.target.value })}
+                              className="w-full rounded-xl border border-slate-700 bg-slate-950 p-2.5 text-slate-100 font-mono-code"
+                            />
+                          </div>
+                        )}
+
+                        <div>
+                          <label className="block text-slate-400 font-bold mb-1">Mật Khẩu</label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="Nhập mật khẩu..."
+                            value={agentForm.password}
+                            onChange={(e) => setAgentForm({ ...agentForm, password: e.target.value })}
+                            className="w-full rounded-xl border border-slate-700 bg-slate-950 p-2.5 text-slate-100 font-mono-code"
+                          />
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2">
+                          <div>
+                            <label className="block text-slate-400 font-bold mb-1">Vai Trò (Role)</label>
+                            <select
+                              value={agentForm.role}
+                              onChange={(e) => setAgentForm({ ...agentForm, role: e.target.value })}
+                              className="w-full rounded-xl border border-slate-700 bg-slate-950 p-2.5 text-slate-100"
+                            >
+                              <option value="admin">Quản Trị Viên (Admin)</option>
+                              <option value="editor">Biên Tập Viên (Editor)</option>
+                              <option value="viewer">Người Xem (Viewer)</option>
+                            </select>
+                          </div>
+
+                          <div>
+                            <label className="block text-slate-400 font-bold mb-1">Biểu Tượng Avatar</label>
+                            <input
+                              type="text"
+                              placeholder="Ví dụ: 🛡️, ✍️, 👤"
+                              value={agentForm.avatar}
+                              onChange={(e) => setAgentForm({ ...agentForm, avatar: e.target.value })}
+                              className="w-full rounded-xl border border-slate-700 bg-slate-950 p-2.5 text-center text-slate-100"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2 pt-2">
+                          <button
+                            type="button"
+                            onClick={() => setShowAgentModal(false)}
+                            className="flex-1 rounded-xl border border-slate-700 bg-slate-800 py-2.5 font-bold text-slate-300"
+                          >
+                            Hủy
+                          </button>
+                          <button
+                            type="submit"
+                            className="flex-1 rounded-xl bg-emerald-600 py-2.5 font-bold text-white hover:bg-emerald-500"
+                          >
+                            Lưu Tác Nhân
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* TAB 2: SYSTEM UPGRADE CONSOLE */}
             {activeAdminTab === 'upgrade' && (
               <div className="space-y-6">
                 {/* Upgrade Action Card */}
@@ -309,7 +575,7 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
               </div>
             )}
 
-            {/* TAB 2: SYSTEM DIAGNOSTICS & TELEMETRY */}
+            {/* TAB 3: SYSTEM DIAGNOSTICS & PERSISTENT DB */}
             {activeAdminTab === 'diagnostics' && (
               <div className="space-y-4">
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-3">
@@ -340,7 +606,7 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
                   {/* DB Records Card */}
                   <div className="glass-panel rounded-2xl border border-slate-800 bg-slate-900/60 p-4 space-y-1">
                     <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                      <span>Cơ Sở Dữ Liệu</span>
+                      <span>Cơ Sở Dữ Liệu Persistent</span>
                       <Database className="h-4 w-4 text-amber-400" />
                     </div>
                     <div className="text-xl font-bold text-amber-300 font-mono-code">
@@ -352,31 +618,31 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
                   {/* DB Size Card */}
                   <div className="glass-panel rounded-2xl border border-slate-800 bg-slate-900/60 p-4 space-y-1">
                     <div className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
-                      <span>Dung Lượng JSON</span>
+                      <span>Dung Lượng DB</span>
                       <Zap className="h-4 w-4 text-purple-400" />
                     </div>
                     <div className="text-xl font-bold text-purple-300 font-mono-code">
                       {telemetry?.system?.database?.dataSizeBytes || 0} Bytes
                     </div>
-                    <div className="text-[10px] text-slate-500">Trạng thái DB: ONLINE</div>
+                    <div className="text-[10px] text-slate-500">Bảo vệ dữ liệu: ATOMIC BACKUP ACTIVE</div>
                   </div>
                 </div>
 
                 <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4 font-mono-code text-xs text-slate-300 space-y-2">
-                  <div className="text-indigo-400 font-bold">⚡ KIỂM TRA TOÀN DIỆN SỨC KHỎE HỆ THỐNG:</div>
-                  <div className="text-emerald-400">✓ Động cơ định thời gian nhắc nhở (Timer Engine): HOẠT ĐỘNG TỐT</div>
-                  <div className="text-emerald-400">✓ Cơ chế phân quyền 3 cấp (RBAC Guard): HOẠT ĐỘNG TỐT</div>
-                  <div className="text-emerald-400">✓ Đăng nhập ẩn Tác nhân Super Admin: ĐÃ XÁC THỰC BẢO MẬT</div>
+                  <div className="text-indigo-400 font-bold">⚡ KIỂM TRA HỆ THỐNG CƠ SỞ DỮ LIỆU CHỐNG MẤT DỮ LIỆU:</div>
+                  <div className="text-emerald-400">✓ Database Engine (`server/data/plan.json`, `server/data/users.json`): ONLINE</div>
+                  <div className="text-emerald-400">✓ Động cơ Snapshot Backup ngầm tự động: KÍCH HOẠT (Không mất bất cứ dữ liệu gì)</div>
+                  <div className="text-emerald-400">✓ Quản lý Tác Nhân: Cho phép Admin Tạo / Sửa / Xóa Tác Nhân trong DB</div>
                 </div>
               </div>
             )}
 
-            {/* TAB 3: AUDIT LOGS */}
+            {/* TAB 4: AUDIT LOGS */}
             {activeAdminTab === 'logs' && (
               <div className="space-y-3">
-                <div className="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-950/80">
+                <div className="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-950/80 max-h-72 custom-scrollbar">
                   <table className="w-full text-left text-xs">
-                    <thead className="border-b border-slate-800 bg-slate-900 text-slate-400 font-bold uppercase">
+                    <thead className="border-b border-slate-800 bg-slate-900 text-slate-400 font-bold uppercase sticky top-0">
                       <tr>
                         <th className="p-3">Thời gian</th>
                         <th className="p-3">Sự kiện</th>

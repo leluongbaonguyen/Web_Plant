@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { createWordBuffer } from './exportWord.js';
 import { readPlan, resetPlan, writePlan } from './store.js';
 import { sanitizePlan } from './validation.js';
+import { appendAuditLog, readAuditLogs, readUsers, writeUsers } from './db.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -263,6 +264,150 @@ app.post('/api/admin/maintenance', (req, res) => {
     message: `Đã ${systemState.maintenanceMode ? 'bật' : 'tắt'} chế độ bảo trì hệ thống thành công!`,
   });
 });
+
+// ====================================================
+// AGENT / USER MANAGEMENT & PERSISTENT DATABASE API
+// ====================================================
+
+// Đăng nhập Tài Khoản Tác Nhân / Admin Bắt Buộc
+app.post('/api/auth/login', (req, res) => {
+  const { username, password } = req.body || {};
+  const users = readUsers();
+
+  const user = users.find((u) => u.username === username && u.password === password);
+  if (!user) {
+    appendAuditLog('AUTH_LOGIN_FAILED', `Thử đăng nhập tài khoản '${username}' thất bại`, username, req.ip);
+    return res.status(401).json({
+      ok: false,
+      message: 'Tên đăng nhập hoặc mật khẩu không chính xác!',
+    });
+  }
+
+  if (user.status === 'DISABLED') {
+    return res.status(403).json({
+      ok: false,
+      message: 'Tài khoản tác nhân của bạn đã bị Admin tạm khóa!',
+    });
+  }
+
+  appendAuditLog('AUTH_LOGIN_SUCCESS', `Tác nhân '${user.fullName}' (${user.role.toUpperCase()}) đăng nhập thành công`, user.username, req.ip);
+
+  res.json({
+    ok: true,
+    user: {
+      id: user.id,
+      username: user.username,
+      fullName: user.fullName,
+      role: user.role,
+      avatar: user.avatar,
+    },
+    message: `Đăng nhập thành công với vai trò ${user.role.toUpperCase()}`,
+  });
+});
+
+// Lấy danh sách tất cả Tác nhân / Người dùng (Chỉ Admin)
+app.get('/api/admin/agents', requireRole('admin'), (_req, res) => {
+  const users = readUsers();
+  res.json({ ok: true, agents: users });
+});
+
+// Thêm Tác nhân / Tài khoản mới (Chỉ Admin)
+app.post('/api/admin/agents', requireRole('admin'), (req, res) => {
+  const { username, password, fullName, role, avatar } = req.body || {};
+  if (!username || !password || !fullName) {
+    return res.status(400).json({ message: 'Vui lòng điền đầy đủ Tên đăng nhập, Mật khẩu và Họ tên tác nhân!' });
+  }
+
+  const users = readUsers();
+  if (users.some((u) => u.username === username.trim().toLowerCase())) {
+    return res.status(400).json({ message: `Tên tài khoản '${username}' đã tồn tại trên hệ thống!` });
+  }
+
+  const newAgent = {
+    id: `usr-agent-${Date.now()}`,
+    username: username.trim().toLowerCase(),
+    password: password.trim(),
+    fullName: fullName.trim(),
+    role: role || 'editor',
+    avatar: avatar || '👤',
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString(),
+  };
+
+  users.push(newAgent);
+  writeUsers(users);
+
+  appendAuditLog('AGENT_CREATED', `Admin đã tạo thêm tác nhân mới: ${newAgent.fullName} (${newAgent.role})`, req.userRole, req.ip);
+
+  res.json({
+    ok: true,
+    message: `Đã tạo thành công Tác nhân '${newAgent.fullName}'!`,
+    agent: newAgent,
+    agents: users,
+  });
+});
+
+// Chỉnh sửa thông tin Tác nhân (Chỉ Admin)
+app.put('/api/admin/agents/:id', requireRole('admin'), (req, res) => {
+  const { id } = req.params;
+  const { password, fullName, role, avatar, status } = req.body || {};
+
+  let users = readUsers();
+  const agentIndex = users.findIndex((u) => u.id === id);
+
+  if (agentIndex === -1) {
+    return res.status(404).json({ message: 'Không tìm thấy Tác nhân cần chỉnh sửa!' });
+  }
+
+  const targetAgent = users[agentIndex];
+  const updatedAgent = {
+    ...targetAgent,
+    fullName: fullName !== undefined ? fullName.trim() : targetAgent.fullName,
+    password: password !== undefined && password.trim() ? password.trim() : targetAgent.password,
+    role: role !== undefined ? role : targetAgent.role,
+    avatar: avatar !== undefined ? avatar : targetAgent.avatar,
+    status: status !== undefined ? status : targetAgent.status,
+  };
+
+  users[agentIndex] = updatedAgent;
+  writeUsers(users);
+
+  appendAuditLog('AGENT_UPDATED', `Admin đã cập nhật thông tin tác nhân '${updatedAgent.fullName}'`, req.userRole, req.ip);
+
+  res.json({
+    ok: true,
+    message: `Đã cập nhật thông tin Tác nhân '${updatedAgent.fullName}' thành công!`,
+    agent: updatedAgent,
+    agents: users,
+  });
+});
+
+// Xóa Tác nhân (Chỉ Admin)
+app.delete('/api/admin/agents/:id', requireRole('admin'), (req, res) => {
+  const { id } = req.params;
+  let users = readUsers();
+
+  const targetAgent = users.find((u) => u.id === id);
+  if (!targetAgent) {
+    return res.status(404).json({ message: 'Không tìm thấy Tác nhân cần xóa!' });
+  }
+
+  if (targetAgent.username === 'admin') {
+    return res.status(403).json({ message: 'Không thể xóa tài khoản Quản trị viên Tối cao (Admin Master)!' });
+  }
+
+  users = users.filter((u) => u.id !== id);
+  writeUsers(users);
+
+  appendAuditLog('AGENT_DELETED', `Admin đã xóa tác nhân '${targetAgent.fullName}' khỏi cơ sở dữ liệu`, req.userRole, req.ip);
+
+  res.json({
+    ok: true,
+    message: `Đã xóa thành công Tác nhân '${targetAgent.fullName}' khỏi hệ thống!`,
+    agents: users,
+  });
+});
+
 
 
 const clientDist = path.resolve(__dirname, '../../client/dist');

@@ -94,3 +94,36 @@ export async function toggleMaintenanceMode(enabled) {
     body: JSON.stringify({ enabled }),
   })).json();
 }
+
+// Agent Management & Auth APIs
+export async function loginAgent(username, password) {
+  const res = await request('/api/auth/login', {
+    method: 'POST',
+    body: JSON.stringify({ username, password }),
+  });
+  return res.json();
+}
+
+export async function getAgentsList() {
+  return (await request('/api/admin/agents')).json();
+}
+
+export async function createAgent(agentData) {
+  return (await request('/api/admin/agents', {
+    method: 'POST',
+    body: JSON.stringify(agentData),
+  })).json();
+}
+
+export async function updateAgent(id, agentData) {
+  return (await request(`/api/admin/agents/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify(agentData),
+  })).json();
+}
+
+export async function deleteAgent(id) {
+  return (await request(`/api/admin/agents/${id}`, {
+    method: 'DELETE',
+  })).json();
+}

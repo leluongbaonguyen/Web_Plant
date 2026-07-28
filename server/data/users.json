@@ -1,0 +1,32 @@
+[
+  {
+    "id": "usr-admin-01",
+    "username": "admin",
+    "password": "888",
+    "fullName": "Quản Trị Viên Tối Cao",
+    "role": "admin",
+    "avatar": "🛡️",
+    "status": "ACTIVE",
+    "createdAt": "2026-07-28T18:55:45.025Z"
+  },
+  {
+    "id": "usr-editor-01",
+    "username": "editor",
+    "password": "123",
+    "fullName": "Biên Tập Viên Chuyên Nghiệp",
+    "role": "editor",
+    "avatar": "✍️",
+    "status": "ACTIVE",
+    "createdAt": "2026-07-28T18:55:45.026Z"
+  },
+  {
+    "id": "usr-viewer-01",
+    "username": "viewer",
+    "password": "123",
+    "fullName": "Quan Sat Viên",
+    "role": "viewer",
+    "avatar": "👀",
+    "status": "ACTIVE",
+    "createdAt": "2026-07-28T18:55:45.026Z"
+  }
+]

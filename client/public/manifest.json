@@ -1,17 +1,18 @@
 {
-  "short_name": "ChronoFlow",
-  "name": "ChronoFlow - Quản Lý Lịch Sinh Hoạt",
+  "short_name": "Lịch Sinh Hoạt",
+  "name": "ChronoFlow • Quản Lý Lịch Sinh Hoạt & Hiệu Suất 1 Tuần",
+  "description": "Nền tảng Quản lý Lịch sinh hoạt & Hiệu suất Cá nhân Ultra-Premium 1 tuần, theo dõi tiến độ, mục tiêu và xuất file Word.",
   "icons": [
     {
-      "src": "/favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512 192x192 96x96 48x48",
+      "purpose": "any maskable"
     }
   ],
   "start_url": "/",
-  "background_color": "#090d16",
+  "background_color": "#020617",
   "theme_color": "#4f46e5",
   "display": "standalone",
-  "orientation": "portrait",
-  "description": "Ứng dụng quản lý lịch sinh hoạt chuyên nghiệp và nhắc nhở thời gian thực."
+  "orientation": "any"
 }
