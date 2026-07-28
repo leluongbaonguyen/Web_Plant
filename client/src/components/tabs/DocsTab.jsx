@@ -137,12 +137,9 @@ export function DocsTab() {
               <div className="font-bold text-base text-slate-100">{r.name}</div>
               <p className="text-xs text-slate-400 leading-relaxed">{r.description}</p>
 
-              <button
-                onClick={() => switchRole(r.id)}
-                className="w-full rounded-xl bg-slate-800 hover:bg-slate-700 py-2 text-xs font-bold text-slate-200 transition mt-2"
-              >
-                Chuyển sang vai trò này
-              </button>
+              <div className="mt-2 pt-2 border-t border-slate-800/60 text-[10px] font-bold text-slate-400">
+                {isCurrent ? <span className="text-emerald-400">✓ Vai trò đang hoạt động</span> : <span className="text-slate-500">🔒 Cần đăng nhập để kích hoạt</span>}
+              </div>
             </div>
           );
         })}

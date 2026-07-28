@@ -154,27 +154,10 @@ export function AgentWorkspaceDashboard({ plan, onUpdatePlan, onExportWord, onPr
             </div>
           </div>
 
-          {/* Quick Role Switcher Bar */}
-          <div className="flex items-center gap-2 bg-slate-950/70 p-1.5 rounded-2xl border border-slate-800">
-            <span className="text-[11px] font-bold text-slate-400 px-2">Đổi tác nhân:</span>
-            <button
-              onClick={() => switchRole('admin')}
-              className={cx('rounded-xl px-3 py-1.5 text-xs font-bold transition', role === 'admin' ? 'bg-red-600 text-white shadow-md' : 'text-slate-400 hover:bg-slate-800')}
-            >
-              🛡️ Admin
-            </button>
-            <button
-              onClick={() => switchRole('editor')}
-              className={cx('rounded-xl px-3 py-1.5 text-xs font-bold transition', role === 'editor' ? 'bg-amber-600 text-white shadow-md' : 'text-slate-400 hover:bg-slate-800')}
-            >
-              ✍️ Editor
-            </button>
-            <button
-              onClick={() => switchRole('viewer')}
-              className={cx('rounded-xl px-3 py-1.5 text-xs font-bold transition', role === 'viewer' ? 'bg-sky-600 text-white shadow-md' : 'text-slate-400 hover:bg-slate-800')}
-            >
-              👀 Viewer
-            </button>
+          {/* Active Security Identity Status */}
+          <div className="flex items-center gap-2 bg-slate-950/70 px-3 py-2 rounded-2xl border border-slate-800 text-xs text-slate-300">
+            <Lock className="h-4 w-4 text-emerald-400" />
+            <span>Phân quyền bắt buộc: <strong className="text-slate-100 uppercase">{role}</strong></span>
           </div>
         </div>
       </div>
