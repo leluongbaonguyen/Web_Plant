@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Download, Lock, Printer, RefreshCw, Share2, ShieldAlert, ShieldCheck, Sparkles, Upload, Zap } from 'lucide-react';
+import { Download, Lock, Maximize2, Minimize2, Printer, RefreshCw, Share2, ShieldCheck, Sparkles, Smartphone, Laptop, Upload, Zap } from 'lucide-react';
 import { useRole } from '../context/RoleContext.jsx';
 import { TABS, cx } from '../constants/index.js';
 
@@ -16,6 +16,9 @@ export function Header({
   onPrint,
   saveStatus,
   isSaving,
+  isFullscreen,
+  onToggleFullscreen,
+  lastSyncedTime,
 }) {
   const { roleInfo, permissions } = useRole();
   const [logoClicks, setLogoClicks] = useState(0);
@@ -38,7 +41,7 @@ export function Header({
           <button
             onClick={handleLogoClick}
             title="Bấm 3 lần liên tiếp để mở Cổng Đăng Nhập Ẩn Super Admin"
-            className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-600 p-0.5 shadow-lg shadow-indigo-500/20 hover:scale-105 transition active:scale-95"
+            className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-600 p-0.5 shadow-lg shadow-indigo-500/20 hover:scale-105 transition active:scale-95 shrink-0"
           >
             <div className="flex h-full w-full items-center justify-center rounded-[14px] bg-slate-950">
               <Sparkles className="h-6 w-6 text-indigo-400" />
@@ -46,8 +49,8 @@ export function Header({
           </button>
 
           <div>
-            <div className="flex items-center gap-2">
-              <h1 className="text-xl font-black font-heading tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-slate-100 via-indigo-200 to-slate-300">
+            <div className="flex items-center gap-2 flex-wrap">
+              <h1 className="text-xl md:text-2xl font-black font-heading tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-slate-100 via-indigo-200 to-slate-300">
                 {meta?.title || 'KẾ HOẠCH SINH HOẠT 1 TUẦN'}
               </h1>
               {/* Role Badge Button */}
@@ -63,9 +66,23 @@ export function Header({
                 <span>{roleInfo.badge}</span>
               </button>
             </div>
-            <p className="text-xs text-slate-400 flex items-center gap-2 mt-0.5">
-              <span>Hệ thống Quản lý Kế hoạch Sinh hoạt Chuyên nghiệp</span>
-              <span className="h-1 w-1 rounded-full bg-slate-600"></span>
+
+            <p className="text-xs text-slate-400 flex items-center gap-2 flex-wrap mt-0.5">
+              <span className="hidden sm:inline">Hệ thống Quản lý Kế hoạch Sinh hoạt Chuyên nghiệp</span>
+              <span className="hidden sm:inline h-1 w-1 rounded-full bg-slate-600"></span>
+
+              {/* PC ↔ Mobile Real-time Sync Badge */}
+              <span className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/40 px-2 py-0.5 text-[10px] font-bold text-emerald-300 shadow-sm">
+                <span className="relative flex h-2 w-2">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                </span>
+                <Laptop className="h-3 w-3 text-emerald-400" />
+                <span>↔</span>
+                <Smartphone className="h-3 w-3 text-emerald-400" />
+                <span>Đồng bộ PC/Mobile</span>
+              </span>
+
               <span className={isSaving ? 'text-amber-400 font-bold animate-pulse' : 'text-emerald-400 font-medium'}>
                 {saveStatus}
               </span>
@@ -75,6 +92,16 @@ export function Header({
 
         {/* Global Action Toolbar */}
         <div className="flex flex-wrap items-center gap-2">
+          {/* Fullscreen Toggle Button */}
+          <button
+            onClick={onToggleFullscreen}
+            title={isFullscreen ? 'Thoát màn hình toàn cảnh' : 'Mở rộng full màn hình toàn cảnh'}
+            className="flex items-center gap-1.5 rounded-xl border border-purple-500/30 bg-purple-950/40 px-3 py-2 text-xs font-bold text-purple-300 hover:bg-purple-900/60 transition shadow-sm"
+          >
+            {isFullscreen ? <Minimize2 className="h-4 w-4 text-purple-400" /> : <Maximize2 className="h-4 w-4 text-purple-400" />}
+            <span className="hidden md:inline">{isFullscreen ? 'Thu Nhỏ' : 'Full Màn Hình'}</span>
+          </button>
+
           {/* Stealth Admin Secret Button */}
           <button
             onClick={onOpenSecretAdmin}

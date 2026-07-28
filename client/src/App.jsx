@@ -26,6 +26,8 @@ function MainAppContent() {
   const [error, setError] = useState('');
   const [saveStatus, setSaveStatus] = useState('Đang tải...');
   const [isSaving, setIsSaving] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [lastSyncedTime, setLastSyncedTime] = useState(new Date());
 
   // Filters
   const [search, setSearch] = useState('');
@@ -51,6 +53,11 @@ function MainAppContent() {
   const [noteModal, setNoteModal] = useState({ isOpen: false, initialValue: '', onSave: null });
 
   const saveTimeoutRef = useRef(null);
+  const isSavingRef = useRef(isSaving);
+  isSavingRef.current = isSaving;
+
+  const planRef = useRef(plan);
+  planRef.current = plan;
 
   const addToast = (message, type = 'info') => {
     const id = uid('toast');
@@ -58,6 +65,25 @@ function MainAppContent() {
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
     }, 3500);
+  };
+
+  // Fullscreen Listener
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    return () => document.removeEventListener('fullscreenchange', handleFullscreenChange);
+  }, []);
+
+  const handleToggleFullscreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen().catch((err) => {
+        addToast(`Không thể mở Fullscreen: ${err.message}`, 'error');
+      });
+    } else {
+      document.exitFullscreen().catch(() => {});
+    }
   };
 
   // Keyboard shortcut listener (Ctrl + Shift + A) to trigger Stealth Admin Modal
@@ -99,13 +125,14 @@ function MainAppContent() {
     setAlarmSecondsLeft(0);
   };
 
-  // Fetch initial plan
+  // Initial plan load
   useEffect(() => {
     setLoading(true);
     getPlan()
       .then((data) => {
         setPlan(data);
-        setSaveStatus('Đã đồng bộ');
+        setSaveStatus('Đã đồng bộ PC ↔ Mobile');
+        setLastSyncedTime(new Date());
       })
       .catch((err) => {
         setError(err.message || 'Không thể tải kế hoạch');
@@ -114,7 +141,31 @@ function MainAppContent() {
       .finally(() => setLoading(false));
   }, []);
 
-  // Update clock every minute
+  // Real-Time Cross-Device Polling Synchronizer (3 seconds interval)
+  useEffect(() => {
+    const syncInterval = setInterval(async () => {
+      // Do not fetch remote if user is actively saving local modifications
+      if (isSavingRef.current) return;
+
+      try {
+        const remoteData = await getPlan();
+        const localStr = JSON.stringify(planRef.current);
+        const remoteStr = JSON.stringify(remoteData);
+
+        if (localStr && remoteStr && localStr !== remoteStr) {
+          setPlan(remoteData);
+          setSaveStatus('Đã đồng bộ PC ↔ Mobile');
+          setLastSyncedTime(new Date());
+        }
+      } catch (err) {
+        // Silent catch for background sync polling
+      }
+    }, 3000);
+
+    return () => clearInterval(syncInterval);
+  }, []);
+
+  // Update clock every 30 seconds
   useEffect(() => {
     const interval = setInterval(() => setCurrentTime(new Date()), 30000);
     return () => clearInterval(interval);
@@ -132,8 +183,9 @@ function MainAppContent() {
       savePlan(newPlan)
         .then((updated) => {
           setPlan(updated);
-          setSaveStatus('Đã tự động lưu');
+          setSaveStatus('Đã tự động lưu & đồng bộ');
           setIsSaving(false);
+          setLastSyncedTime(new Date());
         })
         .catch((err) => {
           setSaveStatus('Lưu thất bại');
@@ -319,7 +371,7 @@ function MainAppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 pb-20 md:pb-12 pt-6 px-4 md:px-8 space-y-6 max-w-7xl mx-auto font-sans">
+    <div className="min-h-screen bg-slate-950 text-slate-100 pb-20 md:pb-12 pt-4 md:pt-6 px-3 sm:px-6 lg:px-8 space-y-6 w-full font-sans transition-all">
       {/* Toast System */}
       <ToastContainer toasts={toasts} />
 
@@ -337,6 +389,9 @@ function MainAppContent() {
         onPrint={handlePrint}
         saveStatus={saveStatus}
         isSaving={isSaving}
+        isFullscreen={isFullscreen}
+        onToggleFullscreen={handleToggleFullscreen}
+        lastSyncedTime={lastSyncedTime}
       />
 
       {/* Live Reminder Banner */}
@@ -347,7 +402,7 @@ function MainAppContent() {
       />
 
       {/* Active Tab View Rendering */}
-      <main>
+      <main className="w-full">
         {activeTab === 'dashboard' && (
           <DashboardTab plan={plan} onNavigateTab={(tabId) => setActiveTab(tabId)} />
         )}
