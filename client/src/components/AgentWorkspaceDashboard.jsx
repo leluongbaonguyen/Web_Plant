@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Activity, AlertTriangle, ArrowUpCircle, CheckCircle2, Clock, Cpu, Database, Download, Edit3, Eye, FileText, KeyRound, Lock, LogOut, Plus, Printer, RefreshCw, Save, ShieldAlert, ShieldCheck, Sparkles, Terminal, Trash2, UserCheck, UserPlus, Users, Zap } from 'lucide-react';
+import { Activity, AlertTriangle, ArrowUpCircle, CheckCircle2, Clock, Cpu, Database, Download, Edit3, Eye, FileText, KeyRound, Lock, LogOut, Plus, Printer, RefreshCw, Save, ShieldAlert, ShieldCheck, Sparkles, Terminal, Trash2, UserCheck, UserPlus, Users, X, Zap } from 'lucide-react';
 import { useRole } from '../context/RoleContext.jsx';
 import { createAgent, deleteAgent, forceKangarooSync, getAgentsList, getKangarooStatus, getTelemetryInfo, toggleMaintenanceMode, triggerSystemUpgrade, updateAgent } from '../api.js';
 import { cx, getCurrentDayKey, timeToMinutes } from '../constants/index.js';
