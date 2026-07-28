@@ -2,6 +2,13 @@ import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { readKangarooVault, writeKangarooVault } from './kangarooDb.js';
+import {
+  appendAuditLogToSupabase,
+  fetchAuditLogsFromSupabase,
+  fetchUsersFromSupabase,
+  isSupabaseConfigured,
+  saveUsersToSupabase,
+} from './supabase.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.resolve(__dirname, '../data');
@@ -41,7 +48,7 @@ const DEFAULT_USERS = [
     id: 'usr-viewer-01',
     username: 'viewer',
     password: '123',
-    fullName: 'Quan Sat Viên',
+    fullName: 'Quan Sát Viên',
     role: 'viewer',
     avatar: '👀',
     status: 'ACTIVE',
@@ -89,15 +96,24 @@ export function createBackupSnapshot(category, data) {
 }
 
 // Read Users Table
-export function readUsers() {
+export async function readUsers() {
+  if (isSupabaseConfigured()) {
+    const cloudUsers = await fetchUsersFromSupabase();
+    if (cloudUsers && cloudUsers.length > 0) return cloudUsers;
+  }
+
   try {
     if (!existsSync(usersFile)) {
       safeWriteFile(usersFile, DEFAULT_USERS);
+      if (isSupabaseConfigured()) saveUsersToSupabase(DEFAULT_USERS);
       return DEFAULT_USERS;
     }
     const content = readFileSync(usersFile, 'utf8');
     const parsed = JSON.parse(content);
-    return Array.isArray(parsed) ? parsed : DEFAULT_USERS;
+    const result = Array.isArray(parsed) ? parsed : DEFAULT_USERS;
+
+    if (isSupabaseConfigured()) saveUsersToSupabase(result);
+    return result;
   } catch (err) {
     console.error('[DB ERROR] Failed to read users table, using defaults', err);
     return DEFAULT_USERS;
@@ -105,7 +121,10 @@ export function readUsers() {
 }
 
 // Write Users Table & Create Snapshot & Kangaroo Vault
-export function writeUsers(users) {
+export async function writeUsers(users) {
+  if (isSupabaseConfigured()) {
+    await saveUsersToSupabase(users);
+  }
   safeWriteFile(usersFile, users);
   createBackupSnapshot('users', users);
   writeKangarooVault('users_vault', users);
@@ -113,7 +132,12 @@ export function writeUsers(users) {
 }
 
 // Read Audit Logs Table
-export function readAuditLogs() {
+export async function readAuditLogs() {
+  if (isSupabaseConfigured()) {
+    const cloudLogs = await fetchAuditLogsFromSupabase();
+    if (cloudLogs) return cloudLogs;
+  }
+
   try {
     const kangarooData = readKangarooVault('audit_vault', null);
     if (Array.isArray(kangarooData) && kangarooData.length > 0) return kangarooData;
@@ -127,8 +151,7 @@ export function readAuditLogs() {
 }
 
 // Log Security Event
-export function appendAuditLog(event, details, username = 'SYSTEM', ip = '127.0.0.1') {
-  const logs = readAuditLogs();
+export async function appendAuditLog(event, details, username = 'SYSTEM', ip = '127.0.0.1') {
   const newLog = {
     id: `log-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
     timestamp: new Date().toISOString(),
@@ -137,10 +160,19 @@ export function appendAuditLog(event, details, username = 'SYSTEM', ip = '127.0.
     username,
     ip,
   };
-  logs.unshift(newLog);
-  // Cap logs at 500 records
+
+  if (isSupabaseConfigured()) {
+    await appendAuditLogToSupabase(newLog);
+  }
+
+  const logs = await readAuditLogs();
+  // Filter duplicate if already in logs
+  if (!logs.some((l) => l.id === newLog.id)) {
+    logs.unshift(newLog);
+  }
   const trimmed = logs.slice(0, 500);
   safeWriteFile(logsFile, trimmed);
   writeKangarooVault('audit_vault', trimmed);
   return newLog;
 }
+

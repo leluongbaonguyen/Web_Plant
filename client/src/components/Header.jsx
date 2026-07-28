@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Download, Lock, Maximize2, Minimize2, Printer, RefreshCw, Share2, ShieldCheck, Sparkles, Smartphone, Laptop, Upload, Zap } from 'lucide-react';
+import { Download, Lock, Maximize2, Minimize2, Printer, RefreshCw, Share2, ShieldCheck, Sparkles, Laptop, Smartphone, Upload, Zap } from 'lucide-react';
 import { useRole } from '../context/RoleContext.jsx';
 import { TABS, cx } from '../constants/index.js';
 
@@ -33,134 +33,113 @@ export function Header({
   };
 
   return (
-    <header className="no-print space-y-4">
-      {/* Upper Navigation Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
-        {/* Logo & Brand Title */}
+    <header className="no-print space-y-3">
+      {/* Sleek Minimalist Top Navigation */}
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 backdrop-blur-md p-3 md:p-4 rounded-2xl border border-slate-800/80 shadow-sm">
+        {/* Brand & Sync Status */}
         <div className="flex items-center gap-3">
           <button
             onClick={handleLogoClick}
-            title="Bấm 3 lần liên tiếp để mở Cổng Đăng Nhập Ẩn Super Admin"
-            className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-600 p-0.5 shadow-lg shadow-indigo-500/20 hover:scale-105 transition active:scale-95 shrink-0"
+            title="Bấm 3 lần để mở Cổng Admin Ẩn"
+            className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600/20 border border-indigo-500/30 text-indigo-400 hover:bg-indigo-600/30 transition shrink-0"
           >
-            <div className="flex h-full w-full items-center justify-center rounded-[14px] bg-slate-950">
-              <Sparkles className="h-6 w-6 text-indigo-400" />
-            </div>
+            <Sparkles className="h-5 w-5 text-indigo-400" />
           </button>
 
           <div>
-            <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-xl md:text-2xl font-black font-heading tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-slate-100 via-indigo-200 to-slate-300">
-                {meta?.title || 'KẾ HOẠCH SINH HOẠT 1 TUẦN'}
+            <div className="flex items-center gap-2">
+              <h1 className="text-lg md:text-xl font-bold tracking-tight text-white">
+                {meta?.title || 'LỊCH SINH HOẠT 1 TUẦN'}
               </h1>
-              {/* Role Badge Button */}
               <button
                 onClick={onOpenRoleModal}
-                title="Bấm để xem ma trận phân quyền và đổi vai trò"
                 className={cx(
-                  'flex items-center gap-1.5 rounded-xl border px-2.5 py-1 text-[11px] font-extrabold tracking-wide transition shadow-sm hover:scale-105',
+                  'flex items-center gap-1 rounded-lg border px-2 py-0.5 text-[10px] font-bold transition hover:opacity-80',
                   roleInfo.color
                 )}
+                title="Đổi vai trò"
               >
-                <ShieldCheck className="h-3.5 w-3.5" />
+                <ShieldCheck className="h-3 w-3" />
                 <span>{roleInfo.badge}</span>
               </button>
             </div>
 
-            <p className="text-xs text-slate-400 flex items-center gap-2 flex-wrap mt-0.5">
-              <span className="hidden sm:inline">Hệ thống Quản lý Kế hoạch Sinh hoạt Chuyên nghiệp</span>
-              <span className="hidden sm:inline h-1 w-1 rounded-full bg-slate-600"></span>
-
-              {/* PC ↔ Mobile Real-time Sync Badge */}
-              <span className="flex items-center gap-1.5 rounded-lg border border-emerald-500/30 bg-emerald-950/40 px-2 py-0.5 text-[10px] font-bold text-emerald-300 shadow-sm">
+            <div className="flex items-center gap-2 text-xs text-slate-400 mt-0.5">
+              <span className="flex items-center gap-1.5 text-[11px] text-emerald-400 font-medium">
                 <span className="relative flex h-2 w-2">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
                 </span>
-                <Laptop className="h-3 w-3 text-emerald-400" />
-                <span>↔</span>
-                <Smartphone className="h-3 w-3 text-emerald-400" />
-                <span>Đồng bộ PC/Mobile</span>
+                <span>Supabase Cloud ⚡</span>
               </span>
-
-              <span className={isSaving ? 'text-amber-400 font-bold animate-pulse' : 'text-emerald-400 font-medium'}>
+              <span className="text-slate-600">•</span>
+              <span className={isSaving ? 'text-amber-400 font-medium animate-pulse' : 'text-slate-400'}>
                 {saveStatus}
               </span>
-            </p>
+            </div>
           </div>
         </div>
 
-        {/* Global Action Toolbar */}
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Fullscreen Toggle Button */}
-          <button
-            onClick={onToggleFullscreen}
-            title={isFullscreen ? 'Thoát màn hình toàn cảnh' : 'Mở rộng full màn hình toàn cảnh'}
-            className="flex items-center gap-1.5 rounded-xl border border-purple-500/30 bg-purple-950/40 px-3 py-2 text-xs font-bold text-purple-300 hover:bg-purple-900/60 transition shadow-sm"
-          >
-            {isFullscreen ? <Minimize2 className="h-4 w-4 text-purple-400" /> : <Maximize2 className="h-4 w-4 text-purple-400" />}
-            <span className="hidden md:inline">{isFullscreen ? 'Thu Nhỏ' : 'Full Màn Hình'}</span>
-          </button>
-
-          {/* Stealth Admin Secret Button */}
-          <button
-            onClick={onOpenSecretAdmin}
-            title="Đăng nhập ẩn Tác nhân Super Admin (Mã ẩn: 8888)"
-            className="flex items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-950/40 px-3 py-2 text-xs font-bold text-red-300 hover:bg-red-900/60 transition shadow-sm"
-          >
-            <Lock className="h-4 w-4 text-red-400" />
-            <span className="hidden sm:inline">Admin Ẩn</span>
-          </button>
-
-          {/* Word Export Button */}
+        {/* Action Toolbar */}
+        <div className="flex items-center gap-1.5 flex-wrap">
           <button
             onClick={onExportWord}
-            className="flex items-center gap-1.5 rounded-xl border border-indigo-500/30 bg-indigo-950/60 px-3.5 py-2 text-xs font-bold text-indigo-300 hover:bg-indigo-900/80 transition shadow-sm"
+            className="flex items-center gap-1.5 rounded-lg border border-indigo-500/30 bg-indigo-950/40 px-3 py-1.5 text-xs font-semibold text-indigo-300 hover:bg-indigo-900/60 transition"
+            title="Xuất Word A3"
           >
-            <Download className="h-4 w-4" /> Xuất Word A3
+            <Download className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">Xuất Word</span>
           </button>
 
-          {/* Print Button */}
           <button
             onClick={onPrint}
-            className="flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800/80 px-3.5 py-2 text-xs font-bold text-slate-200 hover:bg-slate-700 transition"
+            className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800/80 px-3 py-1.5 text-xs font-semibold text-slate-200 hover:bg-slate-700 transition"
+            title="In / PDF"
           >
-            <Printer className="h-4 w-4" /> In / PDF
+            <Printer className="h-3.5 w-3.5" />
+            <span className="hidden sm:inline">In</span>
           </button>
 
-          {/* Admin Only Actions */}
           {permissions.canBackupRestore && (
             <>
               <button
                 onClick={onDownloadJson}
-                className="flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800/80 px-3.5 py-2 text-xs font-bold text-slate-300 hover:bg-slate-700 transition"
-                title="Sao lưu toàn bộ dữ liệu ra tệp JSON"
+                className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800/80 px-2.5 py-1.5 text-xs font-semibold text-slate-300 hover:bg-slate-700 transition"
+                title="Sao lưu JSON"
               >
-                <Share2 className="h-4 w-4" /> Sao lưu JSON
+                <Share2 className="h-3.5 w-3.5" />
+                <span className="hidden lg:inline">Sao lưu</span>
               </button>
-
-              <label className="flex items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800/80 px-3.5 py-2 text-xs font-bold text-slate-300 hover:bg-slate-700 cursor-pointer transition">
-                <Upload className="h-4 w-4 text-sky-400" /> Nhập JSON
+              <label className="flex items-center gap-1.5 rounded-lg border border-slate-700 bg-slate-800/80 px-2.5 py-1.5 text-xs font-semibold text-slate-300 hover:bg-slate-700 cursor-pointer transition" title="Nhập JSON">
+                <Upload className="h-3.5 w-3.5 text-sky-400" />
+                <span className="hidden lg:inline">Nhập</span>
                 <input type="file" accept=".json" onChange={onImportJson} className="hidden" />
               </label>
             </>
           )}
 
-          {permissions.canResetSystem && (
-            <button
-              onClick={onResetPlan}
-              className="flex items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-950/40 px-3.5 py-2 text-xs font-bold text-red-300 hover:bg-red-900/60 transition"
-              title="Khôi phục kế hoạch về mặc định ban đầu (Chỉ Admin)"
-            >
-              <RefreshCw className="h-4 w-4" /> Đặt lại mặc định
-            </button>
-          )}
+          <button
+            onClick={onOpenSecretAdmin}
+            className="flex items-center gap-1.5 rounded-lg border border-red-500/30 bg-red-950/30 px-2.5 py-1.5 text-xs font-semibold text-red-300 hover:bg-red-900/50 transition"
+            title="Admin Ẩn (Ctrl+Shift+A)"
+          >
+            <Lock className="h-3.5 w-3.5 text-red-400" />
+            <span className="hidden sm:inline">Admin Ẩn</span>
+          </button>
+
+          <button
+            onClick={onToggleFullscreen}
+            className="p-1.5 rounded-lg border border-slate-700 bg-slate-800/80 text-slate-300 hover:bg-slate-700 transition"
+            title={isFullscreen ? 'Thu nhỏ' : 'Toàn màn hình'}
+          >
+            {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
+          </button>
         </div>
       </div>
 
-      {/* Main Tabs Header (Desktop) */}
-      <div className="hidden md:flex items-center justify-between border-b border-slate-800 pb-1">
-        <nav className="flex items-center gap-1">
+      {/* Minimal Navigation Tabs Bar */}
+      <nav className="flex items-center justify-between border-b border-slate-800 pb-1 px-1">
+        <div className="flex items-center gap-1 overflow-x-auto custom-scrollbar py-1">
           {TABS.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -169,29 +148,24 @@ export function Header({
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={cx(
-                  'flex items-center gap-2 rounded-xl px-4 py-2.5 text-xs font-bold transition-all relative',
+                  'flex items-center gap-2 rounded-xl px-3.5 py-2 text-xs font-semibold transition shrink-0',
                   isActive
-                    ? 'bg-indigo-600/20 text-indigo-300 border border-indigo-500/30 shadow-md'
+                    ? 'bg-indigo-600 text-white shadow-sm'
                     : 'text-slate-400 hover:bg-slate-800/60 hover:text-slate-200'
                 )}
               >
-                <Icon className={cx('h-4 w-4', isActive ? 'text-indigo-400' : 'text-slate-500')} />
+                <Icon className="h-3.5 w-3.5" />
                 <span>{tab.label}</span>
-                {isActive && (
-                  <span className="absolute -bottom-1.5 left-1/2 -translate-x-1/2 h-0.5 w-8 rounded-full bg-indigo-500 shadow-lg shadow-indigo-500"></span>
-                )}
               </button>
             );
           })}
-        </nav>
-
-        <div className="flex items-center gap-2 text-xs text-slate-400">
-          <span className="font-semibold">Phân quyền:</span>
-          <span className="rounded-lg bg-slate-800 border border-slate-700 px-2 py-0.5 font-bold text-slate-200">
-            {roleInfo.name.split(' (')[0]}
-          </span>
         </div>
-      </div>
+
+        <div className="hidden md:flex items-center gap-2 text-[11px] text-slate-400">
+          <span>Quyền:</span>
+          <span className="font-bold text-slate-200">{roleInfo.name.split(' (')[0]}</span>
+        </div>
+      </nav>
     </header>
   );
 }

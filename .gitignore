@@ -1,5 +1,11 @@
 node_modules/
 client/dist/
 .env
+*.env
+.env.local
+.env.*.local
+server/.env
 *.log
+*.tmp_*
+server/data/backups/
 .DS_Store

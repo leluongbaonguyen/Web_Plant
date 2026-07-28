@@ -1,8 +1,8 @@
 {
   "_kangaroo_meta": {
     "vault": "users_vault",
-    "lastHopTime": "2026-07-28T19:30:25.292Z",
-    "checksum": "kng-1785267025292-41a6o9"
+    "lastHopTime": "2026-07-28T19:33:48.458Z",
+    "checksum": "kng-1785267228458-t1wkcu"
   },
   "payload": [
     {
@@ -34,6 +34,16 @@
       "avatar": "👀",
       "status": "ACTIVE",
       "createdAt": "2026-07-28T18:55:45.026Z"
+    },
+    {
+      "id": "usr-agent-1785267228456",
+      "username": "wiew",
+      "password": "12345",
+      "fullName": "LÊ NGUYÊN",
+      "role": "viewer",
+      "avatar": "👤",
+      "status": "ACTIVE",
+      "createdAt": "2026-07-28T19:33:48.456Z"
     }
   ]
 }

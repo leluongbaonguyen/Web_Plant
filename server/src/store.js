@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createDefaultPlan } from './defaultPlan.js';
 import { writeKangarooVault } from './kangarooDb.js';
+import { fetchPlanFromSupabase, isSupabaseConfigured, savePlanToSupabase } from './supabase.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.resolve(__dirname, '../data');
@@ -19,9 +20,21 @@ async function ensureDataFile() {
 }
 
 export async function readPlan() {
+  if (isSupabaseConfigured()) {
+    const cloudPlan = await fetchPlanFromSupabase();
+    if (cloudPlan) return cloudPlan;
+  }
+
   await ensureDataFile();
   const raw = await readFile(dataFile, 'utf8');
-  return JSON.parse(raw);
+  const localPlan = JSON.parse(raw);
+
+  // Sync initial local plan to Supabase if Supabase is configured
+  if (isSupabaseConfigured() && localPlan) {
+    savePlanToSupabase(localPlan);
+  }
+
+  return localPlan;
 }
 
 export async function writePlan(plan) {
@@ -33,6 +46,11 @@ export async function writePlan(plan) {
       updatedAt: new Date().toISOString(),
     },
   };
+
+  if (isSupabaseConfigured()) {
+    await savePlanToSupabase(next);
+  }
+
   await writeFile(tempFile, JSON.stringify(next, null, 2), 'utf8');
   await rename(tempFile, dataFile);
   writeKangarooVault('plan_vault', next);
@@ -42,3 +60,4 @@ export async function writePlan(plan) {
 export async function resetPlan() {
   return writePlan(createDefaultPlan());
 }
+

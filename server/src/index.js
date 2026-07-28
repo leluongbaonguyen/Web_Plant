@@ -9,6 +9,7 @@ import { sanitizePlan } from './validation.js';
 import { appendAuditLog, readAuditLogs, readUsers, writeUsers } from './db.js';
 import { getKangarooTelemetry, readKangarooVault, syncAllToKangaroo, writeKangarooVault } from './kangarooDb.js';
 import { checkRateLimit, createSecurityToken, hasPermission, PERMISSION_MATRIX, verifySecurityToken } from './security.js';
+import { deleteUserFromSupabase, isSupabaseConfigured } from './supabase.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -72,6 +73,8 @@ app.get('/api/health', (req, res) => {
   res.json({
     ok: true,
     service: 'lich-sinh-hoat-api',
+    storageMode: isSupabaseConfigured() ? 'SUPABASE_POSTGRES_CLOUD' : 'LOCAL_JSON_FILES',
+    supabaseConnected: isSupabaseConfigured(),
     userRole: req.userRole,
     time: new Date().toISOString(),
   });
@@ -228,6 +231,8 @@ app.get('/api/admin/telemetry', async (_req, res) => {
       maintenanceMode: systemState.maintenanceMode,
       uptimeSeconds: Math.floor(process.uptime()),
       nodeVersion: process.version,
+      storageEngine: isSupabaseConfigured() ? 'Supabase Postgres Cloud ⚡' : 'Local JSON Files 📁',
+      supabaseConnected: isSupabaseConfigured(),
       memory: {
         rssMB: Math.round((mem.rss / 1024 / 1024) * 100) / 100,
         heapTotalMB: Math.round((mem.heapTotal / 1024 / 1024) * 100) / 100,
@@ -314,11 +319,11 @@ app.get('/api/kangaroo/status', (_req, res) => {
 app.post('/api/kangaroo/sync', async (req, res, next) => {
   try {
     const plan = await readPlan();
-    const users = readUsers();
-    const logs = readAuditLogs();
+    const users = await readUsers();
+    const logs = await readAuditLogs();
 
     syncAllToKangaroo(plan, users, logs);
-    appendAuditLog('KANGAROO_SYNC_FORCE', 'Admin kích hoạt ép buộc đồng bộ dữ liệu vào Kangaroo Vault DB Engine', req.userRole, req.ip);
+    await appendAuditLog('KANGAROO_SYNC_FORCE', 'Admin kích hoạt ép buộc đồng bộ dữ liệu vào Kangaroo Vault DB Engine', req.userRole, req.ip);
 
     res.json({
       ok: true,
@@ -334,20 +339,20 @@ app.post('/api/kangaroo/sync', async (req, res, next) => {
 // ====================================================
 
 // Đăng nhập Tài Khoản Tác Nhân / Admin Bắt Buộc (Bảo vệ bởi Rate Limit & HMAC Token)
-app.post('/api/auth/login', (req, res) => {
+app.post('/api/auth/login', async (req, res) => {
   // Brute-force rate limit protection
   const limitCheck = checkRateLimit(req.ip);
   if (limitCheck.blocked) {
-    appendAuditLog('SECURITY_THREAT_BLOCKED', limitCheck.message, 'UNKNOWN', req.ip);
+    await appendAuditLog('SECURITY_THREAT_BLOCKED', limitCheck.message, 'UNKNOWN', req.ip);
     return res.status(429).json({ ok: false, message: limitCheck.message });
   }
 
   const { username, password } = req.body || {};
-  const users = readUsers();
+  const users = await readUsers();
 
   const user = users.find((u) => u.username === username && u.password === password);
   if (!user) {
-    appendAuditLog('AUTH_LOGIN_FAILED', `Thử đăng nhập tài khoản '${username}' thất bại`, username, req.ip);
+    await appendAuditLog('AUTH_LOGIN_FAILED', `Thử đăng nhập tài khoản '${username}' thất bại`, username, req.ip);
     return res.status(401).json({
       ok: false,
       message: 'Tên đăng nhập hoặc mật khẩu không chính xác!',
@@ -362,7 +367,7 @@ app.post('/api/auth/login', (req, res) => {
   }
 
   const securityToken = createSecurityToken(user);
-  appendAuditLog('AUTH_LOGIN_SUCCESS', `Tác nhân '${user.fullName}' (${user.role.toUpperCase()}) đăng nhập thành công với Token HMAC`, user.username, req.ip);
+  await appendAuditLog('AUTH_LOGIN_SUCCESS', `Tác nhân '${user.fullName}' (${user.role.toUpperCase()}) đăng nhập thành công với Token HMAC`, user.username, req.ip);
 
   res.json({
     ok: true,
@@ -380,19 +385,19 @@ app.post('/api/auth/login', (req, res) => {
 });
 
 // Lấy danh sách tất cả Tác nhân / Người dùng (Chỉ Admin)
-app.get('/api/admin/agents', requireRole('admin'), (_req, res) => {
-  const users = readUsers();
+app.get('/api/admin/agents', requireRole('admin'), async (_req, res) => {
+  const users = await readUsers();
   res.json({ ok: true, agents: users });
 });
 
 // Thêm Tác nhân / Tài khoản mới (Chỉ Admin)
-app.post('/api/admin/agents', requireRole('admin'), (req, res) => {
+app.post('/api/admin/agents', requireRole('admin'), async (req, res) => {
   const { username, password, fullName, role, avatar } = req.body || {};
   if (!username || !password || !fullName) {
     return res.status(400).json({ message: 'Vui lòng điền đầy đủ Tên đăng nhập, Mật khẩu và Họ tên tác nhân!' });
   }
 
-  const users = readUsers();
+  const users = await readUsers();
   if (users.some((u) => u.username === username.trim().toLowerCase())) {
     return res.status(400).json({ message: `Tên tài khoản '${username}' đã tồn tại trên hệ thống!` });
   }
@@ -409,9 +414,9 @@ app.post('/api/admin/agents', requireRole('admin'), (req, res) => {
   };
 
   users.push(newAgent);
-  writeUsers(users);
+  await writeUsers(users);
 
-  appendAuditLog('AGENT_CREATED', `Admin đã tạo thêm tác nhân mới: ${newAgent.fullName} (${newAgent.role})`, req.userRole, req.ip);
+  await appendAuditLog('AGENT_CREATED', `Admin đã tạo thêm tác nhân mới: ${newAgent.fullName} (${newAgent.role})`, req.userRole, req.ip);
 
   res.json({
     ok: true,
@@ -422,11 +427,11 @@ app.post('/api/admin/agents', requireRole('admin'), (req, res) => {
 });
 
 // Chỉnh sửa thông tin Tác nhân (Chỉ Admin)
-app.put('/api/admin/agents/:id', requireRole('admin'), (req, res) => {
+app.put('/api/admin/agents/:id', requireRole('admin'), async (req, res) => {
   const { id } = req.params;
   const { password, fullName, role, avatar, status } = req.body || {};
 
-  let users = readUsers();
+  let users = await readUsers();
   const agentIndex = users.findIndex((u) => u.id === id);
 
   if (agentIndex === -1) {
@@ -444,9 +449,9 @@ app.put('/api/admin/agents/:id', requireRole('admin'), (req, res) => {
   };
 
   users[agentIndex] = updatedAgent;
-  writeUsers(users);
+  await writeUsers(users);
 
-  appendAuditLog('AGENT_UPDATED', `Admin đã cập nhật thông tin tác nhân '${updatedAgent.fullName}'`, req.userRole, req.ip);
+  await appendAuditLog('AGENT_UPDATED', `Admin đã cập nhật thông tin tác nhân '${updatedAgent.fullName}'`, req.userRole, req.ip);
 
   res.json({
     ok: true,
@@ -457,9 +462,9 @@ app.put('/api/admin/agents/:id', requireRole('admin'), (req, res) => {
 });
 
 // Xóa Tác nhân (Chỉ Admin)
-app.delete('/api/admin/agents/:id', requireRole('admin'), (req, res) => {
+app.delete('/api/admin/agents/:id', requireRole('admin'), async (req, res) => {
   const { id } = req.params;
-  let users = readUsers();
+  let users = await readUsers();
 
   const targetAgent = users.find((u) => u.id === id);
   if (!targetAgent) {
@@ -471,9 +476,10 @@ app.delete('/api/admin/agents/:id', requireRole('admin'), (req, res) => {
   }
 
   users = users.filter((u) => u.id !== id);
-  writeUsers(users);
+  await writeUsers(users);
+  await deleteUserFromSupabase(id);
 
-  appendAuditLog('AGENT_DELETED', `Admin đã xóa tác nhân '${targetAgent.fullName}' khỏi cơ sở dữ liệu`, req.userRole, req.ip);
+  await appendAuditLog('AGENT_DELETED', `Admin đã xóa tác nhân '${targetAgent.fullName}' khỏi cơ sở dữ liệu`, req.userRole, req.ip);
 
   res.json({
     ok: true,

@@ -1,10 +1,18 @@
 {
   "_kangaroo_meta": {
     "vault": "audit_vault",
-    "lastHopTime": "2026-07-28T19:30:25.297Z",
-    "checksum": "kng-1785267025297-hj9uu2"
+    "lastHopTime": "2026-07-28T19:33:48.460Z",
+    "checksum": "kng-1785267228460-08m8s2"
   },
   "payload": [
+    {
+      "id": "log-1785267228459-7bha",
+      "timestamp": "2026-07-28T19:33:48.459Z",
+      "event": "AGENT_CREATED",
+      "details": "Admin đã tạo thêm tác nhân mới: LÊ NGUYÊN (viewer)",
+      "username": "admin",
+      "ip": "::1"
+    },
     {
       "id": "log-1785267025294-b8ry",
       "timestamp": "2026-07-28T19:30:25.294Z",
