@@ -14,8 +14,60 @@ const port = Number(process.env.PORT || 4000);
 app.use(cors({ origin: true, credentials: false }));
 app.use(express.json({ limit: '2mb' }));
 
-app.get('/api/health', (_req, res) => {
-  res.json({ ok: true, service: 'lich-sinh-hoat-api', time: new Date().toISOString() });
+// Middleware kiểm tra và gán vai trò người dùng (x-user-role)
+app.use((req, _res, next) => {
+  const rawRole = (req.headers['x-user-role'] || 'admin').toString().toLowerCase();
+  const validRoles = ['admin', 'editor', 'viewer'];
+  req.userRole = validRoles.includes(rawRole) ? rawRole : 'viewer';
+  next();
+});
+
+// Middleware yêu cầu quyền hạn cụ thể
+function requireRole(...allowedRoles) {
+  return (req, res, next) => {
+    if (!allowedRoles.includes(req.userRole)) {
+      return res.status(403).json({
+        message: `Quyền truy cập bị từ chối: Vai trò '${req.userRole.toUpperCase()}' không có quyền thực hiện thao tác này.`,
+        requiredRoles: allowedRoles,
+        currentRole: req.userRole,
+      });
+    }
+    next();
+  };
+}
+
+app.get('/api/health', (req, res) => {
+  res.json({
+    ok: true,
+    service: 'lich-sinh-hoat-api',
+    userRole: req.userRole,
+    time: new Date().toISOString(),
+  });
+});
+
+app.get('/api/roles', (_req, res) => {
+  res.json({
+    roles: [
+      {
+        id: 'admin',
+        name: 'Quản trị viên (Admin)',
+        description: 'Toàn quyền chỉnh sửa lịch, mục tiêu, thêm/xóa khung giờ, đặt lại hệ thống và sao lưu/khôi phục.',
+        permissions: ['read', 'edit_cells', 'manage_goals', 'manage_slots', 'reset_system', 'export', 'backup_restore'],
+      },
+      {
+        id: 'editor',
+        name: 'Quản lý / Người sửa (Editor)',
+        description: 'Được phép cập nhật trạng thái việc, chỉnh sửa nội dung ô, ghi chú và mục tiêu. Không được xóa khung giờ hoặc reset hệ thống.',
+        permissions: ['read', 'edit_cells', 'manage_goals', 'export'],
+      },
+      {
+        id: 'viewer',
+        name: 'Thành viên / Xem (Viewer)',
+        description: 'Chế độ chỉ xem. Tìm kiếm, lọc, nghe chuông nhắc nhở, in và xuất file Word. Không được sửa dữ liệu.',
+        permissions: ['read', 'export'],
+      },
+    ],
+  });
 });
 
 app.get('/api/plan', async (_req, res, next) => {
@@ -26,17 +78,35 @@ app.get('/api/plan', async (_req, res, next) => {
   }
 });
 
-app.put('/api/plan', async (req, res, next) => {
+app.put('/api/plan', requireRole('admin', 'editor'), async (req, res, next) => {
   try {
+    const currentPlan = await readPlan();
+    
+    // Nếu vai trò là editor: Không cho phép xóa khung giờ
+    if (req.userRole === 'editor') {
+      const currentSlotIds = new Set((currentPlan.schedule || []).map((s) => s.id));
+      const incomingSchedule = Array.isArray(req.body?.schedule) ? req.body.schedule : [];
+      const incomingSlotIds = new Set(incomingSchedule.map((s) => s.id));
+      
+      // Kiểm tra xem editor có xóa slot cũ nào không
+      for (const id of currentSlotIds) {
+        if (!incomingSlotIds.has(id)) {
+          return res.status(403).json({
+            message: 'Quyền Quản lý (Editor) không được phép xóa khung giờ trong lịch. Thao tác này cần quyền Quản trị viên (Admin).',
+          });
+        }
+      }
+    }
+
     const plan = sanitizePlan(req.body);
     res.json(await writePlan(plan));
   } catch (error) {
-    error.status = 400;
+    error.status = error.status || 400;
     next(error);
   }
 });
 
-app.post('/api/plan/reset', async (_req, res, next) => {
+app.post('/api/plan/reset', requireRole('admin'), async (_req, res, next) => {
   try {
     res.json(await resetPlan());
   } catch (error) {
@@ -74,3 +144,4 @@ app.use((error, _req, res, _next) => {
 app.listen(port, () => {
   console.log(`Lịch sinh hoạt API đang chạy tại http://localhost:${port}`);
 });
+
