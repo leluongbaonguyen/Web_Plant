@@ -2,6 +2,7 @@ import { mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createDefaultPlan } from './defaultPlan.js';
+import { writeKangarooVault } from './kangarooDb.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.resolve(__dirname, '../data');
@@ -34,6 +35,7 @@ export async function writePlan(plan) {
   };
   await writeFile(tempFile, JSON.stringify(next, null, 2), 'utf8');
   await rename(tempFile, dataFile);
+  writeKangarooVault('plan_vault', next);
   return next;
 }
 

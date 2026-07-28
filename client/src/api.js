@@ -127,3 +127,12 @@ export async function deleteAgent(id) {
     method: 'DELETE',
   })).json();
 }
+
+// Kangaroo DB APIs
+export async function getKangarooStatus() {
+  return (await request('/api/kangaroo/status')).json();
+}
+
+export async function forceKangarooSync() {
+  return (await request('/api/kangaroo/sync', { method: 'POST' })).json();
+}

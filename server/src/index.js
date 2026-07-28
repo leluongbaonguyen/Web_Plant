@@ -7,6 +7,7 @@ import { createWordBuffer } from './exportWord.js';
 import { readPlan, resetPlan, writePlan } from './store.js';
 import { sanitizePlan } from './validation.js';
 import { appendAuditLog, readAuditLogs, readUsers, writeUsers } from './db.js';
+import { getKangarooTelemetry, readKangarooVault, syncAllToKangaroo, writeKangarooVault } from './kangarooDb.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -266,6 +267,39 @@ app.post('/api/admin/maintenance', (req, res) => {
 });
 
 // ====================================================
+// ====================================================
+// KANGAROO DATABASE API ENDPOINTS
+// ====================================================
+
+// Lấy thông số chẩn đoán hệ thống Kangaroo DB (Diagnostic & Hop Telemetry)
+app.get('/api/kangaroo/status', (_req, res) => {
+  const telemetry = getKangarooTelemetry();
+  res.json({
+    ok: true,
+    kangaroo: telemetry,
+  });
+});
+
+// Ép buộc đồng bộ toàn bộ dữ liệu vào Kangaroo Vault Engine
+app.post('/api/kangaroo/sync', async (req, res, next) => {
+  try {
+    const plan = await readPlan();
+    const users = readUsers();
+    const logs = readAuditLogs();
+
+    syncAllToKangaroo(plan, users, logs);
+    appendAuditLog('KANGAROO_SYNC_FORCE', 'Admin kích hoạt ép buộc đồng bộ dữ liệu vào Kangaroo Vault DB Engine', req.userRole, req.ip);
+
+    res.json({
+      ok: true,
+      message: '⚡ Đã đồng bộ 100% dữ liệu kế hoạch và tài khoản vào Kangaroo DB Vault thành công!',
+      kangaroo: getKangarooTelemetry(),
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // AGENT / USER MANAGEMENT & PERSISTENT DATABASE API
 // ====================================================
 

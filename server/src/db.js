@@ -1,6 +1,7 @@
 import { existsSync, mkdirSync, readFileSync, readdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { readKangarooVault, writeKangarooVault } from './kangarooDb.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.resolve(__dirname, '../data');
@@ -103,16 +104,20 @@ export function readUsers() {
   }
 }
 
-// Write Users Table & Create Snapshot
+// Write Users Table & Create Snapshot & Kangaroo Vault
 export function writeUsers(users) {
   safeWriteFile(usersFile, users);
   createBackupSnapshot('users', users);
+  writeKangarooVault('users_vault', users);
   return users;
 }
 
 // Read Audit Logs Table
 export function readAuditLogs() {
   try {
+    const kangarooData = readKangarooVault('audit_vault', null);
+    if (Array.isArray(kangarooData) && kangarooData.length > 0) return kangarooData;
+
     if (!existsSync(logsFile)) return [];
     const content = readFileSync(logsFile, 'utf8');
     return JSON.parse(content);
@@ -136,5 +141,6 @@ export function appendAuditLog(event, details, username = 'SYSTEM', ip = '127.0.
   // Cap logs at 500 records
   const trimmed = logs.slice(0, 500);
   safeWriteFile(logsFile, trimmed);
+  writeKangarooVault('audit_vault', trimmed);
   return newLog;
 }

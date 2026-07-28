@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Activity, AlertTriangle, ArrowUpCircle, CheckCircle2, Clock, Cpu, Database, Download, Edit3, Eye, FileText, KeyRound, Lock, LogOut, Plus, Printer, RefreshCw, Save, ShieldAlert, ShieldCheck, Sparkles, Terminal, Trash2, UserCheck, UserPlus, Users, Zap } from 'lucide-react';
 import { useRole } from '../context/RoleContext.jsx';
-import { createAgent, deleteAgent, getAgentsList, getTelemetryInfo, toggleMaintenanceMode, triggerSystemUpgrade, updateAgent } from '../api.js';
+import { createAgent, deleteAgent, forceKangarooSync, getAgentsList, getKangarooStatus, getTelemetryInfo, toggleMaintenanceMode, triggerSystemUpgrade, updateAgent } from '../api.js';
 import { cx, getCurrentDayKey, timeToMinutes } from '../constants/index.js';
 
 export function AgentWorkspaceDashboard({ plan, onUpdatePlan, onExportWord, onPrint, addToast }) {
   const { role, roleInfo, switchRole } = useRole();
 
   const [telemetry, setTelemetry] = useState(null);
+  const [kangarooData, setKangarooData] = useState(null);
   const [agents, setAgents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeSubTab, setActiveSubTab] = useState('overview');
@@ -30,14 +31,29 @@ export function AgentWorkspaceDashboard({ plan, onUpdatePlan, onExportWord, onPr
   const loadData = async () => {
     try {
       setLoading(true);
-      const [telemetryData, agentsData] = await Promise.all([
+      const [telemetryData, agentsData, kngData] = await Promise.all([
         getTelemetryInfo(),
         getAgentsList(),
+        getKangarooStatus().catch(() => null),
       ]);
       setTelemetry(telemetryData);
       if (agentsData?.agents) setAgents(agentsData.agents);
+      if (kngData?.kangaroo) setKangarooData(kngData.kangaroo);
     } catch (err) {
       console.warn('[Workspace Load Error]', err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleForceKangarooSync = async () => {
+    try {
+      setLoading(true);
+      const res = await forceKangarooSync();
+      if (res.kangaroo) setKangarooData(res.kangaroo);
+      if (addToast) addToast(res.message, 'success');
+    } catch (err) {
+      if (addToast) addToast(`Lỗi đồng bộ Kangaroo DB: ${err.message}`, 'error');
     } finally {
       setLoading(false);
     }
@@ -204,6 +220,48 @@ export function AgentWorkspaceDashboard({ plan, onUpdatePlan, onExportWord, onPr
               </div>
               <div className="text-xl font-bold text-purple-300 font-mono-code">{telemetry?.system?.version || 'v2.5.0'}</div>
               <div className="text-[10px] text-slate-400">Uptime: {telemetry?.system?.uptimeSeconds || 0}s</div>
+            </div>
+          </div>
+
+          {/* KANGAROO DATABASE VAULT ENGINE CARD */}
+          <div className="glass-panel rounded-3xl border border-amber-500/40 bg-gradient-to-r from-amber-950/40 via-slate-900 to-indigo-950/40 p-6 space-y-4 shadow-xl">
+            <div className="flex items-center justify-between flex-wrap gap-4 border-b border-amber-500/30 pb-3">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-2xl bg-amber-600/20 border border-amber-500/40 text-amber-400 text-xl font-bold animate-pulse">
+                  🦘
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-base font-bold text-slate-100">Kangaroo Database Vault Engine</h3>
+                    <span className="rounded-full bg-amber-500/20 border border-amber-500/40 px-2 py-0.5 text-[10px] font-black text-amber-300">
+                      FAST HOP INDEXING
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-400">Cơ sở dữ liệu Kangaroo độc quyền: Tự động hop-indexing và lưu trữ dữ liệu an toàn 100%</p>
+                </div>
+              </div>
+
+              <button
+                onClick={handleForceKangarooSync}
+                className="flex items-center gap-2 rounded-xl bg-gradient-to-r from-amber-600 to-indigo-600 px-4 py-2 text-xs font-bold text-white hover:from-amber-500 hover:to-indigo-500 shadow-lg shadow-amber-600/20 transition"
+              >
+                <Zap className="h-4 w-4" /> Ép Phục Hồi & Đồng Bộ Kangaroo DB
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 text-xs font-mono-code">
+              <div className="rounded-xl border border-slate-800 bg-slate-950 p-3 space-y-1">
+                <span className="text-slate-400 font-sans font-bold">Kangaroo Hop Operations</span>
+                <div className="text-lg font-bold text-amber-300">{kangarooData?.totalHops || 0} Hops</div>
+              </div>
+              <div className="rounded-xl border border-slate-800 bg-slate-950 p-3 space-y-1">
+                <span className="text-slate-400 font-sans font-bold">Vault Files Active</span>
+                <div className="text-lg font-bold text-indigo-300">{kangarooData?.vaultFilesCount || 0} Vault JSONs</div>
+              </div>
+              <div className="rounded-xl border border-slate-800 bg-slate-950 p-3 space-y-1">
+                <span className="text-slate-400 font-sans font-bold">Lần đồng bộ cuối</span>
+                <div className="text-xs text-emerald-400 truncate">{kangarooData?.lastSynced ? new Date(kangarooData.lastSynced).toLocaleTimeString() : 'Vừa xong'}</div>
+              </div>
             </div>
           </div>
 
