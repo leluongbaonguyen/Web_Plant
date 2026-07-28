@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Download, Printer, RefreshCw, Share2, ShieldCheck, Sparkles, Upload, Zap } from 'lucide-react';
+import { Download, Lock, Printer, RefreshCw, Share2, ShieldAlert, ShieldCheck, Sparkles, Upload, Zap } from 'lucide-react';
 import { useRole } from '../context/RoleContext.jsx';
 import { TABS, cx } from '../constants/index.js';
 
@@ -8,6 +8,7 @@ export function Header({
   activeTab,
   setActiveTab,
   onOpenRoleModal,
+  onOpenSecretAdmin,
   onResetPlan,
   onDownloadJson,
   onImportJson,
@@ -17,6 +18,16 @@ export function Header({
   isSaving,
 }) {
   const { roleInfo, permissions } = useRole();
+  const [logoClicks, setLogoClicks] = useState(0);
+
+  const handleLogoClick = () => {
+    const nextClicks = logoClicks + 1;
+    setLogoClicks(nextClicks);
+    if (nextClicks >= 3) {
+      setLogoClicks(0);
+      onOpenSecretAdmin();
+    }
+  };
 
   return (
     <header className="no-print space-y-4">
@@ -24,11 +35,15 @@ export function Header({
       <div className="flex flex-wrap items-center justify-between gap-4 border-b border-slate-800/80 pb-4">
         {/* Logo & Brand Title */}
         <div className="flex items-center gap-3">
-          <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-600 p-0.5 shadow-lg shadow-indigo-500/20">
+          <button
+            onClick={handleLogoClick}
+            title="Bấm 3 lần liên tiếp để mở Cổng Đăng Nhập Ẩn Super Admin"
+            className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-600 via-purple-600 to-pink-600 p-0.5 shadow-lg shadow-indigo-500/20 hover:scale-105 transition active:scale-95"
+          >
             <div className="flex h-full w-full items-center justify-center rounded-[14px] bg-slate-950">
               <Sparkles className="h-6 w-6 text-indigo-400" />
             </div>
-          </div>
+          </button>
 
           <div>
             <div className="flex items-center gap-2">
@@ -60,6 +75,16 @@ export function Header({
 
         {/* Global Action Toolbar */}
         <div className="flex flex-wrap items-center gap-2">
+          {/* Stealth Admin Secret Button */}
+          <button
+            onClick={onOpenSecretAdmin}
+            title="Đăng nhập ẩn Tác nhân Super Admin (Mã ẩn: 8888)"
+            className="flex items-center gap-1.5 rounded-xl border border-red-500/30 bg-red-950/40 px-3 py-2 text-xs font-bold text-red-300 hover:bg-red-900/60 transition shadow-sm"
+          >
+            <Lock className="h-4 w-4 text-red-400" />
+            <span className="hidden sm:inline">Admin Ẩn</span>
+          </button>
+
           {/* Word Export Button */}
           <button
             onClick={onExportWord}

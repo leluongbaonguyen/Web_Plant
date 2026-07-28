@@ -1,5 +1,6 @@
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
 let activeRole = localStorage.getItem('chrono_user_role') || 'admin';
+let stealthToken = localStorage.getItem('chrono_stealth_token') || '';
 
 export function setApiRole(role) {
   activeRole = role;
@@ -10,10 +11,21 @@ export function getApiRole() {
   return activeRole;
 }
 
+export function setStealthToken(token) {
+  stealthToken = token;
+  if (token) localStorage.setItem('chrono_stealth_token', token);
+  else localStorage.removeItem('chrono_stealth_token');
+}
+
+export function getStealthToken() {
+  return stealthToken;
+}
+
 async function request(url, options = {}) {
   const headers = {
     ...JSON_HEADERS,
     'x-user-role': activeRole,
+    'x-stealth-token': stealthToken,
     ...(options.headers || {}),
   };
 
@@ -52,4 +64,33 @@ export async function getWordFile() {
 
 export async function getRolesInfo() {
   return (await request('/api/roles')).json();
+}
+
+// Super Admin & Stealth Portal APIs
+export async function loginStealthAdmin(passcode) {
+  const res = await request('/api/admin/auth', {
+    method: 'POST',
+    body: JSON.stringify({ passcode }),
+  });
+  const data = await res.json();
+  if (data.token) setStealthToken(data.token);
+  return data;
+}
+
+export async function getTelemetryInfo() {
+  return (await request('/api/admin/telemetry')).json();
+}
+
+export async function triggerSystemUpgrade(targetVersion) {
+  return (await request('/api/admin/upgrade', {
+    method: 'POST',
+    body: JSON.stringify({ targetVersion }),
+  })).json();
+}
+
+export async function toggleMaintenanceMode(enabled) {
+  return (await request('/api/admin/maintenance', {
+    method: 'POST',
+    body: JSON.stringify({ enabled }),
+  })).json();
 }

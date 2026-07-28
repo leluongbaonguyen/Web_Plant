@@ -8,6 +8,7 @@ import { ToastContainer } from './components/ToastContainer.jsx';
 import { NoteModal } from './components/NoteModal.jsx';
 import { NotificationModal } from './components/NotificationModal.jsx';
 import { RoleSelectorModal } from './components/RoleSelectorModal.jsx';
+import { SecretAdminModal } from './components/SecretAdminModal.jsx';
 import { DashboardTab } from './components/tabs/DashboardTab.jsx';
 import { ScheduleTab } from './components/tabs/ScheduleTab.jsx';
 import { GoalsTab } from './components/tabs/GoalsTab.jsx';
@@ -15,7 +16,6 @@ import { SummaryTab } from './components/tabs/SummaryTab.jsx';
 import { DocsTab } from './components/tabs/DocsTab.jsx';
 import { downloadBlob, getCurrentDayKey, timeToMinutes, uid } from './constants/index.js';
 import { playChimeSound, playSpecialAlarmSound, stopSpecialAlarmSound } from './utils/audio.js';
-import { dispatchMobileLockScreenNotification } from './utils/notifications.js';
 
 function MainAppContent() {
   const { role, permissions } = useRole();
@@ -43,6 +43,7 @@ function MainAppContent() {
   const [desktopNotifyEnabled, setDesktopNotifyEnabled] = useState(false);
   const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
   const [showRoleModal, setShowRoleModal] = useState(false);
+  const [showSecretAdminModal, setShowSecretAdminModal] = useState(false);
   const [isAlarmPlaying, setIsAlarmPlaying] = useState(false);
   const [alarmSecondsLeft, setAlarmSecondsLeft] = useState(60);
 
@@ -58,6 +59,19 @@ function MainAppContent() {
       setToasts((prev) => prev.filter((t) => t.id !== id));
     }, 3500);
   };
+
+  // Keyboard shortcut listener (Ctrl + Shift + A) to trigger Stealth Admin Modal
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
+        e.preventDefault();
+        setShowSecretAdminModal(true);
+        addToast('🔑 Đã mở Cổng Đăng Nhập Ẩn Super Admin!', 'info');
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
 
   // Sound Alarm Dispatcher
   const triggerSoundNotification = (forceTest = false) => {
@@ -315,6 +329,7 @@ function MainAppContent() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onOpenRoleModal={() => setShowRoleModal(true)}
+        onOpenSecretAdmin={() => setShowSecretAdminModal(true)}
         onResetPlan={handleResetPlan}
         onDownloadJson={handleDownloadJson}
         onImportJson={handleImportJson}
@@ -366,6 +381,13 @@ function MainAppContent() {
 
       {/* Role Manager Modal */}
       <RoleSelectorModal isOpen={showRoleModal} onClose={() => setShowRoleModal(false)} />
+
+      {/* Secret Stealth Admin Modal */}
+      <SecretAdminModal
+        isOpen={showSecretAdminModal}
+        onClose={() => setShowSecretAdminModal(false)}
+        addToast={addToast}
+      />
 
       {/* Note Modal */}
       <NoteModal
