@@ -9,6 +9,7 @@ import { NoteModal } from './components/NoteModal.jsx';
 import { NotificationModal } from './components/NotificationModal.jsx';
 import { RoleSelectorModal } from './components/RoleSelectorModal.jsx';
 import { SecretAdminModal } from './components/SecretAdminModal.jsx';
+import { AgentWorkspaceDashboard } from './components/AgentWorkspaceDashboard.jsx';
 import { DashboardTab } from './components/tabs/DashboardTab.jsx';
 import { ScheduleTab } from './components/tabs/ScheduleTab.jsx';
 import { GoalsTab } from './components/tabs/GoalsTab.jsx';
@@ -144,7 +145,6 @@ function MainAppContent() {
   // Real-Time Cross-Device Polling Synchronizer (3 seconds interval)
   useEffect(() => {
     const syncInterval = setInterval(async () => {
-      // Do not fetch remote if user is actively saving local modifications
       if (isSavingRef.current) return;
 
       try {
@@ -158,7 +158,7 @@ function MainAppContent() {
           setLastSyncedTime(new Date());
         }
       } catch (err) {
-        // Silent catch for background sync polling
+        // Silent catch
       }
     }, 3000);
 
@@ -405,6 +405,15 @@ function MainAppContent() {
       <main className="w-full">
         {activeTab === 'dashboard' && (
           <DashboardTab plan={plan} onNavigateTab={(tabId) => setActiveTab(tabId)} />
+        )}
+        {activeTab === 'agent_workspace' && (
+          <AgentWorkspaceDashboard
+            plan={plan}
+            onUpdatePlan={handleUpdatePlan}
+            onExportWord={handleExportWord}
+            onPrint={handlePrint}
+            addToast={addToast}
+          />
         )}
         {activeTab === 'schedule' && (
           <ScheduleTab

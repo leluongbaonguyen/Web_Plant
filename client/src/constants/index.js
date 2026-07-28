@@ -1,4 +1,4 @@
-import { Activity, Award, BookOpen, Calendar, Target } from 'lucide-react';
+import { Activity, Award, BookOpen, Calendar, Target, UserCheck } from 'lucide-react';
 
 export const DAYS = [
   { key: 'monday', label: 'Thứ Hai', short: 'T2' },
@@ -12,6 +12,7 @@ export const DAYS = [
 
 export const TABS = [
   { id: 'dashboard', label: 'Tổng quan', icon: Activity },
+  { id: 'agent_workspace', label: 'Giao diện Tác nhân', icon: UserCheck },
   { id: 'schedule', label: 'Lịch tuần', icon: Calendar },
   { id: 'goals', label: 'Mục tiêu tuần', icon: Target },
   { id: 'summary', label: 'Tổng kết & Đánh giá', icon: Award },
