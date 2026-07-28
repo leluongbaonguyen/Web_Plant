@@ -55,6 +55,9 @@ function getCurrentDayKey() {
   return map[dayIndex];
 }
 
+let activeSpecialAlarmInterval = null;
+let activeAudioCtx = null;
+
 function playChimeSound() {
   try {
     const ctx = new (window.AudioContext || window.webkitAudioContext)();
@@ -73,6 +76,87 @@ function playChimeSound() {
     // Ignore audio restrictions
   }
 }
+
+function stopSpecialAlarmSound() {
+  if (activeSpecialAlarmInterval) {
+    clearInterval(activeSpecialAlarmInterval);
+    activeSpecialAlarmInterval = null;
+  }
+  if (activeAudioCtx) {
+    try {
+      activeAudioCtx.close();
+    } catch {}
+    activeAudioCtx = null;
+  }
+}
+
+function playSpecialAlarmSound(durationSeconds = 60, onTick = null, onEnd = null) {
+  stopSpecialAlarmSound();
+
+  try {
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioCtx();
+    activeAudioCtx = ctx;
+
+    // Harmonious bell melody notes (C5, E5, G5, B5, C6, G5)
+    const notes = [523.25, 659.25, 783.99, 987.77, 1046.50, 783.99];
+    let noteIdx = 0;
+    const startTime = Date.now();
+    const endTime = startTime + durationSeconds * 1000;
+
+    const playPulseSequence = () => {
+      if (!activeAudioCtx || ctx.state === 'closed' || Date.now() >= endTime) {
+        stopSpecialAlarmSound();
+        if (onEnd) onEnd();
+        return;
+      }
+
+      // Play 3 rapid melodic bell notes
+      [0, 1, 2].forEach((offsetIndex) => {
+        const freq = notes[(noteIdx + offsetIndex) % notes.length];
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, ctx.currentTime + offsetIndex * 0.16);
+
+        gain.gain.setValueAtTime(0.001, ctx.currentTime + offsetIndex * 0.16);
+        gain.gain.linearRampToValueAtTime(0.18, ctx.currentTime + offsetIndex * 0.16 + 0.05);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + offsetIndex * 0.16 + 0.85);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(ctx.currentTime + offsetIndex * 0.16);
+        osc.stop(ctx.currentTime + offsetIndex * 0.16 + 0.9);
+      });
+
+      noteIdx = (noteIdx + 1) % notes.length;
+    };
+
+    playPulseSequence();
+
+    activeSpecialAlarmInterval = setInterval(() => {
+      const remainingMs = Math.max(0, endTime - Date.now());
+      const remainingSec = Math.ceil(remainingMs / 1000);
+
+      if (onTick) onTick(remainingSec);
+
+      if (remainingMs <= 0) {
+        stopSpecialAlarmSound();
+        if (onEnd) onEnd();
+      } else {
+        playPulseSequence();
+      }
+    }, 1800);
+
+    return true;
+  } catch {
+    if (onEnd) onEnd();
+    return false;
+  }
+}
+
 
 
 const DAYS = [
@@ -198,7 +282,22 @@ function NoteModal({ isOpen, initialValue, onSave, onClose }) {
 }
 
 /* Notification & Reminders Drawer Modal */
-function NotificationModal({ isOpen, onClose, liveScheduleStatus, soundEnabled, setSoundEnabled, desktopNotifyEnabled, toggleDesktopNotifications, onMarkDone }) {
+function NotificationModal({
+  isOpen,
+  onClose,
+  liveScheduleStatus,
+  soundEnabled,
+  setSoundEnabled,
+  soundMode,
+  setSoundMode,
+  desktopNotifyEnabled,
+  toggleDesktopNotifications,
+  onMarkDone,
+  triggerSoundNotification,
+  isAlarmPlaying,
+  alarmSecondsLeft,
+  handleStopAlarm,
+}) {
   const [customTitle, setCustomTitle] = useState('');
   const [customMessage, setCustomMessage] = useState('');
   const [delayMinutes, setDelayMinutes] = useState(0);
@@ -212,18 +311,18 @@ function NotificationModal({ isOpen, onClose, liveScheduleStatus, soundEnabled, 
     const body = customMessage.trim() || 'Đã đến lúc kiểm tra công việc và lịch sinh hoạt của bạn!';
 
     if (delayMinutes > 0) {
-      if (soundEnabled) playChimeSound();
+      triggerSoundNotification();
       if ('Notification' in window && Notification.permission === 'granted') {
         new Notification('⏰ Đã lên lịch thông báo', { body: `Sẽ thông báo "${title}" sau ${delayMinutes} phút.`, icon: '/favicon.ico' });
       }
       setTimeout(() => {
-        if (soundEnabled) playChimeSound();
+        triggerSoundNotification();
         if ('Notification' in window && Notification.permission === 'granted') {
           new Notification(title, { body, icon: '/favicon.ico' });
         }
       }, delayMinutes * 60 * 1000);
     } else {
-      if (soundEnabled) playChimeSound();
+      triggerSoundNotification();
       if ('Notification' in window && Notification.permission === 'granted') {
         new Notification(title, { body, icon: '/favicon.ico' });
       }
@@ -268,6 +367,69 @@ function NotificationModal({ isOpen, onClose, liveScheduleStatus, soundEnabled, 
               <Bell className="h-4 w-4 text-emerald-400" />
               <span>{desktopNotifyEnabled ? 'Desktop: BẬT' : 'Desktop: TẮT'}</span>
             </button>
+          </div>
+
+          {/* Sound Mode Selection */}
+          <div className="rounded-2xl border border-purple-500/30 bg-purple-950/20 p-3.5 space-y-2.5">
+            <div className="flex items-center justify-between text-xs font-bold text-slate-200">
+              <span className="flex items-center gap-1.5 text-purple-300 uppercase tracking-wider">
+                <Volume2 className="h-4 w-4 text-purple-400" /> Kiểu Âm Thanh Nhắc Nhở
+              </span>
+              {soundMode === 'special_60s' && (
+                <span className="rounded-full bg-purple-500/20 border border-purple-500/40 px-2 py-0.5 text-[10px] font-extrabold text-purple-300">
+                  Đặc Biệt 1 Phút
+                </span>
+              )}
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                onClick={() => setSoundMode('chime')}
+                className={cx(
+                  'rounded-xl p-2.5 text-xs font-bold transition border text-left flex flex-col gap-0.5',
+                  soundMode === 'chime'
+                    ? 'bg-indigo-950/80 border-indigo-500/50 text-indigo-200'
+                    : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:text-slate-200'
+                )}
+              >
+                <span>🔔 Chime Tiêu Chuẩn</span>
+                <span className="text-[10px] font-normal text-slate-400">Âm ngắn 0.5 giây</span>
+              </button>
+
+              <button
+                onClick={() => setSoundMode('special_60s')}
+                className={cx(
+                  'rounded-xl p-2.5 text-xs font-bold transition border text-left flex flex-col gap-0.5',
+                  soundMode === 'special_60s'
+                    ? 'bg-purple-950/80 border-purple-500/50 text-purple-200 shadow-md'
+                    : 'bg-slate-900/60 border-slate-800 text-slate-400 hover:text-slate-200'
+                )}
+              >
+                <span>🎶 Âm Báo Đặc Biệt</span>
+                <span className="text-[10px] font-normal text-purple-300/80">Kéo dài 1 phút (60s)</span>
+              </button>
+            </div>
+
+            {/* Test Audio Controls */}
+            <div className="pt-1">
+              {isAlarmPlaying ? (
+                <button
+                  onClick={handleStopAlarm}
+                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-red-600 hover:bg-red-500 py-2.5 px-3 text-xs font-bold text-white shadow-lg transition animate-pulse"
+                >
+                  <VolumeX className="h-4 w-4" />
+                  <span>Dừng Âm Thanh Đặc Biệt (Còn {alarmSecondsLeft}s)</span>
+                </button>
+              ) : (
+                <button
+                  onClick={() => triggerSoundNotification(true)}
+                  className="w-full flex items-center justify-center gap-2 rounded-xl bg-purple-600/30 hover:bg-purple-600/50 border border-purple-500/40 py-2 px-3 text-xs font-bold text-purple-200 transition"
+                >
+                  <Volume2 className="h-4 w-4 text-purple-300" />
+                  <span>Phát Thử Âm Báo ({soundMode === 'special_60s' ? 'Đặc biệt 1 phút' : 'Chime 0.5s'})</span>
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Custom Direct Notification Dispatcher */}
@@ -488,9 +650,38 @@ export default function App() {
 
   // Direct Reminders & Notification States
   const [soundEnabled, setSoundEnabled] = useState(true);
+  const [soundMode, setSoundMode] = useState('special_60s'); // 'chime' | 'special_60s'
   const [desktopNotifyEnabled, setDesktopNotifyEnabled] = useState(false);
   const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
   const [lastNotifiedSlotId, setLastNotifiedSlotId] = useState(null);
+  const [isAlarmPlaying, setIsAlarmPlaying] = useState(false);
+  const [alarmSecondsLeft, setAlarmSecondsLeft] = useState(60);
+
+  // Sound Notification Dispatcher
+  const triggerSoundNotification = (forceTest = false) => {
+    if (!soundEnabled && !forceTest) return;
+
+    if (soundMode === 'special_60s' || forceTest) {
+      setIsAlarmPlaying(true);
+      setAlarmSecondsLeft(60);
+      playSpecialAlarmSound(
+        60,
+        (sec) => setAlarmSecondsLeft(sec),
+        () => {
+          setIsAlarmPlaying(false);
+          setAlarmSecondsLeft(0);
+        }
+      );
+    } else {
+      playChimeSound();
+    }
+  };
+
+  const handleStopAlarm = () => {
+    stopSpecialAlarmSound();
+    setIsAlarmPlaying(false);
+    setAlarmSecondsLeft(0);
+  };
 
   // Note Modal State
   const [activeNoteCell, setActiveNoteCell] = useState(null); // { slotId, dayKey, text }
@@ -557,7 +748,7 @@ export default function App() {
       setLastNotifiedSlotId(slot.id);
       const msg = `⏰ Bắt đầu: ${cell.text} (${slot.start} - ${slot.end})`;
       addToast(msg, 'info');
-      if (soundEnabled) playChimeSound();
+      triggerSoundNotification();
       if (desktopNotifyEnabled && 'Notification' in window && Notification.permission === 'granted') {
         new Notification('🔔 ChronoFlow - Nhắc Nhở Trực Tiếp', {
           body: msg,
@@ -565,7 +756,7 @@ export default function App() {
         });
       }
     }
-  }, [liveScheduleStatus.currentSlot, soundEnabled, desktopNotifyEnabled, lastNotifiedSlotId]);
+  }, [liveScheduleStatus.currentSlot, soundEnabled, soundMode, desktopNotifyEnabled, lastNotifiedSlotId]);
 
   function toggleDesktopNotifications() {
     if (!('Notification' in window)) {
@@ -1031,6 +1222,32 @@ export default function App() {
         </nav>
       </header>
 
+      {/* Active 1-Minute Special Alarm Floating Banner */}
+      {isAlarmPlaying && (
+        <div className="no-print fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-4 rounded-2xl border border-purple-500/50 bg-gradient-to-r from-purple-950/95 via-indigo-950/95 to-slate-950/95 px-6 py-3.5 shadow-2xl backdrop-blur-2xl animate-bounce">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500/20 border border-purple-400/40 text-purple-300 animate-pulse">
+              <Volume2 className="h-5 w-5" />
+            </div>
+            <div>
+              <div className="text-xs font-black uppercase tracking-wider text-purple-200 flex items-center gap-2">
+                <span>🚨 Đang phát âm thanh nhắc nhở đặc biệt (1 Phút)</span>
+                <span className="h-2 w-2 rounded-full bg-purple-400 animate-ping"></span>
+              </div>
+              <div className="text-xs text-purple-300/90 font-mono-code">
+                Tự động dừng sau <span className="font-extrabold text-white">{alarmSecondsLeft}s</span> (hoặc bấm Tắt bên phải)
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={handleStopAlarm}
+            className="rounded-xl bg-red-600 hover:bg-red-500 px-4 py-2 text-xs font-bold text-white shadow-lg shadow-red-600/30 transition flex items-center gap-1.5 shrink-0"
+          >
+            <VolumeX className="h-4 w-4" /> Tắt Chuông Ngay
+          </button>
+        </div>
+      )}
+
       {/* Notification Drawer Modal */}
       <NotificationModal
         isOpen={showNotificationDrawer}
@@ -1038,12 +1255,18 @@ export default function App() {
         liveScheduleStatus={liveScheduleStatus}
         soundEnabled={soundEnabled}
         setSoundEnabled={setSoundEnabled}
+        soundMode={soundMode}
+        setSoundMode={setSoundMode}
         desktopNotifyEnabled={desktopNotifyEnabled}
         toggleDesktopNotifications={toggleDesktopNotifications}
         onMarkDone={(slotId, dayKey, isDone) => {
           updateCell(slotId, dayKey, 'done', isDone);
           addToast('Đã đánh dấu hoàn thành!', 'success');
         }}
+        triggerSoundNotification={triggerSoundNotification}
+        isAlarmPlaying={isAlarmPlaying}
+        alarmSecondsLeft={alarmSecondsLeft}
+        handleStopAlarm={handleStopAlarm}
       />
 
       {/* Main Content Area */}
