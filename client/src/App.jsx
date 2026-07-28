@@ -159,32 +159,59 @@ function playSpecialAlarmSound(durationSeconds = 60, onTick = null, onEnd = null
 
 
 
-async function dispatchMobileLockScreenNotification(title, body) {
-  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+async function dispatchMobileLockScreenNotification(title, body, delayMs = 0) {
+  if (!('Notification' in window)) return;
+
+  if (Notification.permission !== 'granted') {
+    try {
+      const perm = await Notification.requestPermission();
+      if (perm !== 'granted') return;
+    } catch {
+      return;
+    }
+  }
 
   const options = {
-    body,
+    body: body || 'Đã đến lúc thực hiện công việc theo lịch sinh hoạt!',
     icon: '/favicon.ico',
     badge: '/favicon.ico',
-    vibrate: [300, 100, 300, 100, 300],
-    tag: 'chronoflow-reminder',
+    vibrate: [500, 110, 500, 110, 500, 110, 500],
+    tag: 'chronoflow-mobile-alert',
     renotify: true,
+    requireInteraction: true,
   };
 
+  // Dispatch via Service Worker for reliable lock screen background delivery
   if ('serviceWorker' in navigator) {
     try {
       const reg = await navigator.serviceWorker.ready;
-      if (reg && reg.showNotification) {
-        await reg.showNotification(title, options);
+      if (reg && reg.active) {
+        reg.active.postMessage({
+          type: 'SCHEDULE_NOTIFICATION',
+          title,
+          body,
+          delayMs,
+        });
+        return;
+      } else if (reg && reg.showNotification) {
+        if (delayMs > 0) {
+          setTimeout(() => reg.showNotification(title, options), delayMs);
+        } else {
+          await reg.showNotification(title, options);
+        }
         return;
       }
     } catch {
-      // Fallback
+      // Fallback below
     }
   }
 
   try {
-    new Notification(title, options);
+    if (delayMs > 0) {
+      setTimeout(() => new Notification(title, options), delayMs);
+    } else {
+      new Notification(title, options);
+    }
   } catch {}
 }
 
@@ -339,17 +366,16 @@ function NotificationModal({
     const title = customTitle.trim() || '🔔 Nhắc nhở trực tiếp từ ChronoFlow';
     const body = customMessage.trim() || 'Đã đến lúc kiểm tra công việc và lịch sinh hoạt của bạn!';
 
+    const delayMs = delayMinutes * 60 * 1000;
+    triggerSoundNotification();
+
     if (delayMinutes > 0) {
-      triggerSoundNotification();
       dispatchMobileLockScreenNotification('⏰ Đã lên lịch thông báo', `Sẽ thông báo "${title}" sau ${delayMinutes} phút.`);
-      setTimeout(() => {
-        triggerSoundNotification();
-        dispatchMobileLockScreenNotification(title, body);
-      }, delayMinutes * 60 * 1000);
+      dispatchMobileLockScreenNotification(title, body, delayMs);
     } else {
-      triggerSoundNotification();
-      dispatchMobileLockScreenNotification(title, body);
+      dispatchMobileLockScreenNotification(title, body, 0);
     }
+
     setCustomTitle('');
     setCustomMessage('');
   }
@@ -494,6 +520,31 @@ function NotificationModal({
                 <Zap className="h-3.5 w-3.5" /> Gửi Ngay
               </button>
             </div>
+          </div>
+
+          {/* Mobile Lock Screen Troubleshooting & Enable Banner */}
+          <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-br from-amber-950/40 via-slate-900 to-amber-950/20 p-4 space-y-3 shadow-xl">
+            <h4 className="text-xs font-bold uppercase tracking-wider text-amber-300 flex items-center gap-1.5">
+              <Zap className="h-4 w-4 text-amber-400" /> Khắc Phục Thông Báo Màn Hình Khóa Mobile
+            </h4>
+
+            <div className="text-[11px] text-slate-300 space-y-1.5 leading-relaxed">
+              <p>📱 <strong>Trên iPhone (iOS):</strong> Bắt buộc mở bằng Safari ➔ Bấm nút <strong>Chia Sẻ (Share) 📤</strong> ➔ Chọn <strong>"Thêm vào Màn Hình Chính" (Add to Home Screen)</strong>. Mở app từ màn hình chính thì iOS mới cấp quyền hiện thông báo khi khóa màn hình!</p>
+              <p>🤖 <strong>Trên Android (Samsung/Xiaomi...):</strong> Vào <em>Cài đặt ➔ Ứng dụng ➔ Chrome / ChronoFlow ➔ Pin (Battery)</em> ➔ Chọn <strong>"Không hạn chế" (Unrestricted)</strong> để Android không tắt ứng dụng ở chạy ngầm.</p>
+            </div>
+
+            <button
+              onClick={() => {
+                triggerSoundNotification(true);
+                dispatchMobileLockScreenNotification(
+                  '🚨 KIỂM TRA THÔNG BÁO MÀN HÌNH KHÓA',
+                  'ChronoFlow đã kết nối thành công với Service Worker! Thông báo này sẽ hiển thị khi tắt màn hình.'
+                );
+              }}
+              className="w-full flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 px-4 py-2.5 text-xs font-bold text-white shadow-lg hover:from-amber-500 hover:to-orange-500 transition"
+            >
+              <Bell className="h-4 w-4" /> Kích Hoạt & Phát Thử Thông Báo Khóa Màn Hình
+            </button>
           </div>
 
           {/* Current Active Task Section */}
