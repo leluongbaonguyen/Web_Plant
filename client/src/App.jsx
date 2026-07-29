@@ -3,6 +3,7 @@ import { getPlan, getWordFile, resetPlan as resetPlanApi, savePlan } from './api
 import { RoleProvider, useRole } from './context/RoleContext.jsx';
 import { Header } from './components/Header.jsx';
 import { LiveReminderBanner } from './components/LiveReminderBanner.jsx';
+import { MobileAutomationDock } from './components/MobileAutomationDock.jsx';
 import { AnimatedMascots } from './components/AnimatedMascots.jsx';
 import { ButlerAiAssistant } from './components/ButlerAiAssistant.jsx';
 import { MobileBottomNav } from './components/MobileBottomNav.jsx';
@@ -436,6 +437,13 @@ function MainAppContent() {
         liveScheduleStatus={liveScheduleStatus}
         onOpenReminders={() => setShowNotificationDrawer(true)}
         onMarkDone={handleMarkDone}
+      />
+
+      {/* Dynamic Mobile & PC Automation Dock */}
+      <MobileAutomationDock
+        plan={plan}
+        onUpdatePlan={handleUpdatePlan}
+        addToast={addToast}
       />
 
       {/* Active Tab View Rendering */}
