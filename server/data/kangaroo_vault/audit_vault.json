@@ -1,10 +1,18 @@
 {
   "_kangaroo_meta": {
     "vault": "audit_vault",
-    "lastHopTime": "2026-07-28T19:33:48.460Z",
-    "checksum": "kng-1785267228460-08m8s2"
+    "lastHopTime": "2026-07-28T23:57:52.537Z",
+    "checksum": "kng-1785283072537-otm29m"
   },
   "payload": [
+    {
+      "id": "log-1785283072455-fucc",
+      "timestamp": "2026-07-28T23:57:52.455Z",
+      "event": "KANGAROO_SYNC_FORCE",
+      "details": "Admin kích hoạt ép buộc đồng bộ dữ liệu vào Kangaroo Vault DB Engine",
+      "username": "admin",
+      "ip": "::1"
+    },
     {
       "id": "log-1785267228459-7bha",
       "timestamp": "2026-07-28T19:33:48.459Z",

@@ -409,6 +409,8 @@ function MainAppContent() {
         setActiveTab={setActiveTab}
         onOpenRoleModal={() => setShowRoleModal(true)}
         onOpenSecretAdmin={() => setShowSecretAdminModal(true)}
+        onOpenReminders={() => setShowNotificationDrawer(true)}
+        reminderBadgeCount={liveScheduleStatus.overdueSlots.length}
         onResetPlan={handleResetPlan}
         onDownloadJson={handleDownloadJson}
         onImportJson={handleImportJson}
