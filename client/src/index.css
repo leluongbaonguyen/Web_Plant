@@ -171,13 +171,50 @@
   animation: shimmer 2.5s infinite;
 }
 
-@keyframes spinSlow {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+@keyframes runAcrossScreen {
+  0% {
+    left: -100px;
+    transform: translateY(0px) scaleX(1);
+  }
+  25% {
+    transform: translateY(-8px) scaleX(1);
+  }
+  50% {
+    transform: translateY(0px) scaleX(1);
+  }
+  75% {
+    transform: translateY(-8px) scaleX(1);
+  }
+  100% {
+    left: calc(100% + 100px);
+    transform: translateY(0px) scaleX(1);
+  }
 }
 
-.animate-spin-slow {
-  animation: spinSlow 12s linear infinite;
+.animate-runner-across {
+  animation: runAcrossScreen 18s linear infinite;
+}
+
+@keyframes bounceWiggle {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-6px) rotate(-6deg); }
+  50% { transform: translateY(0) rotate(6deg); }
+  75% { transform: translateY(-4px) rotate(-3deg); }
+}
+
+.animate-wiggle {
+  animation: bounceWiggle 2.5s infinite ease-in-out;
+}
+
+@keyframes orbitFloating {
+  0% { transform: translate(0px, 0px) rotate(0deg); }
+  33% { transform: translate(12px, -15px) rotate(12deg); }
+  66% { transform: translate(-10px, 8px) rotate(-8deg); }
+  100% { transform: translate(0px, 0px) rotate(0deg); }
+}
+
+.animate-orbit {
+  animation: orbitFloating 7s ease-in-out infinite;
 }
 
 /* Custom Scrollbars */

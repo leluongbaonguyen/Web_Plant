@@ -3,6 +3,7 @@ import { getPlan, getWordFile, resetPlan as resetPlanApi, savePlan } from './api
 import { RoleProvider, useRole } from './context/RoleContext.jsx';
 import { Header } from './components/Header.jsx';
 import { LiveReminderBanner } from './components/LiveReminderBanner.jsx';
+import { AnimatedMascots } from './components/AnimatedMascots.jsx';
 import { MobileBottomNav } from './components/MobileBottomNav.jsx';
 import { ToastContainer } from './components/ToastContainer.jsx';
 import { NoteModal } from './components/NoteModal.jsx';
@@ -401,6 +402,9 @@ function MainAppContent() {
     <div className="min-h-screen bg-[#0b0f19] text-slate-100 pb-20 md:pb-10 pt-3 md:pt-5 px-3 sm:px-6 lg:px-8 space-y-4 w-full font-sans transition-all">
       {/* Toast System */}
       <ToastContainer toasts={toasts} />
+
+      {/* Animated Mascots & Running Boy */}
+      <AnimatedMascots addToast={addToast} />
 
       {/* Header Bar */}
       <Header
