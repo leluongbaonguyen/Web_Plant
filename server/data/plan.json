@@ -4,7 +4,7 @@
     "wakeTime": "06:00",
     "sleepTime": "00:15",
     "note": "Ngủ từ 00:15 đến 06:00 chỉ được 5 giờ 45 phút. Hãy ưu tiên ngủ trưa và cân nhắc ngủ sớm hơn để cơ thể phục hồi tốt hơn.",
-    "updatedAt": "2026-07-28T23:58:38.577Z"
+    "updatedAt": "2026-07-29T00:02:20.406Z"
   },
   "settings": {
     "fontFamily": "Times New Roman",
@@ -28,7 +28,7 @@
       "result": "Ít nhất 3 đầu việc có kết quả cụ thể",
       "priority": "Cao",
       "dueDay": "Thứ Sáu",
-      "done": false,
+      "done": true,
       "notes": ""
     },
     {
@@ -37,7 +37,7 @@
       "result": "Mỗi buổi từ 25–45 phút",
       "priority": "Cao",
       "dueDay": "Chủ Nhật",
-      "done": false,
+      "done": true,
       "notes": ""
     },
     {
@@ -46,7 +46,7 @@
       "result": "Có ghi chú và một sản phẩm nhỏ",
       "priority": "Trung bình",
       "dueDay": "Chủ Nhật",
-      "done": false,
+      "done": true,
       "notes": ""
     }
   ],

@@ -45,10 +45,10 @@ export const ROLES = {
   },
   viewer: {
     id: 'viewer',
-    name: 'Thành viên / Xem (Viewer)',
+    name: 'Thành viên / Viewer 👀',
     badge: 'VIEWER',
     color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
-    description: 'Chế độ chỉ xem. Tìm kiếm, lọc, nghe chuông nhắc nhở, in và xuất file Word. Không được sửa dữ liệu.',
+    description: 'Quyền: Xem Lịch & Tiến Độ, Chỉnh Sửa Ô Công Việc, Xóa Khung Giờ Hoạt Động, Biên Tập Mục Tiêu Tuần.',
   },
 };
 

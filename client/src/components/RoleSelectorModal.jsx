@@ -33,14 +33,13 @@ export function RoleSelectorModal({ isOpen, onClose }) {
   };
 
   const matrix = [
-    { name: 'Xem lịch, tìm kiếm, lọc & in', admin: true, editor: true, viewer: true },
-    { name: 'Xuất file Word (.docx) & PDF', admin: true, editor: true, viewer: true },
-    { name: 'Nghe chuông & thông báo nhắc nhở', admin: true, editor: true, viewer: true },
-    { name: 'Đánh dấu hoàn thành việc & cập nhật ghi chú', admin: true, editor: true, viewer: false },
-    { name: 'Chỉnh sửa mục tiêu tuần & tổng kết', admin: true, editor: true, viewer: false },
-    { name: 'Thêm / Xóa khung giờ thời gian', admin: true, editor: false, viewer: false },
-    { name: 'Khôi phục / Đặt lại hệ thống về mặc định', admin: true, editor: false, viewer: false },
-    { name: 'Sao lưu & Nhập dữ liệu JSON', admin: true, editor: false, viewer: false },
+    { code: 'PERM_READ_SCHEDULE', name: 'Xem Lịch Sinh Hoạt & Tiến Độ', admin: true, editor: true, viewer: true },
+    { code: 'PERM_EDIT_CELL', name: 'Chỉnh Sửa Ô Công Việc', admin: true, editor: true, viewer: true },
+    { code: 'PERM_DELETE_SLOT', name: 'Xóa Khung Giờ Hoạt Động', admin: true, editor: false, viewer: true },
+    { code: 'PERM_MANAGE_GOALS', name: 'Biên Tập Mục Tiêu Tuần', admin: true, editor: true, viewer: true },
+    { code: 'PERM_MANAGE_AGENTS', name: 'Không gian Tác nhân AI', admin: true, editor: false, viewer: false },
+    { code: 'PERM_BACKUP_RESTORE', name: 'Sao lưu & Nhập JSON', admin: true, editor: false, viewer: false },
+    { code: 'PERM_RESET_SYSTEM', name: 'Đặt lại hệ thống mặc định', admin: true, editor: false, viewer: false },
   ];
 
   return (

@@ -1,10 +1,18 @@
 {
   "_kangaroo_meta": {
     "vault": "audit_vault",
-    "lastHopTime": "2026-07-28T23:57:52.537Z",
-    "checksum": "kng-1785283072537-otm29m"
+    "lastHopTime": "2026-07-29T00:05:09.526Z",
+    "checksum": "kng-1785283509526-9newfd"
   },
   "payload": [
+    {
+      "id": "log-1785283509331-jf7l",
+      "timestamp": "2026-07-29T00:05:09.331Z",
+      "event": "AUTH_LOGIN_SUCCESS",
+      "details": "Tác nhân 'LÊ NGUYÊN' (VIEWER) đăng nhập thành công với Token HMAC",
+      "username": "wiew",
+      "ip": "::1"
+    },
     {
       "id": "log-1785283072455-fucc",
       "timestamp": "2026-07-28T23:57:52.455Z",

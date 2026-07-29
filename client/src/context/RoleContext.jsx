@@ -27,7 +27,9 @@ export const PERMISSION_MATRIX = {
   ],
   viewer: [
     'PERM_READ_SCHEDULE',
-    'PERM_EXPORT_WORD',
+    'PERM_EDIT_CELL',
+    'PERM_DELETE_SLOT',
+    'PERM_MANAGE_GOALS',
   ],
 };
 

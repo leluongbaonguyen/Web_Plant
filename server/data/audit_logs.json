@@ -1,5 +1,13 @@
 [
   {
+    "id": "log-1785283509331-jf7l",
+    "timestamp": "2026-07-29T00:05:09.331Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'LÊ NGUYÊN' (VIEWER) đăng nhập thành công với Token HMAC",
+    "username": "wiew",
+    "ip": "::1"
+  },
+  {
     "id": "log-1785283072455-fucc",
     "timestamp": "2026-07-28T23:57:52.455Z",
     "event": "KANGAROO_SYNC_FORCE",
