@@ -4,7 +4,7 @@
     "wakeTime": "06:00",
     "sleepTime": "00:15",
     "note": "Ngủ từ 00:15 đến 06:00 chỉ được 5 giờ 45 phút. Hãy ưu tiên ngủ trưa và cân nhắc ngủ sớm hơn để cơ thể phục hồi tốt hơn.",
-    "updatedAt": "2026-07-29T00:02:20.406Z"
+    "updatedAt": "2026-07-29T00:16:56.867Z"
   },
   "settings": {
     "fontFamily": "Times New Roman",
@@ -60,43 +60,43 @@
           "text": "Thức dậy, uống nước, vệ sinh cá nhân",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "tuesday": {
           "text": "Thức dậy, uống nước, vệ sinh cá nhân",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "wednesday": {
           "text": "Thức dậy, uống nước, vệ sinh cá nhân",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "thursday": {
           "text": "Thức dậy, uống nước, vệ sinh cá nhân",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "friday": {
           "text": "Thức dậy, uống nước, vệ sinh cá nhân",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "saturday": {
           "text": "Thức dậy, uống nước, vệ sinh cá nhân",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "sunday": {
           "text": "Thức dậy, uống nước, vệ sinh cá nhân",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         }
       }
     },
@@ -109,43 +109,43 @@
           "text": "Đi bộ nhanh / cardio nhẹ",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "tuesday": {
           "text": "Giãn cơ + bụng",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "wednesday": {
           "text": "Tập sức mạnh",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "thursday": {
           "text": "Đi bộ ngoài trời",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "friday": {
           "text": "Toàn thân nhẹ",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "saturday": {
           "text": "Thể thao ngoài trời",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "sunday": {
           "text": "Yoga / giãn cơ",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         }
       }
     },
@@ -158,43 +158,43 @@
           "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "tuesday": {
           "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "wednesday": {
           "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
           "done": true,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "thursday": {
           "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "friday": {
           "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "saturday": {
           "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "sunday": {
           "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         }
       }
     },
@@ -207,43 +207,43 @@
           "text": "Lập 3 ưu tiên trong ngày",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "tuesday": {
           "text": "Ôn mục tiêu + chuẩn bị",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "wednesday": {
           "text": "Lập 3 ưu tiên trong ngày",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "thursday": {
           "text": "Ôn mục tiêu + chuẩn bị",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "friday": {
           "text": "Tổng kết việc cần hoàn thành",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "saturday": {
           "text": "Lên kế hoạch cuối tuần",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         },
         "sunday": {
           "text": "Lên kế hoạch tuần mới",
           "done": false,
           "notes": "",
-          "category": "default"
+          "category": "health"
         }
       }
     },
