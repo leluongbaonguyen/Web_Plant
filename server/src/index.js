@@ -132,7 +132,7 @@ app.get('/api/plan', async (_req, res, next) => {
   }
 });
 
-app.put('/api/plan', requireRole('admin', 'editor', 'viewer'), async (req, res, next) => {
+app.put('/api/plan', requireRole('admin', 'editor', 'viewer', 'pregnant', 'postpartum', 'clinician'), async (req, res, next) => {
   try {
     const currentPlan = await readPlan();
     
@@ -181,6 +181,64 @@ app.get('/api/export/word', async (_req, res, next) => {
     next(error);
   }
 });
+
+app.get('/api/export/weekly/pregnant', async (_req, res, next) => {
+  try {
+    const plan = await readPlan();
+    const buffer = await createMaternalWordBuffer(plan, 'pregnant');
+    const filename = `Lich_Sinh_Hoat_Mang_Thai_A3_${new Date().toISOString().slice(0, 10)}.docx`;
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Length', buffer.length);
+    res.send(buffer);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/api/export/weekly/postpartum', async (_req, res, next) => {
+  try {
+    const plan = await readPlan();
+    const buffer = await createMaternalWordBuffer(plan, 'postpartum');
+    const filename = `Lich_Sinh_Hoat_Sau_Sinh_A3_${new Date().toISOString().slice(0, 10)}.docx`;
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Length', buffer.length);
+    res.send(buffer);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post('/api/maternal/checkin', async (req, res, next) => {
+  try {
+    const { mood, energy, painLevel, notes } = req.body || {};
+    const plan = await readPlan();
+    const checkInRecord = {
+      id: `chk-${Date.now()}`,
+      timestamp: new Date().toISOString(),
+      date: new Date().toLocaleDateString('vi-VN'),
+      mood: mood || 'Vui vẻ',
+      energy: energy || 4,
+      painLevel: painLevel || 0,
+      notes: notes || '',
+    };
+
+    plan.checkIns = [checkInRecord, ...(plan.checkIns || [])];
+    await writePlan(plan);
+    await appendAuditLog('MATERNAL_CHECKIN', `Check-in sức khỏe mẹ (Tâm trạng: ${mood}, Mức đau: ${painLevel})`, req.userRole || 'user', req.ip);
+
+    res.json({
+      ok: true,
+      message: '✅ Đã ghi nhận Check-in sức khỏe thành công!',
+      checkIn: checkInRecord,
+      checkIns: plan.checkIns,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 
 // ==========================================
 // SUPER ADMIN & STEALTH MANAGEMENT AGENT API

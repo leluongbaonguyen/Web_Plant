@@ -1,5 +1,69 @@
 [
   {
+    "id": "log-1785304196335-tjk7",
+    "timestamp": "2026-07-29T05:49:56.335Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Chị Thanh Mai (Tác Nhân Phụ Nữ Sau Sinh)' (POSTPARTUM) đăng nhập thành công với Token HMAC",
+    "username": "sausinh",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785304145298-95hn",
+    "timestamp": "2026-07-29T05:49:05.298Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Chị Thu Hà (Tác Nhân Phụ Nữ Mang Thai)' (PREGNANT) đăng nhập thành công với Token HMAC",
+    "username": "mangthai",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785304087427-7oju",
+    "timestamp": "2026-07-29T05:48:07.427Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Quản Trị Viên Tối Cao' (ADMIN) đăng nhập thành công với Token HMAC",
+    "username": "admin",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785304084349-4b2q",
+    "timestamp": "2026-07-29T05:48:04.349Z",
+    "event": "AUTH_LOGIN_FAILED",
+    "details": "Thử đăng nhập tài khoản 'bacti' thất bại",
+    "username": "bacti",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785304068231-95wi",
+    "timestamp": "2026-07-29T05:47:48.231Z",
+    "event": "AUTH_LOGIN_FAILED",
+    "details": "Thử đăng nhập tài khoản 'sausinh' thất bại",
+    "username": "sausinh",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785304066175-zqas",
+    "timestamp": "2026-07-29T05:47:46.175Z",
+    "event": "AUTH_LOGIN_FAILED",
+    "details": "Thử đăng nhập tài khoản 'sausinh' thất bại",
+    "username": "sausinh",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785304059183-zrde",
+    "timestamp": "2026-07-29T05:47:39.183Z",
+    "event": "AUTH_LOGIN_FAILED",
+    "details": "Thử đăng nhập tài khoản 'sausinh' thất bại",
+    "username": "sausinh",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785303818444-hpdg",
+    "timestamp": "2026-07-29T05:43:38.444Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Quan Sat Viên' (VIEWER) đăng nhập thành công với Token HMAC",
+    "username": "viewer",
+    "ip": "::1"
+  },
+  {
     "id": "log-1785299362556-95q9",
     "timestamp": "2026-07-29T04:29:22.556Z",
     "event": "AUTH_LOGIN_SUCCESS",

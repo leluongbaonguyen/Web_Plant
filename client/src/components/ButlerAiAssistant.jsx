@@ -1,5 +1,5 @@
-import { useState, useMemo } from 'react';
-import { Bot, Sparkles, Clock, Zap, X, Send, BookOpen, Search, Leaf, Heart, Calendar, CheckCircle2 } from 'lucide-react';
+import { useState, useMemo, useEffect } from 'react';
+import { Bot, Sparkles, Clock, Zap, X, Send, BookOpen, Search, Leaf, Heart, Calendar, CheckCircle2, Volume2, VolumeX } from 'lucide-react';
 import { getCurrentDayKey, timeToMinutes } from '../constants/index.js';
 import {
   AI_KNOWLEDGE_BASE,
@@ -8,13 +8,16 @@ import {
   SCHEDULE_QUICK_QUESTIONS,
   findAiKnowledgeAnswer,
 } from '../constants/aiKnowledgeBase.js';
-import { playChimeSound } from '../utils/audio.js';
+import { playChimeSound, speakText, stopSpeech } from '../utils/audio.js';
 
 export function ButlerAiAssistant({ plan, onUpdatePlan, addToast }) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('chat'); // 'chat' | 'schedule' | 'plant' | 'life' | 'kb'
   const [chatInput, setChatInput] = useState('');
   const [kbSearch, setKbSearch] = useState('');
+  const [autoSpeechEnabled, setAutoSpeechEnabled] = useState(true);
+  const [currentlySpeakingText, setCurrentlySpeakingText] = useState(null);
+
   const [chatMessages, setChatMessages] = useState([
     {
       sender: 'butler',
@@ -23,6 +26,14 @@ export function ButlerAiAssistant({ plan, onUpdatePlan, addToast }) {
     },
   ]);
   const [isAnalyzing, setIsAnalyzing] = useState(false);
+
+  // Stop speech when closing assistant
+  useEffect(() => {
+    if (!isOpen) {
+      stopSpeech();
+      setCurrentlySpeakingText(null);
+    }
+  }, [isOpen]);
 
   // Time Calculation Engine
   const stats = useMemo(() => {
@@ -100,6 +111,17 @@ export function ButlerAiAssistant({ plan, onUpdatePlan, addToast }) {
     );
   }, [kbSearch]);
 
+  // Read message out loud
+  const handleSpeakMessage = (text) => {
+    if (currentlySpeakingText === text) {
+      stopSpeech();
+      setCurrentlySpeakingText(null);
+    } else {
+      speakText(text);
+      setCurrentlySpeakingText(text);
+    }
+  };
+
   // Handle Butler Auto-Optimization of Schedule
   const handleOptimizeSchedule = () => {
     setIsAnalyzing(true);
@@ -132,18 +154,24 @@ export function ButlerAiAssistant({ plan, onUpdatePlan, addToast }) {
       setIsAnalyzing(false);
       addToast('🎩 Quản gia AI đã tối ưu hóa phân bổ thời gian & nhãn phân loại chuẩn y tế!', 'success');
 
+      const textReply = 'Thưa Quý chủ nhân, Quản gia vừa hoàn tất việc tính toán và tinh chỉnh lại các nhãn phân loại khung giờ giúp chủ nhân dễ dàng theo dõi chỉ số sức khỏe!';
       setChatMessages((prev) => [
         ...prev,
         {
           sender: 'butler',
-          text: 'Thưa Quý chủ nhân, Quản gia vừa hoàn tất việc tính toán và tinh chỉnh lại các nhãn phân loại khung giờ giúp chủ nhân dễ dàng theo dõi chỉ số sức khỏe!',
+          text: textReply,
           time: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
         },
       ]);
+
+      if (autoSpeechEnabled) {
+        speakText(textReply);
+        setCurrentlySpeakingText(textReply);
+      }
     }, 1000);
   };
 
-  // Handle Interactive User Questions to Butler (AI Engine Matching)
+  // Handle Interactive User Questions to Butler (AI Engine Matching + Automatic Voice Reading)
   const handleSendMessage = (textToSend) => {
     const query = textToSend || chatInput;
     if (!query.trim()) return;
@@ -190,7 +218,13 @@ export function ButlerAiAssistant({ plan, onUpdatePlan, addToast }) {
           time: new Date().toLocaleTimeString('vi-VN', { hour: '2-digit', minute: '2-digit' }),
         },
       ]);
-    }, 500);
+
+      // Automatically speak the answer out loud using Text-to-Speech in Vietnamese
+      if (autoSpeechEnabled) {
+        speakText(butlerReply);
+        setCurrentlySpeakingText(butlerReply);
+      }
+    }, 400);
   };
 
   return (
@@ -202,7 +236,7 @@ export function ButlerAiAssistant({ plan, onUpdatePlan, addToast }) {
           <div className="absolute right-0 bottom-full mb-2 hidden group-hover:block transition animate-fadeIn">
             <div className="rounded-2xl border border-indigo-500/40 bg-slate-900/95 p-3 text-xs shadow-2xl backdrop-blur-md w-72 space-y-1">
               <div className="font-bold text-indigo-300 flex items-center justify-between">
-                <span className="flex items-center gap-1">🎩 Quản Gia AI (Trained Routine & Plant)</span>
+                <span className="flex items-center gap-1">🎩 Quản Gia AI (Trained Voice Reader)</span>
                 <span className="rounded-full bg-emerald-500/20 px-1.5 py-0.2 text-[9px] text-emerald-400 font-extrabold">ONLINE</span>
               </div>
               <p className="text-[11px] text-slate-300 leading-relaxed italic">
@@ -218,7 +252,7 @@ export function ButlerAiAssistant({ plan, onUpdatePlan, addToast }) {
               playChimeSound();
             }}
             className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-600 via-purple-600 to-slate-900 border-2 border-indigo-400/50 text-white shadow-2xl hover:scale-110 active:scale-95 transition glow-violet group"
-            title="Mở Quản Gia AI Trợ Lý Lịch Sinh Hoạt Hằng Ngày"
+            title="Mở Quản Gia AI Trợ Lý Đọc Giọng Nói"
           >
             <span className="text-2xl animate-wiggle">🎩</span>
             <span className="absolute -top-1 -right-1 flex h-4 w-4">
@@ -243,19 +277,39 @@ export function ButlerAiAssistant({ plan, onUpdatePlan, addToast }) {
                   <h3 className="text-lg font-bold font-heading text-white flex items-center gap-2">
                     <span>Quản Gia AI Gia Đình</span>
                     <span className="rounded-full bg-indigo-500/20 border border-indigo-500/30 px-2 py-0.5 text-[10px] font-extrabold text-indigo-300">
-                      TRAINED ROUTINE & PLANT AI v3.5
+                      VOICE READ AI v4.0 🔊
                     </span>
                   </h3>
-                  <p className="text-xs text-slate-400">Trợ lý tối ưu Lịch sinh hoạt hằng ngày, chăm sóc cây trồng & sức khỏe gia đình</p>
+                  <p className="text-xs text-slate-400">Trợ lý đọc giọng nói câu trả lời, tư vấn lịch sinh hoạt & chăm cây cảnh</p>
                 </div>
               </div>
 
-              <button
-                onClick={() => setIsOpen(false)}
-                className="rounded-full bg-slate-800 p-2 text-slate-400 hover:text-white transition"
-              >
-                <X className="h-5 w-5" />
-              </button>
+              <div className="flex items-center gap-2">
+                {/* Auto Speech Toggle */}
+                <button
+                  onClick={() => {
+                    const nextState = !autoSpeechEnabled;
+                    setAutoSpeechEnabled(nextState);
+                    if (!nextState) stopSpeech();
+                  }}
+                  className={`flex items-center gap-1.5 rounded-xl border px-3 py-1.5 text-xs font-bold transition ${
+                    autoSpeechEnabled
+                      ? 'border-emerald-500/50 bg-emerald-950/50 text-emerald-300'
+                      : 'border-slate-700 bg-slate-800 text-slate-400'
+                  }`}
+                  title={autoSpeechEnabled ? 'Tắt đọc giọng nói tự động' : 'Bật đọc giọng nói tự động'}
+                >
+                  {autoSpeechEnabled ? <Volume2 className="h-4 w-4 text-emerald-400 animate-pulse" /> : <VolumeX className="h-4 w-4" />}
+                  <span>{autoSpeechEnabled ? 'Giọng Nói: BẬT' : 'Giọng Nói: TẮT'}</span>
+                </button>
+
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="rounded-full bg-slate-800 p-2 text-slate-400 hover:text-white transition"
+                >
+                  <X className="h-5 w-5" />
+                </button>
+              </div>
             </div>
 
             {/* Navigation Tabs Inside Butler AI */}
@@ -398,14 +452,29 @@ export function ButlerAiAssistant({ plan, onUpdatePlan, addToast }) {
                         )}
 
                         <div
-                          className={`rounded-2xl p-3 max-w-[85%] leading-relaxed whitespace-pre-line ${
+                          className={`rounded-2xl p-3 max-w-[85%] leading-relaxed whitespace-pre-line relative group ${
                             msg.sender === 'user'
                               ? 'bg-indigo-600 text-white rounded-tr-none'
                               : 'bg-slate-900 border border-slate-800 text-slate-200 rounded-tl-none font-medium'
                           }`}
                         >
                           <p>{msg.text}</p>
-                          <span className="mt-1 block text-[9px] text-slate-400 font-mono-code text-right">{msg.time}</span>
+                          
+                          <div className="mt-1 flex items-center justify-between gap-2 border-t border-slate-800/60 pt-1 text-[9px] text-slate-400">
+                            {msg.sender === 'butler' && (
+                              <button
+                                onClick={() => handleSpeakMessage(msg.text)}
+                                className={`flex items-center gap-1 font-bold hover:text-indigo-300 transition ${
+                                  currentlySpeakingText === msg.text ? 'text-emerald-400 font-black animate-pulse' : 'text-slate-400'
+                                }`}
+                                title="Đọc câu trả lời này bằng giọng nói"
+                              >
+                                <Volume2 className="h-3 w-3" />
+                                <span>{currentlySpeakingText === msg.text ? 'Đang đọc...' : 'Đọc giọng nói'}</span>
+                              </button>
+                            )}
+                            <span className="font-mono-code ml-auto">{msg.time}</span>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -439,7 +508,7 @@ export function ButlerAiAssistant({ plan, onUpdatePlan, addToast }) {
                   <Calendar className="h-5 w-5 text-sky-400 shrink-0" />
                   <div>
                     <span className="font-bold text-sky-300">Bộ Kiến Thức Lịch Sinh Hoạt Hằng Ngày: </span>
-                    Bấm vào các câu hỏi bên dưới để nhận hướng dẫn chia khung giờ học/làm, lịch ăn uống, thể thao & nghỉ ngơi!
+                    Bấm vào các câu hỏi bên dưới để nhận hướng dẫn chia khung giờ học/làm, lịch ăn uống, thể thao & đọc bằng giọng nói!
                   </div>
                 </div>
 
@@ -545,16 +614,27 @@ export function ButlerAiAssistant({ plan, onUpdatePlan, addToast }) {
                         <span className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-slate-800 text-indigo-300">
                           {item.category === 'schedule' ? '🗓️ LỊCH SINH HOẠT' : item.category === 'plant' ? '🌱 CÂY TRỒNG' : '🏠 CUỘC SỐNG'} • {item.topic}
                         </span>
-                        <button
-                          onClick={() => {
-                            setActiveTab('chat');
-                            handleSendMessage(item.question);
-                          }}
-                          className="text-[10px] font-bold text-indigo-400 hover:underline flex items-center gap-1"
-                        >
-                          <span>Hỏi AI ngay</span>
-                          <Send className="h-3 w-3" />
-                        </button>
+                        <div className="flex items-center gap-2">
+                          <button
+                            onClick={() => handleSpeakMessage(item.answer)}
+                            className="text-[10px] font-bold text-emerald-400 hover:underline flex items-center gap-1"
+                            title="Nghe câu trả lời"
+                          >
+                            <Volume2 className="h-3 w-3" />
+                            <span>Nghe</span>
+                          </button>
+
+                          <button
+                            onClick={() => {
+                              setActiveTab('chat');
+                              handleSendMessage(item.question);
+                            }}
+                            className="text-[10px] font-bold text-indigo-400 hover:underline flex items-center gap-1"
+                          >
+                            <span>Hỏi AI ngay</span>
+                            <Send className="h-3 w-3" />
+                          </button>
+                        </div>
                       </div>
 
                       <h4 className="text-xs font-bold text-slate-100 flex items-center gap-1.5">

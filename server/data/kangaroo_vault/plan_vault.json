@@ -1,8 +1,8 @@
 {
   "_kangaroo_meta": {
     "vault": "plan_vault",
-    "lastHopTime": "2026-07-29T00:18:04.726Z",
-    "checksum": "kng-1785284284726-lucmiw"
+    "lastHopTime": "2026-07-29T05:49:09.754Z",
+    "checksum": "kng-1785304149754-vuxu1b"
   },
   "payload": {
     "meta": {
@@ -10,7 +10,7 @@
       "wakeTime": "06:00",
       "sleepTime": "00:15",
       "note": "Ngủ từ 00:15 đến 06:00 chỉ được 5 giờ 45 phút. Hãy ưu tiên ngủ trưa và cân nhắc ngủ sớm hơn để cơ thể phục hồi tốt hơn.",
-      "updatedAt": "2026-07-29T00:18:04.603Z"
+      "updatedAt": "2026-07-29T05:49:09.617Z"
     },
     "settings": {
       "fontFamily": "Times New Roman",
@@ -223,7 +223,7 @@
           },
           "wednesday": {
             "text": "Lập 3 ưu tiên trong ngày",
-            "done": false,
+            "done": true,
             "notes": "",
             "category": "health"
           },
@@ -272,7 +272,7 @@
           },
           "wednesday": {
             "text": "Làm việc / học tập tập trung",
-            "done": false,
+            "done": true,
             "notes": "",
             "category": "default"
           },
@@ -321,7 +321,7 @@
           },
           "wednesday": {
             "text": "Ăn trưa, thư giãn, hạn chế điện thoại",
-            "done": false,
+            "done": true,
             "notes": "",
             "category": "default"
           },
@@ -370,7 +370,7 @@
           },
           "wednesday": {
             "text": "Ngủ trưa 20 phút + thức dậy nhẹ nhàng",
-            "done": false,
+            "done": true,
             "notes": "",
             "category": "default"
           },

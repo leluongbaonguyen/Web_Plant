@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { getPlan, getWordFile, resetPlan as resetPlanApi, savePlan } from './api.js';
+import { getPlan, getWordFile, exportMaternalWord, resetPlan as resetPlanApi, savePlan } from './api.js';
 import { RoleProvider, useRole } from './context/RoleContext.jsx';
 import { Header } from './components/Header.jsx';
 import { LiveReminderBanner } from './components/LiveReminderBanner.jsx';
@@ -12,6 +12,8 @@ import { NoteModal } from './components/NoteModal.jsx';
 import { NotificationModal } from './components/NotificationModal.jsx';
 import { RoleSelectorModal } from './components/RoleSelectorModal.jsx';
 import { SecretAdminModal } from './components/SecretAdminModal.jsx';
+import { CheckInModal } from './components/CheckInModal.jsx';
+import { UrgentWarningModal } from './components/UrgentWarningModal.jsx';
 import { AgentWorkspaceDashboard } from './components/AgentWorkspaceDashboard.jsx';
 import { DashboardTab } from './components/tabs/DashboardTab.jsx';
 import { ScheduleTab } from './components/tabs/ScheduleTab.jsx';
@@ -43,7 +45,7 @@ function MainAppContent() {
   // Toasts
   const [toasts, setToasts] = useState([]);
 
-  // Time & Sound Alerts (Persisted in localStorage)
+  // Time & Sound Alerts
   const [currentTime, setCurrentTime] = useState(new Date());
   const [soundEnabled, setSoundEnabled] = useState(() => {
     return localStorage.getItem('sound_enabled') !== 'false';
@@ -61,9 +63,14 @@ function MainAppContent() {
     }
     return false;
   });
+
+  // Modals & Drawers
   const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
   const [showRoleModal, setShowRoleModal] = useState(false);
   const [showSecretAdminModal, setShowSecretAdminModal] = useState(false);
+  const [showCheckInModal, setShowCheckInModal] = useState(false);
+  const [showUrgentWarningModal, setShowUrgentWarningModal] = useState(false);
+
   const [isAlarmPlaying, setIsAlarmPlaying] = useState(false);
   const [alarmSecondsLeft, setAlarmSecondsLeft] = useState(60);
 
@@ -153,7 +160,7 @@ function MainAppContent() {
     getPlan()
       .then((data) => {
         setPlan(data);
-        setSaveStatus('Đã đồng bộ PC ↔ Mobile');
+        setSaveStatus('Đã đồng bộ Cloud ⚡');
         setLastSyncedTime(new Date());
       })
       .catch((err) => {
@@ -176,16 +183,16 @@ function MainAppContent() {
 
         if (localStr && remoteStr && localStr !== remoteStr) {
           setPlan(remoteData);
-          setSaveStatus('Đã đồng bộ PC ↔ Mobile');
+          setSaveStatus('Đã đồng bộ Cloud ⚡');
           setLastSyncedTime(new Date());
         }
-      } catch (err) {
+      } catch {
         // Silent catch
       }
     }, 3000);
 
     return () => clearInterval(syncInterval);
-  }, []);
+  }, [isAuthenticated]);
 
   // Update clock every 30 seconds
   useEffect(() => {
@@ -217,6 +224,15 @@ function MainAppContent() {
     }, 800);
   };
 
+  const handleUpdateProfile = (newProfile) => {
+    if (!plan) return;
+    handleUpdatePlan({
+      ...plan,
+      profile: newProfile,
+    });
+    addToast(`Đã chuyển giai đoạn chăm sóc sang: ${newProfile.mode === 'pregnant' ? '🤰 Mang Thai' : '🤱 Sau Sinh'}`, 'success');
+  };
+
   // Sync sound settings to localStorage
   useEffect(() => {
     localStorage.setItem('sound_enabled', String(soundEnabled));
@@ -226,7 +242,7 @@ function MainAppContent() {
     localStorage.setItem('sound_mode', soundMode);
   }, [soundMode]);
 
-  // Toggle desktop notifications (Persisted & Synced)
+  // Toggle desktop notifications
   const toggleDesktopNotifications = async () => {
     if (!('Notification' in window)) {
       addToast('Trình duyệt không hỗ trợ thông báo desktop', 'error');
@@ -334,7 +350,7 @@ function MainAppContent() {
   const handleDownloadJson = () => {
     if (!plan) return;
     const blob = new Blob([JSON.stringify(plan, null, 2)], { type: 'application/json' });
-    downloadBlob(blob, `Lich_Sinh_Hoat_Backup_${new Date().toISOString().slice(0, 10)}.json`);
+    downloadBlob(blob, `ChronoFlow_Maternal_Backup_${new Date().toISOString().slice(0, 10)}.json`);
     addToast('Đã tải tệp sao lưu JSON thành công!', 'success');
   };
 
@@ -361,13 +377,14 @@ function MainAppContent() {
     reader.readAsText(file);
   };
 
-  // Export Word Document
-  const handleExportWord = async () => {
+  // Export Word Document for Pregnancy / Postpartum
+  const handleExportWord = async (mode = 'pregnant') => {
     try {
-      addToast('Đang tạo tệp Word A3...', 'info');
-      const blob = await getWordFile();
-      downloadBlob(blob, `Lich_Sinh_Hoat_1_Tuan_${new Date().toISOString().slice(0, 10)}.docx`);
-      addToast('Đã tải tệp Word thành công!', 'success');
+      addToast(`Đang tạo tệp Word A3 Ngang (Font Times New Roman 13) cho giai đoạn ${mode === 'pregnant' ? 'Mang Thai' : 'Sau Sinh'}...`, 'info');
+      const blob = await exportMaternalWord(mode);
+      const fileName = mode === 'pregnant' ? `Lich_Sinh_Hoat_Mang_Thai_A3_${new Date().toISOString().slice(0, 10)}.docx` : `Lich_Sinh_Hoat_Sau_Sinh_A3_${new Date().toISOString().slice(0, 10)}.docx`;
+      downloadBlob(blob, fileName);
+      addToast('Đã xuất tệp Word A3 chuẩn y tế thành công!', 'success');
     } catch (err) {
       addToast(`Lỗi xuất Word: ${err.message}`, 'error');
     }
@@ -387,7 +404,7 @@ function MainAppContent() {
       <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-100">
         <div className="flex flex-col items-center gap-3">
           <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent"></div>
-          <p className="text-sm font-bold text-slate-400">Đang tải Lịch Sinh Hoạt...</p>
+          <p className="text-sm font-bold text-slate-400">Đang tải Lịch Sinh Hoạt Phụ Nữ Mang Thai & Sau Sinh...</p>
         </div>
       </div>
     );
@@ -415,20 +432,24 @@ function MainAppContent() {
       {/* Toast System */}
       <ToastContainer toasts={toasts} />
 
-      {/* Animated Mascots & Running Boy */}
+      {/* Animated Mascots & Ambient Icons */}
       <AnimatedMascots addToast={addToast} />
 
-      {/* AI Quản Gia Trợ Lý Thời Gian Gia Đình */}
+      {/* AI Quản Gia Trợ Lý Thời Gian & Đọc Giọng Nói */}
       <ButlerAiAssistant plan={plan} onUpdatePlan={handleUpdatePlan} addToast={addToast} />
 
       {/* Header Bar */}
       <Header
         meta={plan?.meta}
+        profile={plan?.profile}
+        onUpdateProfile={handleUpdateProfile}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onOpenRoleModal={() => setShowRoleModal(true)}
         onOpenSecretAdmin={() => setShowSecretAdminModal(true)}
         onOpenReminders={() => setShowNotificationDrawer(true)}
+        onOpenCheckIn={() => setShowCheckInModal(true)}
+        onOpenUrgentWarnings={() => setShowUrgentWarningModal(true)}
         reminderBadgeCount={liveScheduleStatus.overdueSlots.length}
         onResetPlan={handleResetPlan}
         onDownloadJson={handleDownloadJson}
@@ -459,7 +480,12 @@ function MainAppContent() {
       {/* Active Tab View Rendering */}
       <main className="w-full">
         {activeTab === 'dashboard' && (
-          <DashboardTab plan={plan} onNavigateTab={(tabId) => setActiveTab(tabId)} />
+          <DashboardTab
+            plan={plan}
+            onNavigateTab={(tabId) => setActiveTab(tabId)}
+            onOpenUrgentWarnings={() => setShowUrgentWarningModal(true)}
+            addToast={addToast}
+          />
         )}
         {activeTab === 'agent_workspace' && (
           <AgentWorkspaceDashboard
@@ -505,6 +531,28 @@ function MainAppContent() {
       <SecretAdminModal
         isOpen={showSecretAdminModal}
         onClose={() => setShowSecretAdminModal(false)}
+        addToast={addToast}
+      />
+
+      {/* Daily Health Check-In Modal */}
+      <CheckInModal
+        isOpen={showCheckInModal}
+        onClose={() => setShowCheckInModal(false)}
+        addToast={addToast}
+        onCheckInSaved={(record) => {
+          if (plan) {
+            handleUpdatePlan({
+              ...plan,
+              checkIns: [record, ...(plan.checkIns || [])],
+            });
+          }
+        }}
+      />
+
+      {/* CDC/WHO Urgent Warning Signs Modal */}
+      <UrgentWarningModal
+        isOpen={showUrgentWarningModal}
+        onClose={() => setShowUrgentWarningModal(false)}
         addToast={addToast}
       />
 

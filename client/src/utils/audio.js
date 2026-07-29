@@ -97,3 +97,51 @@ export function playSpecialAlarmSound(durationSeconds = 60, onTick = null, onEnd
     return false;
   }
 }
+
+/**
+ * Text-to-Speech (TTS) Voice Reader using Web Speech API
+ * Reads out loud text responses in natural Vietnamese.
+ */
+export function stopSpeech() {
+  if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+  }
+}
+
+export function speakText(rawText) {
+  if (typeof window === 'undefined' || !('speechSynthesis' in window) || !rawText) return;
+
+  // Cancel any ongoing speech
+  stopSpeech();
+
+  // Strip markdown, bullet points, and emojis for clean natural voice reading
+  const textToRead = rawText
+    .replace(/[\*\_~#`]+/g, '')
+    .replace(/[🌱💧🌿🧪🛡️☀️🌙🕒⚡🧘🏃🧹📅🥣⏰🎉🏷️👉⚠️🎩💡🎉🔑]/g, '')
+    .replace(/•/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  if (!textToRead) return;
+
+  try {
+    const utterance = new SpeechSynthesisUtterance(textToRead);
+    utterance.lang = 'vi-VN';
+    utterance.rate = 1.05; // Slightly natural reading speed
+    utterance.pitch = 1.0;
+
+    // Retrieve available voices and select Vietnamese if present
+    const voices = window.speechSynthesis.getVoices();
+    const viVoice = voices.find(
+      (v) => v.lang.includes('vi') || v.lang.includes('VI') || v.name.toLowerCase().includes('vietnam')
+    );
+
+    if (viVoice) {
+      utterance.voice = viVoice;
+    }
+
+    window.speechSynthesis.speak(utterance);
+  } catch {
+    // Ignore speech errors gracefully
+  }
+}

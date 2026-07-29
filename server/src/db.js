@@ -35,6 +35,36 @@ const DEFAULT_USERS = [
     createdAt: new Date().toISOString(),
   },
   {
+    id: 'usr-preg-01',
+    username: 'mangthai',
+    password: '123',
+    fullName: 'Chị Thu Hà (Tác Nhân Phụ Nữ Mang Thai)',
+    role: 'pregnant',
+    avatar: '🤰',
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'usr-post-01',
+    username: 'sausinh',
+    password: '123',
+    fullName: 'Chị Thanh Mai (Tác Nhân Phụ Nữ Sau Sinh)',
+    role: 'postpartum',
+    avatar: '🤱',
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'usr-doc-01',
+    username: 'bacti',
+    password: '123',
+    fullName: 'BS. CKII Nguyễn Thị Mai (Người Duyệt Chuyên Môn)',
+    role: 'clinician',
+    avatar: '🩺',
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString(),
+  },
+  {
     id: 'usr-editor-01',
     username: 'editor',
     password: '123',
@@ -48,7 +78,7 @@ const DEFAULT_USERS = [
     id: 'usr-viewer-01',
     username: 'viewer',
     password: '123',
-    fullName: 'Quan Sát Viên',
+    fullName: 'Quan Sát Viên Sức Khỏe',
     role: 'viewer',
     avatar: '👀',
     status: 'ACTIVE',
@@ -110,7 +140,19 @@ export async function readUsers() {
     }
     const content = readFileSync(usersFile, 'utf8');
     const parsed = JSON.parse(content);
-    const result = Array.isArray(parsed) ? parsed : DEFAULT_USERS;
+    let result = Array.isArray(parsed) ? parsed : DEFAULT_USERS;
+
+    // Ensure all DEFAULT_USERS exist in result (auto-merge missing default accounts like mangthai, sausinh, bacti)
+    let updated = false;
+    for (const defUser of DEFAULT_USERS) {
+      if (!result.some((u) => u.username === defUser.username)) {
+        result.push(defUser);
+        updated = true;
+      }
+    }
+    if (updated) {
+      safeWriteFile(usersFile, result);
+    }
 
     if (isSupabaseConfigured()) saveUsersToSupabase(result);
     return result;
