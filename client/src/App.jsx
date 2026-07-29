@@ -4,6 +4,7 @@ import { RoleProvider, useRole } from './context/RoleContext.jsx';
 import { Header } from './components/Header.jsx';
 import { LiveReminderBanner } from './components/LiveReminderBanner.jsx';
 import { AnimatedMascots } from './components/AnimatedMascots.jsx';
+import { ButlerAiAssistant } from './components/ButlerAiAssistant.jsx';
 import { MobileBottomNav } from './components/MobileBottomNav.jsx';
 import { ToastContainer } from './components/ToastContainer.jsx';
 import { NoteModal } from './components/NoteModal.jsx';
@@ -405,6 +406,9 @@ function MainAppContent() {
 
       {/* Animated Mascots & Running Boy */}
       <AnimatedMascots addToast={addToast} />
+
+      {/* AI Quản Gia Trợ Lý Thời Gian Gia Đình */}
+      <ButlerAiAssistant plan={plan} onUpdatePlan={handleUpdatePlan} addToast={addToast} />
 
       {/* Header Bar */}
       <Header
