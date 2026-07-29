@@ -97,9 +97,9 @@ app.get('/api/roles', (_req, res) => {
       },
       {
         id: 'viewer',
-        name: 'Thành viên / Xem (Viewer)',
-        description: 'Chế độ chỉ xem. Tìm kiếm, lọc, nghe chuông nhắc nhở, in và xuất file Word. Không được sửa dữ liệu.',
-        permissions: ['read', 'export'],
+        name: 'Thành viên / Viewer 👀',
+        description: 'Quyền: Xem Lịch & Tiến Độ, Chỉnh Sửa Ô Công Việc, Xóa Khung Giờ Hoạt Động, Biên Tập Mục Tiêu Tuần.',
+        permissions: ['read', 'edit_cells', 'manage_goals', 'manage_slots', 'export'],
       },
     ],
   });
@@ -113,7 +113,7 @@ app.get('/api/plan', async (_req, res, next) => {
   }
 });
 
-app.put('/api/plan', requireRole('admin', 'editor'), async (req, res, next) => {
+app.put('/api/plan', requireRole('admin', 'editor', 'viewer'), async (req, res, next) => {
   try {
     const currentPlan = await readPlan();
     

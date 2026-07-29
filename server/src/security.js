@@ -80,6 +80,9 @@ export const PERMISSION_MATRIX = {
   ],
   viewer: [
     'PERM_READ_SCHEDULE',
+    'PERM_EDIT_CELL',
+    'PERM_DELETE_SLOT',
+    'PERM_MANAGE_GOALS',
     'PERM_EXPORT_WORD',
   ],
 };
