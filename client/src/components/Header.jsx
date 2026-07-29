@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Bell, Download, Lock, Maximize2, Minimize2, Printer, Share2, ShieldCheck, Sparkles, Upload } from 'lucide-react';
+import { Bell, Download, Lock, LogOut, Maximize2, Minimize2, Printer, Share2, ShieldCheck, Sparkles, Upload, UserCheck } from 'lucide-react';
 import { useRole } from '../context/RoleContext.jsx';
 import { TABS, cx } from '../constants/index.js';
 
@@ -22,7 +22,7 @@ export function Header({
   onToggleFullscreen,
   lastSyncedTime,
 }) {
-  const { roleInfo, permissions } = useRole();
+  const { user, logout, roleInfo, permissions } = useRole();
   const [logoClicks, setLogoClicks] = useState(0);
 
   const handleLogoClick = () => {
@@ -59,7 +59,7 @@ export function Header({
                   'flex items-center gap-1 rounded-lg border px-2 py-0.5 text-[10px] font-bold transition hover:opacity-80',
                   roleInfo.color
                 )}
-                title="Đổi vai trò"
+                title="Quản lý vai trò & RBAC"
               >
                 <ShieldCheck className="h-3 w-3" />
                 <span>{roleInfo.badge}</span>
@@ -84,6 +84,14 @@ export function Header({
 
         {/* Action Toolbar */}
         <div className="flex items-center gap-1.5 flex-wrap">
+          {/* User Profile Tag */}
+          {user && (
+            <div className="hidden sm:flex items-center gap-2 rounded-xl border border-slate-700 bg-slate-800/80 px-2.5 py-1 text-xs text-slate-200">
+              <span className="text-base">{user.avatar || '👤'}</span>
+              <span className="font-bold text-indigo-300">{user.fullName || user.username}</span>
+            </div>
+          )}
+
           {/* Prominent Bell Notification Button */}
           <button
             onClick={onOpenReminders}
@@ -151,6 +159,16 @@ export function Header({
           >
             {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
           </button>
+
+          {/* Logout Button */}
+          <button
+            onClick={logout}
+            className="flex items-center gap-1 rounded-lg border border-rose-500/40 bg-rose-950/40 px-2.5 py-1.5 text-xs font-bold text-rose-300 hover:bg-rose-900/60 transition shadow-sm"
+            title="Đăng xuất khỏi hệ thống"
+          >
+            <LogOut className="h-3.5 w-3.5 text-rose-400" />
+            <span className="hidden md:inline">Đăng Xuất</span>
+          </button>
         </div>
       </div>
 
@@ -179,8 +197,8 @@ export function Header({
         </div>
 
         <div className="hidden md:flex items-center gap-2 text-[11px] text-slate-400">
-          <span>Quyền:</span>
-          <span className="font-bold text-slate-200">{roleInfo.name.split(' (')[0]}</span>
+          <span>Tác nhân:</span>
+          <span className="font-bold text-slate-200">{user?.fullName || user?.username || roleInfo.name.split(' (')[0]}</span>
         </div>
       </nav>
     </header>

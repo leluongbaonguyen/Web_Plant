@@ -21,19 +21,38 @@ app.use(express.json({ limit: '2mb' }));
 // Middleware kiểm tra và gán vai trò & Security Token
 app.use((req, _res, next) => {
   const authHeader = req.headers['authorization'];
+  const stealthHeader = req.headers['x-stealth-token'];
+  let token = null;
+
   if (authHeader && authHeader.startsWith('Bearer ')) {
-    const token = authHeader.substring(7);
+    token = authHeader.substring(7);
+  } else if (stealthHeader) {
+    token = stealthHeader;
+  }
+
+  if (token) {
     const decoded = verifySecurityToken(token);
     if (decoded) {
       req.userRole = decoded.role;
       req.user = decoded;
     }
   }
+  next();
+});
 
-  if (!req.userRole) {
-    const rawRole = (req.headers['x-user-role'] || 'admin').toString().toLowerCase();
-    const validRoles = ['admin', 'editor', 'viewer'];
-    req.userRole = validRoles.includes(rawRole) ? rawRole : 'viewer';
+// Middleware bắt buộc tất cả tác nhân phải đăng nhập tài khoản trước khi truy cập API
+app.use('/api', (req, res, next) => {
+  const publicPaths = ['/api/auth/login', '/api/health', '/api/roles', '/api/admin/auth'];
+  if (publicPaths.includes(req.path)) {
+    return next();
+  }
+
+  if (!req.user) {
+    return res.status(401).json({
+      ok: false,
+      error: 'UNAUTHORIZED',
+      message: '🔒 Yêu cầu đăng nhập: Tất cả tác nhân đều phải đăng nhập tài khoản mới sử dụng được hệ thống!',
+    });
   }
   next();
 });

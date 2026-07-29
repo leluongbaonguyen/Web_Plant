@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { getApiRole, setApiRole } from '../api.js';
+import { getApiRole, setApiRole, loginAgent, setAuthToken, getAuthToken } from '../api.js';
 import { ROLES } from '../constants/index.js';
 
 const RoleContext = createContext(null);
@@ -34,19 +34,75 @@ export const PERMISSION_MATRIX = {
 };
 
 export function RoleProvider({ children }) {
-  const [role, setRole] = useState(getApiRole() || 'admin');
+  const [user, setUser] = useState(() => {
+    try {
+      const saved = localStorage.getItem('chrono_user');
+      return saved ? JSON.parse(saved) : null;
+    } catch {
+      return null;
+    }
+  });
+
+  const [token, setToken] = useState(() => getAuthToken() || '');
+  const [role, setRole] = useState(() => user?.role || getApiRole() || 'admin');
 
   useEffect(() => {
-    setApiRole(role);
-  }, [role]);
+    if (user?.role) {
+      setRole(user.role);
+      setApiRole(user.role);
+    }
+  }, [user]);
+
+  useEffect(() => {
+    const handleUnauthorized = () => {
+      logout();
+    };
+    window.addEventListener('chrono_unauthorized', handleUnauthorized);
+    return () => window.removeEventListener('chrono_unauthorized', handleUnauthorized);
+  }, []);
+
+  const login = async (username, password) => {
+    const res = await loginAgent(username, password);
+    if (res.ok && res.token && res.user) {
+      setAuthToken(res.token);
+      setApiRole(res.user.role);
+      setUser(res.user);
+      setToken(res.token);
+      setRole(res.user.role);
+      localStorage.setItem('chrono_user', JSON.stringify(res.user));
+    }
+    return res;
+  };
+
+  const loginWithSession = (userData, userToken) => {
+    setAuthToken(userToken);
+    setApiRole(userData.role);
+    setUser(userData);
+    setToken(userToken);
+    setRole(userData.role);
+    localStorage.setItem('chrono_user', JSON.stringify(userData));
+  };
+
+  const logout = () => {
+    setAuthToken('');
+    setUser(null);
+    setToken('');
+    localStorage.removeItem('chrono_user');
+  };
 
   const switchRole = (newRole) => {
     if (ROLES[newRole]) {
       setRole(newRole);
       setApiRole(newRole);
+      if (user) {
+        const updated = { ...user, role: newRole };
+        setUser(updated);
+        localStorage.setItem('chrono_user', JSON.stringify(updated));
+      }
     }
   };
 
+  const isAuthenticated = Boolean(user && token);
   const roleInfo = ROLES[role] || ROLES.admin;
   const activePermissions = PERMISSION_MATRIX[role] || PERMISSION_MATRIX.viewer;
 
@@ -69,6 +125,12 @@ export function RoleProvider({ children }) {
   return (
     <RoleContext.Provider
       value={{
+        user,
+        token,
+        isAuthenticated,
+        login,
+        loginWithSession,
+        logout,
         role,
         roleInfo,
         permissions,

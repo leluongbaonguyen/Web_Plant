@@ -18,11 +18,12 @@ import { ScheduleTab } from './components/tabs/ScheduleTab.jsx';
 import { GoalsTab } from './components/tabs/GoalsTab.jsx';
 import { SummaryTab } from './components/tabs/SummaryTab.jsx';
 import { DocsTab } from './components/tabs/DocsTab.jsx';
+import { LoginPortal } from './components/LoginPortal.jsx';
 import { downloadBlob, getCurrentDayKey, timeToMinutes, uid } from './constants/index.js';
 import { playChimeSound, playSpecialAlarmSound, stopSpecialAlarmSound } from './utils/audio.js';
 
 function MainAppContent() {
-  const { role, permissions } = useRole();
+  const { role, permissions, isAuthenticated } = useRole();
 
   const [plan, setPlan] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -144,6 +145,10 @@ function MainAppContent() {
 
   // Initial plan load
   useEffect(() => {
+    if (!isAuthenticated) {
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     getPlan()
       .then((data) => {
@@ -156,10 +161,11 @@ function MainAppContent() {
         addToast('Lỗi kết nối máy chủ', 'error');
       })
       .finally(() => setLoading(false));
-  }, []);
+  }, [isAuthenticated]);
 
   // Real-Time Cross-Device Polling Synchronizer (3 seconds interval)
   useEffect(() => {
+    if (!isAuthenticated) return;
     const syncInterval = setInterval(async () => {
       if (isSavingRef.current) return;
 
@@ -371,6 +377,10 @@ function MainAppContent() {
   const handlePrint = () => {
     window.print();
   };
+
+  if (!isAuthenticated) {
+    return <LoginPortal addToast={addToast} />;
+  }
 
   if (loading) {
     return (

@@ -1,10 +1,26 @@
 {
   "_kangaroo_meta": {
     "vault": "audit_vault",
-    "lastHopTime": "2026-07-29T00:05:09.526Z",
-    "checksum": "kng-1785283509526-9newfd"
+    "lastHopTime": "2026-07-29T04:29:22.757Z",
+    "checksum": "kng-1785299362757-fuu4ve"
   },
   "payload": [
+    {
+      "id": "log-1785299362556-95q9",
+      "timestamp": "2026-07-29T04:29:22.556Z",
+      "event": "AUTH_LOGIN_SUCCESS",
+      "details": "Tác nhân 'Quan Sat Viên' (VIEWER) đăng nhập thành công với Token HMAC",
+      "username": "viewer",
+      "ip": "::1"
+    },
+    {
+      "id": "log-1785299336942-t8pd",
+      "timestamp": "2026-07-29T04:28:56.942Z",
+      "event": "AUTH_LOGIN_SUCCESS",
+      "details": "Tác nhân 'Quản Trị Viên Tối Cao' (ADMIN) đăng nhập thành công với Token HMAC",
+      "username": "admin",
+      "ip": "::1"
+    },
     {
       "id": "log-1785283509331-jf7l",
       "timestamp": "2026-07-29T00:05:09.331Z",

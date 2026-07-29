@@ -1,6 +1,7 @@
 const JSON_HEADERS = { 'Content-Type': 'application/json' };
 let activeRole = localStorage.getItem('chrono_user_role') || 'admin';
 let stealthToken = localStorage.getItem('chrono_stealth_token') || '';
+let authToken = localStorage.getItem('chrono_auth_token') || '';
 
 export function setApiRole(role) {
   activeRole = role;
@@ -9,6 +10,19 @@ export function setApiRole(role) {
 
 export function getApiRole() {
   return activeRole;
+}
+
+export function setAuthToken(token) {
+  authToken = token || '';
+  if (token) {
+    localStorage.setItem('chrono_auth_token', token);
+  } else {
+    localStorage.removeItem('chrono_auth_token');
+  }
+}
+
+export function getAuthToken() {
+  return authToken;
 }
 
 export function setStealthToken(token) {
@@ -26,6 +40,7 @@ async function request(url, options = {}) {
     ...JSON_HEADERS,
     'x-user-role': activeRole,
     'x-stealth-token': stealthToken,
+    ...(authToken ? { Authorization: `Bearer ${authToken}` } : {}),
     ...(options.headers || {}),
   };
 
@@ -37,6 +52,10 @@ async function request(url, options = {}) {
       message = body.message || message;
     } catch {
       // Ignore JSON parse error
+    }
+    if (response.status === 401) {
+      setAuthToken('');
+      window.dispatchEvent(new CustomEvent('chrono_unauthorized', { detail: { message } }));
     }
     throw new Error(message);
   }
