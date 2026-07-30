@@ -1,8 +1,8 @@
 {
   "_kangaroo_meta": {
     "vault": "plan_vault",
-    "lastHopTime": "2026-07-30T14:05:49.045Z",
-    "checksum": "kng-1785420349045-ua5sm1"
+    "lastHopTime": "2026-07-30T14:33:00.047Z",
+    "checksum": "kng-1785421980047-46a9ba"
   },
   "payload": {
     "meta": {
@@ -10,7 +10,7 @@
       "wakeTime": "06:00",
       "sleepTime": "00:15",
       "note": "Ngủ từ 00:15 đến 06:00 chỉ được 5 giờ 45 phút. Hãy ưu tiên ngủ trưa và cân nhắc ngủ sớm hơn để cơ thể phục hồi tốt hơn.",
-      "updatedAt": "2026-07-30T14:05:49.040Z"
+      "updatedAt": "2026-07-30T14:32:59.468Z"
     },
     "settings": {
       "fontFamily": "Times New Roman",

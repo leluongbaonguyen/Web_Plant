@@ -3,7 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createDefaultPlan } from './defaultPlan.js';
 import { writeKangarooVault } from './kangarooDb.js';
-import { fetchPlanFromSupabase, isSupabaseConfigured, savePlanToSupabase } from './supabase.js';
+import { fetchKidsProgressFromSupabase, fetchPlanFromSupabase, isSupabaseConfigured, saveKidsProgressToSupabase, savePlanToSupabase } from './supabase.js';
 import { createStateSnapshot } from './snapshots.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -74,6 +74,11 @@ export async function resetPlan(username = 'SYSTEM', role = 'admin') {
 const kidsProgressFile = path.join(dataDir, 'kids_progress.json');
 
 export async function readKidsProgress() {
+  if (isSupabaseConfigured()) {
+    const cloudProgress = await fetchKidsProgressFromSupabase();
+    if (cloudProgress) return cloudProgress;
+  }
+
   await mkdir(dataDir, { recursive: true });
   try {
     const raw = await readFile(kidsProgressFile, 'utf8');
@@ -96,8 +101,14 @@ export async function writeKidsProgress(progressData) {
     ...progressData,
     updatedAt: new Date().toISOString(),
   };
+
+  if (isSupabaseConfigured()) {
+    await saveKidsProgressToSupabase(updated);
+  }
+
   await writeFile(kidsProgressFile, JSON.stringify(updated, null, 2), 'utf8');
   writeKangarooVault('kids_progress_vault', updated);
   return updated;
 }
+
 

@@ -1,6 +1,10 @@
 {
-  "stars": 42,
-  "masteredCards": [],
+  "stars": 40,
+  "masteredCards": [
+    "vocab-1",
+    "vocab-2",
+    "vocab-3"
+  ],
   "quizScore": 0,
-  "updatedAt": "2026-07-30T14:05:25.852Z"
+  "updatedAt": "2026-07-30T14:45:09.458Z"
 }

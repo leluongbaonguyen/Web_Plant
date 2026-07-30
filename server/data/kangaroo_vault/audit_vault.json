@@ -1,10 +1,18 @@
 {
   "_kangaroo_meta": {
     "vault": "audit_vault",
-    "lastHopTime": "2026-07-30T14:00:40.734Z",
-    "checksum": "kng-1785420040734-uzueph"
+    "lastHopTime": "2026-07-30T14:15:40.245Z",
+    "checksum": "kng-1785420940246-xhjmd6"
   },
   "payload": [
+    {
+      "id": "log-1785420940239-rb4k",
+      "timestamp": "2026-07-30T14:15:40.239Z",
+      "event": "AUTH_LOGIN_SUCCESS",
+      "details": "Tác nhân 'Bé Bắp (Tác Nhân Học Tiếng Anh Flashcard)' (KIDS_ENGLISH) đăng nhập thành công với Token HMAC",
+      "username": "behoctienganh",
+      "ip": "::1"
+    },
     {
       "id": "log-1785420040731-7c6r",
       "timestamp": "2026-07-30T14:00:40.731Z",

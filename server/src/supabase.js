@@ -303,3 +303,61 @@ export async function deleteSnapshotFromSupabase(snapshotId) {
   }
 }
 
+// ----------------------------------------------------
+// 5. KIDS LEARNING PROGRESS SUPABASE ENGINE
+// ----------------------------------------------------
+
+export async function fetchKidsProgressFromSupabase() {
+  if (!supabase || isSupabaseDisabled) return null;
+  try {
+    const { data, error } = await supabase
+      .from('app_kids_progress')
+      .select('*')
+      .eq('id', 'main_progress')
+      .single();
+
+    if (error) {
+      if (error.code !== 'PGRST116') handleSupabaseError(error, 'KIDS PROGRESS FETCH');
+      return null;
+    }
+    return data
+      ? {
+          stars: data.stars || 0,
+          masteredCards: data.mastered_cards || [],
+          quizScore: data.quiz_score || 0,
+          updatedAt: data.updated_at,
+        }
+      : null;
+  } catch (err) {
+    handleSupabaseError(err, 'KIDS PROGRESS FETCH EXCEPTION');
+    return null;
+  }
+}
+
+export async function saveKidsProgressToSupabase(progressData) {
+  if (!supabase || isSupabaseDisabled) return null;
+  try {
+    const row = {
+      id: 'main_progress',
+      stars: progressData.stars || 0,
+      mastered_cards: progressData.masteredCards || [],
+      quiz_score: progressData.quizScore || 0,
+      updated_at: new Date().toISOString(),
+    };
+
+    const { data, error } = await supabase
+      .from('app_kids_progress')
+      .upsert([row], { onConflict: 'id' });
+
+    if (error) {
+      handleSupabaseError(error, 'KIDS PROGRESS SAVE');
+      return null;
+    }
+    return data;
+  } catch (err) {
+    handleSupabaseError(err, 'KIDS PROGRESS SAVE EXCEPTION');
+    return null;
+  }
+}
+
+

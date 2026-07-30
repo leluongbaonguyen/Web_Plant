@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import {
   Volume2, Sparkles, Award, Star, RefreshCw, CheckCircle2, Heart, HelpCircle,
   Gamepad2, BookOpen, Smile, RotateCw, Play, Trophy, Flame, Music, Layers, Search,
@@ -12,14 +12,23 @@ export function KidsEnglishDashboard({ plan, addToast }) {
   const [selectedLevel, setSelectedLevel] = useState('all'); // 'all' | 'L1' | 'L2' | 'L3' | 'L4'
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
+  const [activeTab, setActiveTab] = useState('flashcards'); // 'flashcards' | 'quiz' | 'review_cycles' | 'vocab_manager'
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
 
-  // 2,000 Vocabulary Custom Editable Database State & Persistence
+  // 600 Vocabulary Expanded Database State & Persistence
   const [vocabDatabase, setVocabDatabase] = useState(() => {
     try {
       const saved = localStorage.getItem('kids_custom_vocabulary_2000');
-      return saved ? JSON.parse(saved) : VOCABULARY_DATABASE;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length < VOCABULARY_DATABASE.length) {
+          localStorage.setItem('kids_custom_vocabulary_2000', JSON.stringify(VOCABULARY_DATABASE));
+          return VOCABULARY_DATABASE;
+        }
+        return parsed;
+      }
+      return VOCABULARY_DATABASE;
     } catch {
       return VOCABULARY_DATABASE;
     }
@@ -33,6 +42,17 @@ export function KidsEnglishDashboard({ plan, addToast }) {
       console.error('Error saving custom vocabulary database:', e);
     }
   };
+
+  // Spaced Repetition Review Cycle State (1, 3, 7, 14, 30 Days)
+  const [reviewDayFilter, setReviewDayFilter] = useState(1); // 1 | 3 | 7 | 14 | 30
+  const [ageGroupTarget, setAgeGroupTarget] = useState('4-6'); // '4-6' (5 words/day) | '7-10' (8-10 words/day)
+
+  // Autoplay Flashcards Engine (30s Auto Advance Individual Single Cards)
+  const [isAutoPlay, setIsAutoPlay] = useState(false);
+  const [autoPlaySeconds, setAutoPlaySeconds] = useState(30);
+  const [autoPlayTimer, setAutoPlayTimer] = useState(30);
+  const [autoPlayIndex, setAutoPlayIndex] = useState(0);
+
 
   // Admin Vocabulary Edit Form Modal States
   const [showVocabModal, setShowVocabModal] = useState(false);
@@ -73,8 +93,6 @@ export function KidsEnglishDashboard({ plan, addToast }) {
       return 0;
     }
   });
-
-  const [activeTab, setActiveTab] = useState('flashcards'); // 'flashcards' | 'quiz' | 'vocab_manager'
 
   // Spotlight Enlarged Card State
   const [spotlightCard, setSpotlightCard] = useState(null);
@@ -471,7 +489,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     }, 1800);
   };
 
-  // Filter 2,000 Vocabulary Database
+  // Filter Vocabulary Database (Preserves Strict Original Curriculum Order)
   const filteredDatabase = useMemo(() => {
     return vocabDatabase.filter((item) => {
       const matchLevel = selectedLevel === 'all' || item.level === selectedLevel;
@@ -491,6 +509,45 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     const startIdx = (currentPage - 1) * pageSize;
     return filteredDatabase.slice(startIdx, startIdx + pageSize);
   }, [filteredDatabase, currentPage]);
+
+  // Ref to always track latest spotlightCard without causing double-step state mutations
+  const spotlightCardRef = useRef(spotlightCard);
+  useEffect(() => {
+    spotlightCardRef.current = spotlightCard;
+  }, [spotlightCard]);
+
+  // 100% Strictly Sequential Autoplay Engine (Exact +1 step per interval)
+  useEffect(() => {
+    let interval = null;
+    if (isAutoPlay && activeTab === 'flashcards' && filteredDatabase.length > 0) {
+      interval = setInterval(() => {
+        setAutoPlayTimer((prev) => {
+          if (prev <= 1) {
+            const currentCard = spotlightCardRef.current;
+            const currentIdx = currentCard ? filteredDatabase.findIndex((c) => c.id === currentCard.id) : -1;
+            const nextIndex = currentIdx >= 0 ? (currentIdx + 1) % filteredDatabase.length : 0;
+            const nextCard = filteredDatabase[nextIndex];
+            if (nextCard) {
+              setSpotlightCard(nextCard);
+              setCurrentPage(Math.floor(nextIndex / pageSize) + 1);
+              try {
+                playWordAudio(nextCard.word);
+              } catch (e) {
+                console.warn('Audio play error:', e);
+              }
+            }
+            return autoPlaySeconds;
+          }
+          return prev - 1;
+        });
+      }, 1000);
+    } else {
+      setAutoPlayTimer(autoPlaySeconds);
+    }
+    return () => {
+      if (interval) clearInterval(interval);
+    };
+  }, [isAutoPlay, activeTab, autoPlaySeconds, filteredDatabase, pageSize]);
 
   const handleLevelChange = (levelId) => {
     setSelectedLevel(levelId);
@@ -801,7 +858,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
         </div>
       </div>
 
-      {/* Main Feature Tabs (Flashcard Gallery vs Timed Quiz Game vs AI Manager) */}
+      {/* Main Feature Tabs (Flashcard Gallery vs Timed Quiz Game vs Spaced Repetition Review vs AI Manager) */}
       <div className="flex flex-wrap rounded-2xl bg-slate-950 p-1.5 border border-slate-800 gap-1">
         <button
           onClick={() => setActiveTab('flashcards')}
@@ -810,7 +867,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           }`}
         >
           <BookOpen className="h-4 w-4" />
-          <span>Bảo Tàng 2000 Từ Vựng Flashcard</span>
+          <span>📚 Kho 600 Từ Vựng (60 Chủ Đề)</span>
         </button>
 
         <button
@@ -820,7 +877,17 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           }`}
         >
           <Gamepad2 className="h-4 w-4 text-yellow-300 animate-pulse" />
-          <span>2000 Bài Tập Đấu Trí Có Thời Gian ⏰</span>
+          <span>🎮 600 Bài Tập & Trò Chơi ⏰</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('review_cycles')}
+          className={`flex-1 py-3 px-4 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 ${
+            activeTab === 'review_cycles' ? 'bg-gradient-to-r from-amber-600 via-orange-600 to-amber-700 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <RotateCw className="h-4 w-4 text-amber-300" />
+          <span>🔄 Chu Kỳ Ôn Tập 5 Bước (1 - 30 Ngày)</span>
         </button>
 
         <button
@@ -830,7 +897,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           }`}
         >
           <Settings className="h-4 w-4 text-emerald-300" />
-          <span>⚙️ Quản Lý Kho 2,000 Từ Vựng (Admin)</span>
+          <span>⚙️ Quản Lý Kho 600 Từ (Admin)</span>
         </button>
 
         <button
@@ -838,7 +905,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           className="py-3 px-5 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 bg-gradient-to-r from-amber-600 via-pink-600 to-purple-600 text-white shadow-xl hover:scale-105"
         >
           <Bot className="h-4.5 w-4.5 text-yellow-300 animate-bounce" />
-          <span>🤖 AI Quản Lý & Nhắc Học Minh Anh</span>
+          <span>🤖 AI Nhắc Học Minh Anh</span>
         </button>
       </div>
 
@@ -847,6 +914,104 @@ export function KidsEnglishDashboard({ plan, addToast }) {
       {/* ========================================================================= */}
       {activeTab === 'flashcards' && (
         <div className="space-y-5">
+          {/* Autoplay Flashcard Controls Bar (30s Auto Advance All - Adorable Pink Theme) */}
+          <div className="rounded-3xl border-2 border-pink-400/60 bg-gradient-to-r from-pink-950/90 via-slate-950 to-purple-950/90 p-4 md:p-5 shadow-2xl space-y-3 shadow-pink-500/20 backdrop-blur-xl">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="flex flex-wrap items-center gap-3">
+                <button
+                  onClick={() => {
+                    const nextState = !isAutoPlay;
+                    setIsAutoPlay(nextState);
+                    setAutoPlayTimer(autoPlaySeconds);
+
+                    if (nextState && filteredDatabase.length > 0) {
+                      const curIdx = spotlightCard ? filteredDatabase.findIndex((c) => c.id === spotlightCard.id) : 0;
+                      const startIdx = curIdx >= 0 ? curIdx : 0;
+                      const targetCard = filteredDatabase[startIdx];
+                      if (targetCard) {
+                        setSpotlightCard(targetCard);
+                        setCurrentPage(Math.floor(startIdx / pageSize) + 1);
+                        try {
+                          playWordAudio(targetCard.word);
+                        } catch (e) {
+                          console.warn('Audio play error:', e);
+                        }
+                      }
+                    }
+
+                    if (addToast) {
+                      addToast(
+                        nextState
+                          ? `▶️ Đã BẬT chế độ tự động chuyển theo thứ tự từng từ sau mỗi ${autoPlaySeconds}s!`
+                          : '⏸️ Đã TẠM DỪNG tự động chuyển Flashcard.',
+                        nextState ? 'success' : 'info'
+                      );
+                    }
+                  }}
+                  className={`flex items-center gap-2 px-5 py-3 rounded-2xl text-xs md:text-sm font-black transition shadow-xl active:scale-95 ${
+                    isAutoPlay
+                      ? 'bg-gradient-to-r from-amber-400 via-orange-400 to-pink-500 text-slate-950 animate-pulse border-2 border-yellow-200'
+                      : 'bg-gradient-to-r from-pink-600 via-rose-500 to-purple-600 text-white hover:from-pink-500 hover:to-rose-400 shadow-pink-500/30'
+                  }`}
+                >
+                  {isAutoPlay ? (
+                    <>
+                      <Zap className="h-4 w-4 fill-slate-950" />
+                      <span>⏸️ TẠM DỪNG CHUYỂN TỪNG TỪ</span>
+                    </>
+                  ) : (
+                    <>
+                      <Play className="h-4 w-4 fill-white" />
+                      <span>▶️ BẬT TỰ ĐỘNG CHUYỂN TỪNG FLASHCARD ({autoPlaySeconds}s/TỪ) 🌸</span>
+                    </>
+                  )}
+                </button>
+
+                {/* Autoplay Time Selector */}
+                <div className="flex items-center gap-1 rounded-2xl bg-pink-950/80 p-1 border border-pink-500/40 text-xs font-bold shadow-md">
+                  {[10, 15, 30].map((sec) => (
+                    <button
+                      key={sec}
+                      onClick={() => {
+                        setAutoPlaySeconds(sec);
+                        setAutoPlayTimer(sec);
+                      }}
+                      className={`px-3 py-1.5 rounded-xl transition ${
+                        autoPlaySeconds === sec ? 'bg-gradient-to-r from-pink-400 to-rose-400 text-slate-950 font-black shadow-md' : 'text-pink-300 hover:text-white'
+                      }`}
+                    >
+                      {sec}s
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Live Countdown Progress Display */}
+              <div className="flex items-center gap-2 text-xs font-mono-code font-bold text-pink-200 bg-pink-950/60 px-3 py-1.5 rounded-2xl border border-pink-500/30">
+                <Clock className={`h-4 w-4 ${isAutoPlay ? 'text-pink-400 animate-spin-slow' : 'text-slate-500'}`} />
+                <span>
+                  {isAutoPlay ? (
+                    <span className="text-pink-300">
+                      Tự động phát & chuyển từ tiếp theo sau: <strong className="text-white text-sm animate-pulse">{autoPlayTimer}s</strong>
+                    </span>
+                  ) : (
+                    <span className="text-slate-400">Chế độ tự động chuyển từng card đang dừng</span>
+                  )}
+                </span>
+              </div>
+            </div>
+
+            {/* Countdown Visual Progress Bar */}
+            {isAutoPlay && (
+              <div className="h-2 w-full bg-slate-950 rounded-full border border-slate-800 overflow-hidden">
+                <div
+                  className="h-full bg-gradient-to-r from-amber-400 via-orange-500 to-amber-300 transition-all duration-1000"
+                  style={{ width: `${(autoPlayTimer / autoPlaySeconds) * 100}%` }}
+                ></div>
+              </div>
+            )}
+          </div>
+
           {/* Search & Topic Filters Bar */}
           <div className="flex flex-col md:flex-row gap-3 items-stretch justify-between">
             {/* Search Input Box */}
@@ -854,7 +1019,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
               <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
               <input
                 type="text"
-                placeholder="Tra cứu từ vựng 2000 từ (ví dụ: Apple, Dog, Sư tử, Quả cam)..."
+                placeholder="Tra cứu từ vựng 600 từ (ví dụ: Apple, Dog, Sư tử, Quả cam)..."
                 value={searchQuery}
                 onChange={(e) => {
                   setSearchQuery(e.target.value);
@@ -875,7 +1040,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
             {/* Results Count Badge */}
             <div className="flex items-center gap-2 bg-slate-950 px-4 py-2.5 rounded-2xl border border-slate-800 text-xs font-bold text-slate-300">
               <Sparkles className="h-4 w-4 text-yellow-400" />
-              <span>Tìm thấy: <strong className="text-cyan-300 font-mono-code">{filteredDatabase.length}</strong> / 2000 từ</span>
+              <span>Tìm thấy: <strong className="text-cyan-300 font-mono-code">{filteredDatabase.length}</strong> / 600 từ</span>
             </div>
           </div>
 
@@ -1406,7 +1571,158 @@ export function KidsEnglishDashboard({ plan, addToast }) {
       )}
 
       {/* ========================================================================= */}
-      {/* VIEW 3: ADMIN VOCABULARY DATABASE MANAGER (CRUD 2,000 WORDS) */}
+      {/* VIEW: SPACED REPETITION REVIEW CYCLES (5 STEPS & 1-30 DAYS) */}
+      {/* ========================================================================= */}
+      {activeTab === 'review_cycles' && (
+        <div className="space-y-6 animate-fadeIn font-sans">
+          {/* 5-Step Learning Method Banner */}
+          <div className="glass-panel rounded-3xl border border-amber-500/40 bg-gradient-to-br from-amber-950/40 via-slate-900 to-slate-950 p-6 md:p-8 shadow-2xl space-y-6">
+            <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border-b border-amber-500/20 pb-4">
+              <div className="space-y-1">
+                <div className="inline-flex items-center gap-2 rounded-full border border-amber-500/40 bg-amber-500/20 px-3.5 py-1 text-xs font-black text-amber-300">
+                  <RotateCw className="h-3.5 w-3.5 text-amber-400 animate-spin-slow" />
+                  <span>PHƯƠNG PHÁP HỌC THEO CHU KỲ 5 BƯỚC</span>
+                </div>
+                <h3 className="text-xl md:text-2xl font-black font-heading text-white">
+                  ÔN TẬP CÁCH QUÃNG 1 - 3 - 7 - 14 - 30 NGÀY FOR KIDS
+                </h3>
+                <p className="text-xs text-amber-200/80">
+                  Chinh phục 600 từ vựng theo tần suất lặp lại khoảng cách khoa học giúp con ghi nhớ lâu dài!
+                </p>
+              </div>
+
+              {/* Daily Target Age Selector */}
+              <div className="flex items-center gap-2 rounded-2xl bg-slate-950 p-1.5 border border-slate-800 text-xs">
+                <button
+                  onClick={() => setAgeGroupTarget('4-6')}
+                  className={`px-3 py-1.5 rounded-xl font-bold transition ${
+                    ageGroupTarget === '4-6' ? 'bg-amber-500 text-slate-950 font-black shadow-md' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  👶 4–6 Tuổi (5 từ / 10–15 phút)
+                </button>
+                <button
+                  onClick={() => setAgeGroupTarget('7-10')}
+                  className={`px-3 py-1.5 rounded-xl font-bold transition ${
+                    ageGroupTarget === '7-10' ? 'bg-amber-500 text-slate-950 font-black shadow-md' : 'text-slate-400 hover:text-white'
+                  }`}
+                >
+                  👦 7–10 Tuổi (8–10 từ / 15–25 phút)
+                </button>
+              </div>
+            </div>
+
+            {/* 5 Steps Roadmap Graphic */}
+            <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
+              <div className="rounded-2xl border border-amber-500/30 bg-slate-950/80 p-3 text-center space-y-1.5">
+                <div className="text-2xl">👁️</div>
+                <div className="text-xs font-black text-amber-300">BƯỚC 1</div>
+                <div className="text-[11px] text-slate-300 font-bold">Nhìn Icon & Đoán nghĩa</div>
+              </div>
+              <div className="rounded-2xl border border-cyan-500/30 bg-slate-950/80 p-3 text-center space-y-1.5">
+                <div className="text-2xl">🎧</div>
+                <div className="text-xs font-black text-cyan-300">BƯỚC 2</div>
+                <div className="text-[11px] text-slate-300 font-bold">Nghe hoặc Đọc từ vựng</div>
+              </div>
+              <div className="rounded-2xl border border-pink-500/30 bg-slate-950/80 p-3 text-center space-y-1.5">
+                <div className="text-2xl">🗣️</div>
+                <div className="text-xs font-black text-pink-300">BƯỚC 3</div>
+                <div className="text-[11px] text-slate-300 font-bold">Nhắc lại 3 lần (Máy AI)</div>
+              </div>
+              <div className="rounded-2xl border border-emerald-500/30 bg-slate-950/80 p-3 text-center space-y-1.5">
+                <div className="text-2xl">📝</div>
+                <div className="text-xs font-black text-emerald-300">BƯỚC 4</div>
+                <div className="text-[11px] text-slate-300 font-bold">Sử dụng trong câu mẫu</div>
+              </div>
+              <div className="rounded-2xl border border-purple-500/30 bg-slate-950/80 p-3 text-center space-y-1.5">
+                <div className="text-2xl">🔄</div>
+                <div className="text-xs font-black text-purple-300">BƯỚC 5</div>
+                <div className="text-[11px] text-slate-300 font-bold">Kiểm tra sau 1-30 ngày</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Spaced Interval Filters */}
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-bold text-slate-400">Chọn mốc kiểm tra:</span>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { day: 1, label: 'Ngày 1 (24 giờ)', icon: '🌱' },
+                  { day: 3, label: 'Ngày 3 (Củng cố)', icon: '🌿' },
+                  { day: 7, label: 'Ngày 7 (1 Tuần)', icon: '🌳' },
+                  { day: 14, label: 'Ngày 14 (2 Tuần)', icon: '⭐' },
+                  { day: 30, label: 'Ngày 30 (1 Tháng)', icon: '👑' },
+                ].map((item) => (
+                  <button
+                    key={item.day}
+                    onClick={() => setReviewDayFilter(item.day)}
+                    className={`flex items-center gap-1.5 px-4 py-2 rounded-2xl text-xs font-black transition border ${
+                      reviewDayFilter === item.day
+                        ? 'bg-amber-500 border-amber-400 text-slate-950 shadow-lg scale-105'
+                        : 'bg-slate-900 border-slate-800 text-slate-300 hover:border-slate-700'
+                    }`}
+                  >
+                    <span>{item.icon}</span>
+                    <span>{item.label}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Review Vocab Grid Cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            {vocabDatabase
+              .slice(
+                ((reviewDayFilter - 1) * 15) % Math.max(1, vocabDatabase.length - 15),
+                (((reviewDayFilter - 1) * 15) % Math.max(1, vocabDatabase.length - 15)) + (ageGroupTarget === '4-6' ? 8 : 12)
+              )
+              .map((item, idx) => (
+                <div
+                  key={item.id || idx}
+                  className="rounded-3xl border border-amber-500/30 bg-slate-900/90 p-5 space-y-3 shadow-xl hover:border-amber-400 transition"
+                >
+                  <div className="flex items-center justify-between">
+                    <span className="rounded-full bg-amber-500/20 border border-amber-500/40 px-2.5 py-0.5 text-[10px] font-black text-amber-300">
+                      Mốc Ôn: Ngày {reviewDayFilter}
+                    </span>
+                    <button
+                      onClick={() => handleStartVoiceRecording(item)}
+                      className="p-1.5 rounded-xl bg-pink-600/30 border border-pink-500/40 text-pink-300 hover:bg-pink-600/50 transition"
+                      title="Luyện nói với máy chấm AI"
+                    >
+                      <Mic className="h-4 w-4 text-pink-400" />
+                    </button>
+                  </div>
+
+                  <div className="text-center space-y-1">
+                    <div className="text-5xl my-1 animate-bounce">{item.image}</div>
+                    <div className="text-lg font-black text-white font-heading">{item.word}</div>
+                    <div className="font-mono-code text-xs text-cyan-300 font-bold">{item.ipa}</div>
+                    <div className="text-xs text-amber-300 font-bold">"{item.meaning}"</div>
+                    <div className="text-[10px] text-slate-400 italic">Đọc là: {item.vietnamesePhonetic || getVietnamesePhoneticGuide(item.word)}</div>
+                  </div>
+
+                  <div className="pt-2 border-t border-slate-800 space-y-1 text-center">
+                    <div className="text-[11px] text-slate-300 italic">"{item.example || item.sentence}"</div>
+                    <div className="text-[10px] text-emerald-400 font-medium">{item.exampleVi || item.sentenceVi}</div>
+                  </div>
+
+                  <button
+                    onClick={() => playWordAudio(item.word)}
+                    className="w-full py-2 rounded-2xl bg-amber-500/20 border border-amber-500/40 text-xs font-black text-amber-300 hover:bg-amber-500/30 transition flex items-center justify-center gap-1.5"
+                  >
+                    <Volume2 className="h-3.5 w-3.5 text-amber-400" /> Nghe Phát Âm Chuẩn
+                  </button>
+                </div>
+              ))}
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* VIEW 3: ADMIN VOCABULARY DATABASE MANAGER (CRUD 600 WORDS) */}
       {/* ========================================================================= */}
       {activeTab === 'vocab_manager' && (
         <div className="space-y-6 animate-fadeIn font-sans">
@@ -2052,6 +2368,79 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           </div>
         </div>
       )}
+      {/* ========================================================================= */}
+      {/* STICKY MOBILE APP FLOATING PINK ACTION BAR (TỐI ƯU MOBILE DỄ THƯƠNG FOR MINH ANH) */}
+      {/* ========================================================================= */}
+      <div className="fixed bottom-3 left-3 right-3 sm:hidden z-50 rounded-3xl border-2 border-pink-400 bg-gradient-to-r from-pink-950/95 via-slate-950/95 to-purple-950/95 p-2.5 shadow-2xl backdrop-blur-2xl flex items-center justify-between gap-2 shadow-pink-500/40">
+        <button
+          onClick={() => {
+            const nextState = !isAutoPlay;
+            setIsAutoPlay(nextState);
+            setAutoPlayTimer(autoPlaySeconds);
+            if (nextState && filteredDatabase.length > 0) {
+              const curIdx = spotlightCard ? filteredDatabase.findIndex((c) => c.id === spotlightCard.id) : 0;
+              const startIdx = curIdx >= 0 ? curIdx : 0;
+              const targetCard = filteredDatabase[startIdx];
+              if (targetCard) {
+                setSpotlightCard(targetCard);
+                setCurrentPage(Math.floor(startIdx / pageSize) + 1);
+                try {
+                  playWordAudio(targetCard.word);
+                } catch (e) {
+                  console.warn('Audio play error:', e);
+                }
+              }
+            }
+          }}
+          className={`flex-1 py-2.5 px-3 rounded-2xl text-[11px] font-black flex items-center justify-center gap-1.5 transition active:scale-95 ${
+            isAutoPlay
+              ? 'bg-gradient-to-r from-amber-400 to-pink-500 text-slate-950 animate-pulse border border-yellow-200'
+              : 'bg-gradient-to-r from-pink-600 to-rose-500 text-white shadow-md'
+          }`}
+        >
+          {isAutoPlay ? (
+            <>
+              <Zap className="h-3.5 w-3.5 fill-slate-950" />
+              <span>⏸️ Dừng ({autoPlayTimer}s)</span>
+            </>
+          ) : (
+            <>
+              <Play className="h-3.5 w-3.5 fill-white" />
+              <span>▶️ Tự Động 30s 🌸</span>
+            </>
+          )}
+        </button>
+
+        {spotlightCard && (
+          <>
+            <button
+              onClick={() => playWordAudio(spotlightCard.word, false)}
+              className="p-2.5 rounded-2xl bg-cyan-600 text-white text-xs font-bold shadow-md active:scale-95 flex items-center gap-1"
+              title="Phát Âm Tiếng Anh"
+            >
+              <Volume2 className="h-4 w-4" />
+              <span>Đọc</span>
+            </button>
+
+            <button
+              onClick={() => handleStartVoiceRecording(spotlightCard)}
+              className="p-2.5 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-bold shadow-md active:scale-95 flex items-center gap-1"
+              title="AI Chấm Phát Âm"
+            >
+              <Mic className="h-4 w-4 text-yellow-300 animate-bounce" />
+              <span>Chấm</span>
+            </button>
+          </>
+        )}
+
+        <button
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className="p-2.5 rounded-2xl bg-slate-900 border border-pink-500/40 text-pink-300 text-xs font-bold active:scale-95"
+          title="Lên Đầu Trang"
+        >
+          ⬆️
+        </button>
+      </div>
     </div>
   );
 }
