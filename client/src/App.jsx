@@ -12,6 +12,7 @@ import { NoteModal } from './components/NoteModal.jsx';
 import { NotificationModal } from './components/NotificationModal.jsx';
 import { RoleSelectorModal } from './components/RoleSelectorModal.jsx';
 import { SecretAdminModal } from './components/SecretAdminModal.jsx';
+import { StateHistoryModal } from './components/StateHistoryModal.jsx';
 import { AgentWorkspaceDashboard } from './components/AgentWorkspaceDashboard.jsx';
 import { DashboardTab } from './components/tabs/DashboardTab.jsx';
 import { ScheduleTab } from './components/tabs/ScheduleTab.jsx';
@@ -66,6 +67,7 @@ function MainAppContent() {
   const [showNotificationDrawer, setShowNotificationDrawer] = useState(false);
   const [showRoleModal, setShowRoleModal] = useState(false);
   const [showSecretAdminModal, setShowSecretAdminModal] = useState(false);
+  const [showStateHistoryModal, setShowStateHistoryModal] = useState(false);
 
   const [isAlarmPlaying, setIsAlarmPlaying] = useState(false);
   const [alarmSecondsLeft, setAlarmSecondsLeft] = useState(60);
@@ -443,6 +445,7 @@ function MainAppContent() {
         setActiveTab={setActiveTab}
         onOpenRoleModal={() => setShowRoleModal(true)}
         onOpenSecretAdmin={() => setShowSecretAdminModal(true)}
+        onOpenStateHistory={() => setShowStateHistoryModal(true)}
         onOpenReminders={() => setShowNotificationDrawer(true)}
         reminderBadgeCount={liveScheduleStatus.overdueSlots.length}
         onResetPlan={handleResetPlan}
@@ -525,6 +528,18 @@ function MainAppContent() {
         isOpen={showSecretAdminModal}
         onClose={() => setShowSecretAdminModal(false)}
         addToast={addToast}
+      />
+
+      {/* State History & Ultra-Detailed Restore Modal */}
+      <StateHistoryModal
+        isOpen={showStateHistoryModal}
+        onClose={() => setShowStateHistoryModal(false)}
+        onRestorePlan={(restoredPlan) => {
+          setPlan(restoredPlan);
+          setSaveStatus('⚡ Đã khôi phục trạng thái từ điểm sao lưu!');
+        }}
+        addToast={addToast}
+        userRole={role}
       />
 
       {/* Note Modal */}

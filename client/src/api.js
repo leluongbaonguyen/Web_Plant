@@ -155,3 +155,21 @@ export async function getKangarooStatus() {
 export async function forceKangarooSync() {
   return (await request('/api/kangaroo/sync', { method: 'POST' })).json();
 }
+
+// State History & Ultra-Detailed Restore APIs
+export async function getHistorySnapshots() {
+  return (await request('/api/history/snapshots')).json();
+}
+
+export async function restoreSnapshot(snapshotId) {
+  return (await request(`/api/history/snapshots/restore/${snapshotId}`, {
+    method: 'POST',
+  })).json();
+}
+
+export async function deleteSnapshot(snapshotId) {
+  return (await request(`/api/history/snapshots/${snapshotId}`, {
+    method: 'DELETE',
+  })).json();
+}
+

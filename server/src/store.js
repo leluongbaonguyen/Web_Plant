@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { createDefaultPlan } from './defaultPlan.js';
 import { writeKangarooVault } from './kangarooDb.js';
 import { fetchPlanFromSupabase, isSupabaseConfigured, savePlanToSupabase } from './supabase.js';
+import { createStateSnapshot } from './snapshots.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const dataDir = path.resolve(__dirname, '../data');
@@ -15,7 +16,7 @@ async function ensureDataFile() {
   try {
     await readFile(dataFile, 'utf8');
   } catch {
-    await writePlan(createDefaultPlan());
+    await writePlan(createDefaultPlan(), 'Khởi tạo kế hoạch mặc định', 'SYSTEM', 'admin');
   }
 }
 
@@ -37,7 +38,7 @@ export async function readPlan() {
   return localPlan;
 }
 
-export async function writePlan(plan) {
+export async function writePlan(plan, actionDescription = 'Cập nhật lịch sinh hoạt', username = 'SYSTEM', role = 'admin') {
   await mkdir(dataDir, { recursive: true });
   const next = {
     ...plan,
@@ -54,11 +55,17 @@ export async function writePlan(plan) {
   await writeFile(tempFile, JSON.stringify(next, null, 2), 'utf8');
   await rename(tempFile, dataFile);
   writeKangarooVault('plan_vault', next);
+
+  // Trigger state snapshot record
+  createStateSnapshot(next, actionDescription, username, role).catch((err) => {
+    console.warn('[SNAPSHOT ERROR]', err.message);
+  });
+
   return next;
 }
 
-export async function resetPlan() {
-  return writePlan(createDefaultPlan());
+export async function resetPlan(username = 'SYSTEM', role = 'admin') {
+  return writePlan(createDefaultPlan(), 'Đặt lại kế hoạch về mặc định ban đầu', username, role);
 }
 
 // ----------------------------------------------------

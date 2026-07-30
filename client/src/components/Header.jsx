@@ -2,6 +2,7 @@ import { useState } from 'react';
 import {
   Bell,
   Download,
+  History,
   Lock,
   LogOut,
   Maximize2,
@@ -21,6 +22,7 @@ export function Header({
   setActiveTab,
   onOpenRoleModal,
   onOpenSecretAdmin,
+  onOpenStateHistory,
   onOpenReminders,
   reminderBadgeCount,
   onDownloadJson,
@@ -94,6 +96,16 @@ export function Header({
 
         {/* Action Toolbar */}
         <div className="flex items-center gap-1.5 flex-wrap">
+          {/* History & Time-Travel State Restoration Button */}
+          <button
+            onClick={onOpenStateHistory}
+            className="flex items-center gap-1.5 rounded-xl border border-cyan-500/50 bg-cyan-950/70 px-3 py-1.5 text-xs font-black text-cyan-300 hover:bg-cyan-900/90 transition shadow-md"
+            title="Lịch Sử Thao Tác & Khôi Phục Trạng Thái Siêu Chi Tiết"
+          >
+            <History className="h-4 w-4 text-cyan-400 animate-spin-slow" />
+            <span>Lịch Sử & Khôi Phục</span>
+          </button>
+
           {/* Bell Notification Button */}
           <button
             onClick={onOpenReminders}

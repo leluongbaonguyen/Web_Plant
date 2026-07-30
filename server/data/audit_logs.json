@@ -1,5 +1,21 @@
 [
   {
+    "id": "log-1785419007599-2wxa",
+    "timestamp": "2026-07-30T13:43:27.599Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Biên Tập Viên Chuyên Nghiệp' (EDITOR) đăng nhập thành công với Token HMAC",
+    "username": "editor",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785418776144-vo38",
+    "timestamp": "2026-07-30T13:39:36.144Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Quan Sát Viên Sức Khỏe' (VIEWER) đăng nhập thành công với Token HMAC",
+    "username": "viewer",
+    "ip": "::1"
+  },
+  {
     "id": "log-1785384066283-luhd",
     "timestamp": "2026-07-30T04:01:06.283Z",
     "event": "AUTH_LOGIN_SUCCESS",

@@ -223,3 +223,83 @@ export async function appendAuditLogToSupabase(logEntry) {
     return null;
   }
 }
+
+// ----------------------------------------------------
+// 4. STATE SNAPSHOTS & HISTORY RESTORE ENGINE
+// ----------------------------------------------------
+
+export async function fetchSnapshotsFromSupabase() {
+  if (!supabase || isSupabaseDisabled) return null;
+  try {
+    const { data, error } = await supabase
+      .from('app_state_snapshots')
+      .select('*')
+      .order('timestamp', { ascending: false })
+      .limit(200);
+
+    if (error) {
+      handleSupabaseError(error, 'SNAPSHOTS FETCH');
+      return null;
+    }
+    return data ? data.map(item => ({
+      id: item.id,
+      timestamp: item.timestamp,
+      username: item.username,
+      role: item.role,
+      action: item.action,
+      summary: item.summary,
+      snapshot: item.snapshot,
+    })) : null;
+  } catch (err) {
+    handleSupabaseError(err, 'SNAPSHOTS FETCH EXCEPTION');
+    return null;
+  }
+}
+
+export async function saveSnapshotToSupabase(snapshotEntry) {
+  if (!supabase || isSupabaseDisabled) return null;
+  try {
+    const row = {
+      id: snapshotEntry.id,
+      timestamp: snapshotEntry.timestamp,
+      username: snapshotEntry.username,
+      role: snapshotEntry.role,
+      action: snapshotEntry.action,
+      summary: snapshotEntry.summary,
+      snapshot: snapshotEntry.snapshot,
+    };
+
+    const { data, error } = await supabase
+      .from('app_state_snapshots')
+      .upsert([row], { onConflict: 'id' });
+
+    if (error) {
+      handleSupabaseError(error, 'SNAPSHOT SAVE');
+      return null;
+    }
+    return data;
+  } catch (err) {
+    handleSupabaseError(err, 'SNAPSHOT SAVE EXCEPTION');
+    return null;
+  }
+}
+
+export async function deleteSnapshotFromSupabase(snapshotId) {
+  if (!supabase || isSupabaseDisabled) return false;
+  try {
+    const { error } = await supabase
+      .from('app_state_snapshots')
+      .delete()
+      .eq('id', snapshotId);
+
+    if (error) {
+      handleSupabaseError(error, 'SNAPSHOT DELETE');
+      return false;
+    }
+    return true;
+  } catch (err) {
+    handleSupabaseError(err, 'SNAPSHOT DELETE EXCEPTION');
+    return false;
+  }
+}
+

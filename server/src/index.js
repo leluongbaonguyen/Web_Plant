@@ -10,6 +10,7 @@ import { appendAuditLog, readAuditLogs, readUsers, writeUsers } from './db.js';
 import { getKangarooTelemetry, readKangarooVault, syncAllToKangaroo, writeKangarooVault } from './kangarooDb.js';
 import { checkRateLimit, createSecurityToken, hasPermission, PERMISSION_MATRIX, verifySecurityToken } from './security.js';
 import { deleteUserFromSupabase, isSupabaseConfigured } from './supabase.js';
+import { deleteStateSnapshot, readStateSnapshots } from './snapshots.js';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const app = express();
@@ -153,16 +154,79 @@ app.put('/api/plan', requireRole('admin', 'editor', 'viewer', 'kids_english'), a
     }
 
     const plan = sanitizePlan(req.body);
-    res.json(await writePlan(plan));
+    const username = req.user?.username || req.userRole || 'SYSTEM';
+    const updated = await writePlan(plan, `Cập nhật Lịch sinh hoạt bởi tác nhân '${username}'`, username, req.userRole);
+    res.json(updated);
   } catch (error) {
     error.status = error.status || 400;
     next(error);
   }
 });
 
-app.post('/api/plan/reset', requireRole('admin'), async (_req, res, next) => {
+app.post('/api/plan/reset', requireRole('admin'), async (req, res, next) => {
   try {
-    res.json(await resetPlan());
+    const username = req.user?.username || 'admin';
+    const reset = await resetPlan(username, req.userRole);
+    await appendAuditLog('SYSTEM_RESET', `Admin '${username}' đã đặt lại kế hoạch về mặc định ban đầu`, username, req.ip);
+    res.json(reset);
+  } catch (error) {
+    next(error);
+  }
+});
+
+// ==========================================
+// STATE HISTORY & ULTRA-DETAILED RESTORE API
+// ==========================================
+
+app.get('/api/history/snapshots', async (_req, res, next) => {
+  try {
+    const snapshots = await readStateSnapshots();
+    res.json({ ok: true, snapshots });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post('/api/history/snapshots/restore/:id', requireRole('admin', 'editor'), async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const snapshots = await readStateSnapshots();
+    const targetSnapshot = snapshots.find((s) => s.id === id);
+
+    if (!targetSnapshot) {
+      return res.status(404).json({ ok: false, message: 'Không tìm thấy bản ghi điểm khôi phục!' });
+    }
+
+    const username = req.user?.username || req.userRole || 'admin';
+    const restoredPlan = await writePlan(
+      targetSnapshot.snapshot,
+      `⚡ KHÔI PHỤC TRẠNG THÁI: Trở về bản ghi '${targetSnapshot.action}' (${new Date(targetSnapshot.timestamp).toLocaleString('vi-VN')})`,
+      username,
+      req.userRole
+    );
+
+    await appendAuditLog(
+      'STATE_RESTORED',
+      `Tác nhân '${username}' đã khôi phục thành công trạng thái hệ thống về điểm khôi phục ngày ${new Date(targetSnapshot.timestamp).toLocaleString('vi-VN')}`,
+      username,
+      req.ip
+    );
+
+    res.json({
+      ok: true,
+      message: `⚡ Đã khôi phục thành công trạng thái hệ thống về phiên bản ${new Date(targetSnapshot.timestamp).toLocaleString('vi-VN')}!`,
+      plan: restoredPlan,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.delete('/api/history/snapshots/:id', requireRole('admin'), async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const snapshots = await deleteStateSnapshot(id);
+    res.json({ ok: true, message: 'Đã xóa điểm khôi phục thành công!', snapshots });
   } catch (error) {
     next(error);
   }
