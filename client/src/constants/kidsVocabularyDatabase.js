@@ -8814,4 +8814,624 @@ export const VOCABULARY_DATABASE = [
   }
 ];
 
+export const ILLUSTRATED_POSTER_PAGES = [
+  {
+    pageNumber: 1,
+    title: "Illustrated English Vocabulary - Page 1",
+    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 1",
+    badge: "Level 1 • Khởi Động (40 Từ)",
+    sections: [
+      {
+        id: "L1-U01",
+        title: "Colors / Màu sắc",
+        theme: "red",
+        bgHeader: "bg-red-600 text-white",
+        borderColor: "border-red-500",
+        badgeBg: "bg-red-100 text-red-700",
+        icon: "🎨",
+        categoryId: "L1-U01",
+        words: ["red", "blue", "yellow", "green", "orange", "purple", "pink", "black", "white", "brown"]
+      },
+      {
+        id: "L1-U02",
+        title: "Numbers 1–10 / Số đếm 1–10",
+        theme: "blue",
+        bgHeader: "bg-blue-600 text-white",
+        borderColor: "border-blue-500",
+        badgeBg: "bg-blue-100 text-blue-700",
+        icon: "🔢",
+        categoryId: "L1-U02",
+        words: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]
+      },
+      {
+        id: "L1-U03",
+        title: "Shapes / Hình dạng",
+        theme: "green",
+        bgHeader: "bg-emerald-600 text-white",
+        borderColor: "border-emerald-500",
+        badgeBg: "bg-emerald-100 text-emerald-700",
+        icon: "📐",
+        categoryId: "L1-U03",
+        words: ["circle", "square", "triangle", "rectangle", "star", "heart", "oval", "diamond", "line", "dot"]
+      },
+      {
+        id: "L1-U04",
+        title: "My Family / Gia đình của bé",
+        theme: "purple",
+        bgHeader: "bg-purple-600 text-white",
+        borderColor: "border-purple-500",
+        badgeBg: "bg-purple-100 text-purple-700",
+        icon: "👨‍👩‍👧‍👦",
+        categoryId: "L1-U04",
+        words: ["mother", "father", "sister", "brother", "grandmother", "grandfather", "baby", "family", "aunt", "uncle"]
+      }
+    ]
+  },
+  {
+    pageNumber: 2,
+    title: "Illustrated English Vocabulary - Page 2",
+    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 2",
+    badge: "Level 1 • Khởi Động (40 Từ)",
+    sections: [
+      {
+        id: "L1-U05",
+        title: "My Body / Cơ thể của bé",
+        theme: "red",
+        bgHeader: "bg-red-600 text-white",
+        borderColor: "border-red-500",
+        badgeBg: "bg-red-100 text-red-700",
+        icon: "👁️",
+        categoryId: "L1-U05",
+        words: ["head", "hair", "eye", "ear", "nose", "mouth", "hand", "arm", "leg", "foot"]
+      },
+      {
+        id: "L1-U06",
+        title: "Animals / Động vật quen thuộc",
+        theme: "blue",
+        bgHeader: "bg-blue-600 text-white",
+        borderColor: "border-blue-500",
+        badgeBg: "bg-blue-100 text-blue-700",
+        icon: "🐱",
+        categoryId: "L1-U06",
+        words: ["cat", "dog", "bird", "fish", "rabbit", "duck", "cow", "pig", "horse", "sheep"]
+      },
+      {
+        id: "L1-U07",
+        title: "Food and Drinks / Đồ ăn và thức uống",
+        theme: "green",
+        bgHeader: "bg-emerald-600 text-white",
+        borderColor: "border-emerald-500",
+        badgeBg: "bg-emerald-100 text-emerald-700",
+        icon: "🍱",
+        categoryId: "L1-U07",
+        words: ["apple", "banana", "orange", "rice", "bread", "milk", "egg", "cake", "water", "juice"]
+      },
+      {
+        id: "L1-U08",
+        title: "My Classroom / Lớp học của bé",
+        theme: "purple",
+        bgHeader: "bg-purple-600 text-white",
+        borderColor: "border-purple-500",
+        badgeBg: "bg-purple-100 text-purple-700",
+        icon: "🏫",
+        categoryId: "L1-U08",
+        words: ["book", "pen", "pencil", "ruler", "eraser", "bag", "chair", "table", "door", "window"]
+      }
+    ]
+  },
+  {
+    pageNumber: 3,
+    title: "Illustrated English Vocabulary - Page 3",
+    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 3",
+    badge: "Level 1 & Level 2 • Mở Rộng (40 Từ)",
+    sections: [
+      {
+        id: "L1-U09",
+        title: "Action Words / Động từ hành động",
+        theme: "red",
+        bgHeader: "bg-red-600 text-white",
+        borderColor: "border-red-500",
+        badgeBg: "bg-red-100 text-red-700",
+        icon: "🏃",
+        categoryId: "L1-U09",
+        words: ["run", "jump", "walk", "sit", "stand", "clap", "sing", "dance", "eat", "drink"]
+      },
+      {
+        id: "L1-U10",
+        title: "Feelings / Cảm xúc cơ bản",
+        theme: "blue",
+        bgHeader: "bg-blue-600 text-white",
+        borderColor: "border-blue-500",
+        badgeBg: "bg-blue-100 text-blue-700",
+        icon: "😊",
+        categoryId: "L1-U10",
+        words: ["happy", "sad", "angry", "scared", "tired", "hungry", "thirsty", "excited", "calm", "sleepy"]
+      },
+      {
+        id: "L2-U01",
+        title: "My Home / Ngôi nhà",
+        theme: "green",
+        bgHeader: "bg-emerald-600 text-white",
+        borderColor: "border-emerald-500",
+        badgeBg: "bg-emerald-100 text-emerald-700",
+        icon: "🏠",
+        categoryId: "L2-U01",
+        words: ["house", "living room", "bedroom", "kitchen", "bathroom", "garden", "bed", "sofa", "lamp", "clock"]
+      },
+      {
+        id: "L2-U02",
+        title: "Clothes / Quần áo",
+        theme: "purple",
+        bgHeader: "bg-purple-600 text-white",
+        borderColor: "border-purple-500",
+        badgeBg: "bg-purple-100 text-purple-700",
+        icon: "👕",
+        categoryId: "L2-U02",
+        words: ["shirt", "T-shirt", "dress", "skirt", "trousers", "shorts", "shoes", "socks", "hat", "jacket"]
+      }
+    ]
+  },
+  {
+    pageNumber: 4,
+    title: "Illustrated English Vocabulary - Page 4",
+    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 4",
+    badge: "Level 2 • Cơ Bản (40 Từ)",
+    sections: [
+      {
+        id: "L2-U03",
+        title: "Daily Routine / Sinh hoạt hằng ngày",
+        theme: "red",
+        bgHeader: "bg-red-600 text-white",
+        borderColor: "border-red-500",
+        badgeBg: "bg-red-100 text-red-700",
+        icon: "⏰",
+        categoryId: "L2-U03",
+        words: ["wake up", "brush", "wash", "get dressed", "have breakfast", "go to school", "study", "play", "have dinner", "sleep"]
+      },
+      {
+        id: "L2-U04",
+        title: "Weather / Thời tiết",
+        theme: "blue",
+        bgHeader: "bg-blue-600 text-white",
+        borderColor: "border-blue-500",
+        badgeBg: "bg-blue-100 text-blue-700",
+        icon: "🌤️",
+        categoryId: "L2-U04",
+        words: ["sunny", "rainy", "cloudy", "windy", "hot", "cold", "warm", "cool", "storm", "rainbow"]
+      },
+      {
+        id: "L2-U05",
+        title: "Transportation / Phương tiện giao thông",
+        theme: "green",
+        bgHeader: "bg-emerald-600 text-white",
+        borderColor: "border-emerald-500",
+        badgeBg: "bg-emerald-100 text-emerald-700",
+        icon: "🚗",
+        categoryId: "L2-U05",
+        words: ["bicycle", "motorbike", "car", "bus", "train", "plane", "boat", "taxi", "truck", "scooter"]
+      },
+      {
+        id: "L2-U06",
+        title: "Places in Town / Địa điểm trong thành phố",
+        theme: "purple",
+        bgHeader: "bg-purple-600 text-white",
+        borderColor: "border-purple-500",
+        badgeBg: "bg-purple-100 text-purple-700",
+        icon: "🏙️",
+        categoryId: "L2-U06",
+        words: ["school", "hospital", "park", "supermarket", "library", "zoo", "cinema", "restaurant", "bank", "post office"]
+      }
+    ]
+  },
+  {
+    pageNumber: 5,
+    title: "Illustrated English Vocabulary - Page 5",
+    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 5",
+    badge: "Level 2 • Cơ Bản (40 Từ)",
+    sections: [
+      {
+        id: "L2-U07",
+        title: "Jobs / Nghề nghiệp",
+        theme: "red",
+        bgHeader: "bg-red-600 text-white",
+        borderColor: "border-red-500",
+        badgeBg: "bg-red-100 text-red-700",
+        icon: "👷",
+        categoryId: "L2-U07",
+        words: ["teacher", "doctor", "nurse", "police officer", "firefighter", "farmer", "cook", "driver", "pilot", "artist"]
+      },
+      {
+        id: "L2-U08",
+        title: "Fruits and Vegetables / Trái cây và rau củ",
+        theme: "blue",
+        bgHeader: "bg-blue-600 text-white",
+        borderColor: "border-blue-500",
+        badgeBg: "bg-blue-100 text-blue-700",
+        icon: "🍎",
+        categoryId: "L2-U08",
+        words: ["mango", "grape", "watermelon", "strawberry", "pineapple", "carrot", "tomato", "potato", "corn", "cucumber"]
+      },
+      {
+        id: "L2-U09",
+        title: "Time and Calendar / Thời gian và lịch",
+        theme: "green",
+        bgHeader: "bg-emerald-600 text-white",
+        borderColor: "border-emerald-500",
+        badgeBg: "bg-emerald-100 text-emerald-700",
+        icon: "📅",
+        categoryId: "L2-U09",
+        words: ["morning", "afternoon", "evening", "night", "today", "tomorrow", "yesterday", "Monday", "weekend", "birthday"]
+      },
+      {
+        id: "L2-U10",
+        title: "Sports / Thể thao",
+        theme: "purple",
+        bgHeader: "bg-purple-600 text-white",
+        borderColor: "border-purple-500",
+        badgeBg: "bg-purple-100 text-purple-700",
+        icon: "⚽",
+        categoryId: "L2-U10",
+        words: ["football", "basketball", "badminton", "swimming", "running", "cycling", "tennis", "volleyball", "yoga", "skating"]
+      }
+    ]
+  },
+  {
+    pageNumber: 6,
+    title: "Illustrated English Vocabulary - Page 6",
+    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 6",
+    badge: "Level 2 & Level 3 • Mở Rộng (40 Từ)",
+    sections: [
+      {
+        id: "L2-U11",
+        title: "Nature / Thiên nhiên",
+        theme: "green",
+        bgHeader: "bg-emerald-600 text-white",
+        borderColor: "border-emerald-500",
+        badgeBg: "bg-emerald-100 text-emerald-700",
+        icon: "🌲",
+        categoryId: "L2-U11",
+        words: ["forest", "mountain", "river", "lake", "ocean", "beach", "island", "waterfall", "flower", "tree"]
+      },
+      {
+        id: "L2-U12",
+        title: "Health / Sức khỏe",
+        theme: "blue",
+        bgHeader: "bg-blue-600 text-white",
+        borderColor: "border-blue-500",
+        badgeBg: "bg-blue-100 text-blue-700",
+        icon: "🏥",
+        categoryId: "L2-U12",
+        words: ["healthy", "sick", "fever", "cough", "headache", "medicine", "doctor", "hospital", "exercise", "rest"]
+      },
+      {
+        id: "L2-U13",
+        title: "Shopping / Mua sắm",
+        theme: "red",
+        bgHeader: "bg-orange-600 text-white",
+        borderColor: "border-orange-500",
+        badgeBg: "bg-orange-100 text-orange-700",
+        icon: "🛒",
+        categoryId: "L2-U13",
+        words: ["shop", "price", "money", "cheap", "expensive", "buy", "sell", "pay", "receipt", "change"]
+      },
+      {
+        id: "L2-U14",
+        title: "Travel / Du lịch",
+        theme: "purple",
+        bgHeader: "bg-purple-600 text-white",
+        borderColor: "border-purple-500",
+        badgeBg: "bg-purple-100 text-purple-700",
+        icon: "✈️",
+        categoryId: "L2-U14",
+        words: ["ticket", "passport", "suitcase", "airport", "hotel", "map", "journey", "tourist", "visit", "arrive"]
+      }
+    ]
+  },
+  {
+    pageNumber: 7,
+    title: "Illustrated English Vocabulary - Page 7",
+    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 7",
+    badge: "Level 3 • Trung Cấp (40 Từ)",
+    sections: [
+      {
+        id: "L3-U01",
+        title: "Technology / Công nghệ",
+        theme: "red",
+        bgHeader: "bg-red-600 text-white",
+        borderColor: "border-red-500",
+        badgeBg: "bg-red-100 text-red-700",
+        icon: "💻",
+        categoryId: "L3-U01",
+        words: ["computer", "laptop", "tablet", "screen", "keyboard", "mouse", "internet", "website", "email", "password"]
+      },
+      {
+        id: "L3-U02",
+        title: "Hobbies / Sở thích",
+        theme: "blue",
+        bgHeader: "bg-blue-600 text-white",
+        borderColor: "border-blue-500",
+        badgeBg: "bg-blue-100 text-blue-700",
+        icon: "🎨",
+        categoryId: "L3-U02",
+        words: ["reading", "drawing", "painting", "cooking", "gardening", "singing", "dancing", "photography", "collecting", "camping"]
+      },
+      {
+        id: "L3-U03",
+        title: "My Community / Cộng đồng quanh bé",
+        theme: "green",
+        bgHeader: "bg-emerald-600 text-white",
+        borderColor: "border-emerald-500",
+        badgeBg: "bg-emerald-100 text-emerald-700",
+        icon: "🏘️",
+        categoryId: "L3-U03",
+        words: ["neighbor", "police station", "fire station", "museum", "bakery", "market", "playground", "traffic light", "crossing", "neighborhood"]
+      },
+      {
+        id: "L3-U04",
+        title: "Festivals and Parties / Lễ hội và tiệc",
+        theme: "purple",
+        bgHeader: "bg-purple-600 text-white",
+        borderColor: "border-purple-500",
+        badgeBg: "bg-purple-100 text-purple-700",
+        icon: "🎉",
+        categoryId: "L3-U04",
+        words: ["festival", "present", "party", "candle", "costume", "parade", "holiday", "celebrate", "decorate", "invitation"]
+      }
+    ]
+  },
+  {
+    pageNumber: 8,
+    title: "Illustrated English Vocabulary - Page 8",
+    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 8",
+    badge: "Level 3 • Trung Cấp (40 Từ)",
+    sections: [
+      {
+        id: "L3-U05",
+        title: "Personality / Tính cách",
+        theme: "red",
+        bgHeader: "bg-red-600 text-white",
+        borderColor: "border-red-500",
+        badgeBg: "bg-red-100 text-red-700",
+        icon: "❤️",
+        categoryId: "L3-U05",
+        words: ["kind", "friendly", "polite", "honest", "brave", "clever", "careful", "patient", "helpful", "shy"]
+      },
+      {
+        id: "L3-U06",
+        title: "Protect the Earth / Bảo vệ Trái Đất",
+        theme: "blue",
+        bgHeader: "bg-blue-600 text-white",
+        borderColor: "border-blue-500",
+        badgeBg: "bg-blue-100 text-blue-700",
+        icon: "🌍",
+        categoryId: "L3-U06",
+        words: ["recycle", "reuse", "reduce", "rubbish", "plastic", "paper", "glass", "electricity", "pollution", "protect"]
+      },
+      {
+        id: "L3-U07",
+        title: "Science Basics / Khoa học cơ bản",
+        theme: "green",
+        bgHeader: "bg-emerald-600 text-white",
+        borderColor: "border-emerald-500",
+        badgeBg: "bg-emerald-100 text-emerald-700",
+        icon: "🧪",
+        categoryId: "L3-U07",
+        words: ["experiment", "energy", "light", "sound", "heat", "force", "matter", "liquid", "solid", "gas"]
+      },
+      {
+        id: "L3-U08",
+        title: "Space / Không gian",
+        theme: "purple",
+        bgHeader: "bg-purple-600 text-white",
+        borderColor: "border-purple-500",
+        badgeBg: "bg-purple-100 text-purple-700",
+        icon: "🚀",
+        categoryId: "L3-U08",
+        words: ["planet", "Earth", "Moon", "Sun", "star", "astronaut", "rocket", "galaxy", "telescope", "gravity"]
+      }
+    ]
+  },
+  {
+    pageNumber: 9,
+    title: "Illustrated English Vocabulary - Page 9",
+    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 9",
+    badge: "Level 4 • Nâng Cao (40 Từ)",
+    sections: [
+      {
+        id: "L4-U01",
+        title: "Learning Words / Từ học thuật cơ bản",
+        theme: "red",
+        bgHeader: "bg-red-600 text-white",
+        borderColor: "border-red-500",
+        badgeBg: "bg-red-100 text-red-700",
+        icon: "📚",
+        categoryId: "L4-U01",
+        words: ["compare", "describe", "explain", "classify", "calculate", "observe", "predict", "result", "example", "information"]
+      },
+      {
+        id: "L4-U02",
+        title: "Communication / Giao tiếp",
+        theme: "blue",
+        bgHeader: "bg-blue-600 text-white",
+        borderColor: "border-blue-500",
+        badgeBg: "bg-blue-100 text-blue-700",
+        icon: "💬",
+        categoryId: "L4-U02",
+        words: ["opinion", "agree", "disagree", "suggest", "invite", "reply", "question", "answer", "message", "conversation"]
+      },
+      {
+        id: "L4-U03",
+        title: "Problem Solving / Giải quyết vấn đề",
+        theme: "green",
+        bgHeader: "bg-emerald-600 text-white",
+        borderColor: "border-emerald-500",
+        badgeBg: "bg-emerald-100 text-emerald-700",
+        icon: "💡",
+        categoryId: "L4-U03",
+        words: ["problem", "solution", "plan", "choice", "reason", "step", "check", "improve", "decide", "complete"]
+      },
+      {
+        id: "L4-U04",
+        title: "Complex Feelings / Cảm xúc nâng cao",
+        theme: "purple",
+        bgHeader: "bg-purple-600 text-white",
+        borderColor: "border-purple-500",
+        badgeBg: "bg-purple-100 text-purple-700",
+        icon: "🎭",
+        categoryId: "L4-U04",
+        words: ["proud", "worried", "surprised", "disappointed", "confident", "nervous", "curious", "lonely", "grateful", "embarrassed"]
+      }
+    ]
+  },
+  {
+    pageNumber: 10,
+    title: "Illustrated English Vocabulary - Page 10",
+    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 10",
+    badge: "Level 4 • Nâng Cao (40 Từ)",
+    sections: [
+      {
+        id: "L4-U05",
+        title: "Countries and Culture / Quốc gia và văn hóa",
+        theme: "red",
+        bgHeader: "bg-red-600 text-white",
+        borderColor: "border-red-500",
+        badgeBg: "bg-red-100 text-red-700",
+        icon: "🎎",
+        categoryId: "L4-U05",
+        words: ["country", "language", "culture", "tradition", "custom", "national", "local", "foreign", "famous", "history"]
+      },
+      {
+        id: "L4-U06",
+        title: "Digital Safety / An toàn số",
+        theme: "blue",
+        bgHeader: "bg-blue-600 text-white",
+        borderColor: "border-blue-500",
+        badgeBg: "bg-blue-100 text-blue-700",
+        icon: "🔒",
+        categoryId: "L4-U06",
+        words: ["account", "private", "public", "download", "upload", "online", "safe", "dangerous", "report", "permission"]
+      },
+      {
+        id: "L4-U07",
+        title: "Storytelling / Kể chuyện",
+        theme: "green",
+        bgHeader: "bg-emerald-600 text-white",
+        borderColor: "border-emerald-500",
+        badgeBg: "bg-emerald-100 text-emerald-700",
+        icon: "📖",
+        categoryId: "L4-U07",
+        words: ["character", "setting", "beginning", "middle", "ending", "event", "adventure", "mystery", "imagine", "create"]
+      },
+      {
+        id: "L4-U08",
+        title: "Goals and Growth / Mục tiêu và trưởng thành",
+        theme: "purple",
+        bgHeader: "bg-purple-600 text-white",
+        borderColor: "border-purple-500",
+        badgeBg: "bg-purple-100 text-purple-700",
+        icon: "🎯",
+        categoryId: "L4-U08",
+        words: ["dream", "goal", "future", "practice", "progress", "success", "challenge", "learn", "achieve", "promise"]
+      }
+    ]
+  }
+];
+
+export function getSuperDetailedVocabInfo(item) {
+  if (!item) return null;
+  const word = item.word ? item.word.toLowerCase().trim() : '';
+
+  const customDetails = {
+    red: {
+      vietnamesePhonetic: "Rét 🔴",
+      syllables: "R-E-D /rɛd/",
+      memoryTip: "💡 Màu RED (đỏ) như quả ớt cay xè, trái dâu tây mọng nước hay chiếc xe chữa cháy dũng cảm 🚒!",
+      dailyPhrase: "Look at the red balloon! (Hãy nhìn quả bóng màu đỏ kìa!)",
+      funFact: "Màu đỏ là màu sinh động nhất giúp kích thích trí não bé nhận biết cực kỳ nhanh."
+    },
+    blue: {
+      vietnamesePhonetic: "Bờ-lu 🔵",
+      syllables: "B-L-U-E /bluː/",
+      memoryTip: "💡 Màu BLUE (xanh dương) mát rưởi như bầu trời bao la hay đại dương nơi chú cá heo nhảy múa 🐬!",
+      dailyPhrase: "The sky is bright blue today. (Bầu trời hôm nay xanh trong rực rỡ.)",
+      funFact: "Màu xanh dương mang lại cảm giác bình yên và thư thái cho mắt bé."
+    },
+    yellow: {
+      vietnamesePhonetic: "Dét-lô 🟡",
+      syllables: "Y-E-L-L-O-W /ˈjɛl.oʊ/",
+      memoryTip: "💡 Màu YELLOW (vàng) chói chang như ánh nắng buổi sáng hay quả chuối chín thơm phức 🍌!",
+      dailyPhrase: "I see a cute yellow duck! (Bé thấy một chú vịt vàng siêu dễ thương!)",
+      funFact: "Màu vàng đại diện cho sự thông minh và ngôi sao rạng rỡ ⭐."
+    },
+    green: {
+      vietnamesePhonetic: "Gờ-rin 🟢",
+      syllables: "G-R-E-E-N /ɡriːn/",
+      memoryTip: "💡 Màu GREEN (xanh lá) tươi mát của những chiếc lá chồi non và chú ếch con nhảy tót tót 🐸!",
+      dailyPhrase: "Green grass grows in the garden. (Cỏ xanh tươi mọc trong khu vườn.)",
+      funFact: "Màu xanh lá là màu của thiên nhiên, giúp đôi mắt khỏe mạnh."
+    },
+    orange: {
+      vietnamesePhonetic: "Ó-rin-j 🟠",
+      syllables: "O-R-A-N-G-E /ˈɔːr.ɪndʒ/",
+      memoryTip: "💡 Màu ORANGE (cam) tươi tắn vừa là màu sắc vừa là quả cam ngọt lịm mọng nước 🍊!",
+      dailyPhrase: "I drink sweet orange juice. (Bé uống nước ép cam ngọt mát.)",
+      funFact: "Trái cam chứa nhiều Vitamin C giúp bé có sức đề kháng siêu khỏe."
+    },
+    cat: {
+      vietnamesePhonetic: "Cát-tơ 🐱",
+      syllables: "C-A-T /kæt/",
+      memoryTip: "💡 Con CAT (mèo) kêu 'Meo meo', thích trèo cây và bắt chuột ngoan ngoãn!",
+      dailyPhrase: "My cat is sleeping on the sofa. (Mèo con của bé đang ngủ trên ghế sofa.)",
+      funFact: "Mèo có thể ngủ đến 16 tiếng mỗi ngày đấy bé ơi!"
+    },
+    dog: {
+      vietnamesePhonetic: "Đóc-gơ 🐶",
+      syllables: "D-O-G /dɔːɡ/",
+      memoryTip: "💡 Con DOG (chó) kêu 'Gâu gâu', vẫy đuôi mừng mỗi khi bé đi học về!",
+      dailyPhrase: "The friendly dog wags its tail. (Chú chó thân thiện đang vẫy đuôi.)",
+      funFact: "Chó là người bạn trung thành và thông minh nhất của con người."
+    },
+    apple: {
+      vietnamesePhonetic: "Ép-pồ 🍎",
+      syllables: "A-P-P-L-E /ˈæp.əl/",
+      memoryTip: "💡 Quả APPLE (táo) đỏ giòn ngọt ngọt, ăn mỗi ngày cho bé má hồng xinh!",
+      dailyPhrase: "I eat a sweet red apple every morning. (Mỗi sáng bé ăn một quả táo đỏ ngọt.)",
+      funFact: "Mỗi quả táo chứa rất nhiều chất xơ giúp bụng bé luôn khỏe mạnh."
+    },
+    mother: {
+      vietnamesePhonetic: "Mơ-đờ 👩",
+      syllables: "M-O-T-H-E-R /ˈmʌð.ɚ/",
+      memoryTip: "💡 MOTHER (mẹ) yêu thương bé nhất đời, hay ôm bé và nấu những món ăn ngon lành!",
+      dailyPhrase: "I love my mother very much! (Bé yêu mẹ của bé rất nhiều!)",
+      funFact: "Từ 'Mother' luôn mang âm hưởng ấm áp nhất trong tất cả các ngôn ngữ."
+    },
+    father: {
+      vietnamesePhonetic: "Pha-đờ 👨",
+      syllables: "F-A-T-H-E-R /ˈfɑː.ðɚ/",
+      memoryTip: "💡 FATHER (bố) mạnh mẽ dũng cảm, hay cõng bé trên lưng và dạy bé đi xe đạp!",
+      dailyPhrase: "My father is strong and kind. (Bố của bé thật mạnh mẽ và hiền từ.)",
+      funFact: "Bố là người hùng luôn bảo vệ gia đình 🛡️."
+    }
+  };
+
+  const defaultPhonetic = item.vietnamesePhonetic || `${item.word} (Đọc chuẩn Anh-Mỹ)`;
+  const defaultSyllables = `${item.word.toUpperCase()} ${item.ipa || ''}`;
+  const defaultMemoryTip = item.hint || `💡 Từ '${item.word}' có nghĩa là '${item.meaning}'. Bé hãy nghe loa và phát âm lại 3 lần để thuộc làu nhé!`;
+  const defaultDailyPhrase = item.example || `I learn the word ${item.word}. (${item.exampleVi || `Bé học từ ${item.word}.`})`;
+  const defaultFunFact = `Từ vựng '${item.word}' thuộc nhóm từ cơ bản giúp Minh Anh tự tin phát âm Tiếng Anh chuẩn!`;
+
+  const details = customDetails[word] || {};
+
+  return {
+    ...item,
+    vietnamesePhoneticDisplay: details.vietnamesePhonetic || `Đọc là: "${defaultPhonetic}"`,
+    syllableBreakdown: details.syllables || defaultSyllables,
+    memoryTip: details.memoryTip || defaultMemoryTip,
+    dailyPhrase: details.dailyPhrase || defaultDailyPhrase,
+    funFact: details.funFact || defaultFunFact,
+    typeLabel: item.type || 'Từ Vựng cốt lõi'
+  };
+}
+
 export default VOCABULARY_DATABASE;
+
