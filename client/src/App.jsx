@@ -148,16 +148,24 @@ function MainAppContent() {
     setAlarmSecondsLeft(0);
   };
 
-  // Initial plan load
+  // Initial plan load with localStorage fallback
   useEffect(() => {
     if (!isAuthenticated) {
       setLoading(false);
       return;
     }
+
+    // Load local cache instantly for zero-delay UX
+    try {
+      const cached = localStorage.getItem('chrono_plan_cache');
+      if (cached) setPlan(JSON.parse(cached));
+    } catch {}
+
     setLoading(true);
     getPlan()
       .then((data) => {
         setPlan(data);
+        localStorage.setItem('chrono_plan_cache', JSON.stringify(data));
         setSaveStatus('Đã đồng bộ Cloud ⚡');
         setLastSyncedTime(new Date());
       })
@@ -168,12 +176,25 @@ function MainAppContent() {
       .finally(() => setLoading(false));
   }, [isAuthenticated]);
 
-  // Real-Time Cross-Device Polling Synchronizer (3 seconds interval)
+  // Real-Time Cross-Device & Multi-Tab Synchronization Engine
   useEffect(() => {
     if (!isAuthenticated) return;
-    const syncInterval = setInterval(async () => {
-      if (isSavingRef.current) return;
 
+    // Cross-tab Broadcast Channel
+    let broadcastChannel = null;
+    if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+      broadcastChannel = new BroadcastChannel('chrono_realtime_channel');
+      broadcastChannel.onmessage = (event) => {
+        if (event.data?.type === 'PLAN_UPDATED' && event.data?.plan) {
+          setPlan(event.data.plan);
+          setSaveStatus('Đã đồng bộ Realtime ⚡');
+          setLastSyncedTime(new Date());
+        }
+      };
+    }
+
+    const performSync = async () => {
+      if (isSavingRef.current) return;
       try {
         const remoteData = await getPlan();
         const localStr = JSON.stringify(planRef.current);
@@ -181,15 +202,27 @@ function MainAppContent() {
 
         if (localStr && remoteStr && localStr !== remoteStr) {
           setPlan(remoteData);
-          setSaveStatus('Đã đồng bộ Cloud ⚡');
+          localStorage.setItem('chrono_plan_cache', JSON.stringify(remoteData));
+          setSaveStatus('Đã đồng bộ Cloud Realtime ⚡');
           setLastSyncedTime(new Date());
         }
       } catch {
         // Silent catch
       }
-    }, 3000);
+    };
 
-    return () => clearInterval(syncInterval);
+    // Fast 2-second real-time sync cycle
+    const syncInterval = setInterval(performSync, 2000);
+
+    // Instant sync on window focus / tab activation
+    const handleWindowFocus = () => performSync();
+    window.addEventListener('focus', handleWindowFocus);
+
+    return () => {
+      clearInterval(syncInterval);
+      window.removeEventListener('focus', handleWindowFocus);
+      if (broadcastChannel) broadcastChannel.close();
+    };
   }, [isAuthenticated]);
 
   // Update clock every 30 seconds
@@ -198,11 +231,21 @@ function MainAppContent() {
     return () => clearInterval(interval);
   }, []);
 
-  // Auto save plan with debouncing
+  // Auto save plan with debouncing & Realtime broadcast
   const handleUpdatePlan = (newPlan) => {
     setPlan(newPlan);
     setSaveStatus('Đang lưu...');
     setIsSaving(true);
+    localStorage.setItem('chrono_plan_cache', JSON.stringify(newPlan));
+
+    // Broadcast change to other open browser tabs instantly
+    if (typeof window !== 'undefined' && 'BroadcastChannel' in window) {
+      try {
+        const bc = new BroadcastChannel('chrono_realtime_channel');
+        bc.postMessage({ type: 'PLAN_UPDATED', plan: newPlan });
+        bc.close();
+      } catch {}
+    }
 
     if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
 
@@ -210,7 +253,8 @@ function MainAppContent() {
       savePlan(newPlan)
         .then((updated) => {
           setPlan(updated);
-          setSaveStatus('Đã tự động lưu & đồng bộ');
+          localStorage.setItem('chrono_plan_cache', JSON.stringify(updated));
+          setSaveStatus('Đã tự động lưu & đồng bộ Realtime');
           setIsSaving(false);
           setLastSyncedTime(new Date());
         })
@@ -219,7 +263,7 @@ function MainAppContent() {
           setIsSaving(false);
           addToast(err.message || 'Không có quyền lưu thay đổi!', 'error');
         });
-    }, 800);
+    }, 600);
   };
 
   const handleUpdateProfile = (newProfile) => {
