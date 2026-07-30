@@ -122,6 +122,13 @@ export const PERMISSION_MATRIX = {
     'PERM_MANAGE_GOALS',
     'PERM_EXPORT_WORD',
   ],
+  kids_english: [
+    'PERM_READ_SCHEDULE',
+    'PERM_EDIT_CELL',
+    'PERM_MANAGE_GOALS',
+    'PERM_EXPORT_WORD',
+    'PERM_FLASHCARD_LEARN',
+  ],
 };
 
 /**

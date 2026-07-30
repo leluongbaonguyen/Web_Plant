@@ -3,6 +3,8 @@ import { Activity, AlertTriangle, ArrowUpCircle, CheckCircle2, Clock, Cpu, Datab
 import { useRole } from '../context/RoleContext.jsx';
 import { createAgent, deleteAgent, forceKangarooSync, getAgentsList, getKangarooStatus, getTelemetryInfo, toggleMaintenanceMode, triggerSystemUpgrade, updateAgent } from '../api.js';
 import { cx, getCurrentDayKey, timeToMinutes } from '../constants/index.js';
+import { KidsEnglishDashboard } from './tabs/KidsEnglishDashboard.jsx';
+import { AdminMasterControl } from './AdminMasterControl.jsx';
 
 export function AgentWorkspaceDashboard({ plan, onUpdatePlan, onExportWord, onPrint, addToast }) {
   const { role, roleInfo, switchRole } = useRole();
@@ -12,6 +14,10 @@ export function AgentWorkspaceDashboard({ plan, onUpdatePlan, onExportWord, onPr
   const [agents, setAgents] = useState([]);
   const [loading, setLoading] = useState(false);
   const [activeSubTab, setActiveSubTab] = useState('overview');
+
+  if (role === 'kids_english') {
+    return <KidsEnglishDashboard plan={plan} addToast={addToast} />;
+  }
 
   // Agent Form State
   const [showAgentModal, setShowAgentModal] = useState(false);
@@ -167,6 +173,9 @@ export function AgentWorkspaceDashboard({ plan, onUpdatePlan, onExportWord, onPr
       {/* ========================================================================= */}
       {role === 'admin' && (
         <div className="space-y-6">
+          {/* Admin Full CRUD Master Control Center */}
+          <AdminMasterControl plan={plan} onUpdatePlan={onUpdatePlan} addToast={addToast} />
+
           {/* Admin Metrics Deck */}
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
             <div className="glass-panel rounded-2xl border border-red-500/30 bg-slate-900/80 p-4 space-y-1">

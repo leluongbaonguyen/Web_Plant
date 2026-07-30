@@ -5,6 +5,16 @@ import { createAgent, loginStealthAdmin } from '../api.js';
 
 const PRESET_ACCOUNTS = [
   {
+    role: 'kids_english',
+    title: 'Bé Học Tiếng Anh Flashcard 🔤🎨',
+    username: 'behoctienganh',
+    password: '123',
+    avatar: '🔤',
+    color: 'border-cyan-500/40 bg-cyan-950/40 text-cyan-300 hover:bg-cyan-900/60',
+    badge: 'Flashcard 3D & Native Audio',
+    description: 'Bé Bắp (5 tuổi - Học Từ Vựng Chi Tiết)',
+  },
+  {
     role: 'pregnant',
     title: 'Phụ Nữ Mang Thai 🤰',
     username: 'mangthai',
@@ -103,7 +113,7 @@ export function LoginPortal({ addToast }) {
 
     try {
       setLoading(true);
-      const avatar = regForm.role === 'pregnant' ? '🤰' : '🤱';
+      const avatar = regForm.role === 'kids_english' ? '🔤' : regForm.role === 'pregnant' ? '🤰' : '🤱';
       await createAgent({
         fullName: regForm.fullName,
         username: regForm.username,
@@ -380,12 +390,13 @@ export function LoginPortal({ addToast }) {
               </div>
 
               <div>
-                <label className="block text-pink-300 font-bold mb-1">Giai Đoạn Sức Khỏe *</label>
+                <label className="block text-cyan-300 font-bold mb-1">Vai Trò / Tác Nhân Đăng Ký *</label>
                 <select
                   value={regForm.role}
                   onChange={(e) => setRegForm({ ...regForm, role: e.target.value })}
-                  className="w-full rounded-xl border border-pink-500/40 bg-slate-950 p-2.5 text-slate-100 font-bold"
+                  className="w-full rounded-xl border border-cyan-500/40 bg-slate-950 p-2.5 text-slate-100 font-bold"
                 >
+                  <option value="kids_english">🔤 Bé Học Tiếng Anh Flashcard (Kids English)</option>
                   <option value="pregnant">🤰 Phụ Nữ Mang Thai (Pregnancy Phase)</option>
                   <option value="postpartum">🤱 Phụ Nữ Sau Sinh (Postpartum Phase)</option>
                 </select>

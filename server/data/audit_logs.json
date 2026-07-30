@@ -1,5 +1,77 @@
 [
   {
+    "id": "log-1785378467475-oo7c",
+    "timestamp": "2026-07-30T02:27:47.475Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Quản Trị Viên Tối Cao' (ADMIN) đăng nhập thành công với Token HMAC",
+    "username": "admin",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785378286122-zz2c",
+    "timestamp": "2026-07-30T02:24:46.122Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Bé Bắp (Tác Nhân Học Tiếng Anh Flashcard)' (KIDS_ENGLISH) đăng nhập thành công với Token HMAC",
+    "username": "behoctienganh",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785378273012-uj9v",
+    "timestamp": "2026-07-30T02:24:33.012Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Quản Trị Viên Tối Cao' (ADMIN) đăng nhập thành công với Token HMAC",
+    "username": "admin",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785378140285-mws0",
+    "timestamp": "2026-07-30T02:22:20.285Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Quản Trị Viên Tối Cao' (ADMIN) đăng nhập thành công với Token HMAC",
+    "username": "admin",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785376317173-x7ha",
+    "timestamp": "2026-07-30T01:51:57.173Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Bé Bắp (Tác Nhân Học Tiếng Anh Flashcard)' (KIDS_ENGLISH) đăng nhập thành công với Token HMAC",
+    "username": "behoctienganh",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785376243899-iz3b",
+    "timestamp": "2026-07-30T01:50:43.899Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Quản Trị Viên Tối Cao' (ADMIN) đăng nhập thành công với Token HMAC",
+    "username": "admin",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785376221769-ligk",
+    "timestamp": "2026-07-30T01:50:21.769Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Chị Thu Hà (Tác Nhân Phụ Nữ Mang Thai)' (PREGNANT) đăng nhập thành công với Token HMAC",
+    "username": "mangthai",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785376215093-mcna",
+    "timestamp": "2026-07-30T01:50:15.093Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'BS. CKII Nguyễn Thị Mai (Người Duyệt Chuyên Môn)' (CLINICIAN) đăng nhập thành công với Token HMAC",
+    "username": "bacti",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785375728746-ldrx",
+    "timestamp": "2026-07-30T01:42:08.746Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Bé Bắp (Tác Nhân Học Tiếng Anh Flashcard)' (KIDS_ENGLISH) đăng nhập thành công với Token HMAC",
+    "username": "behoctienganh",
+    "ip": "::1"
+  },
+  {
     "id": "log-1785304196335-tjk7",
     "timestamp": "2026-07-29T05:49:56.335Z",
     "event": "AUTH_LOGIN_SUCCESS",

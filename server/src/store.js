@@ -61,3 +61,36 @@ export async function resetPlan() {
   return writePlan(createDefaultPlan());
 }
 
+// ----------------------------------------------------
+// KIDS ENGLISH LEARNING PROGRESS STORE
+// ----------------------------------------------------
+const kidsProgressFile = path.join(dataDir, 'kids_progress.json');
+
+export async function readKidsProgress() {
+  await mkdir(dataDir, { recursive: true });
+  try {
+    const raw = await readFile(kidsProgressFile, 'utf8');
+    return JSON.parse(raw);
+  } catch {
+    const defaultProgress = {
+      stars: 120,
+      masteredCards: ['vocab-1', 'vocab-2', 'vocab-3'],
+      quizScore: 0,
+      updatedAt: new Date().toISOString(),
+    };
+    await writeFile(kidsProgressFile, JSON.stringify(defaultProgress, null, 2), 'utf8');
+    return defaultProgress;
+  }
+}
+
+export async function writeKidsProgress(progressData) {
+  await mkdir(dataDir, { recursive: true });
+  const updated = {
+    ...progressData,
+    updatedAt: new Date().toISOString(),
+  };
+  await writeFile(kidsProgressFile, JSON.stringify(updated, null, 2), 'utf8');
+  writeKangarooVault('kids_progress_vault', updated);
+  return updated;
+}
+

@@ -42,7 +42,7 @@ export function Header({
   isFullscreen,
   onToggleFullscreen,
 }) {
-  const { user, logout, roleInfo, permissions } = useRole();
+  const { role, user, logout, roleInfo, permissions } = useRole();
   const [logoClicks, setLogoClicks] = useState(0);
 
   const mode = profile?.mode || 'pregnant';
@@ -65,26 +65,31 @@ export function Header({
     }
   };
 
-  return (
-    <header className="no-print space-y-3">
-      {/* 1. MANDATORY SAFETY DISCLAIMER BANNER (1.2 & 9.1 & 15) */}
-      <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-950/60 via-slate-900 to-amber-950/60 p-2.5 px-4 shadow-md flex items-center justify-between gap-3 text-xs">
-        <div className="flex items-center gap-2.5 text-amber-200 leading-relaxed font-medium">
-          <ShieldAlert className="h-4 w-4 text-amber-400 shrink-0" />
-          <span>
-            <strong className="text-amber-300">TUYÊN BỐ AN TOÀN: </strong>
-            {MATERNAL_SAFETY_DISCLAIMER}
-          </span>
-        </div>
+  const isKidsActor = role === 'kids_english';
+  const isClinicianActor = role === 'clinician';
 
-        <button
-          onClick={onOpenUrgentWarnings}
-          className="shrink-0 flex items-center gap-1.5 rounded-xl border border-rose-500/50 bg-rose-950/80 px-3 py-1.5 text-[11px] font-extrabold text-rose-300 hover:bg-rose-900 transition animate-pulse shadow-sm"
-        >
-          <AlertTriangle className="h-3.5 w-3.5 text-rose-400" />
-          <span>🚨 Cảnh Báo Khẩn Cấp</span>
-        </button>
-      </div>
+  return (
+    <header className="no-print space-y-3 font-sans">
+      {/* 1. MANDATORY SAFETY DISCLAIMER BANNER (For Maternal & General Roles) */}
+      {!isKidsActor && (
+        <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-950/60 via-slate-900 to-amber-950/60 p-2.5 px-4 shadow-md flex items-center justify-between gap-3 text-xs">
+          <div className="flex items-center gap-2.5 text-amber-200 leading-relaxed font-medium">
+            <ShieldAlert className="h-4 w-4 text-amber-400 shrink-0" />
+            <span>
+              <strong className="text-amber-300">TUYÊN BỐ AN TOÀN: </strong>
+              {MATERNAL_SAFETY_DISCLAIMER}
+            </span>
+          </div>
+
+          <button
+            onClick={onOpenUrgentWarnings}
+            className="shrink-0 flex items-center gap-1.5 rounded-xl border border-rose-500/50 bg-rose-950/80 px-3 py-1.5 text-[11px] font-extrabold text-rose-300 hover:bg-rose-900 transition animate-pulse shadow-sm"
+          >
+            <AlertTriangle className="h-3.5 w-3.5 text-rose-400" />
+            <span>🚨 Cảnh Báo Khẩn Cấp</span>
+          </button>
+        </div>
+      )}
 
       {/* 2. Top Navigation Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 backdrop-blur-md p-3 md:p-4 rounded-2xl border border-slate-800/80 shadow-sm">
@@ -93,15 +98,25 @@ export function Header({
           <button
             onClick={handleLogoClick}
             title="Bấm 3 lần để mở Cổng Admin Ẩn"
-            className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 text-white shadow-md hover:scale-105 transition shrink-0"
+            className={`flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-md hover:scale-105 transition shrink-0 ${
+              isKidsActor
+                ? 'bg-gradient-to-br from-cyan-500 to-blue-600'
+                : isClinicianActor
+                ? 'bg-gradient-to-br from-purple-600 to-indigo-600'
+                : 'bg-gradient-to-br from-indigo-600 to-purple-600'
+            }`}
           >
-            <Sparkles className="h-5 w-5" />
+            {isKidsActor ? '🔤' : isClinicianActor ? '🩺' : <Sparkles className="h-5 w-5" />}
           </button>
 
           <div className="space-y-1">
             <div className="flex items-center gap-2 flex-wrap">
               <h1 className="text-base md:text-lg font-extrabold tracking-tight text-white font-heading">
-                {meta?.title || 'LỊCH SINH HOẠT PHỤ NỮ MANG THAI & SAU SINH'}
+                {isKidsActor
+                  ? 'GIAO DIỆN CHUYÊN BIỆT: BÉ HỌC TIẾNG ANH FLASHCARD 🔤'
+                  : isClinicianActor
+                  ? 'CỔNG THẨM ĐỊNH LÂM SÀNG BÁC SĨ (CLINICIAN) 🩺'
+                  : meta?.title || 'LỊCH SINH HOẠT PHỤ NỮ MANG THAI & SAU SINH'}
               </h1>
               <button
                 onClick={onOpenRoleModal}
@@ -116,35 +131,37 @@ export function Header({
               </button>
             </div>
 
-            {/* Maternal Phase Selector Pills */}
-            <div className="flex items-center gap-2 text-xs">
-              <button
-                onClick={() => toggleMaternalMode('pregnant')}
-                className={`flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-[11px] font-extrabold border transition ${
-                  mode === 'pregnant'
-                    ? 'bg-pink-600 border-pink-400 text-white shadow-sm'
-                    : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
-                }`}
-              >
-                <span>🤰 Mang Thai (Tuần {profile?.pregnancyWeek || 24})</span>
-              </button>
+            {/* Maternal Phase Selector Pills (Hidden for Kids and Clinician) */}
+            {!isKidsActor && !isClinicianActor && (
+              <div className="flex items-center gap-2 text-xs">
+                <button
+                  onClick={() => toggleMaternalMode('pregnant')}
+                  className={`flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-[11px] font-extrabold border transition ${
+                    mode === 'pregnant'
+                      ? 'bg-pink-600 border-pink-400 text-white shadow-sm'
+                      : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
+                  }`}
+                >
+                  <span>🤰 Mang Thai (Tuần {profile?.pregnancyWeek || 24})</span>
+                </button>
 
-              <button
-                onClick={() => toggleMaternalMode('postpartum')}
-                className={`flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-[11px] font-extrabold border transition ${
-                  mode === 'postpartum'
-                    ? 'bg-amber-600 border-amber-400 text-white shadow-sm'
-                    : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
-                }`}
-              >
-                <span>🤱 Sau Sinh (Ngày {profile?.postpartumDays || 14})</span>
-              </button>
+                <button
+                  onClick={() => toggleMaternalMode('postpartum')}
+                  className={`flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-[11px] font-extrabold border transition ${
+                    mode === 'postpartum'
+                      ? 'bg-amber-600 border-amber-400 text-white shadow-sm'
+                      : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
+                  }`}
+                >
+                  <span>🤱 Sau Sinh (Ngày {profile?.postpartumDays || 14})</span>
+                </button>
 
-              <span className="text-slate-600 hidden sm:inline">•</span>
-              <span className={isSaving ? 'text-amber-400 font-medium animate-pulse text-[11px]' : 'text-slate-400 text-[11px]'}>
-                {saveStatus}
-              </span>
-            </div>
+                <span className="text-slate-600 hidden sm:inline">•</span>
+                <span className={isSaving ? 'text-amber-400 font-medium animate-pulse text-[11px]' : 'text-slate-400 text-[11px]'}>
+                  {saveStatus}
+                </span>
+              </div>
+            )}
           </div>
         </div>
 
@@ -241,12 +258,17 @@ export function Header({
         </div>
       </div>
 
-      {/* 3. Navigation Tabs */}
+      {/* 3. Navigation Tabs (Role-Isolated Tabs Filtering) */}
       <nav className="flex items-center justify-between border-b border-slate-800 pb-1 px-1">
         <div className="flex items-center gap-1 overflow-x-auto custom-scrollbar py-1">
-          {TABS.map((tab) => {
+          {TABS.filter((t) => {
+            if (isKidsActor) return t.id === 'dashboard';
+            return true;
+          }).map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
+            const label = isKidsActor && tab.id === 'dashboard' ? 'Giao Diện Học Tiếng Anh Flashcard 🔤' : tab.label;
+
             return (
               <button
                 key={tab.id}
@@ -259,7 +281,7 @@ export function Header({
                 )}
               >
                 <Icon className="h-3.5 w-3.5" />
-                <span>{tab.label}</span>
+                <span>{label}</span>
               </button>
             );
           })}

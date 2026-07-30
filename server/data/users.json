@@ -60,6 +60,16 @@
     "createdAt": "2026-07-28T18:55:45.026Z"
   },
   {
+    "id": "usr-kids-01",
+    "username": "behoctienganh",
+    "password": "123",
+    "fullName": "Bé Bắp (Tác Nhân Học Tiếng Anh Flashcard)",
+    "role": "kids_english",
+    "avatar": "🔤",
+    "status": "ACTIVE",
+    "createdAt": "2026-07-30T08:40:00.000Z"
+  },
+  {
     "id": "usr-agent-1785267228456",
     "username": "wiew",
     "password": "12345",

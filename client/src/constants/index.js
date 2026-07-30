@@ -50,6 +50,13 @@ export const ROLES = {
     color: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
     description: 'Quyền: Xem Lịch & Tiến Độ, Chỉnh Sửa Ô Công Việc, Xóa Khung Giờ Hoạt Động, Biên Tập Mục Tiêu Tuần.',
   },
+  kids_english: {
+    id: 'kids_english',
+    name: 'Bé Học Tiếng Anh Flashcard 🎨🔤',
+    badge: 'KIDS ENGLISH',
+    color: 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40',
+    description: 'Tác nhân học tiếng Anh siêu chi tiết bằng hình ảnh & Flashcard tương tác, hỗ trợ phát âm chuẩn và trò chơi luyện nhớ.',
+  },
 };
 
 export function uid(prefix = 'item') {

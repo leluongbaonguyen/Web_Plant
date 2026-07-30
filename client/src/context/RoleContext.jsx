@@ -31,6 +31,12 @@ export const PERMISSION_MATRIX = {
     'PERM_DELETE_SLOT',
     'PERM_MANAGE_GOALS',
   ],
+  kids_english: [
+    'PERM_READ_SCHEDULE',
+    'PERM_EDIT_CELL',
+    'PERM_MANAGE_GOALS',
+    'PERM_FLASHCARD_LEARN',
+  ],
 };
 
 export function RoleProvider({ children }) {

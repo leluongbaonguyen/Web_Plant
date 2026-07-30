@@ -4,7 +4,7 @@ import path from 'node:path';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { createWordBuffer } from './exportWord.js';
-import { readPlan, resetPlan, writePlan } from './store.js';
+import { readPlan, resetPlan, writePlan, readKidsProgress, writeKidsProgress } from './store.js';
 import { sanitizePlan } from './validation.js';
 import { appendAuditLog, readAuditLogs, readUsers, writeUsers } from './db.js';
 import { getKangarooTelemetry, readKangarooVault, syncAllToKangaroo, writeKangarooVault } from './kangarooDb.js';
@@ -42,8 +42,8 @@ app.use((req, _res, next) => {
 
 // Middleware bắt buộc tất cả tác nhân phải đăng nhập tài khoản trước khi truy cập API
 app.use('/api', (req, res, next) => {
-  const publicPaths = ['/api/auth/login', '/api/health', '/api/roles', '/api/admin/auth'];
-  if (publicPaths.includes(req.path)) {
+  const publicPaths = ['/auth/login', '/health', '/roles', '/admin/auth', '/kids/progress', '/api/auth/login', '/api/health', '/api/roles', '/api/admin/auth', '/api/kids/progress'];
+  if (publicPaths.includes(req.path) || publicPaths.includes(req.originalUrl)) {
     return next();
   }
 
@@ -234,6 +234,32 @@ app.post('/api/maternal/checkin', async (req, res, next) => {
       checkIn: checkInRecord,
       checkIns: plan.checkIns,
     });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// ==========================================
+// KIDS ENGLISH LEARNING PROGRESS API
+// ==========================================
+app.get('/api/kids/progress', async (_req, res, next) => {
+  try {
+    const progress = await readKidsProgress();
+    res.json({ ok: true, progress });
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.post('/api/kids/progress', async (req, res, next) => {
+  try {
+    const { stars, masteredCards, quizScore } = req.body || {};
+    const updated = await writeKidsProgress({
+      stars: typeof stars === 'number' ? stars : 120,
+      masteredCards: Array.isArray(masteredCards) ? masteredCards : [],
+      quizScore: typeof quizScore === 'number' ? quizScore : 0,
+    });
+    res.json({ ok: true, message: '⚡ Đã đồng bộ tiến độ học Tiếng Anh của Minh Anh lên máy chủ thành công!', progress: updated });
   } catch (error) {
     next(error);
   }

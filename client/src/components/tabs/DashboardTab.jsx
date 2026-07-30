@@ -1,9 +1,11 @@
 import { useState } from 'react';
-import { Activity, Award, CheckCircle2, Clock, ShieldCheck, Sparkles, Target, Zap, ArrowRight, RefreshCw, Heart, Baby } from 'lucide-react';
+import { Activity, Award, CheckCircle2, Clock, ShieldCheck, Sparkles, Target, Zap, ArrowRight, RefreshCw, Heart, Baby, BookOpen } from 'lucide-react';
 import { DAYS, getCurrentDayKey } from '../../constants/index.js';
 import { useRole } from '../../context/RoleContext.jsx';
 import { MaternalPregnantDashboard } from './MaternalPregnantDashboard.jsx';
 import { MaternalPostpartumDashboard } from './MaternalPostpartumDashboard.jsx';
+import { KidsEnglishDashboard } from './KidsEnglishDashboard.jsx';
+import { ClinicalAuditDashboard } from './ClinicalAuditDashboard.jsx';
 
 const MOTIVATIONAL_QUOTES = [
   "Rà soát giữa tuần, điều chỉnh tiến độ và phục hồi năng lượng.",
@@ -18,6 +20,16 @@ export function DashboardTab({ plan, onNavigateTab, onOpenUrgentWarnings, addToa
   const [viewMode, setViewMode] = useState('auto'); // 'auto' | 'specialized' | 'overview'
 
   if (!plan) return null;
+
+  // Render Kids English Dashboard directly if logged in as kids_english actor
+  if (role === 'kids_english') {
+    return <KidsEnglishDashboard plan={plan} addToast={addToast} />;
+  }
+
+  // Render Clinical Audit Dashboard directly if logged in as clinician actor
+  if (role === 'clinician') {
+    return <ClinicalAuditDashboard plan={plan} addToast={addToast} />;
+  }
 
   const profileMode = plan?.profile?.mode || (role === 'postpartum' ? 'postpartum' : 'pregnant');
 

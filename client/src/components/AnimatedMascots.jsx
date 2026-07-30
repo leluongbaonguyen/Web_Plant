@@ -25,30 +25,18 @@ export function AnimatedMascots({ addToast }) {
 
   return (
     <div className="no-print pointer-events-none fixed inset-0 z-40 overflow-hidden select-none">
-      {/* Floating Background Orbiting Icons */}
-      <div className="absolute top-24 left-10 opacity-40 animate-orbit pointer-events-auto cursor-pointer" title="Cập nhật năng lượng">
-        <div className="flex items-center justify-center h-9 w-9 rounded-2xl bg-indigo-500/20 border border-indigo-400/30 text-indigo-400 backdrop-blur-md shadow-lg hover:scale-125 transition">
-          <Rocket className="h-4 w-4 animate-pulse" />
-        </div>
-      </div>
-
-      <div className="absolute top-44 right-12 opacity-40 animate-float pointer-events-auto cursor-pointer" title="Ngôi sao thành tựu">
-        <div className="flex items-center justify-center h-8 w-8 rounded-2xl bg-amber-500/20 border border-amber-400/30 text-amber-300 backdrop-blur-md shadow-lg hover:scale-125 transition">
-          <Star className="h-4 w-4 animate-spin-slow" />
-        </div>
-      </div>
-
-      <div className="absolute bottom-32 left-16 opacity-30 animate-float-reverse pointer-events-auto cursor-pointer" title="Năng lượng làm việc">
-        <div className="flex items-center justify-center h-8 w-8 rounded-2xl bg-pink-500/20 border border-pink-400/30 text-pink-400 backdrop-blur-md shadow-lg hover:scale-125 transition">
-          <Coffee className="h-4 w-4" />
-        </div>
-      </div>
-
-      <div className="absolute bottom-48 right-24 opacity-30 animate-orbit pointer-events-auto cursor-pointer" title="Lửa nhiệt huyết">
-        <div className="flex items-center justify-center h-8 w-8 rounded-2xl bg-emerald-500/20 border border-emerald-400/30 text-emerald-300 backdrop-blur-md shadow-lg hover:scale-125 transition">
-          <Flame className="h-4 w-4 animate-bounce" />
-        </div>
-      </div>
+      {/* Floating Cute Floating Icons Floating Everywhere */}
+      <div className="absolute top-16 left-6 opacity-80 animate-orbit pointer-events-auto cursor-pointer text-2xl hover:scale-150 transition drop-shadow-lg" title="Bong bóng dễ thương">🎈</div>
+      <div className="absolute top-28 left-1/4 opacity-70 animate-float pointer-events-auto cursor-pointer text-2xl hover:scale-150 transition drop-shadow-lg" title="Kẹo ngọt ngào">🍭</div>
+      <div className="absolute top-20 right-1/3 opacity-80 animate-orbit pointer-events-auto cursor-pointer text-3xl hover:scale-150 transition drop-shadow-lg" title="Kỳ lân siêu cút">🦄</div>
+      <div className="absolute top-36 right-16 opacity-80 animate-float pointer-events-auto cursor-pointer text-2xl hover:scale-150 transition drop-shadow-lg" title="Nơ công chúa">🎀</div>
+      <div className="absolute top-44 right-1/4 opacity-75 animate-wiggle pointer-events-auto cursor-pointer text-3xl hover:scale-150 transition drop-shadow-lg" title="Gấu bông cút">🧸</div>
+      <div className="absolute bottom-40 left-12 opacity-80 animate-float-reverse pointer-events-auto cursor-pointer text-3xl hover:scale-150 transition drop-shadow-lg" title="Vương miện công chúa">👑</div>
+      <div className="absolute bottom-52 left-1/3 opacity-75 animate-orbit pointer-events-auto cursor-pointer text-3xl hover:scale-150 transition drop-shadow-lg" title="Cầu vồng rực rỡ">🌈</div>
+      <div className="absolute bottom-36 right-12 opacity-80 animate-float pointer-events-auto cursor-pointer text-2xl hover:scale-150 transition drop-shadow-lg" title="Hoa đào rực rỡ">🌸</div>
+      <div className="absolute bottom-28 right-1/3 opacity-75 animate-wiggle pointer-events-auto cursor-pointer text-2xl hover:scale-150 transition drop-shadow-lg" title="Bảng màu vẽ">🎨</div>
+      <div className="absolute top-1/2 left-8 opacity-60 animate-pulse pointer-events-auto cursor-pointer text-2xl hover:scale-150 transition" title="Ngôi sao lấp lánh">✨</div>
+      <div className="absolute top-1/2 right-8 opacity-60 animate-bounce pointer-events-auto cursor-pointer text-2xl hover:scale-150 transition" title="Ngôi sao bé ngoan">⭐</div>
 
       {/* Running Boy Mascot Running Across Bottom Screen */}
       <div className="absolute bottom-2 left-0 w-full pointer-events-auto">

@@ -7,6 +7,7 @@ const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY || process.env.SUPABASE_ANON_KEY || process.env.SUPABASE_SERVICE_ROLE_KEY;
 
 let supabase = null;
+let isSupabaseDisabled = false;
 
 if (supabaseUrl && supabaseKey) {
   try {
@@ -21,8 +22,20 @@ if (supabaseUrl && supabaseKey) {
   console.log('ℹ️ [STORAGE MODE] Chưa cấu hình SUPABASE_URL / SUPABASE_KEY. Hệ thống sử dụng lưu trữ File JSON cục bộ.');
 }
 
+function handleSupabaseError(error, actionName) {
+  if (!error) return;
+  if (error.message && (error.message.includes('Invalid API key') || error.message.includes('apiKey'))) {
+    if (!isSupabaseDisabled) {
+      isSupabaseDisabled = true;
+      console.log('ℹ️ [SYNC MODE] Supabase API Key không hợp lệ. Đã tự động chuyển toàn bộ hệ thống sang Chế Độ Đồng Bộ Cục Bộ Siêu Nhanh (File JSON Local Sync).');
+    }
+  } else {
+    console.warn(`⚠️ [SUPABASE ${actionName} WARNING]`, error.message);
+  }
+}
+
 export function isSupabaseConfigured() {
-  return Boolean(supabase);
+  return Boolean(supabase) && !isSupabaseDisabled;
 }
 
 // ----------------------------------------------------
@@ -30,7 +43,7 @@ export function isSupabaseConfigured() {
 // ----------------------------------------------------
 
 export async function fetchPlanFromSupabase() {
-  if (!supabase) return null;
+  if (!supabase || isSupabaseDisabled) return null;
   try {
     const { data, error } = await supabase
       .from('app_plans')
@@ -40,21 +53,20 @@ export async function fetchPlanFromSupabase() {
 
     if (error) {
       if (error.code === 'PGRST116') {
-        // Record not found
         return null;
       }
-      console.warn('⚠️ [SUPABASE PLAN FETCH WARNING]', error.message);
+      handleSupabaseError(error, 'PLAN FETCH');
       return null;
     }
     return data?.content || null;
   } catch (err) {
-    console.error('❌ [SUPABASE PLAN FETCH ERROR]', err.message);
+    handleSupabaseError(err, 'PLAN FETCH EXCEPTION');
     return null;
   }
 }
 
 export async function savePlanToSupabase(planContent) {
-  if (!supabase) return null;
+  if (!supabase || isSupabaseDisabled) return null;
   try {
     const payload = {
       id: 'main_plan',
@@ -68,12 +80,12 @@ export async function savePlanToSupabase(planContent) {
       .select();
 
     if (error) {
-      console.error('❌ [SUPABASE PLAN SAVE ERROR]', error.message);
+      handleSupabaseError(error, 'PLAN SAVE');
       return null;
     }
     return data;
   } catch (err) {
-    console.error('❌ [SUPABASE PLAN SAVE EXCEPTION]', err.message);
+    handleSupabaseError(err, 'PLAN SAVE EXCEPTION');
     return null;
   }
 }
@@ -83,7 +95,7 @@ export async function savePlanToSupabase(planContent) {
 // ----------------------------------------------------
 
 export async function fetchUsersFromSupabase() {
-  if (!supabase) return null;
+  if (!supabase || isSupabaseDisabled) return null;
   try {
     const { data, error } = await supabase
       .from('app_users')
@@ -91,13 +103,12 @@ export async function fetchUsersFromSupabase() {
       .order('created_at', { ascending: true });
 
     if (error) {
-      console.warn('⚠️ [SUPABASE USERS FETCH WARNING]', error.message);
+      handleSupabaseError(error, 'USERS FETCH');
       return null;
     }
 
     if (!data || data.length === 0) return null;
 
-    // Convert snake_case DB columns to camelCase JS objects
     return data.map((u) => ({
       id: u.id,
       username: u.username,
@@ -109,13 +120,13 @@ export async function fetchUsersFromSupabase() {
       createdAt: u.created_at || u.createdAt || new Date().toISOString(),
     }));
   } catch (err) {
-    console.error('❌ [SUPABASE USERS FETCH ERROR]', err.message);
+    handleSupabaseError(err, 'USERS FETCH EXCEPTION');
     return null;
   }
 }
 
 export async function saveUsersToSupabase(usersList) {
-  if (!supabase) return null;
+  if (!supabase || isSupabaseDisabled) return null;
   try {
     const rows = usersList.map((u) => ({
       id: u.id,
@@ -133,18 +144,18 @@ export async function saveUsersToSupabase(usersList) {
       .upsert(rows, { onConflict: 'id' });
 
     if (error) {
-      console.error('❌ [SUPABASE USERS SAVE ERROR]', error.message);
+      handleSupabaseError(error, 'USERS SAVE');
       return null;
     }
     return data;
   } catch (err) {
-    console.error('❌ [SUPABASE USERS SAVE EXCEPTION]', err.message);
+    handleSupabaseError(err, 'USERS SAVE EXCEPTION');
     return null;
   }
 }
 
 export async function deleteUserFromSupabase(userId) {
-  if (!supabase) return false;
+  if (!supabase || isSupabaseDisabled) return false;
   try {
     const { error } = await supabase
       .from('app_users')
@@ -152,12 +163,12 @@ export async function deleteUserFromSupabase(userId) {
       .eq('id', userId);
 
     if (error) {
-      console.error('❌ [SUPABASE USER DELETE ERROR]', error.message);
+      handleSupabaseError(error, 'USER DELETE');
       return false;
     }
     return true;
   } catch (err) {
-    console.error('❌ [SUPABASE USER DELETE EXCEPTION]', err.message);
+    handleSupabaseError(err, 'USER DELETE EXCEPTION');
     return false;
   }
 }
@@ -167,7 +178,7 @@ export async function deleteUserFromSupabase(userId) {
 // ----------------------------------------------------
 
 export async function fetchAuditLogsFromSupabase() {
-  if (!supabase) return null;
+  if (!supabase || isSupabaseDisabled) return null;
   try {
     const { data, error } = await supabase
       .from('app_audit_logs')
@@ -176,18 +187,18 @@ export async function fetchAuditLogsFromSupabase() {
       .limit(500);
 
     if (error) {
-      console.warn('⚠️ [SUPABASE LOGS FETCH WARNING]', error.message);
+      handleSupabaseError(error, 'LOGS FETCH');
       return null;
     }
     return data || [];
   } catch (err) {
-    console.error('❌ [SUPABASE LOGS FETCH ERROR]', err.message);
+    handleSupabaseError(err, 'LOGS FETCH EXCEPTION');
     return null;
   }
 }
 
 export async function appendAuditLogToSupabase(logEntry) {
-  if (!supabase) return null;
+  if (!supabase || isSupabaseDisabled) return null;
   try {
     const row = {
       id: logEntry.id,
@@ -203,12 +214,12 @@ export async function appendAuditLogToSupabase(logEntry) {
       .insert([row]);
 
     if (error) {
-      console.error('❌ [SUPABASE LOG INSERT ERROR]', error.message);
+      handleSupabaseError(error, 'LOG INSERT');
       return null;
     }
     return data;
   } catch (err) {
-    console.error('❌ [SUPABASE LOG INSERT EXCEPTION]', err.message);
+    handleSupabaseError(err, 'LOG INSERT EXCEPTION');
     return null;
   }
 }
