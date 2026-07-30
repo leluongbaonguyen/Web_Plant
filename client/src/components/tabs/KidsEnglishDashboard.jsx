@@ -683,29 +683,19 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                       </div>
                     </div>
 
-                    {/* CLICK TO REVEAL VIETNAMESE MEANING (Chỉ xem nghĩa khi bấm vào nút) */}
+                    {/* VIETNAMESE MEANING & ACCURATE DICTIONARY DETAILS */}
                     <div className="space-y-3">
-                      {!showSpotlightMeaning ? (
-                        <button
-                          onClick={() => setShowSpotlightMeaning(true)}
-                          className="w-full rounded-2xl border border-yellow-500/40 bg-yellow-950/60 p-4 text-center text-xs font-black text-yellow-300 hover:bg-yellow-900/80 transition shadow-lg flex items-center justify-center gap-2 group"
-                        >
-                          <Sparkles className="h-4 w-4 text-yellow-400 group-hover:rotate-12 transition-transform" />
-                          <span>BẤM VÀO ĐÂY ĐỂ XEM NGHĨA TIẾNG VIỆT 💡</span>
-                        </button>
-                      ) : (
-                        <div className="rounded-2xl border border-yellow-500/50 bg-slate-950 p-4 space-y-2 text-center animate-fadeIn shadow-lg">
-                          <div className="text-2xl font-black text-yellow-300 font-heading">
-                            {spotlightCard.meaning}
-                          </div>
-                          <p className="text-xs text-slate-300 italic font-medium">💡 Mẹo nhớ: {spotlightCard.hint}</p>
-
-                          <div className="pt-2 border-t border-slate-800 text-left text-xs space-y-1">
-                            <div className="font-bold text-cyan-300">"{spotlightCard.sentence}"</div>
-                            <div className="text-slate-400">({spotlightCard.sentenceVi})</div>
-                          </div>
+                      <div className="rounded-2xl border border-yellow-500/50 bg-slate-950 p-4 space-y-2 text-center animate-fadeIn shadow-lg">
+                        <div className="text-2xl md:text-3xl font-black text-yellow-300 font-heading">
+                          {spotlightCard.meaning}
                         </div>
-                      )}
+                        <p className="text-xs text-cyan-300 font-medium">💡 Mẹo nhớ: {spotlightCard.hint}</p>
+
+                        <div className="pt-2 border-t border-slate-800 text-left text-xs space-y-1">
+                          <div className="font-bold text-cyan-300">"{spotlightCard.sentence}"</div>
+                          <div className="text-slate-400">({spotlightCard.sentenceVi})</div>
+                        </div>
+                      </div>
                     </div>
 
                     {/* CUTE EXAMPLE ICONS MINI GALLERY (Các icon ví dụ ngộ nghĩnh) */}
