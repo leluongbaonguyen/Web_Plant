@@ -3,7 +3,8 @@ import {
   Volume2, Sparkles, Award, Star, RefreshCw, CheckCircle2, Heart, HelpCircle,
   Gamepad2, BookOpen, Smile, RotateCw, Play, Trophy, Flame, Music, Layers, Search,
   GraduationCap, Zap, ChevronRight, ChevronLeft, ArrowUpCircle, Check, X,
-  Bot, Clock, BellRing, Send, MessageSquare, ShieldCheck
+  Bot, Clock, BellRing, Send, MessageSquare, ShieldCheck, Plus, Edit, Trash2,
+  Download, Upload, Settings, FileText
 } from 'lucide-react';
 import { COURSE_LEVELS, VOCAB_CATEGORIES, VOCABULARY_DATABASE } from '../../constants/kidsVocabularyDatabase.js';
 
@@ -13,6 +14,39 @@ export function KidsEnglishDashboard({ plan, addToast }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
+
+  // 2,000 Vocabulary Custom Editable Database State & Persistence
+  const [vocabDatabase, setVocabDatabase] = useState(() => {
+    try {
+      const saved = localStorage.getItem('kids_custom_vocabulary_2000');
+      return saved ? JSON.parse(saved) : VOCABULARY_DATABASE;
+    } catch {
+      return VOCABULARY_DATABASE;
+    }
+  });
+
+  const saveVocabDatabase = (newList) => {
+    setVocabDatabase(newList);
+    try {
+      localStorage.setItem('kids_custom_vocabulary_2000', JSON.stringify(newList));
+    } catch (e) {
+      console.error('Error saving custom vocabulary database:', e);
+    }
+  };
+
+  // Admin Vocabulary Edit Form Modal States
+  const [showVocabModal, setShowVocabModal] = useState(false);
+  const [editingWord, setEditingWord] = useState(null);
+  const [vocabForm, setVocabForm] = useState({
+    word: '',
+    ipa: '',
+    meaning: '',
+    category: 'L1-U01',
+    level: 'L1',
+    image: '⭐',
+    sentence: '',
+    sentenceVi: '',
+  });
 
   const [flippedCards, setFlippedCards] = useState({});
   const [masteredCards, setMasteredCards] = useState(() => {
@@ -33,7 +67,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     }
   });
 
-  const [activeTab, setActiveTab] = useState('flashcards'); // 'flashcards' | 'roadmap' | 'quiz'
+  const [activeTab, setActiveTab] = useState('flashcards'); // 'flashcards' | 'quiz' | 'vocab_manager'
 
   // Spotlight Enlarged Card State
   const [spotlightCard, setSpotlightCard] = useState(null);
@@ -87,14 +121,14 @@ export function KidsEnglishDashboard({ plan, addToast }) {
   // Level Detailed Statistics Breakdown
   const levelStats = useMemo(() => {
     const calc = (lvlId) => {
-      const levelItems = VOCABULARY_DATABASE.filter((i) => i.level === lvlId);
+      const levelItems = vocabDatabase.filter((i) => i.level === lvlId);
       const masteredInLevel = levelItems.filter((i) => masteredCards.includes(i.id));
       const total = levelItems.length || 100;
       const pct = Math.round((masteredInLevel.length / total) * 100);
       return { total, mastered: masteredInLevel.length, pct };
     };
     return { L1: calc('L1'), L2: calc('L2'), L3: calc('L3'), L4: calc('L4') };
-  }, [masteredCards]);
+  }, [vocabDatabase, masteredCards]);
 
   // Mascot Speech Bubble State
   const [mascotQuoteIndex, setMascotQuoteIndex] = useState(0);
@@ -184,18 +218,111 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     return () => clearInterval(timer);
   }, []);
 
+  // Admin Vocabulary CRUD Operations
+  const handleOpenAddModal = () => {
+    setEditingWord(null);
+    setVocabForm({
+      word: '',
+      ipa: '',
+      meaning: '',
+      category: selectedCategory !== 'all' ? selectedCategory : 'L1-U01',
+      level: selectedLevel !== 'all' ? selectedLevel : 'L1',
+      image: '⭐',
+      sentence: '',
+      sentenceVi: '',
+    });
+    setShowVocabModal(true);
+  };
+
+  const handleOpenEditModal = (item) => {
+    setEditingWord(item);
+    setVocabForm({
+      word: item.word || '',
+      ipa: item.ipa || '',
+      meaning: item.meaning || '',
+      category: item.category || 'L1-U01',
+      level: item.level || 'L1',
+      image: item.image || '⭐',
+      sentence: item.sentence || '',
+      sentenceVi: item.sentenceVi || '',
+    });
+    setShowVocabModal(true);
+  };
+
+  const handleSaveVocabItem = (e) => {
+    e.preventDefault();
+    if (!vocabForm.word.trim() || !vocabForm.meaning.trim()) {
+      if (addToast) addToast('Vui lòng nhập đầy đủ Từ tiếng Anh và Nghĩa tiếng Việt!', 'warning');
+      return;
+    }
+
+    if (editingWord) {
+      const updatedList = vocabDatabase.map((item) =>
+        item.id === editingWord.id
+          ? {
+              ...item,
+              ...vocabForm,
+              hint: `${vocabForm.level} • ${vocabForm.meaning}`,
+            }
+          : item
+      );
+      saveVocabDatabase(updatedList);
+      if (addToast) addToast(`🎉 Đã cập nhật từ vựng '${vocabForm.word}' thành công!`, 'success');
+    } else {
+      const newId = `vocab-custom-${Date.now()}`;
+      const newWordObj = {
+        id: newId,
+        ...vocabForm,
+        hint: `${vocabForm.level} • ${vocabForm.meaning}`,
+      };
+      const updatedList = [newWordObj, ...vocabDatabase];
+      saveVocabDatabase(updatedList);
+      if (addToast) addToast(`🚀 Đã thêm từ vựng mới '${vocabForm.word}' vào kho 2,000 từ!`, 'success');
+    }
+    setShowVocabModal(false);
+  };
+
+  const handleDeleteVocabItem = (item) => {
+    if (!confirm(`Bạn có chắc chắn muốn xóa từ vựng '${item.word}' (${item.meaning}) khỏi kho dữ liệu?`)) {
+      return;
+    }
+    const updatedList = vocabDatabase.filter((i) => i.id !== item.id);
+    saveVocabDatabase(updatedList);
+    if (addToast) addToast(`🗑️ Đã xóa từ vựng '${item.word}' khỏi hệ thống!`, 'info');
+  };
+
+  const handleResetVocabDatabase = () => {
+    if (!confirm('Bạn có muốn khôi phục kho từ vựng về mặc định ban đầu? Các từ vựng tùy chỉnh sẽ bị đặt lại.')) {
+      return;
+    }
+    saveVocabDatabase(VOCABULARY_DATABASE);
+    if (addToast) addToast('🔄 Đã khôi phục kho 2,000 từ vựng về mặc định!', 'info');
+  };
+
+  const handleExportVocabJson = () => {
+    const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(vocabDatabase, null, 2));
+    const downloadAnchor = document.createElement('a');
+    downloadAnchor.setAttribute('href', dataStr);
+    downloadAnchor.setAttribute('download', `kids_vocabulary_database_2000_${Date.now()}.json`);
+    document.body.appendChild(downloadAnchor);
+    downloadAnchor.click();
+    downloadAnchor.remove();
+    if (addToast) addToast('📥 Đã tải file dữ liệu JSON kho 2,000 từ vựng!', 'success');
+  };
+
   // Filter 2,000 Vocabulary Database
   const filteredDatabase = useMemo(() => {
-    return VOCABULARY_DATABASE.filter((item) => {
+    return vocabDatabase.filter((item) => {
       const matchLevel = selectedLevel === 'all' || item.level === selectedLevel;
       const matchCategory = selectedCategory === 'all' || item.category === selectedCategory;
       const matchSearch =
         !searchQuery.trim() ||
         item.word.toLowerCase().includes(searchQuery.toLowerCase().trim()) ||
-        item.meaning.toLowerCase().includes(searchQuery.toLowerCase().trim());
+        item.meaning.toLowerCase().includes(searchQuery.toLowerCase().trim()) ||
+        (item.ipa && item.ipa.toLowerCase().includes(searchQuery.toLowerCase().trim()));
       return matchLevel && matchCategory && matchSearch;
     });
-  }, [selectedLevel, selectedCategory, searchQuery]);
+  }, [vocabDatabase, selectedLevel, selectedCategory, searchQuery]);
 
   // Pagination calculation
   const totalPages = Math.ceil(filteredDatabase.length / pageSize) || 1;
@@ -533,6 +660,16 @@ export function KidsEnglishDashboard({ plan, addToast }) {
         >
           <Gamepad2 className="h-4 w-4 text-yellow-300 animate-pulse" />
           <span>2000 Bài Tập Đấu Trí Có Thời Gian ⏰</span>
+        </button>
+
+        <button
+          onClick={() => setActiveTab('vocab_manager')}
+          className={`flex-1 py-3 px-4 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 ${
+            activeTab === 'vocab_manager' ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <Settings className="h-4 w-4 text-emerald-300" />
+          <span>⚙️ Quản Lý Kho 2,000 Từ Vựng (Admin)</span>
         </button>
 
         <button
@@ -1096,6 +1233,345 @@ export function KidsEnglishDashboard({ plan, addToast }) {
               </button>
             </div>
           )}
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* VIEW 3: ADMIN VOCABULARY DATABASE MANAGER (CRUD 2,000 WORDS) */}
+      {/* ========================================================================= */}
+      {activeTab === 'vocab_manager' && (
+        <div className="space-y-6 animate-fadeIn font-sans">
+          {/* Header Control Panel */}
+          <div className="glass-panel rounded-3xl border border-emerald-500/40 bg-gradient-to-r from-slate-950 via-teal-950/60 to-slate-950 p-6 md:p-8 shadow-2xl space-y-4">
+            <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="space-y-1">
+                <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/40 bg-emerald-500/20 px-3.5 py-1 text-xs font-black text-emerald-300">
+                  <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
+                  <span>Master Admin CRUD Console</span>
+                </div>
+                <h2 className="text-2xl md:text-3xl font-black font-heading text-white">
+                  QUẢN LÝ KHO DỮ LIỆU <span className="gradient-text-emerald font-black">2,000 TỪ VỰNG TIẾNG ANH</span>
+                </h2>
+                <p className="text-xs text-slate-300">
+                  Thêm mới từ vựng, hiệu chỉnh phiên âm IPA, dịch nghĩa tiếng Việt, icon minh họa, và câu ví dụ. Tự động lưu ngầm vào hệ thống.
+                </p>
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-2">
+                <button
+                  onClick={handleOpenAddModal}
+                  className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-emerald-600 via-teal-600 to-emerald-500 px-5 py-3 text-xs font-black text-white shadow-xl hover:scale-105 active:scale-95 transition"
+                >
+                  <Plus className="h-4 w-4" />
+                  <span>+ Thêm Từ Vựng Mới</span>
+                </button>
+
+                <button
+                  onClick={handleExportVocabJson}
+                  className="flex items-center gap-2 rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3 text-xs font-black text-slate-200 hover:bg-slate-800 transition active:scale-95"
+                >
+                  <Download className="h-4 w-4 text-cyan-400" />
+                  <span>Xuất JSON</span>
+                </button>
+
+                <button
+                  onClick={handleResetVocabDatabase}
+                  className="flex items-center gap-2 rounded-2xl border border-amber-500/40 bg-amber-950/40 px-4 py-3 text-xs font-black text-amber-300 hover:bg-amber-900/60 transition active:scale-95"
+                >
+                  <RefreshCw className="h-4 w-4 text-amber-400" />
+                  <span>Khôi Phục Mặc Định</span>
+                </button>
+              </div>
+            </div>
+
+            {/* Filter & Search Toolbar */}
+            <div className="grid grid-cols-1 md:grid-cols-12 gap-3 pt-3 border-t border-slate-800">
+              <div className="md:col-span-6 relative">
+                <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+                <input
+                  type="text"
+                  placeholder="Tìm kiếm từ tiếng Anh, phiên âm IPA, nghĩa tiếng Việt..."
+                  value={searchQuery}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value);
+                    setCurrentPage(1);
+                  }}
+                  className="w-full rounded-2xl border border-slate-800 bg-slate-950 pl-10 pr-4 py-2.5 text-xs text-slate-100 placeholder-slate-500 focus:border-emerald-500 focus:outline-none"
+                />
+              </div>
+
+              <div className="md:col-span-3">
+                <select
+                  value={selectedLevel}
+                  onChange={(e) => handleLevelChange(e.target.value)}
+                  className="w-full rounded-2xl border border-slate-800 bg-slate-950 px-3.5 py-2.5 text-xs font-bold text-slate-200 focus:outline-none"
+                >
+                  <option value="all">🌈 Tất cả 4 Cấp Độ (CEFR)</option>
+                  {COURSE_LEVELS.map((lvl) => (
+                    <option key={lvl.id} value={lvl.id}>{lvl.name}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="md:col-span-3">
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => handleCategoryChange(e.target.value)}
+                  className="w-full rounded-2xl border border-slate-800 bg-slate-950 px-3.5 py-2.5 text-xs font-bold text-slate-200 focus:outline-none"
+                >
+                  <option value="all">📚 Tất cả 40 Chủ Đề Units</option>
+                  {VOCAB_CATEGORIES.filter((c) => c.id !== 'all').map((cat) => (
+                    <option key={cat.id} value={cat.id}>{cat.name}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+          </div>
+
+          {/* Admin Vocabulary Data Table */}
+          <div className="overflow-x-auto rounded-3xl border border-slate-800 bg-slate-950/90 shadow-2xl custom-scrollbar">
+            <table className="w-full text-left border-collapse min-w-[950px]">
+              <thead className="border-b border-slate-800 bg-slate-900/95 text-xs text-slate-300 font-bold uppercase tracking-wider">
+                <tr>
+                  <th className="p-4 w-16 text-center">Icon</th>
+                  <th className="p-4 w-44">Từ Vựng & IPA</th>
+                  <th className="p-4 w-44">Nghĩa Tiếng Việt</th>
+                  <th className="p-4 w-48">Cấp Độ & Chủ Đề</th>
+                  <th className="p-4">Câu Ví Dụ Minh Họa</th>
+                  <th className="p-4 w-28 text-center">Thao Tác Admin</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-800/60 text-xs">
+                {paginatedCards.map((item) => (
+                  <tr key={item.id} className="hover:bg-slate-900/50 transition">
+                    <td className="p-4 text-center text-3xl">{item.image}</td>
+                    <td className="p-4 space-y-1">
+                      <div className="flex items-center gap-2 font-black text-sm text-white font-heading">
+                        <span>{item.word}</span>
+                        <button
+                          onClick={() => playWordAudio(item.word)}
+                          className="p-1 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 transition"
+                          title="Nghe phát âm chuẩn"
+                        >
+                          <Volume2 className="h-3.5 w-3.5 text-cyan-400" />
+                        </button>
+                      </div>
+                      <div className="font-mono-code text-[11px] text-cyan-300 font-bold">{item.ipa || '/.../'}</div>
+                    </td>
+                    <td className="p-4 font-bold text-slate-200">
+                      <div>{item.meaning}</div>
+                      <div className="text-[10px] text-slate-500 font-normal">{getVietnamesePhoneticGuide(item.word)}</div>
+                    </td>
+                    <td className="p-4 space-y-1">
+                      <span className="inline-block rounded-md bg-indigo-500/20 border border-indigo-500/30 px-2 py-0.5 text-[10px] font-black text-indigo-300">
+                        {item.level}
+                      </span>
+                      <div className="text-[11px] text-slate-400 font-medium">
+                        {VOCAB_CATEGORIES.find((c) => c.id === item.category)?.name || item.category}
+                      </div>
+                    </td>
+                    <td className="p-4 space-y-1">
+                      <div className="italic text-slate-300 font-medium">"{item.sentence}"</div>
+                      <div className="text-[11px] text-emerald-400 font-medium">{item.sentenceVi}</div>
+                    </td>
+                    <td className="p-4 text-center">
+                      <div className="flex items-center justify-center gap-1">
+                        <button
+                          onClick={() => handleOpenEditModal(item)}
+                          className="p-2 rounded-xl bg-indigo-950/80 border border-indigo-500/40 text-indigo-300 hover:bg-indigo-900 transition"
+                          title="Sửa từ vựng này"
+                        >
+                          <Edit className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          onClick={() => handleDeleteVocabItem(item)}
+                          className="p-2 rounded-xl bg-red-950/80 border border-red-500/40 text-red-300 hover:bg-red-900 transition"
+                          title="Xóa từ vựng này"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination Controls */}
+          {totalPages > 1 && (
+            <div className="flex items-center justify-between p-4 rounded-2xl bg-slate-900 border border-slate-800 text-xs">
+              <span className="text-slate-400 font-bold">
+                Trang {currentPage} / {totalPages} (Tổng {filteredDatabase.length} từ)
+              </span>
+              <div className="flex items-center gap-2">
+                <button
+                  disabled={currentPage === 1}
+                  onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-1.5 font-bold text-slate-300 disabled:opacity-40"
+                >
+                  Trang Trước
+                </button>
+                <button
+                  disabled={currentPage === totalPages}
+                  onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                  className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-1.5 font-bold text-slate-300 disabled:opacity-40"
+                >
+                  Trang Kế
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* ADMIN EDIT / CREATE VOCABULARY MODAL */}
+      {/* ========================================================================= */}
+      {showVocabModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/90 p-4 backdrop-blur-md animate-fadeIn font-sans">
+          <div className="w-full max-w-2xl rounded-3xl border border-emerald-500/50 bg-slate-900 p-6 md:p-8 shadow-2xl space-y-6 relative overflow-hidden">
+            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+              <div className="flex items-center gap-2.5">
+                <div className="p-2 rounded-xl bg-emerald-500/20 text-emerald-400">
+                  <Edit className="h-5 w-5" />
+                </div>
+                <h3 className="text-lg md:text-xl font-black font-heading text-white">
+                  {editingWord ? `HIỆU CHỈNH TỪ VỰNG: ${editingWord.word}` : 'THÊM TỪ VỰNG MỚI VÀO KHO DỮ LIỆU'}
+                </h3>
+              </div>
+              <button
+                onClick={() => setShowVocabModal(false)}
+                className="p-2 text-slate-400 hover:text-white rounded-xl hover:bg-slate-800 transition"
+              >
+                <X className="h-5 w-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleSaveVocabItem} className="space-y-4 text-xs">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {/* Word */}
+                <div className="space-y-1">
+                  <label className="font-bold text-slate-300">Từ Tiếng Anh (*):</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="VD: strawberry"
+                    value={vocabForm.word}
+                    onChange={(e) => setVocabForm({ ...vocabForm, word: e.target.value })}
+                    className="w-full rounded-xl border border-slate-700 bg-slate-950 p-2.5 text-slate-100 font-bold focus:border-emerald-500 focus:outline-none"
+                  />
+                </div>
+
+                {/* IPA Phonetic */}
+                <div className="space-y-1">
+                  <label className="font-bold text-slate-300">Phiên Âm IPA:</label>
+                  <input
+                    type="text"
+                    placeholder="VD: /ˈstrɔːbəri/"
+                    value={vocabForm.ipa}
+                    onChange={(e) => setVocabForm({ ...vocabForm, ipa: e.target.value })}
+                    className="w-full rounded-xl border border-slate-700 bg-slate-950 p-2.5 font-mono-code text-cyan-300 focus:border-emerald-500 focus:outline-none"
+                  />
+                </div>
+
+                {/* Meaning */}
+                <div className="space-y-1">
+                  <label className="font-bold text-slate-300">Nghĩa Tiếng Việt (*):</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="VD: quả dâu tây"
+                    value={vocabForm.meaning}
+                    onChange={(e) => setVocabForm({ ...vocabForm, meaning: e.target.value })}
+                    className="w-full rounded-xl border border-slate-700 bg-slate-950 p-2.5 text-slate-100 font-bold focus:border-emerald-500 focus:outline-none"
+                  />
+                </div>
+
+                {/* Icon Emoji */}
+                <div className="space-y-1">
+                  <label className="font-bold text-slate-300">Biểu Tượng Icon Emoji:</label>
+                  <input
+                    type="text"
+                    placeholder="VD: 🍓"
+                    value={vocabForm.image}
+                    onChange={(e) => setVocabForm({ ...vocabForm, image: e.target.value })}
+                    className="w-full rounded-xl border border-slate-700 bg-slate-950 p-2.5 text-xl text-center focus:border-emerald-500 focus:outline-none"
+                  />
+                </div>
+
+                {/* Level */}
+                <div className="space-y-1">
+                  <label className="font-bold text-slate-300">Cấp Độ (CEFR Level):</label>
+                  <select
+                    value={vocabForm.level}
+                    onChange={(e) => setVocabForm({ ...vocabForm, level: e.target.value })}
+                    className="w-full rounded-xl border border-slate-700 bg-slate-950 p-2.5 text-slate-200 font-bold focus:outline-none"
+                  >
+                    {COURSE_LEVELS.map((lvl) => (
+                      <option key={lvl.id} value={lvl.id}>{lvl.name}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Category */}
+                <div className="space-y-1">
+                  <label className="font-bold text-slate-300">Chủ Đề (Unit Category):</label>
+                  <select
+                    value={vocabForm.category}
+                    onChange={(e) => setVocabForm({ ...vocabForm, category: e.target.value })}
+                    className="w-full rounded-xl border border-slate-700 bg-slate-950 p-2.5 text-slate-200 font-bold focus:outline-none"
+                  >
+                    {VOCAB_CATEGORIES.filter((c) => c.id !== 'all').map((cat) => (
+                      <option key={cat.id} value={cat.id}>{cat.name}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Sample Sentences */}
+              <div className="space-y-1 pt-2">
+                <label className="font-bold text-slate-300">Câu Ví Dụ Tiếng Anh:</label>
+                <input
+                  type="text"
+                  placeholder="VD: I love fresh strawberries."
+                  value={vocabForm.sentence}
+                  onChange={(e) => setVocabForm({ ...vocabForm, sentence: e.target.value })}
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 p-2.5 text-slate-200 focus:border-emerald-500 focus:outline-none"
+                />
+              </div>
+
+              <div className="space-y-1">
+                <label className="font-bold text-slate-300">Dịch Nghĩa Câu Tiếng Việt:</label>
+                <input
+                  type="text"
+                  placeholder="VD: Bé rất thích những quả dâu tây tươi."
+                  value={vocabForm.sentenceVi}
+                  onChange={(e) => setVocabForm({ ...vocabForm, sentenceVi: e.target.value })}
+                  className="w-full rounded-xl border border-slate-700 bg-slate-950 p-2.5 text-slate-200 focus:border-emerald-500 focus:outline-none"
+                />
+              </div>
+
+              {/* Form Buttons */}
+              <div className="pt-4 border-t border-slate-800 flex items-center justify-end gap-3">
+                <button
+                  type="button"
+                  onClick={() => setShowVocabModal(false)}
+                  className="px-5 py-2.5 rounded-xl border border-slate-700 bg-slate-950 font-bold text-slate-400 hover:text-white transition"
+                >
+                  Hủy Bỏ
+                </button>
+
+                <button
+                  type="submit"
+                  className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 font-black text-white shadow-xl hover:scale-105 transition"
+                >
+                  Lưu Từ Vựng
+                </button>
+              </div>
+            </form>
+          </div>
         </div>
       )}
 
