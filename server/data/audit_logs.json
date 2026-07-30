@@ -1,5 +1,13 @@
 [
   {
+    "id": "log-1785378583324-sqr1",
+    "timestamp": "2026-07-30T02:29:43.324Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Bé Bắp (Tác Nhân Học Tiếng Anh Flashcard)' (KIDS_ENGLISH) đăng nhập thành công với Token HMAC",
+    "username": "behoctienganh",
+    "ip": "::1"
+  },
+  {
     "id": "log-1785378467475-oo7c",
     "timestamp": "2026-07-30T02:27:47.475Z",
     "event": "AUTH_LOGIN_SUCCESS",

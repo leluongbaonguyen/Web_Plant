@@ -73,8 +73,8 @@ export async function readKidsProgress() {
     return JSON.parse(raw);
   } catch {
     const defaultProgress = {
-      stars: 120,
-      masteredCards: ['vocab-1', 'vocab-2', 'vocab-3'],
+      stars: 0,
+      masteredCards: [],
       quizScore: 0,
       updatedAt: new Date().toISOString(),
     };

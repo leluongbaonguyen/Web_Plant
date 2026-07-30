@@ -18,18 +18,18 @@ export function KidsEnglishDashboard({ plan, addToast }) {
   const [masteredCards, setMasteredCards] = useState(() => {
     try {
       const saved = localStorage.getItem('kids_mastered_words_2000');
-      return saved ? JSON.parse(saved) : ['vocab-1', 'vocab-2', 'vocab-3'];
+      return saved ? JSON.parse(saved) : [];
     } catch {
-      return ['vocab-1', 'vocab-2', 'vocab-3'];
+      return [];
     }
   });
 
   const [stars, setStars] = useState(() => {
     try {
       const saved = localStorage.getItem('kids_earned_stars_2000');
-      return saved ? Number(saved) : 48;
+      return saved ? Number(saved) : 0;
     } catch {
-      return 48;
+      return 0;
     }
   });
 
