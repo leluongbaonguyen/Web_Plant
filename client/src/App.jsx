@@ -441,26 +441,32 @@ function MainAppContent() {
     return <LoginPortal addToast={addToast} />;
   }
 
-  if (loading) {
+  if (loading || (!plan && !error)) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-100">
-        <div className="flex flex-col items-center gap-3">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent"></div>
-          <p className="text-sm font-bold text-slate-400">Đang tải Lịch Sinh Hoạt & Quản Lý Tiến Độ...</p>
+      <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-100 p-4">
+        <div className="flex flex-col items-center gap-4 text-center">
+          <div className="relative flex h-12 w-12 items-center justify-center">
+            <div className="absolute h-full w-full animate-ping rounded-full bg-indigo-500/40"></div>
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-indigo-500 border-t-transparent"></div>
+          </div>
+          <div className="space-y-1">
+            <p className="text-base font-extrabold text-white font-heading">Đang đồng bộ dữ liệu Tác nhân...</p>
+            <p className="text-xs text-slate-400">Vui lòng chờ trong giây lát để tải thông tin mới nhất.</p>
+          </div>
         </div>
       </div>
     );
   }
 
-  if (error) {
+  if (error && !plan) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-100 p-4">
-        <div className="glass-panel max-w-md p-6 rounded-3xl border border-red-500/40 text-center space-y-4">
-          <h2 className="text-xl font-bold text-red-400">Lỗi Kết Nối Server</h2>
-          <p className="text-xs text-slate-300">{error}</p>
+        <div className="glass-panel max-w-md p-6 rounded-3xl border border-red-500/40 text-center space-y-4 shadow-2xl">
+          <h2 className="text-xl font-bold text-red-400 font-heading">Lỗi Kết Nối Máy Chủ</h2>
+          <p className="text-xs text-slate-300 bg-slate-900/80 p-3 rounded-xl border border-slate-800 font-mono-code">{error}</p>
           <button
             onClick={() => window.location.reload()}
-            className="rounded-xl bg-red-600 px-5 py-2 text-xs font-bold text-white hover:bg-red-500 transition"
+            className="rounded-xl bg-gradient-to-r from-red-600 to-rose-600 px-6 py-2.5 text-xs font-bold text-white hover:scale-105 transition shadow-lg"
           >
             Tải Lại Trang
           </button>
@@ -615,10 +621,60 @@ function MainAppContent() {
   );
 }
 
+// Top-Level Error Boundary to prevent blank screen crashes
+import React from 'react';
+
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('UI ErrorBoundary caught exception:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen flex items-center justify-center bg-slate-950 text-slate-100 p-6">
+          <div className="glass-panel max-w-lg p-8 rounded-3xl border border-amber-500/40 text-center space-y-4 shadow-2xl">
+            <div className="text-5xl animate-bounce">⚠️</div>
+            <h2 className="text-2xl font-extrabold text-amber-400 font-heading">
+              Đã Xảy Ra Sự Cố Hiển Thị Giao Diện
+            </h2>
+            <p className="text-xs text-slate-300 bg-slate-900 p-3 rounded-xl border border-slate-800 font-mono-code">
+              {this.state.error?.toString() || 'Lỗi hiển thị không xác định'}
+            </p>
+            <div className="flex justify-center gap-3 pt-2">
+              <button
+                onClick={() => {
+                  this.setState({ hasError: false, error: null });
+                  window.location.reload();
+                }}
+                className="rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-2.5 text-xs font-bold text-white hover:scale-105 transition shadow-lg"
+              >
+                Khôi Phục & Tải Lại Trang 🔄
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
 export default function App() {
   return (
-    <RoleProvider>
-      <MainAppContent />
-    </RoleProvider>
+    <ErrorBoundary>
+      <RoleProvider>
+        <MainAppContent />
+      </RoleProvider>
+    </ErrorBoundary>
   );
 }
