@@ -1,5 +1,21 @@
 [
   {
+    "id": "log-1785420040731-7c6r",
+    "timestamp": "2026-07-30T14:00:40.731Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Bé Bắp (Tác Nhân Học Tiếng Anh Flashcard)' (KIDS_ENGLISH) đăng nhập thành công với Token HMAC",
+    "username": "behoctienganh",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785420034005-52l0",
+    "timestamp": "2026-07-30T14:00:34.005Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Quản Trị Viên Tối Cao' (ADMIN) đăng nhập thành công với Token HMAC",
+    "username": "admin",
+    "ip": "::1"
+  },
+  {
     "id": "log-1785419850315-dxjv",
     "timestamp": "2026-07-30T13:57:30.315Z",
     "event": "AUTH_LOGIN_SUCCESS",
