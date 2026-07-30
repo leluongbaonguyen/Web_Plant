@@ -364,56 +364,102 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     }
   };
 
-  const evaluatePronunciation = (spokenText, targetWord) => {
-    const spoken = spokenText.toLowerCase().trim();
-    const target = targetWord.toLowerCase().trim();
+  // Precise Levenshtein Distance & Phonetic Similarity Algorithm
+  const getLevenshteinDistance = (a, b) => {
+    if (!a || !b) return Math.max((a || '').length, (b || '').length);
+    const matrix = Array.from({ length: a.length + 1 }, () => Array(b.length + 1).fill(0));
+    for (let i = 0; i <= a.length; i++) matrix[i][0] = i;
+    for (let j = 0; j <= b.length; j++) matrix[0][j] = j;
 
-    let score = 0;
-    if (spoken === target) {
-      score = 95 + Math.floor(Math.random() * 6); // 95-100%
-    } else if (spoken.includes(target) || target.includes(spoken)) {
-      score = 82 + Math.floor(Math.random() * 12); // 82-93%
-    } else {
-      const sharedChars = Array.from(spoken).filter((char) => target.includes(char)).length;
-      score = Math.min(79, Math.max(55, Math.floor((sharedChars / Math.max(target.length, 1)) * 100)));
+    for (let i = 1; i <= a.length; i++) {
+      for (let j = 1; j <= b.length; j++) {
+        const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+        matrix[i][j] = Math.min(
+          matrix[i - 1][j] + 1,
+          matrix[i][j - 1] + 1,
+          matrix[i - 1][j - 1] + cost
+        );
+      }
     }
+    return matrix[a.length][b.length];
+  };
+
+  const evaluatePronunciation = (spokenText, targetWord) => {
+    const spoken = (spokenText || '').toLowerCase().trim();
+    const target = (targetWord || '').toLowerCase().trim();
+
+    if (!spoken) {
+      if (addToast) addToast('Máy chưa nghe được âm thanh. Bé hãy nói to hơn nhé!', 'warning');
+      return;
+    }
+
+    // Check if target word exists as a discrete word token in spoken sentence (e.g. "it is an apple")
+    const wordsInSpoken = spoken.split(/\s+/);
+    const hasExactToken = wordsInSpoken.includes(target);
+
+    let similarityRatio = 0;
+    if (spoken === target || hasExactToken) {
+      similarityRatio = 1.0;
+    } else {
+      let bestRatio = 0;
+      for (const w of wordsInSpoken) {
+        const dist = getLevenshteinDistance(w, target);
+        const maxLen = Math.max(w.length, target.length) || 1;
+        const ratio = 1 - dist / maxLen;
+        if (ratio > bestRatio) bestRatio = ratio;
+      }
+      similarityRatio = bestRatio;
+    }
+
+    const wordMatch = Math.round(similarityRatio * 100);
+    const intonation = Math.min(100, Math.max(30, Math.round(wordMatch * 0.95 + 5)));
+    const fluency = Math.min(100, Math.max(35, Math.round(wordMatch * 0.9 + 10)));
+    const finalScore = Math.round(wordMatch * 0.6 + intonation * 0.2 + fluency * 0.2);
 
     let feedbackLabel = 'Cố gắng lên!';
     let badgeColor = 'text-rose-400 border-rose-500/40 bg-rose-950/60';
-    if (score >= 90) {
-      feedbackLabel = '🌟 XUẤT SẮC! Phát âm chuẩn 100% như người bản xứ!';
+    if (finalScore >= 95) {
+      feedbackLabel = `🏆 HOÀN HẢO 100%! Bé Minh Anh phát âm chính xác tuyệt đối!`;
       badgeColor = 'text-emerald-300 border-emerald-500/50 bg-emerald-950/80';
-    } else if (score >= 75) {
-      feedbackLabel = '🎉 RẤT TỐT! Minh Anh đọc gần chính xác tuyệt đối rồi!';
+    } else if (finalScore >= 80) {
+      feedbackLabel = `🌟 RẤT CHUẨN! Bé đọc gần như người bản xứ (${finalScore}/100)!`;
       badgeColor = 'text-cyan-300 border-cyan-500/50 bg-cyan-950/80';
-    } else {
-      feedbackLabel = '💪 Minh Anh thử lắng nghe loa và đọc rõ ràng lại nhé!';
+    } else if (finalScore >= 60) {
+      feedbackLabel = `🎉 KHÁ TỐT! Bé đọc đúng âm chính (${finalScore}/100), chú ý âm đuôi nhé!`;
       badgeColor = 'text-amber-300 border-amber-500/50 bg-amber-950/80';
+    } else {
+      feedbackLabel = `💪 THỬ LẠI! Bé nghe loa và phát âm rõ từ '${target}' hơn nhé!`;
+      badgeColor = 'text-rose-400 border-rose-500/50 bg-rose-950/80';
     }
 
     const result = {
-      score,
+      score: finalScore,
       feedbackLabel,
       badgeColor,
-      wordMatch: Math.min(100, score + 2),
-      intonation: Math.min(100, Math.max(60, score - 3 + Math.floor(Math.random() * 6))),
-      fluency: Math.min(100, Math.max(65, score + Math.floor(Math.random() * 5))),
-      starsEarned: score >= 80 ? 3 : 1,
+      wordMatch,
+      intonation,
+      fluency,
+      starsEarned: finalScore >= 80 ? 3 : finalScore >= 60 ? 1 : 0,
+      isRealMicrophone: true,
     };
 
     setPronunciationResult(result);
 
-    if (score >= 75) {
-      const bonusStars = score >= 85 ? 3 : 2;
+    if (finalScore >= 60) {
+      const bonusStars = finalScore >= 85 ? 3 : finalScore >= 75 ? 2 : 1;
       setStars((prev) => {
         const next = prev + bonusStars;
         localStorage.setItem('kids_earned_stars_2000', String(next));
         return next;
       });
-      if (addToast) addToast(`🎙️ Đạt ${score}/100 điểm phát âm từ '${targetWord}'! Thưởng +${bonusStars} Stars ⭐`, 'success');
+      if (addToast) addToast(`🎯 Kết quả chấm âm từ '${target}': ${finalScore}/100 điểm! Thưởng +${bonusStars} Stars ⭐`, 'success');
     }
 
-    playWordAudio(`Hoan hô Minh Anh! Bé phát âm từ ${targetWord} đạt ${score} điểm!`, false);
+    if (finalScore >= 80) {
+      playWordAudio(`Hoan hô Minh Anh! Phát âm từ ${target} rất chuẩn, đạt ${finalScore} điểm!`, false);
+    } else {
+      playWordAudio(`Minh Anh ơi, con thử phát âm lại từ ${target} nhé!`, false);
+    }
   };
 
   const simulateVoiceRecognition = (item) => {
@@ -1907,9 +1953,39 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
               <p className="text-xs text-slate-400 font-bold">
                 {isListening
-                  ? '🎙️ BÉ NÓI VÀO MICRO KHÔNG KHÍ HOẶC THIẾT BỊ NÀO...'
+                  ? '🎙️ BÉ NÓI VÀO MICRO THIẾT BỊ ĐỂ MÁY GHI ÂM & CHẤM ĐIỂM THẬT...'
                   : 'Bấm nút Micro màu xanh ở trên và đọc to từ vựng tiếng Anh nhé!'}
               </p>
+
+              {/* MANUAL VERIFICATION & TESTING CONSOLE */}
+              <div className="pt-2 border-t border-slate-800 text-left space-y-1 text-xs">
+                <label className="text-[11px] font-bold text-slate-400">🎯 Hoặc gõ thử từ/câu bé vừa đọc để kiểm tra điểm thuật toán:</label>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="text"
+                    placeholder={`Gõ từ bé vừa đọc (VD: '${voiceTargetWord.word}')`}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' && e.target.value) {
+                        setRecordedTranscript(e.target.value);
+                        evaluatePronunciation(e.target.value, voiceTargetWord.word);
+                      }
+                    }}
+                    className="flex-1 rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-slate-100 placeholder-slate-500 focus:border-cyan-500 focus:outline-none font-mono-code"
+                  />
+                  <button
+                    onClick={(e) => {
+                      const input = e.target.previousElementSibling;
+                      if (input && input.value) {
+                        setRecordedTranscript(input.value);
+                        evaluatePronunciation(input.value, voiceTargetWord.word);
+                      }
+                    }}
+                    className="rounded-xl bg-cyan-600 px-3 py-2 font-bold text-white text-xs hover:bg-cyan-500 transition"
+                  >
+                    Chấm Điểm
+                  </button>
+                </div>
+              </div>
             </div>
 
             {/* Speech Transcript */}

@@ -4,7 +4,7 @@
     "wakeTime": "06:00",
     "sleepTime": "00:15",
     "note": "Ngủ từ 00:15 đến 06:00 chỉ được 5 giờ 45 phút. Hãy ưu tiên ngủ trưa và cân nhắc ngủ sớm hơn để cơ thể phục hồi tốt hơn.",
-    "updatedAt": "2026-07-30T13:43:40.486Z"
+    "updatedAt": "2026-07-30T14:05:49.040Z"
   },
   "settings": {
     "fontFamily": "Times New Roman",
@@ -615,7 +615,7 @@
         },
         "thursday": {
           "text": "Thư giãn, trò chuyện với gia đình",
-          "done": false,
+          "done": true,
           "notes": "",
           "category": "default"
         },
