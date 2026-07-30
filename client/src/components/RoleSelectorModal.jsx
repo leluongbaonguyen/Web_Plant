@@ -71,7 +71,7 @@ export function RoleSelectorModal({ isOpen, onClose }) {
             <input
               type="text"
               required
-              placeholder="Username (behoctienganh, mangthai, admin)..."
+              placeholder="Username (admin, editor, viewer, behoctienganh)..."
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-slate-100 placeholder-slate-500"

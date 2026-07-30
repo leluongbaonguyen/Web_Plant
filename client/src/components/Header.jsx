@@ -11,28 +11,18 @@ import {
   ShieldCheck,
   Sparkles,
   Upload,
-  Activity,
-  AlertTriangle,
-  Heart,
-  ShieldAlert,
 } from 'lucide-react';
 import { useRole } from '../context/RoleContext.jsx';
 import { TABS, cx } from '../constants/index.js';
-import { MATERNAL_SAFETY_DISCLAIMER } from '../constants/maternalData.js';
 
 export function Header({
   meta,
-  profile,
-  onUpdateProfile,
   activeTab,
   setActiveTab,
   onOpenRoleModal,
   onOpenSecretAdmin,
   onOpenReminders,
-  onOpenCheckIn,
-  onOpenUrgentWarnings,
   reminderBadgeCount,
-  onResetPlan,
   onDownloadJson,
   onImportJson,
   onExportWord,
@@ -42,10 +32,8 @@ export function Header({
   isFullscreen,
   onToggleFullscreen,
 }) {
-  const { role, user, logout, roleInfo, permissions } = useRole();
+  const { role, logout, roleInfo, permissions } = useRole();
   const [logoClicks, setLogoClicks] = useState(0);
-
-  const mode = profile?.mode || 'pregnant';
 
   const handleLogoClick = () => {
     const nextClicks = logoClicks + 1;
@@ -56,44 +44,13 @@ export function Header({
     }
   };
 
-  const toggleMaternalMode = (newMode) => {
-    if (onUpdateProfile) {
-      onUpdateProfile({
-        ...profile,
-        mode: newMode,
-      });
-    }
-  };
-
   const isKidsActor = role === 'kids_english';
-  const isClinicianActor = role === 'clinician';
 
   return (
     <header className="no-print space-y-3 font-sans">
-      {/* 1. MANDATORY SAFETY DISCLAIMER BANNER (For Maternal & General Roles) */}
-      {!isKidsActor && (
-        <div className="rounded-2xl border border-amber-500/40 bg-gradient-to-r from-amber-950/60 via-slate-900 to-amber-950/60 p-2.5 px-4 shadow-md flex items-center justify-between gap-3 text-xs">
-          <div className="flex items-center gap-2.5 text-amber-200 leading-relaxed font-medium">
-            <ShieldAlert className="h-4 w-4 text-amber-400 shrink-0" />
-            <span>
-              <strong className="text-amber-300">TUYÊN BỐ AN TOÀN: </strong>
-              {MATERNAL_SAFETY_DISCLAIMER}
-            </span>
-          </div>
-
-          <button
-            onClick={onOpenUrgentWarnings}
-            className="shrink-0 flex items-center gap-1.5 rounded-xl border border-rose-500/50 bg-rose-950/80 px-3 py-1.5 text-[11px] font-extrabold text-rose-300 hover:bg-rose-900 transition animate-pulse shadow-sm"
-          >
-            <AlertTriangle className="h-3.5 w-3.5 text-rose-400" />
-            <span>🚨 Cảnh Báo Khẩn Cấp</span>
-          </button>
-        </div>
-      )}
-
-      {/* 2. Top Navigation Bar */}
+      {/* Top Navigation Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 backdrop-blur-md p-3 md:p-4 rounded-2xl border border-slate-800/80 shadow-sm">
-        {/* Brand & Mode Switcher */}
+        {/* Brand & Title */}
         <div className="flex items-center gap-3">
           <button
             onClick={handleLogoClick}
@@ -101,12 +58,10 @@ export function Header({
             className={`flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-md hover:scale-105 transition shrink-0 ${
               isKidsActor
                 ? 'bg-gradient-to-br from-cyan-500 to-blue-600'
-                : isClinicianActor
-                ? 'bg-gradient-to-br from-purple-600 to-indigo-600'
                 : 'bg-gradient-to-br from-indigo-600 to-purple-600'
             }`}
           >
-            {isKidsActor ? '🔤' : isClinicianActor ? '🩺' : <Sparkles className="h-5 w-5" />}
+            {isKidsActor ? '🔤' : <Sparkles className="h-5 w-5" />}
           </button>
 
           <div className="space-y-1">
@@ -114,9 +69,7 @@ export function Header({
               <h1 className="text-base md:text-lg font-extrabold tracking-tight text-white font-heading">
                 {isKidsActor
                   ? 'GIAO DIỆN CHUYÊN BIỆT: BÉ HỌC TIẾNG ANH FLASHCARD 🔤'
-                  : isClinicianActor
-                  ? 'CỔNG THẨM ĐỊNH LÂM SÀNG BÁC SĨ (CLINICIAN) 🩺'
-                  : meta?.title || 'LỊCH SINH HOẠT PHỤ NỮ MANG THAI & SAU SINH'}
+                  : meta?.title || 'LỊCH SINH HOẠT THÔNG MINH & QUẢN LÝ TIẾN ĐỘ TUẦN'}
               </h1>
               <button
                 onClick={onOpenRoleModal}
@@ -131,57 +84,21 @@ export function Header({
               </button>
             </div>
 
-            {/* Maternal Phase Selector Pills (Hidden for Kids and Clinician) */}
-            {!isKidsActor && !isClinicianActor && (
-              <div className="flex items-center gap-2 text-xs">
-                <button
-                  onClick={() => toggleMaternalMode('pregnant')}
-                  className={`flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-[11px] font-extrabold border transition ${
-                    mode === 'pregnant'
-                      ? 'bg-pink-600 border-pink-400 text-white shadow-sm'
-                      : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
-                  }`}
-                >
-                  <span>🤰 Mang Thai (Tuần {profile?.pregnancyWeek || 24})</span>
-                </button>
-
-                <button
-                  onClick={() => toggleMaternalMode('postpartum')}
-                  className={`flex items-center gap-1 px-2.5 py-0.5 rounded-lg text-[11px] font-extrabold border transition ${
-                    mode === 'postpartum'
-                      ? 'bg-amber-600 border-amber-400 text-white shadow-sm'
-                      : 'bg-slate-800 border-slate-700 text-slate-400 hover:text-white'
-                  }`}
-                >
-                  <span>🤱 Sau Sinh (Ngày {profile?.postpartumDays || 14})</span>
-                </button>
-
-                <span className="text-slate-600 hidden sm:inline">•</span>
-                <span className={isSaving ? 'text-amber-400 font-medium animate-pulse text-[11px]' : 'text-slate-400 text-[11px]'}>
-                  {saveStatus}
-                </span>
-              </div>
-            )}
+            <div className="flex items-center gap-2 text-xs">
+              <span className={isSaving ? 'text-amber-400 font-medium animate-pulse text-[11px]' : 'text-slate-400 text-[11px]'}>
+                {saveStatus}
+              </span>
+            </div>
           </div>
         </div>
 
         {/* Action Toolbar */}
         <div className="flex items-center gap-1.5 flex-wrap">
-          {/* Daily Health Check-In Trigger */}
-          <button
-            onClick={onOpenCheckIn}
-            className="flex items-center gap-1.5 rounded-xl border border-emerald-500/40 bg-emerald-950/60 px-3 py-1.5 text-xs font-extrabold text-emerald-300 hover:bg-emerald-900/80 transition shadow-sm"
-            title="Thực hiện Check-in sức khỏe hôm nay"
-          >
-            <Activity className="h-4 w-4 text-emerald-400" />
-            <span>Check-in Sức Khỏe</span>
-          </button>
-
           {/* Bell Notification Button */}
           <button
             onClick={onOpenReminders}
             className="flex items-center gap-1.5 rounded-xl border border-indigo-500/40 bg-indigo-950/60 px-3 py-1.5 text-xs font-bold text-indigo-300 hover:bg-indigo-900/80 transition relative shadow-sm"
-            title="Mở Lời Nhắc Theo Giai Đoạn"
+            title="Mở Trung Tâm Lời Nhắc"
           >
             <Bell className="h-4 w-4 text-indigo-400 animate-pulse" />
             <span>Mẫu Lời Nhắc</span>
@@ -194,7 +111,7 @@ export function Header({
 
           {/* Word Export A3 */}
           <button
-            onClick={() => onExportWord(mode)}
+            onClick={onExportWord}
             className="flex items-center gap-1.5 rounded-xl border border-indigo-500/50 bg-indigo-600 px-3 py-1.5 text-xs font-extrabold text-white shadow-md hover:bg-indigo-500 transition"
             title="Xuất File Word A3 Ngang (Font Times New Roman 13)"
           >
@@ -232,7 +149,7 @@ export function Header({
           <button
             onClick={onOpenSecretAdmin}
             className="flex items-center gap-1.5 rounded-lg border border-red-500/30 bg-red-950/30 px-2.5 py-1.5 text-xs font-semibold text-red-300 hover:bg-red-900/50 transition"
-            title="Quản Trị Siêu Chi Tiết (AD-01 -> AD-12)"
+            title="Quản Trị Siêu Chi Tiết"
           >
             <Lock className="h-3.5 w-3.5 text-red-400" />
             <span className="hidden sm:inline">Quản Trị Admin</span>
@@ -258,7 +175,7 @@ export function Header({
         </div>
       </div>
 
-      {/* 3. Navigation Tabs (Role-Isolated Tabs Filtering) */}
+      {/* Navigation Tabs */}
       <nav className="flex items-center justify-between border-b border-slate-800 pb-1 px-1">
         <div className="flex items-center gap-1 overflow-x-auto custom-scrollbar py-1">
           {TABS.filter((t) => {
@@ -285,11 +202,6 @@ export function Header({
               </button>
             );
           })}
-        </div>
-
-        <div className="hidden md:flex items-center gap-2 text-[11px] text-slate-400">
-          <span>Bác sĩ phụ trách:</span>
-          <span className="font-bold text-indigo-300">{profile?.assignedDoctor || 'BS. Nguyễn Thị Mai'}</span>
         </div>
       </nav>
     </header>

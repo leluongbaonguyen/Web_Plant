@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import {
   ShieldCheck, Users, Plus, Trash2, Edit3, Save, RefreshCw, KeyRound, Lock,
-  BookOpen, Heart, Stethoscope, Clock, CheckCircle2, AlertTriangle, Zap,
+  BookOpen, Clock, CheckCircle2, AlertTriangle, Zap,
   Search, Layers, Sparkles, Filter, ChevronRight, X, UserPlus, Database
 } from 'lucide-react';
 import { createAgent, deleteAgent, getAgentsList, updateAgent } from '../api.js';
 import { COURSE_LEVELS, VOCABULARY_DATABASE, VOCAB_CATEGORIES } from '../constants/kidsVocabularyDatabase.js';
 
 export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
-  const [activeAdminTab, setActiveAdminTab] = useState('agents'); // 'agents' | 'vocab' | 'maternal' | 'schedule'
+  const [activeAdminTab, setActiveAdminTab] = useState('agents'); // 'agents' | 'vocab'
   const [loading, setLoading] = useState(false);
 
   // --- 1. AGENTS MANAGEMENT STATE ---
@@ -56,14 +56,6 @@ export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
     sentenceVi: '',
     hint: '',
   });
-
-  // --- 3. MATERNAL HEALTH LOGS CRUD STATE ---
-  const [maternalLogs, setMaternalLogs] = useState([
-    { id: 'log-1', patient: 'Chị Thu Hà (Tuần 24 - Thai Kỳ)', type: 'kick', detail: 'Thai máy 12 lần/45 phút', status: 'NORMAL', time: 'Hôm nay - 08:30 AM' },
-    { id: 'log-2', patient: 'Chị Thanh Mai (Ngày 21 - Sau Sinh)', type: 'feeding', detail: '8 cữ bú (Total 640 mL)', status: 'HEALTHY', time: 'Hôm nay - 07:15 AM' },
-    { id: 'log-3', patient: 'Chị Hoàng Yến (Tuần 32 - Thai Kỳ)', type: 'alert', detail: 'Huyết áp 138/90 mmHg', status: 'URGENT', time: 'Hôm nay - 06:00 AM' },
-  ]);
-  const [newLogDetail, setNewLogDetail] = useState('');
 
   // Load agents data from server
   const loadAgents = async () => {
@@ -143,32 +135,10 @@ export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
   };
 
   const handleDeleteVocab = (id, word) => {
-    if (!confirm(` ADMIN QUYỀN HẠN: Bạn có chắc muốn xóa từ vựng '${word}'?`)) return;
+    if (!confirm(`ADMIN QUYỀN HẠN: Bạn có chắc muốn xóa từ vựng '${word}'?`)) return;
     const next = vocabList.filter((item) => item.id !== id);
     setVocabList(next);
     if (addToast) addToast(`[ADMIN VOCAB] Đã xóa từ '${word}' khỏi kho dữ liệu`, 'info');
-  };
-
-  // MATERNAL LOGS CRUD HANDLERS
-  const handleDeleteLog = (id) => {
-    setMaternalLogs((prev) => prev.filter((item) => item.id !== id));
-    if (addToast) addToast('[ADMIN MATERNAL] Đã xóa ghi chú y tế', 'info');
-  };
-
-  const handleAddLog = (e) => {
-    e.preventDefault();
-    if (!newLogDetail.trim()) return;
-    const newEntry = {
-      id: `log-admin-${Date.now()}`,
-      patient: 'Chị Thu Hà (Admin chỉ định)',
-      type: 'admin_note',
-      detail: newLogDetail,
-      status: 'NORMAL',
-      time: 'Vừa xong',
-    };
-    setMaternalLogs([newEntry, ...maternalLogs]);
-    setNewLogDetail('');
-    if (addToast) addToast('[ADMIN MATERNAL] Đã thêm chỉ định lâm sàng mới', 'success');
   };
 
   return (
@@ -181,7 +151,7 @@ export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
           <div className="space-y-3 max-w-2xl">
             <div className="inline-flex items-center gap-2 rounded-full border border-red-400/40 bg-red-500/10 px-4 py-1.5 text-xs font-black text-red-300">
               <ShieldCheck className="h-4 w-4 text-red-400" />
-              <span>SUPER ADMIN MASTER CONTROL CENTER (FULL CRUD PERMISSIONS) 🛡️</span>
+              <span>SUPER ADMIN MASTER CONTROL CENTER 🛡️</span>
             </div>
 
             <h1 className="text-2xl md:text-4xl font-extrabold font-heading text-white tracking-tight leading-tight">
@@ -189,7 +159,7 @@ export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
             </h1>
 
             <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
-              Toàn quyền quản trị độc quyền Admin: Thêm/Sửa/Xóa tài khoản tác nhân, quản lý kho 2,000 từ vựng Tiếng Anh, điều chỉnh dữ liệu y tế thai kỳ & can thiệp lịch sinh hoạt hệ thống.
+              Toàn quyền quản trị độc quyền Admin: Thêm/Sửa/Xóa tài khoản tác nhân, quản lý kho 2,000 từ vựng Tiếng Anh và điều chỉnh hệ thống.
             </p>
 
             <div className="flex flex-wrap items-center gap-3 pt-2">
@@ -238,21 +208,9 @@ export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
           <BookOpen className="h-4 w-4" />
           <span>2. Kho Từ Vựng 2000 Từ</span>
         </button>
-
-        <button
-          onClick={() => setActiveAdminTab('maternal')}
-          className={`flex-1 min-w-[140px] py-3 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 ${
-            activeAdminTab === 'maternal' ? 'bg-pink-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          <Heart className="h-4 w-4" />
-          <span>3. Dữ Liệu Thai Kỳ & Hậu Sản</span>
-        </button>
       </div>
 
-      {/* ========================================================================= */}
       {/* SECTION 1: AGENTS ACCOUNTS FULL CRUD MANAGEMENT */}
-      {/* ========================================================================= */}
       {activeAdminTab === 'agents' && (
         <div className="space-y-5">
           {/* Header & Main Control Bar */}
@@ -301,9 +259,6 @@ export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
                 <option value="ALL">Tất cả vai trò ({agents.length})</option>
                 <option value="admin">Quản Trị Viên (Admin)</option>
                 <option value="kids_english">Bé Học Tiếng Anh</option>
-                <option value="pregnant">Phụ Nữ Mang Thai</option>
-                <option value="postpartum">Phụ Nữ Sau Sinh</option>
-                <option value="clinician">Chuyên Gia Y Tế</option>
                 <option value="editor">Biên Tập Viên</option>
                 <option value="viewer">Thành Viên Xem</option>
               </select>
@@ -354,7 +309,7 @@ export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
                       <div className="flex items-center justify-between">
                         <span className="text-slate-400">Vai Trò Hệ Thống:</span>
                         <span className={`rounded-xl px-2.5 py-0.5 text-[10px] font-black border uppercase ${
-                          ag.role === 'admin' ? 'bg-red-500/20 text-red-300 border-red-500/40' : ag.role === 'kids_english' ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40' : 'bg-pink-500/20 text-pink-300 border-pink-500/40'
+                          ag.role === 'admin' ? 'bg-red-500/20 text-red-300 border-red-500/40' : ag.role === 'kids_english' ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40' : 'bg-slate-800 text-slate-300 border-slate-700'
                         }`}>
                           {ag.role}
                         </span>
@@ -368,9 +323,6 @@ export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
                       <div className="p-2.5 rounded-2xl bg-slate-950/80 border border-slate-800/80 text-[11px] text-slate-300 leading-tight">
                         {ag.role === 'admin' && '🛡️ Toàn quyền CRUD: Thêm/Sửa/Xóa tài khoản, từ vựng và can thiệp toàn bộ hệ thống.'}
                         {ag.role === 'kids_english' && '🔤 Tác nhân Bé Học Tiếng Anh: Truy cập 4,000 từ vựng Flashcard, Đấu trí có thời gian.'}
-                        {ag.role === 'pregnant' && '🤰 Tác nhân Thai Kỳ: Theo dõi số lần thai máy, đếm thai nhi, nhật ký sức khỏe.'}
-                        {ag.role === 'postpartum' && '🤱 Tác nhân Sau Sinh: Theo dõi cữ bú, giấc ngủ em bé, nhật ký phục hồi.'}
-                        {ag.role === 'clinician' && '🩺 Tác nhân Chuyên Gia: Duyệt kết quả đánh giá sức khỏe & chỉ định lâm sàng.'}
                         {ag.role === 'editor' && '✍️ Biên Tập Viên: Được phép cập nhật nội dung lịch, từ vựng và ghi chú.'}
                         {ag.role === 'viewer' && '👀 Thành Viên Xem: Được phép xem lịch và theo dõi tiến độ.'}
                       </div>
@@ -418,9 +370,7 @@ export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
         </div>
       )}
 
-      {/* ========================================================================= */}
       {/* SECTION 2: 2000 VOCABULARY DATABASE CRUD MANAGEMENT */}
-      {/* ========================================================================= */}
       {activeAdminTab === 'vocab' && (
         <div className="space-y-4">
           <div className="flex items-center justify-between flex-wrap gap-3">
@@ -481,55 +431,6 @@ export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
         </div>
       )}
 
-      {/* ========================================================================= */}
-      {/* SECTION 3: MATERNAL HEALTH LOGS CRUD MANAGEMENT */}
-      {/* ========================================================================= */}
-      {activeAdminTab === 'maternal' && (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between flex-wrap gap-3">
-            <div>
-              <h3 className="text-lg font-black text-white font-heading">QUẢN LÝ DỮ LIỆU SỨC KHỎE THAI KỲ & HẬU SẢN</h3>
-              <p className="text-xs text-slate-400">Admin có thể xem, xóa hoặc thêm trực tiếp ghi chú/chỉ định y tế cho sản phụ</p>
-            </div>
-          </div>
-
-          {/* Add Log Form */}
-          <form onSubmit={handleAddLog} className="flex gap-2">
-            <input
-              type="text"
-              placeholder="Nhập chỉ định lâm sàng / ghi chú của Admin..."
-              value={newLogDetail}
-              onChange={(e) => setNewLogDetail(e.target.value)}
-              className="flex-1 rounded-2xl border border-slate-700 bg-slate-950 px-4 py-2.5 text-xs text-slate-100 placeholder-slate-500 font-bold"
-            />
-            <button type="submit" className="rounded-2xl bg-pink-600 px-5 py-2.5 text-xs font-black text-white hover:bg-pink-500 transition">
-              Thêm Chỉ Định
-            </button>
-          </form>
-
-          {/* Logs List */}
-          <div className="space-y-2">
-            {maternalLogs.map((log) => (
-              <div key={log.id} className="rounded-2xl border border-slate-800 bg-slate-900 p-4 flex items-center justify-between gap-3 text-xs">
-                <div>
-                  <div className="font-extrabold text-white">{log.patient}</div>
-                  <div className="text-slate-300 mt-0.5">{log.detail}</div>
-                  <div className="text-[10px] text-slate-500">{log.time}</div>
-                </div>
-
-                <button
-                  onClick={() => handleDeleteLog(log.id)}
-                  className="rounded-xl bg-rose-950/80 border border-rose-500/40 p-2 text-rose-300 hover:bg-rose-900 transition"
-                  title="Xóa ghi chú"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
       {/* AGENT EDIT / CREATE MODAL */}
       {showAgentModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-950/80 backdrop-blur-md p-4">
@@ -583,9 +484,6 @@ export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
                     className="w-full rounded-xl border border-slate-700 bg-slate-950 p-2.5 text-white font-bold"
                   >
                     <option value="kids_english">🔤 Bé Học Tiếng Anh</option>
-                    <option value="pregnant">🤰 Phụ Nữ Mang Thai</option>
-                    <option value="postpartum">🤱 Phụ Nữ Sau Sinh</option>
-                    <option value="clinician">🩺 Chuyên Gia Y Tế</option>
                     <option value="editor">✍️ Biên Tập Viên</option>
                     <option value="viewer">👀 Thành Viên</option>
                     <option value="admin">🛡️ Quản Trị Viên (Admin)</option>
@@ -608,7 +506,7 @@ export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
               <div>
                 <label className="block text-slate-300 font-bold mb-1">Biểu Tượng Avatar (Emoji)</label>
                 <div className="flex items-center gap-2">
-                  {['👤', '🛡️', '🔤', '🤰', '🤱', '🩺', '✍️', '👑', '🚀', '⭐'].map((emoji) => (
+                  {['👤', '🛡️', '🔤', '✍️', '👑', '🚀', '⭐'].map((emoji) => (
                     <button
                       key={emoji}
                       type="button"

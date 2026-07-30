@@ -1,38 +1,28 @@
 import { useState } from 'react';
-import { AlertTriangle, Bell, CheckCircle2, Clock, Sparkles, Volume2, VolumeX, Zap, ShieldCheck, Heart, Leaf } from 'lucide-react';
-import { getCurrentDayKey, cx } from '../constants/index.js';
+import { Bell, Sparkles, Volume2, VolumeX, Zap } from 'lucide-react';
+import { cx } from '../constants/index.js';
 import { dispatchMobileLockScreenNotification } from '../utils/notifications.js';
-import { MATERNAL_REMINDER_TEMPLATES } from '../constants/maternalData.js';
 
 export function NotificationModal({
   isOpen,
   onClose,
-  liveScheduleStatus,
   soundEnabled,
   setSoundEnabled,
   soundMode,
   setSoundMode,
   desktopNotifyEnabled,
   toggleDesktopNotifications,
-  onMarkDone,
   triggerSoundNotification,
-  isAlarmPlaying,
-  alarmSecondsLeft,
-  handleStopAlarm,
 }) {
   const [customTitle, setCustomTitle] = useState('');
   const [customMessage, setCustomMessage] = useState('');
   const [delayMinutes, setDelayMinutes] = useState(0);
-  const [filterAudience, setFilterAudience] = useState('all');
 
   if (!isOpen) return null;
 
-  const { currentSlot } = liveScheduleStatus;
-  const todayKey = getCurrentDayKey();
-
   function handleSendCustomNotification() {
-    const title = customTitle.trim() || '🔔 Nhắc nhở trực tiếp từ ChronoFlow Maternal';
-    const body = customMessage.trim() || 'Đã đến lúc kiểm tra đơn thuốc và lịch sinh hoạt thai kỳ / sau sinh!';
+    const title = customTitle.trim() || '🔔 Nhắc nhở trực tiếp từ ChronoFlow';
+    const body = customMessage.trim() || 'Đã đến lúc kiểm tra công việc và lịch sinh hoạt!';
 
     const delayMs = delayMinutes * 60 * 1000;
     triggerSoundNotification();
@@ -48,20 +38,6 @@ export function NotificationModal({
     setCustomMessage('');
   }
 
-  function handleSendTemplateReminder(tpl) {
-    triggerSoundNotification();
-    dispatchMobileLockScreenNotification(
-      `🔔 ${tpl.category}: ${tpl.title}`,
-      `${tpl.message} (Mức ưu tiên: ${tpl.priority})`,
-      0
-    );
-  }
-
-  const filteredTemplates = MATERNAL_REMINDER_TEMPLATES.filter((tpl) => {
-    if (filterAudience === 'all') return true;
-    return tpl.audience === filterAudience;
-  });
-
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-end bg-slate-950/80 p-4 backdrop-blur-md animate-fadeIn">
       <div className="glass-panel h-full w-full max-w-lg rounded-3xl border border-slate-700 bg-slate-900/95 p-5 md:p-6 shadow-2xl space-y-5 flex flex-col justify-between overflow-y-auto custom-scrollbar">
@@ -69,7 +45,7 @@ export function NotificationModal({
           {/* Header Bar */}
           <div className="flex items-center justify-between border-b border-slate-800 pb-3">
             <h3 className="text-lg font-bold font-heading text-slate-100 flex items-center gap-2">
-              <Bell className="h-5 w-5 text-indigo-400 animate-bounce" /> Trung Tâm Lời Nhắc Thai Kỳ & Sau Sinh
+              <Bell className="h-5 w-5 text-indigo-400 animate-bounce" /> Trung Tâm Lời Nhắc & Thông Báo
             </h3>
             <button onClick={onClose} className="rounded-full bg-slate-800 p-1.5 text-slate-400 hover:text-white transition">
               ×
@@ -140,69 +116,6 @@ export function NotificationModal({
                 <span>🎶 Âm Báo 60 giây</span>
                 <span className="text-[9px] text-purple-300/80">Nhắc chuông kéo dài</span>
               </button>
-            </div>
-          </div>
-
-          {/* Maternal Template Reminders Catalog (Section 4.2 & 5.2) */}
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h4 className="text-xs font-bold uppercase tracking-wider text-indigo-300 flex items-center gap-1.5">
-                <ShieldCheck className="h-4 w-4 text-emerald-400" /> Mẫu Lời Nhắc Chuẩn Y Tế (WHO/ACOG)
-              </h4>
-
-              <div className="flex items-center gap-1">
-                <button
-                  onClick={() => setFilterAudience('all')}
-                  className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${filterAudience === 'all' ? 'bg-indigo-600 text-white' : 'bg-slate-800 text-slate-400'}`}
-                >
-                  Tất cả
-                </button>
-                <button
-                  onClick={() => setFilterAudience('pregnant')}
-                  className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${filterAudience === 'pregnant' ? 'bg-pink-600 text-white' : 'bg-slate-800 text-slate-400'}`}
-                >
-                  🤰 Mang thai
-                </button>
-                <button
-                  onClick={() => setFilterAudience('postpartum')}
-                  className={`px-2 py-0.5 rounded-lg text-[10px] font-bold ${filterAudience === 'postpartum' ? 'bg-amber-600 text-white' : 'bg-slate-800 text-slate-400'}`}
-                >
-                  🤱 Sau sinh
-                </button>
-              </div>
-            </div>
-
-            <div className="space-y-2 max-h-56 overflow-y-auto custom-scrollbar pr-1">
-              {filteredTemplates.map((tpl) => (
-                <div
-                  key={tpl.id}
-                  className="rounded-2xl border border-slate-800 bg-slate-950/80 p-3 space-y-1.5 hover:border-indigo-500/40 transition"
-                >
-                  <div className="flex items-center justify-between text-[10px]">
-                    <span className="font-bold text-indigo-300 uppercase px-2 py-0.5 rounded-full bg-indigo-950/80 border border-indigo-500/30">
-                      {tpl.category} • {tpl.stageRange}
-                    </span>
-                    <span className="text-emerald-400 font-bold flex items-center gap-1">
-                      <ShieldCheck className="h-3 w-3" /> Đã Duyệt Y Khoa
-                    </span>
-                  </div>
-
-                  <h5 className="text-xs font-bold text-slate-100 flex items-center gap-1.5">
-                    <span>{tpl.title}</span>
-                  </h5>
-                  <p className="text-[11px] text-slate-300 leading-relaxed">{tpl.message}</p>
-
-                  <div className="flex items-center justify-between pt-1 border-t border-slate-800/80 text-[10px]">
-                    <span className="text-slate-400 italic">Nguồn: {tpl.source}</span>
-                    <button
-                      onClick={() => handleSendTemplateReminder(tpl)}
-                      className="flex items-center gap-1 rounded-lg bg-indigo-600 px-2.5 py-1 text-white font-bold hover:bg-indigo-500 transition shadow-sm"
-                    >
-                      <Zap className="h-3 w-3" /> Bật Nhắc Việc
-                    </button>
-                  </div>
-                </div>
-              ))}
             </div>
           </div>
 

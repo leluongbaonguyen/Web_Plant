@@ -20,7 +20,6 @@ const LIGHT_BLUE = 'D9EAF7';
 const WEEKEND = 'FFF2CC';
 const WHITE = 'FFFFFF';
 const BORDER = '9CA3AF';
-const RED_WARNING = 'C00000';
 const FONT = 'Times New Roman';
 const SIZE_13 = 26; // 13pt in half-points
 
@@ -127,25 +126,14 @@ function keyValueTable(title, rows) {
   ];
 }
 
-export async function createMaternalWordBuffer(plan, mode = 'pregnant') {
-  const isPregnant = mode === 'pregnant';
-  const docTitle = isPregnant
-    ? 'LỊCH SINH HOẠT & NHẮC VIỆC CHO PHỤ NỮ MANG THAI (A3 NGANG - FONT TIMES NEW ROMAN 13)'
-    : 'LỊCH SINH HOẠT & NHẮC VIỆC CHO PHỤ NỮ SAU SINH (A3 NGANG - FONT TIMES NEW ROMAN 13)';
+export async function createWordBuffer(plan) {
+  const docTitle = 'LỊCH SINH HOẠT & QUẢN LÝ TIẾN ĐỘ TUẦN (A3 NGANG - FONT TIMES NEW ROMAN 13)';
 
-  const profileHeader = isPregnant
-    ? [
-        ['Đối tượng áp dụng', 'Phụ nữ mang thai (Pregnancy Phase)'],
-        ['Tuần thai & Dự sinh', `Tuần thai: ${plan.profile?.pregnancyWeek || '12'} | Ngày dự sinh: ${plan.profile?.dueDate || '2026-11-15'}`],
-        ['Mức độ theo dõi', plan.profile?.trackingLevel || 'Bình thường'],
-        ['Bác sĩ / Chuyên môn', plan.profile?.assignedDoctor || 'BS. Nguyễn Thị Mai - BV Phụ Sản Central'],
-      ]
-    : [
-        ['Đối tượng áp dụng', 'Phụ nữ sau sinh (Postpartum Phase)'],
-        ['Ngày sinh & Ngày sau sinh', `Ngày sau sinh: ${plan.profile?.postpartumDays || '21'} ngày | Ngày sinh: ${plan.profile?.birthDate || '2026-07-08'}`],
-        ['Phương pháp sinh & Nuôi dưỡng', `Sinh: ${plan.profile?.deliveryMethod || 'Sinh thường'} | Nuôi dưỡng: ${plan.profile?.feedingPlan || 'Sữa mẹ hoàn toàn'}`],
-        ['Bác sĩ / Chuyên môn', plan.profile?.assignedDoctor || 'BS. Phạm Văn Hùng - Trung tâm Chăm sóc Sau sinh'],
-      ];
+  const profileHeader = [
+    ['Tên hồ sơ', plan.profile?.fullName || 'Người dùng ChronoFlow'],
+    ['Vai trò', plan.profile?.role || 'Quản trị viên'],
+    ['Mức độ theo dõi', plan.profile?.trackingLevel || 'Tiêu chuẩn'],
+  ];
 
   const goalRows = (plan.weeklyGoals || []).length
     ? plan.weeklyGoals.map((goal, index) => [
@@ -155,14 +143,6 @@ export async function createMaternalWordBuffer(plan, mode = 'pregnant') {
     : [['Mục tiêu', 'Chưa nhập mục tiêu tuần.']];
 
   const focusRows = DAY_KEYS.map((day) => [day.label, plan.dailyFocus?.[day.key] || '']);
-
-  const warningRows = [
-    ['Dấu hiệu khẩn cấp 1', 'Khó thở, đau ngực ➔ Tìm chăm sóc y tế khẩn cấp ngay.'],
-    ['Dấu hiệu khẩn cấp 2', 'Ngất, co giật, lú lẫn ➔ Gọi cấp cứu 115 hoặc đến cơ sở y tế.'],
-    ['Dấu hiệu khẩn cấp 3', 'Sốt từ 38°C / Đau đầu dữ dội ➔ Liên hệ cơ sở y tế đánh giá.'],
-    ['Dấu hiệu khẩn cấp 4', isPregnant ? 'Ra máu hoặc rỉ dịch thai kỳ ➔ Đến viện ngay.' : 'Chảy máu nhiều / Sản dịch hôi ➔ Tìm chăm sóc y tế ngay.'],
-    ['Dấu hiệu khẩn cấp 5', 'Ý nghĩ làm hại bản thân hoặc em bé ➔ Tìm trợ giúp khẩn cấp từ người thân & chuyên gia y tế ngay.'],
-  ];
 
   const doc = new Document({
     styles: {
@@ -184,36 +164,18 @@ export async function createMaternalWordBuffer(plan, mode = 'pregnant') {
         children: [
           new Paragraph({
             alignment: AlignmentType.CENTER,
-            spacing: { after: 60 },
+            spacing: { after: 120 },
             children: [new TextRun({ text: docTitle, bold: true, font: FONT, size: 36, color: BLUE })],
           }),
-          new Paragraph({
-            alignment: AlignmentType.CENTER,
-            spacing: { after: 120 },
-            children: [
-              new TextRun({
-                text: 'TUYÊN BỐ AN TOÀN Y KHOA: Hệ thống hỗ trợ tổ chức lịch và nhắc việc, không chẩn đoán, không thay thế bác sĩ hoặc cơ sở y tế.',
-                bold: true,
-                color: RED_WARNING,
-                font: FONT,
-                size: SIZE_13,
-              }),
-            ],
-          }),
-          ...keyValueTable('HỒ SƠ THEO DÕI CÁ NHÂN', profileHeader),
+          ...keyValueTable('HỒ SƠ CÁ NHÂN', profileHeader),
           new Paragraph({ spacing: { before: 180, after: 60 } }),
           makeScheduleTable(plan),
           ...keyValueTable('MỤC TIÊU TUẦN', goalRows),
           ...keyValueTable('TRỌNG TÂM TỪNG NGÀY', focusRows),
-          ...keyValueTable('DANH MỤC CẢNH BÁO KHẨN CẤP (CDC / WHO)', warningRows),
         ],
       },
     ],
   });
 
   return Packer.toBuffer(doc);
-}
-
-export async function createWordBuffer(plan) {
-  return createMaternalWordBuffer(plan, 'pregnant');
 }

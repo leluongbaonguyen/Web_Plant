@@ -1,10 +1,34 @@
 {
   "_kangaroo_meta": {
     "vault": "audit_vault",
-    "lastHopTime": "2026-07-30T03:36:15.921Z",
-    "checksum": "kng-1785382575921-e0eyqv"
+    "lastHopTime": "2026-07-30T04:01:06.285Z",
+    "checksum": "kng-1785384066285-h38qn4"
   },
   "payload": [
+    {
+      "id": "log-1785384066283-luhd",
+      "timestamp": "2026-07-30T04:01:06.283Z",
+      "event": "AUTH_LOGIN_SUCCESS",
+      "details": "Tác nhân 'Bé Bắp (Tác Nhân Học Tiếng Anh Flashcard)' (KIDS_ENGLISH) đăng nhập thành công với Token HMAC",
+      "username": "behoctienganh",
+      "ip": "::1"
+    },
+    {
+      "id": "log-1785383197809-dt1d",
+      "timestamp": "2026-07-30T03:46:37.809Z",
+      "event": "AUTH_LOGIN_SUCCESS",
+      "details": "Tác nhân 'Chị Thu Hà (Tác Nhân Phụ Nữ Mang Thai)' (PREGNANT) đăng nhập thành công với Token HMAC",
+      "username": "mangthai",
+      "ip": "::1"
+    },
+    {
+      "id": "log-1785383073083-l1rg",
+      "timestamp": "2026-07-30T03:44:33.083Z",
+      "event": "AUTH_LOGIN_SUCCESS",
+      "details": "Tác nhân 'Quản Trị Viên Tối Cao' (ADMIN) đăng nhập thành công với Token HMAC",
+      "username": "admin",
+      "ip": "::1"
+    },
     {
       "id": "log-1785382575918-g3o6",
       "timestamp": "2026-07-30T03:36:15.918Z",

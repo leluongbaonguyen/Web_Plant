@@ -20,12 +20,6 @@ import {
   Edit3,
   X,
   Zap,
-  Heart,
-  Calendar,
-  FileCheck,
-  Bell,
-  Sliders,
-  FileSpreadsheet,
 } from 'lucide-react';
 import {
   createAgent,
@@ -33,18 +27,15 @@ import {
   getAgentsList,
   getTelemetryInfo,
   loginStealthAdmin,
-  toggleMaintenanceMode,
-  triggerSystemUpgrade,
   updateAgent,
 } from '../api.js';
 import { cx } from '../constants/index.js';
-import { URGENT_WARNING_SIGNS, MATERNAL_REMINDER_TEMPLATES, CONTENT_APPROVAL_WORKFLOW, MATERNAL_ROLES } from '../constants/maternalData.js';
 
 export function SecretAdminModal({ isOpen, onClose, addToast }) {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [passcode, setPasscode] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  const [activeAdminTab, setActiveAdminTab] = useState('agents'); // 'agents' | 'profiles' | 'reminders' | 'approval' | 'warnings' | 'audit' | 'config'
+  const [activeAdminTab, setActiveAdminTab] = useState('agents'); // 'agents' | 'audit' | 'rbac'
   const [telemetry, setTelemetry] = useState(null);
   const [agents, setAgents] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -56,8 +47,8 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
     username: '',
     password: '',
     fullName: '',
-    role: 'clinician',
-    avatar: '🩺',
+    role: 'editor',
+    avatar: '✍️',
     status: 'ACTIVE',
   });
 
@@ -120,7 +111,7 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
       }
       setShowAgentModal(false);
       setEditingAgent(null);
-      setAgentForm({ username: '', password: '', fullName: '', role: 'clinician', avatar: '🩺', status: 'ACTIVE' });
+      setAgentForm({ username: '', password: '', fullName: '', role: 'editor', avatar: '✍️', status: 'ACTIVE' });
     } catch (err) {
       if (addToast) addToast(`Lỗi: ${err.message}`, 'error');
     } finally {
@@ -167,13 +158,13 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
             <div>
               <div className="flex items-center gap-2">
                 <h3 className="text-xl font-black font-heading text-slate-100 uppercase tracking-tight">
-                  QUẢN TRỊ SIÊU CHI TIẾT AD-01 ➔ AD-12 (CHRONOFLOW v2.0)
+                  QUẢN TRỊ SIÊU CHI TIẾT HỆ THỐNG (CHRONOFLOW v2.0)
                 </h3>
                 <span className="rounded-full bg-purple-500/20 border border-purple-500/40 px-2 py-0.5 text-[10px] font-black text-purple-300">
                   SUPER ADMIN MASTER
                 </span>
               </div>
-              <p className="text-xs text-slate-400">Quản lý 3 tác nhân, duyệt chuyên môn 5 bước & nhật ký Audit y khoa 100%</p>
+              <p className="text-xs text-slate-400">Quản lý tác nhân, ma trận RBAC & nhật ký Audit hệ thống</p>
             </div>
           </div>
 
@@ -191,7 +182,7 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
 
             <div className="space-y-1">
               <h4 className="text-lg font-bold text-slate-100">Xác Thực Mã Đăng Nhập Super Admin</h4>
-              <p className="text-xs text-slate-400">Nhập mã ẩn bí mật để điều khiển 12 mô-đun quản trị ChronoFlow Maternal</p>
+              <p className="text-xs text-slate-400">Nhập mã ẩn bí mật để điều khiển hệ thống ChronoFlow</p>
             </div>
 
             <form onSubmit={handleLogin} className="space-y-4">
@@ -240,13 +231,9 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
             {/* Admin Modules Navigation Pills */}
             <div className="flex items-center gap-2 overflow-x-auto custom-scrollbar border-b border-slate-800 pb-3">
               {[
-                { id: 'agents', label: 'AD-01: Quản Lý Người Dùng & Tác Nhân', icon: Users },
-                { id: 'profiles', label: 'AD-02/03: Hồ Sơ Thai Kỳ & Sau Sinh', icon: Heart },
-                { id: 'reminders', label: 'AD-04: Mẫu Lời Nhắc Y Khoa', icon: Bell },
-                { id: 'approval', label: 'AD-07: Quy Trình Duyệt 5 Bước', icon: FileCheck },
-                { id: 'warnings', label: 'AD-06: Cảnh Báo CDC/WHO', icon: AlertTriangle },
-                { id: 'rbac', label: 'AD-09: Ma Trận RBAC', icon: ShieldCheck },
-                { id: 'audit', label: 'AD-12: Nhật Ký Audit System', icon: Terminal },
+                { id: 'agents', label: 'Quản Lý Người Dùng & Tác Nhân', icon: Users },
+                { id: 'rbac', label: 'Ma Trận RBAC System', icon: ShieldCheck },
+                { id: 'audit', label: 'Nhật Ký Audit System', icon: Terminal },
               ].map((tab) => {
                 const Icon = tab.icon;
                 const isActive = activeAdminTab === tab.id;
@@ -268,19 +255,19 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
               })}
             </div>
 
-            {/* AD-01: USER & AGENTS MANAGEMENT */}
+            {/* USER & AGENTS MANAGEMENT */}
             {activeAdminTab === 'agents' && (
               <div className="space-y-4">
                 <div className="flex items-center justify-between">
                   <div>
-                    <h4 className="text-sm font-bold text-slate-100">AD-01: Quản Lý Tác Nhân & Phân Quyền Vai Trò</h4>
-                    <p className="text-xs text-slate-400">Admin, Người duyệt chuyên môn (Clinician), Phụ nữ mang thai & Sau sinh</p>
+                    <h4 className="text-sm font-bold text-slate-100">Quản Lý Tác Nhân & Phân Quyền Vai Trò</h4>
+                    <p className="text-xs text-slate-400">Admin, Editor, Viewer, Kids English</p>
                   </div>
 
                   <button
                     onClick={() => {
                       setEditingAgent(null);
-                      setAgentForm({ username: '', password: '', fullName: '', role: 'clinician', avatar: '🩺', status: 'ACTIVE' });
+                      setAgentForm({ username: '', password: '', fullName: '', role: 'editor', avatar: '✍️', status: 'ACTIVE' });
                       setShowAgentModal(true);
                     }}
                     className="flex items-center gap-1.5 rounded-xl bg-purple-600 px-4 py-2 text-xs font-bold text-white hover:bg-purple-500 transition shadow-md"
@@ -325,116 +312,47 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
               </div>
             )}
 
-            {/* AD-02/03: MATERNAL PROFILES */}
-            {activeAdminTab === 'profiles' && (
-              <div className="space-y-4">
-                <h4 className="text-sm font-bold text-slate-100">AD-02 & AD-03: Quản Lý Hồ Sơ Thai Kỳ & Sau Sinh</h4>
-                <div className="rounded-2xl border border-slate-800 bg-slate-900/80 p-4 space-y-3 text-xs">
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    <div>
-                      <label className="font-bold text-slate-300">Họ và Tên Mẹ:</label>
-                      <input type="text" defaultValue="Nguyễn Thị Thu Hà" className="w-full mt-1 p-2 rounded-xl bg-slate-950 border border-slate-700 text-slate-100" />
-                    </div>
-                    <div>
-                      <label className="font-bold text-slate-300">Giai Đoạn Hiện Tại:</label>
-                      <select defaultValue="pregnant" className="w-full mt-1 p-2 rounded-xl bg-slate-950 border border-slate-700 text-slate-100">
-                        <option value="pregnant">Phụ Nữ Mang Thai (Pregnancy Phase)</option>
-                        <option value="postpartum">Phụ Nữ Sau Sinh (Postpartum Phase)</option>
-                      </select>
-                    </div>
-                    <div>
-                      <label className="font-bold text-slate-300">Tuần Thai / Ngày Sau Sinh:</label>
-                      <input type="number" defaultValue={24} className="w-full mt-1 p-2 rounded-xl bg-slate-950 border border-slate-700 text-slate-100" />
-                    </div>
-                    <div>
-                      <label className="font-bold text-slate-300">Bác Sĩ / Chuyên Viên Phụ Trách:</label>
-                      <input type="text" defaultValue="BS. CKII Nguyễn Thị Mai - BV Phụ Sản Central" className="w-full mt-1 p-2 rounded-xl bg-slate-950 border border-slate-700 text-slate-100" />
-                    </div>
-                  </div>
-                  <button onClick={() => addToast && addToast('✅ Đã cập nhật hồ sơ y tế!', 'success')} className="rounded-xl bg-purple-600 px-4 py-2 font-bold text-white hover:bg-purple-500 transition">
-                    Lưu Thay Đổi Hồ Sơ
-                  </button>
-                </div>
-              </div>
-            )}
-
-            {/* AD-04: REMINDER TEMPLATES */}
-            {activeAdminTab === 'reminders' && (
-              <div className="space-y-3">
-                <h4 className="text-sm font-bold text-slate-100">AD-04: Danh Mục Mẫu Lời Nhắc Y Khoa (Pregnancy & Postpartum)</h4>
-                <div className="space-y-2 max-h-72 overflow-y-auto custom-scrollbar">
-                  {MATERNAL_REMINDER_TEMPLATES.map((tpl) => (
-                    <div key={tpl.id} className="rounded-xl border border-slate-800 bg-slate-950 p-3 flex items-center justify-between text-xs">
-                      <div>
-                        <div className="font-bold text-slate-200">{tpl.title}</div>
-                        <div className="text-[11px] text-slate-400">{tpl.message}</div>
-                      </div>
-                      <span className="rounded-full bg-emerald-500/20 border border-emerald-500/40 px-2 py-0.5 text-[10px] font-bold text-emerald-300">
-                        {tpl.approvalStatus}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* AD-07: CONTENT APPROVAL WORKFLOW */}
-            {activeAdminTab === 'approval' && (
-              <div className="space-y-3">
-                <h4 className="text-sm font-bold text-slate-100">AD-07: Quy Trình Duyệt Nội Dung Chuyên Môn 5 Bước</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-5 gap-2">
-                  {CONTENT_APPROVAL_WORKFLOW.map((wf, idx) => (
-                    <div key={wf.status} className="rounded-xl border border-slate-800 bg-slate-950 p-3 text-center space-y-1">
-                      <span className="text-[10px] font-mono-code text-slate-400">Bước {idx + 1}</span>
-                      <div className={`px-2 py-1 rounded-lg text-xs font-bold border ${wf.color}`}>{wf.label}</div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* AD-06: URGENT WARNING SIGNS */}
-            {activeAdminTab === 'warnings' && (
-              <div className="space-y-3">
-                <h4 className="text-sm font-bold text-slate-100">AD-06: Danh Mục Cảnh Báo Khẩn Cấp CDC / WHO</h4>
-                <div className="space-y-2 max-h-72 overflow-y-auto custom-scrollbar">
-                  {URGENT_WARNING_SIGNS.map((sign) => (
-                    <div key={sign.id} className="rounded-xl border border-rose-500/30 bg-rose-950/20 p-3 flex items-center justify-between text-xs">
-                      <div>
-                        <div className="font-bold text-rose-300">{sign.title}</div>
-                        <div className="text-[11px] text-slate-300">{sign.action}</div>
-                      </div>
-                      <span className="rounded-full bg-rose-600 text-white font-extrabold px-2 py-0.5 text-[10px]">
-                        {sign.severity}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* AD-09: RBAC MATRIX */}
+            {/* RBAC MATRIX */}
             {activeAdminTab === 'rbac' && (
               <div className="space-y-3">
-                <h4 className="text-sm font-bold text-slate-100">AD-09: Ma Trận Phân Quyền Truy Cập (RBAC)</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  {Object.values(MATERNAL_ROLES).map((role) => (
-                    <div key={role.id} className="rounded-2xl border border-slate-800 bg-slate-950 p-4 space-y-2 text-xs">
-                      <div className="flex items-center justify-between">
-                        <span className="font-bold text-slate-100">{role.name}</span>
-                        <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold border ${role.color}`}>{role.badge}</span>
-                      </div>
-                      <p className="text-slate-400 text-[11px]">{role.description}</p>
+                <h4 className="text-sm font-bold text-slate-100">Ma Trận Phân Quyền Truy Cập (RBAC Matrix)</h4>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-purple-300">Quản trị viên (Admin)</span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold border border-purple-500/40 bg-purple-500/20 text-purple-300">ADMIN</span>
                     </div>
-                  ))}
+                    <p className="text-slate-400 text-[11px]">Toàn quyền quản trị hệ thống, chỉnh sửa lịch, mục tiêu, quản lý tác nhân, reset hệ thống.</p>
+                  </div>
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-sky-300">Biên Tập Viên (Editor)</span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold border border-sky-500/40 bg-sky-500/20 text-sky-300">EDITOR</span>
+                    </div>
+                    <p className="text-slate-400 text-[11px]">Quyền cập nhật nội dung lịch, đánh dấu ô, ghi chú và mục tiêu tuần.</p>
+                  </div>
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-emerald-300">Quan Sát Viên (Viewer)</span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold border border-emerald-500/40 bg-emerald-500/20 text-emerald-300">VIEWER</span>
+                    </div>
+                    <p className="text-slate-400 text-[11px]">Quyền xem lịch, đánh dấu hoàn thành ô sinh hoạt và theo dõi mục tiêu.</p>
+                  </div>
+                  <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4 space-y-2">
+                    <div className="flex items-center justify-between">
+                      <span className="font-bold text-cyan-300">Bé Học Tiếng Anh (Kids English)</span>
+                      <span className="px-2 py-0.5 rounded-full text-[10px] font-bold border border-cyan-500/40 bg-cyan-500/20 text-cyan-300">KIDS ENGLISH</span>
+                    </div>
+                    <p className="text-slate-400 text-[11px]">Giao diện chuyên biệt học từ vựng Flashcard 3D, Quiz tương tác và âm thanh chuẩn.</p>
+                  </div>
                 </div>
               </div>
             )}
 
-            {/* AD-12: AUDIT LOGS */}
+            {/* AUDIT LOGS */}
             {activeAdminTab === 'audit' && (
               <div className="space-y-3">
-                <h4 className="text-sm font-bold text-slate-100">AD-12: Nhật Ký Sự Kiện Hệ Thống (HIPAA-Aligned Audit Trail)</h4>
+                <h4 className="text-sm font-bold text-slate-100">Nhật Ký Sự Kiện Hệ Thống (Audit Trail)</h4>
                 <div className="overflow-x-auto rounded-2xl border border-slate-800 bg-slate-950 max-h-72 custom-scrollbar">
                   <table className="w-full text-left text-xs">
                     <thead className="border-b border-slate-800 bg-slate-900 text-slate-400 font-bold uppercase sticky top-0">
@@ -464,7 +382,7 @@ export function SecretAdminModal({ isOpen, onClose, addToast }) {
 
         {/* Footer */}
         <div className="flex justify-between items-center pt-2 border-t border-slate-800 text-xs">
-          <span className="text-slate-500 font-mono-code">Mã ẩnSuper Admin: 8888</span>
+          <span className="text-slate-500 font-mono-code">Mã ẩn Super Admin: 8888</span>
           <button
             onClick={onClose}
             className="rounded-xl bg-slate-800 px-5 py-2 text-xs font-bold text-slate-300 hover:bg-slate-700 transition"

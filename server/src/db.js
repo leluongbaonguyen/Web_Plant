@@ -35,36 +35,6 @@ const DEFAULT_USERS = [
     createdAt: new Date().toISOString(),
   },
   {
-    id: 'usr-preg-01',
-    username: 'mangthai',
-    password: '123',
-    fullName: 'Chị Thu Hà (Tác Nhân Phụ Nữ Mang Thai)',
-    role: 'pregnant',
-    avatar: '🤰',
-    status: 'ACTIVE',
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: 'usr-post-01',
-    username: 'sausinh',
-    password: '123',
-    fullName: 'Chị Thanh Mai (Tác Nhân Phụ Nữ Sau Sinh)',
-    role: 'postpartum',
-    avatar: '🤱',
-    status: 'ACTIVE',
-    createdAt: new Date().toISOString(),
-  },
-  {
-    id: 'usr-doc-01',
-    username: 'bacti',
-    password: '123',
-    fullName: 'BS. CKII Nguyễn Thị Mai (Người Duyệt Chuyên Môn)',
-    role: 'clinician',
-    avatar: '🩺',
-    status: 'ACTIVE',
-    createdAt: new Date().toISOString(),
-  },
-  {
     id: 'usr-editor-01',
     username: 'editor',
     password: '123',
@@ -81,6 +51,16 @@ const DEFAULT_USERS = [
     fullName: 'Quan Sát Viên Sức Khỏe',
     role: 'viewer',
     avatar: '👀',
+    status: 'ACTIVE',
+    createdAt: new Date().toISOString(),
+  },
+  {
+    id: 'usr-kids-01',
+    username: 'behoctienganh',
+    password: '123',
+    fullName: 'Bé Bắp (Tác Nhân Học Tiếng Anh Flashcard)',
+    role: 'kids_english',
+    avatar: '🔤',
     status: 'ACTIVE',
     createdAt: new Date().toISOString(),
   },
@@ -142,7 +122,7 @@ export async function readUsers() {
     const parsed = JSON.parse(content);
     let result = Array.isArray(parsed) ? parsed : DEFAULT_USERS;
 
-    // Ensure all DEFAULT_USERS exist in result (auto-merge missing default accounts like mangthai, sausinh, bacti)
+    // Ensure all DEFAULT_USERS exist in result (auto-merge missing default accounts)
     let updated = false;
     for (const defUser of DEFAULT_USERS) {
       if (!result.some((u) => u.username === defUser.username)) {

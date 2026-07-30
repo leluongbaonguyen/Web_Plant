@@ -81,18 +81,6 @@ export async function getWordFile() {
   return (await request('/api/export/word')).blob();
 }
 
-export async function exportMaternalWord(mode = 'pregnant') {
-  const url = mode === 'postpartum' ? '/api/export/weekly/postpartum' : '/api/export/weekly/pregnant';
-  return (await request(url)).blob();
-}
-
-export async function postMaternalCheckIn(checkInData) {
-  return (await request('/api/maternal/checkin', {
-    method: 'POST',
-    body: JSON.stringify(checkInData),
-  })).json();
-}
-
 export async function getRolesInfo() {
   return (await request('/api/roles')).json();
 }

@@ -10,36 +10,6 @@
     "createdAt": "2026-07-28T18:55:45.025Z"
   },
   {
-    "id": "usr-preg-01",
-    "username": "mangthai",
-    "password": "123",
-    "fullName": "Chị Thu Hà (Tác Nhân Phụ Nữ Mang Thai)",
-    "role": "pregnant",
-    "avatar": "🤰",
-    "status": "ACTIVE",
-    "createdAt": "2026-07-29T12:00:00.000Z"
-  },
-  {
-    "id": "usr-post-01",
-    "username": "sausinh",
-    "password": "123",
-    "fullName": "Chị Thanh Mai (Tác Nhân Phụ Nữ Sau Sinh)",
-    "role": "postpartum",
-    "avatar": "🤱",
-    "status": "ACTIVE",
-    "createdAt": "2026-07-29T12:00:00.000Z"
-  },
-  {
-    "id": "usr-doc-01",
-    "username": "bacti",
-    "password": "123",
-    "fullName": "BS. CKII Nguyễn Thị Mai (Người Duyệt Chuyên Môn)",
-    "role": "clinician",
-    "avatar": "🩺",
-    "status": "ACTIVE",
-    "createdAt": "2026-07-29T12:00:00.000Z"
-  },
-  {
     "id": "usr-editor-01",
     "username": "editor",
     "password": "123",

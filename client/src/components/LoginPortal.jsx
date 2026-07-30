@@ -1,49 +1,9 @@
 import { useState } from 'react';
-import { ShieldCheck, Lock, User, Key, Eye, EyeOff, Sparkles, AlertCircle, ArrowRight, CheckCircle2, Heart, Baby, Stethoscope, UserPlus } from 'lucide-react';
+import { ShieldCheck, Lock, User, Key, Eye, EyeOff, Sparkles, AlertCircle, ArrowRight, CheckCircle2, UserPlus } from 'lucide-react';
 import { useRole } from '../context/RoleContext.jsx';
 import { createAgent, loginStealthAdmin } from '../api.js';
 
 const PRESET_ACCOUNTS = [
-  {
-    role: 'kids_english',
-    title: 'Bé Học Tiếng Anh Flashcard 🔤🎨',
-    username: 'behoctienganh',
-    password: '123',
-    avatar: '🔤',
-    color: 'border-cyan-500/40 bg-cyan-950/40 text-cyan-300 hover:bg-cyan-900/60',
-    badge: 'Flashcard 3D & Native Audio',
-    description: 'Bé Bắp (5 tuổi - Học Từ Vựng Chi Tiết)',
-  },
-  {
-    role: 'pregnant',
-    title: 'Phụ Nữ Mang Thai 🤰',
-    username: 'mangthai',
-    password: '123',
-    avatar: '🤰',
-    color: 'border-pink-500/40 bg-pink-950/40 text-pink-300 hover:bg-pink-900/60',
-    badge: 'Hồ Sơ Thai Kỳ & Thai Máy',
-    description: 'Chị Thu Hà (Tuần 24 - Thai kỳ)',
-  },
-  {
-    role: 'postpartum',
-    title: 'Phụ Nữ Sau Sinh 🤱',
-    username: 'sausinh',
-    password: '123',
-    avatar: '🤱',
-    color: 'border-amber-500/40 bg-amber-950/40 text-amber-300 hover:bg-amber-900/60',
-    badge: 'Hậu Sản & Nhật Ký Cữ Bú',
-    description: 'Chị Thanh Mai (Ngày 21 sau sinh)',
-  },
-  {
-    role: 'clinician',
-    title: 'Người Duyệt Chuyên Môn 🩺',
-    username: 'bacti',
-    password: '123',
-    avatar: '🩺',
-    color: 'border-purple-500/40 bg-purple-950/40 text-purple-300 hover:bg-purple-900/60',
-    badge: 'Duyệt Lâm Sàng 5 Bước',
-    description: 'BS. CKII Nguyễn Thị Mai',
-  },
   {
     role: 'admin',
     title: 'Quản Trị Viên (Admin) 🛡️',
@@ -53,6 +13,36 @@ const PRESET_ACCOUNTS = [
     color: 'border-red-500/40 bg-red-950/40 text-red-300 hover:bg-red-900/60',
     badge: 'Toàn Quyền Quản Trị',
     description: 'Master Super Admin',
+  },
+  {
+    role: 'editor',
+    title: 'Biên Tập Viên ✍️',
+    username: 'editor',
+    password: '123',
+    avatar: '✍️',
+    color: 'border-sky-500/40 bg-sky-950/40 text-sky-300 hover:bg-sky-900/60',
+    badge: 'Chỉnh Sửa Nội Dung',
+    description: 'Biên Tập Viên Chuyên Nghiệp',
+  },
+  {
+    role: 'viewer',
+    title: 'Quan Sát Viên 👀',
+    username: 'viewer',
+    password: '123',
+    avatar: '👀',
+    color: 'border-emerald-500/40 bg-emerald-950/40 text-emerald-300 hover:bg-emerald-900/60',
+    badge: 'Quyền Xem & Đánh Dấu',
+    description: 'Thành viên / Viewer',
+  },
+  {
+    role: 'kids_english',
+    title: 'Bé Học Tiếng Anh Flashcard 🔤🎨',
+    username: 'behoctienganh',
+    password: '123',
+    avatar: '🔤',
+    color: 'border-cyan-500/40 bg-cyan-950/40 text-cyan-300 hover:bg-cyan-900/60',
+    badge: 'Flashcard 3D & Native Audio',
+    description: 'Bé Bắp (5 tuổi - Học Từ Vựng Chi Tiết)',
   },
 ];
 
@@ -71,9 +61,7 @@ export function LoginPortal({ addToast }) {
     fullName: '',
     username: '',
     password: '',
-    role: 'pregnant', // 'pregnant' | 'postpartum'
-    weeksOrDays: 24,
-    assignedDoctor: 'BS. CKII Nguyễn Thị Mai',
+    role: 'editor',
   });
 
   // Stealth Passcode mode
@@ -113,7 +101,7 @@ export function LoginPortal({ addToast }) {
 
     try {
       setLoading(true);
-      const avatar = regForm.role === 'kids_english' ? '🔤' : regForm.role === 'pregnant' ? '🤰' : '🤱';
+      const avatar = regForm.role === 'kids_english' ? '🔤' : regForm.role === 'admin' ? '🛡️' : regForm.role === 'editor' ? '✍️' : '👀';
       await createAgent({
         fullName: regForm.fullName,
         username: regForm.username,
@@ -180,20 +168,20 @@ export function LoginPortal({ addToast }) {
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-[#070a12]/95 p-4 backdrop-blur-xl animate-fadeIn overflow-y-auto custom-scrollbar">
       {/* Background Ambient Glowing Orbs */}
-      <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-pink-600/10 blur-[120px] pointer-events-none"></div>
+      <div className="absolute top-1/4 left-1/4 h-96 w-96 rounded-full bg-indigo-600/10 blur-[120px] pointer-events-none"></div>
       <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-purple-600/10 blur-[120px] pointer-events-none"></div>
 
-      <div className="relative w-full max-w-2xl rounded-3xl border border-pink-500/30 bg-slate-900/95 p-6 md:p-8 shadow-2xl space-y-6 backdrop-blur-2xl my-auto">
+      <div className="relative w-full max-w-2xl rounded-3xl border border-indigo-500/30 bg-slate-900/95 p-6 md:p-8 shadow-2xl space-y-6 backdrop-blur-2xl my-auto">
         {/* Header Branding */}
         <div className="text-center space-y-2">
-          <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-tr from-pink-600 to-purple-600 text-white shadow-lg shadow-pink-600/30 mb-1">
-            <Heart className="h-8 w-8 animate-pulse" />
+          <div className="inline-flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-tr from-indigo-600 to-purple-600 text-white shadow-lg shadow-indigo-600/30 mb-1">
+            <ShieldCheck className="h-8 w-8 animate-pulse" />
           </div>
           <h2 className="text-2xl md:text-3xl font-extrabold font-heading text-white tracking-tight">
             CỔNG ĐĂNG NHẬP DÀNH RIÊNG TÁC NHÂN
           </h2>
           <p className="text-xs md:text-sm text-slate-300 max-w-lg mx-auto leading-relaxed">
-            Hệ thống ChronoFlow Maternal v2.0 hỗ trợ tài khoản đăng nhập riêng cho <strong className="text-pink-300">Phụ Nữ Mang Thai (🤰)</strong> và <strong className="text-amber-300">Phụ Nữ Sau Sinh (🤱)</strong>.
+            Hệ thống ChronoFlow hỗ trợ đăng nhập cho <strong className="text-indigo-300">Quản trị viên</strong>, <strong className="text-sky-300">Biên tập viên</strong>, <strong className="text-emerald-300">Quan sát viên</strong> và <strong className="text-cyan-300">Tác nhân Học Tiếng Anh</strong>.
           </p>
         </div>
 
@@ -202,7 +190,7 @@ export function LoginPortal({ addToast }) {
           <button
             onClick={() => setActivePortalTab('login')}
             className={`flex-1 py-2.5 rounded-xl text-xs font-extrabold transition ${
-              activePortalTab === 'login' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-400 hover:text-slate-200'
+              activePortalTab === 'login' ? 'bg-indigo-600 text-white shadow-md' : 'text-slate-400 hover:text-slate-200'
             }`}
           >
             🔑 Đăng Nhập Tài Khoản Tác Nhân
@@ -213,7 +201,7 @@ export function LoginPortal({ addToast }) {
               activePortalTab === 'register' ? 'bg-purple-600 text-white shadow-md' : 'text-slate-400 hover:text-slate-200'
             }`}
           >
-            ✍️ Đăng Ký Dành Cho Mẹ Bầu / Mẹ Sau Sinh
+            ✍️ Đăng Ký Tài Khoản Mới
           </button>
         </div>
 
@@ -231,8 +219,8 @@ export function LoginPortal({ addToast }) {
             {/* Quick Dedicated Preset Accounts Grid */}
             {!showStealthMode && (
               <div className="space-y-2.5">
-                <label className="text-[11px] font-bold uppercase tracking-wider text-pink-300 flex items-center gap-1.5">
-                  <Sparkles className="h-3.5 w-3.5 text-pink-400" /> Chọn nhanh cổng tác nhân mẫu:
+                <label className="text-[11px] font-bold uppercase tracking-wider text-indigo-300 flex items-center gap-1.5">
+                  <Sparkles className="h-3.5 w-3.5 text-indigo-400" /> Chọn nhanh cổng tác nhân mẫu:
                 </label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
                   {PRESET_ACCOUNTS.map((acc) => (
@@ -248,7 +236,7 @@ export function LoginPortal({ addToast }) {
                         <div>
                           <div className="font-extrabold text-xs text-white">{acc.title}</div>
                           <div className="text-[10px] text-slate-300 opacity-90">{acc.description}</div>
-                          <div className="text-[10px] font-mono-code text-pink-300/80">
+                          <div className="text-[10px] font-mono-code text-indigo-300/80">
                             {acc.username} / {acc.password}
                           </div>
                         </div>
@@ -265,21 +253,21 @@ export function LoginPortal({ addToast }) {
               <form onSubmit={handleStandardLogin} className="space-y-4 pt-2 border-t border-slate-800">
                 <div className="space-y-1">
                   <label className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                    <User className="h-3.5 w-3.5 text-pink-400" /> Tên Đăng Nhập (Username)
+                    <User className="h-3.5 w-3.5 text-indigo-400" /> Tên Đăng Nhập (Username)
                   </label>
                   <input
                     type="text"
                     required
-                    placeholder="Nhập tên tài khoản (ví dụ: mangthai, sausinh, admin)..."
+                    placeholder="Nhập tên tài khoản (ví dụ: admin, editor, viewer)..."
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
-                    className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:border-pink-500 focus:outline-none transition"
+                    className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 text-sm text-slate-100 placeholder-slate-500 focus:border-indigo-500 focus:outline-none transition"
                   />
                 </div>
 
                 <div className="space-y-1">
                   <label className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
-                    <Key className="h-3.5 w-3.5 text-pink-400" /> Mật Khẩu
+                    <Key className="h-3.5 w-3.5 text-indigo-400" /> Mật Khẩu
                   </label>
                   <div className="relative">
                     <input
@@ -288,7 +276,7 @@ export function LoginPortal({ addToast }) {
                       placeholder="Nhập mật khẩu (Mặc định: 123)..."
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 pr-10 text-sm text-slate-100 placeholder-slate-500 focus:border-pink-500 focus:outline-none transition"
+                      className="w-full rounded-2xl border border-slate-700 bg-slate-950 px-4 py-3 pr-10 text-sm text-slate-100 placeholder-slate-500 focus:border-indigo-500 focus:outline-none transition"
                     />
                     <button
                       type="button"
@@ -303,7 +291,7 @@ export function LoginPortal({ addToast }) {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full rounded-2xl bg-gradient-to-r from-pink-600 to-purple-600 py-3.5 text-sm font-bold text-white hover:from-pink-500 hover:to-purple-500 shadow-xl shadow-pink-600/30 transition flex items-center justify-center gap-2 group disabled:opacity-50"
+                  className="w-full rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 py-3.5 text-sm font-bold text-white hover:from-indigo-500 hover:to-purple-500 shadow-xl shadow-indigo-600/30 transition flex items-center justify-center gap-2 group disabled:opacity-50"
                 >
                   {loading ? (
                     <>
@@ -347,16 +335,16 @@ export function LoginPortal({ addToast }) {
           </div>
         )}
 
-        {/* TAB 2: REGISTER DEDICATED MATERNAL ACCOUNT */}
+        {/* TAB 2: REGISTER ACCOUNT */}
         {activePortalTab === 'register' && (
           <form onSubmit={handleRegisterAccount} className="space-y-4 text-xs">
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               <div>
-                <label className="block text-slate-300 font-bold mb-1">Họ và Tên Mẹ Bầu / Mẹ Sau Sinh *</label>
+                <label className="block text-slate-300 font-bold mb-1">Họ và Tên Tác Nhân *</label>
                 <input
                   type="text"
                   required
-                  placeholder="Ví dụ: Nguyễn Thị Mai..."
+                  placeholder="Ví dụ: Nguyễn Văn A..."
                   value={regForm.fullName}
                   onChange={(e) => setRegForm({ ...regForm, fullName: e.target.value })}
                   className="w-full rounded-xl border border-slate-700 bg-slate-950 p-2.5 text-slate-100"
@@ -368,7 +356,7 @@ export function LoginPortal({ addToast }) {
                 <input
                   type="text"
                   required
-                  placeholder="Ví dụ: mebau_mai2026..."
+                  placeholder="Ví dụ: user_editor..."
                   value={regForm.username}
                   onChange={(e) => setRegForm({ ...regForm, username: e.target.value })}
                   className="w-full rounded-xl border border-slate-700 bg-slate-950 p-2.5 text-slate-100 font-mono-code"
@@ -390,15 +378,15 @@ export function LoginPortal({ addToast }) {
               </div>
 
               <div>
-                <label className="block text-cyan-300 font-bold mb-1">Vai Trò / Tác Nhân Đăng Ký *</label>
+                <label className="block text-cyan-300 font-bold mb-1">Vai Trò Đăng Ký *</label>
                 <select
                   value={regForm.role}
                   onChange={(e) => setRegForm({ ...regForm, role: e.target.value })}
-                  className="w-full rounded-xl border border-cyan-500/40 bg-slate-950 p-2.5 text-slate-100 font-bold"
+                  className="w-full rounded-xl border border-indigo-500/40 bg-slate-950 p-2.5 text-slate-100 font-bold"
                 >
+                  <option value="editor">✍️ Biên Tập Viên (Editor)</option>
+                  <option value="viewer">👀 Quan Sát Viên (Viewer)</option>
                   <option value="kids_english">🔤 Bé Học Tiếng Anh Flashcard (Kids English)</option>
-                  <option value="pregnant">🤰 Phụ Nữ Mang Thai (Pregnancy Phase)</option>
-                  <option value="postpartum">🤱 Phụ Nữ Sau Sinh (Postpartum Phase)</option>
                 </select>
               </div>
             </div>
@@ -406,7 +394,7 @@ export function LoginPortal({ addToast }) {
             <button
               type="submit"
               disabled={loading}
-              className="w-full rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 py-3.5 text-sm font-extrabold text-white hover:from-purple-500 hover:to-pink-500 shadow-xl transition flex items-center justify-center gap-2"
+              className="w-full rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 py-3.5 text-sm font-extrabold text-white hover:from-purple-500 hover:to-indigo-500 shadow-xl transition flex items-center justify-center gap-2"
             >
               <UserPlus className="h-4 w-4" />
               <span>{loading ? 'Đang Khởi Tạo Account...' : 'ĐĂNG KÝ TÀI KHOẢN TÁC NHÂN MỚI'}</span>
@@ -422,7 +410,7 @@ export function LoginPortal({ addToast }) {
               setShowStealthMode(!showStealthMode);
               setErrorMsg('');
             }}
-            className="text-xs text-slate-400 hover:text-pink-400 transition underline underline-offset-4"
+            className="text-xs text-slate-400 hover:text-indigo-400 transition underline underline-offset-4"
           >
             {showStealthMode ? '← Quay lại Cổng Đăng Nhập Tác Nhân Thường' : '🔑 Cổng Đăng Nhập Ẩn Super Admin (Passcode: 8888)'}
           </button>
