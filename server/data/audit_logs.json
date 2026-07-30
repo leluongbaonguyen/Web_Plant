@@ -1,5 +1,45 @@
 [
   {
+    "id": "log-1785419510774-z2gn",
+    "timestamp": "2026-07-30T13:51:50.775Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Bé Bắp (Tác Nhân Học Tiếng Anh Flashcard)' (KIDS_ENGLISH) đăng nhập thành công với Token HMAC",
+    "username": "behoctienganh",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785419507281-ov1r",
+    "timestamp": "2026-07-30T13:51:47.281Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Biên Tập Viên Chuyên Nghiệp' (EDITOR) đăng nhập thành công với Token HMAC",
+    "username": "editor",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785419466016-nm0k",
+    "timestamp": "2026-07-30T13:51:06.016Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Bé Bắp (Tác Nhân Học Tiếng Anh Flashcard)' (KIDS_ENGLISH) đăng nhập thành công với Token HMAC",
+    "username": "behoctienganh",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785419459199-tog4",
+    "timestamp": "2026-07-30T13:50:59.199Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Biên Tập Viên Chuyên Nghiệp' (EDITOR) đăng nhập thành công với Token HMAC",
+    "username": "editor",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785419443509-awlp",
+    "timestamp": "2026-07-30T13:50:43.509Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Quản Trị Viên Tối Cao' (ADMIN) đăng nhập thành công với Token HMAC",
+    "username": "admin",
+    "ip": "::1"
+  },
+  {
     "id": "log-1785419389064-rm57",
     "timestamp": "2026-07-30T13:49:49.064Z",
     "event": "AUTH_LOGIN_SUCCESS",
