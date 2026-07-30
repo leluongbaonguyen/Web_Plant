@@ -8,7 +8,7 @@ import {
 import { COURSE_LEVELS, VOCAB_CATEGORIES, VOCABULARY_DATABASE } from '../../constants/kidsVocabularyDatabase.js';
 
 export function KidsEnglishDashboard({ plan, addToast }) {
-  const [selectedLevel, setSelectedLevel] = useState('basic'); // 'basic' | 'elementary' | 'intermediate' | 'advanced'
+  const [selectedLevel, setSelectedLevel] = useState('all'); // 'all' | 'L1' | 'L2' | 'L3' | 'L4'
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
@@ -50,14 +50,58 @@ export function KidsEnglishDashboard({ plan, addToast }) {
   const [quizAnswered, setQuizAnswered] = useState(false);
   const [selectedQuizOption, setSelectedQuizOption] = useState(null);
   const [quizTimeLeft, setQuizTimeLeft] = useState(15);
-  const [quizMode, setQuizMode] = useState('image_to_word'); // 'image_to_word' | 'word_to_meaning' | 'fill_sentence'
+  const [quizMode, setQuizMode] = useState('image_to_word'); // 'image_to_word' | 'word_to_meaning' | 'audio_to_word' | 'fill_sentence'
 
-  // Mascot Speech Bubble State (Tặng Nguyễn Ngọc Minh Anh)
+  // Quiz Streak Engine
+  const [streakCount, setStreakCount] = useState(0);
+
+  // Cute Mascot Pet Companions for Kids
+  const [activePet, setActivePet] = useState('unicorn');
+  const PETS = useMemo(() => [
+    { id: 'unicorn', name: 'Pinky Kỳ Lân 🦄', icon: '🦄', quote: 'Pinky thả tim yêu thương tặng bé nè 💖!' },
+    { id: 'dino', name: 'Dino Khủng Long 🦕', icon: '🦕', quote: 'Dino chúc bé học thật giỏi và đạt điểm 10 nha!' },
+    { id: 'panda', name: 'Panda Gấu Trúc 🐼', icon: '🐼', quote: 'Panda tặng bé 100 ngôi sao lấp lánh ⭐!' },
+    { id: 'bunny', name: 'Bunny Thỏ Cute 🐰', icon: '🐰', quote: 'Bunny cùng bé chinh phục 400 từ vựng nhé!' }
+  ], []);
+
+  // Child Phonetic Vietnamese Reading Guide Helper
+  const getVietnamesePhoneticGuide = (word) => {
+    const dict = {
+      red: 'rét 🔴', blue: 'bơ-lu 🔵', yellow: 'diên-lâu 🟡', green: 'gơ-rin 🟢', orange: 'o-rin-j 🟠',
+      purple: 'pơ-pồ 🟣', pink: 'pinh-k 🌸', black: 'bơ-lác 🖤', white: 'oai-t ⚪', brown: 'bơ-rao 🟤',
+      one: 'oăn 1️⃣', two: 'tu 2️⃣', three: 'thơ-ri 3️⃣', four: 'pho 4️⃣', five: 'phai-v 5️⃣',
+      six: 'sic-s 6️⃣', seven: 'se-vần 7️⃣', eight: 'ây-t 8️⃣', nine: 'nai-n 9️⃣', ten: 'ten 🔟',
+      circle: 'sơ-cồ ⭕', square: 'sơ-que ⏹️', triangle: 'trai-æng-gồ 🔺', rectangle: 'rec-tæng-gồ ▭',
+      star: 'sơ-ta ⭐', heart: 'hạt ❤️', oval: 'âu-vần 🥚', diamond: 'đai-ơ-mần 🔷', line: 'lai-n ➖', dot: 'đót ⏺️',
+      mother: 'mơ-đờ 👩', father: 'pha-đờ 👨', sister: 'sis-tờ 👧', brother: 'bơ-ra-đờ 👦',
+      grandmother: 'gơ-ræn-mơ-đờ 👵', grandfather: 'gơ-ræn-pha-đờ 👴', baby: 'bây-bi 👶', family: 'phæ-mi-li 👨‍👩‍👧‍👦',
+      cat: 'cát 🐱', dog: 'đóc 🐶', bird: 'bớt 🐦', fish: 'phí-sh 🐟', rabbit: 'ræ-bít 🐰', duck: 'đắc 🦆',
+      cow: 'cau 🐮', pig: 'píc 🐷', horse: 'ho-s 🐴', sheep: 'ship 🐑', apple: 'æ-pồ 🍎', banana: 'bơ-næ-nơ 🍌',
+      doctor: 'đóc-tờ 👨‍⚕️', teacher: 'ti-chờ 👩‍🏫', police: 'pơ-li-s 👮', pilot: 'pai-lợt 👨‍✈️', chef: 'sép 👨‍🍳',
+      farmer: 'pha-mờ 👨‍🌾', space: 'sơ-pey-s 🌌', planet: 'pơ-læ-nẹt 🪐', rocket: 'ró-cẹt 🚀', moon: 'mun 🌙', sun: 'sân ☀️'
+    };
+    const lower = word ? word.toLowerCase().trim() : '';
+    return dict[lower] ? `Đọc là: "${dict[lower]}"` : `Từ: ${word}`;
+  };
+
+  // Level Detailed Statistics Breakdown
+  const levelStats = useMemo(() => {
+    const calc = (lvlId) => {
+      const levelItems = VOCABULARY_DATABASE.filter((i) => i.level === lvlId);
+      const masteredInLevel = levelItems.filter((i) => masteredCards.includes(i.id));
+      const total = levelItems.length || 100;
+      const pct = Math.round((masteredInLevel.length / total) * 100);
+      return { total, mastered: masteredInLevel.length, pct };
+    };
+    return { L1: calc('L1'), L2: calc('L2'), L3: calc('L3'), L4: calc('L4') };
+  }, [masteredCards]);
+
+  // Mascot Speech Bubble State
   const [mascotQuoteIndex, setMascotQuoteIndex] = useState(0);
   const mascotQuotes = [
     "💖 Tặng con gái yêu NGUYỄN NGỌC MINH ANH - Chúc con luôn luôn học giỏi, ngoan ngoãn và xinh đẹp! 🎀✨",
     "🦄 Minh Anh ơi! Mỗi từ vựng con thuộc là thêm 1 Ngôi Sao Bé Ngoan rực rỡ tặng con đấy! ⭐💖",
-    "👑 Chúc công chúa Nguyễn Ngọc Minh Anh luôn chinh phục 4,000 từ vựng Tiếng Anh thật dễ dàng nhé! 🚀",
+    "👑 Chúc công chúa Nguyễn Ngọc Minh Anh luôn chinh phục 400 từ vựng Tiếng Anh thật dễ dàng nhé! 🚀",
     "🔊 Minh Anh bấm biểu tượng Loa hoặc bấm trực tiếp vào Icon đang chạy để nghe phát âm giọng chuẩn nhé! 🎶",
     "🤖 AI Trợ Lý nhắc nhở: Minh Anh nhớ làm 5 bài tập đố vui mỗi ngày để nhận huy hiệu Thần Đồng Tiếng Anh! 🏆",
   ];
@@ -213,7 +257,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
   // Quiz Option Generator based on current filtered dataset and selected quiz mode
   const quizPool = filteredDatabase.length > 0 ? filteredDatabase : VOCABULARY_DATABASE;
-  const currentQuizCard = (quizPool && quizPool.length > 0) ? quizPool[quizIndex % quizPool.length] : VOCABULARY_DATABASE[0];
+  const currentQuizCard = (quizPool && quizPool.length > 0) ? quizPool[quizIndex % quizPool.length] : null;
 
   // Timed Quiz Countdown Timer (Thời Gian Đếm Nguồn 15 Giây)
   useEffect(() => {
@@ -258,14 +302,25 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
     if (option === correctAnswer) {
       setQuizScore((prev) => prev + 1);
+      const newStreak = streakCount + 1;
+      setStreakCount(newStreak);
+
       const bonusStars = quizTimeLeft > 5 ? 5 : 3;
-      const nextStars = stars + bonusStars;
+      let streakBonus = 0;
+      if (newStreak % 3 === 0) {
+        streakBonus = 10;
+        if (addToast) addToast(`🔥 COMBO STREAK x${newStreak}! Xuất sắc quá bé ơi! (+${streakBonus} Bonus Stars ⭐)`, 'success');
+      } else {
+        if (addToast) addToast(`🎉 Hoan hô bé! Đúng rồi (+${bonusStars} Stars ⭐)`, 'success');
+      }
+
+      const nextStars = stars + bonusStars + streakBonus;
       setStars(nextStars);
       localStorage.setItem('kids_earned_stars_2000', String(nextStars));
       playWordAudio(currentQuizCard.word);
-      if (addToast) addToast(`🎉 Hoan hô Minh Anh! Đúng rồi (+${bonusStars} Stars ⭐)`, 'success');
     } else {
-      if (addToast) addToast(`Gần đúng rồi! Đáp án đúng là: ${correctAnswer}`, 'error');
+      setStreakCount(0);
+      if (addToast) addToast(`Bé hãy nghe gợi ý và thử lại nhé! Đáp án là: ${correctAnswer}`, 'info');
     }
   };
 
@@ -320,7 +375,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
               <div className="flex items-center gap-2 rounded-2xl border border-emerald-500/50 bg-emerald-950/80 px-4 py-2 text-xs font-black text-emerald-300 shadow-lg">
                 <CheckCircle2 className="h-4.5 w-4.5 text-emerald-400" />
-                <span>Đã Thuộc {masteredCards.length} / 4000 Từ</span>
+                <span>Đã Thuộc {masteredCards.length} / {VOCABULARY_DATABASE.length} Từ</span>
               </div>
             </div>
 
@@ -354,22 +409,42 @@ export function KidsEnglishDashboard({ plan, addToast }) {
             </div>
           </div>
 
-          {/* Animated Mascot Character Card - DAUGHTER MINH ANH */}
-          <div className="flex items-center justify-center p-6 rounded-3xl border-2 border-pink-400 bg-slate-900/95 shadow-2xl backdrop-blur-md hover:scale-105 transition duration-300">
-            <div className="text-center space-y-3">
-              <div className="relative inline-block">
-                <div className="text-8xl animate-bounce">🦄</div>
-                <div className="absolute -top-2 -right-2 text-3xl animate-spin-slow">👑</div>
+          {/* Interactive Cute Pet Companion Selector */}
+          <div className="p-5 rounded-3xl border-2 border-pink-400/80 bg-slate-900/95 shadow-2xl backdrop-blur-md space-y-3">
+            <div className="text-center space-y-2">
+              <div className="text-xs font-black uppercase tracking-wider text-pink-300 flex items-center justify-center gap-1">
+                <Heart className="h-3.5 w-3.5 text-pink-400 fill-pink-400 animate-bounce" /> Chọn Bạn Nhỏ Đồng Hành:
               </div>
+              <div className="text-6xl animate-bounce drop-shadow-xl cursor-pointer" onClick={() => playWordAudio(PETS.find((p) => p.id === activePet)?.quote || '')}>
+                {PETS.find((p) => p.id === activePet)?.icon || '🦄'}
+              </div>
+              <div className="text-sm font-black text-white font-heading">
+                {PETS.find((p) => p.id === activePet)?.name}
+              </div>
+              <p className="text-[11px] font-bold text-pink-200 bg-pink-950/80 p-2 rounded-xl border border-pink-500/40 italic">
+                "{PETS.find((p) => p.id === activePet)?.quote}"
+              </p>
+            </div>
 
-              <div>
-                <div className="text-base font-black text-pink-300 font-heading tracking-wide">NGUYỄN NGỌC MINH ANH</div>
-                <div className="text-[10px] font-bold text-slate-400 font-mono-code">BÉ HỌC GIỎI TIẾNG ANH 🌟</div>
-              </div>
-
-              <div className="rounded-full bg-gradient-to-r from-pink-600 via-purple-600 to-indigo-600 px-4 py-1.5 text-xs font-black text-white shadow-xl">
-                Công Chúa 2000 Từ Vựng 🏆
-              </div>
+            {/* Pet Switch Buttons */}
+            <div className="grid grid-cols-4 gap-1.5 pt-1">
+              {PETS.map((pet) => (
+                <button
+                  key={pet.id}
+                  onClick={() => {
+                    setActivePet(pet.id);
+                    playWordAudio(pet.quote);
+                  }}
+                  className={`p-2 rounded-xl text-lg transition border flex items-center justify-center ${
+                    activePet === pet.id
+                      ? 'bg-pink-600 border-pink-400 text-white shadow-lg scale-110'
+                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:bg-slate-800'
+                  }`}
+                  title={pet.name}
+                >
+                  {pet.icon}
+                </button>
+              ))}
             </div>
           </div>
         </div>
@@ -379,8 +454,20 @@ export function KidsEnglishDashboard({ plan, addToast }) {
       {/* COURSE ROADMAP SELECTOR: 4 CEFR LEVELS (BASIC -> ADVANCED) */}
       {/* ========================================================================= */}
       <div className="space-y-3">
-        <div className="text-xs font-extrabold uppercase tracking-wider text-cyan-300 flex items-center gap-2">
-          <GraduationCap className="h-4 w-4 text-cyan-400" /> Lộ Trình 4 Khóa Học Tiếng Anh Chuẩn CEFR:
+        <div className="text-xs font-extrabold uppercase tracking-wider text-cyan-300 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <GraduationCap className="h-4 w-4 text-cyan-400" /> Ma Trận Lộ Trình 4 Cấp Độ Tiếng Anh Cho Bé (400 Từ Cốt Lõi):
+          </div>
+          <button
+            onClick={() => handleLevelChange('all')}
+            className={`px-3 py-1 rounded-full text-xs font-black border transition ${
+              selectedLevel === 'all'
+                ? 'bg-cyan-500 text-slate-950 border-cyan-400 shadow-md'
+                : 'bg-slate-900 text-cyan-300 border-slate-700 hover:bg-slate-800'
+            }`}
+          >
+            🌈 Tất Cả 4 Cấp Độ (400 Từ)
+          </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
@@ -406,9 +493,19 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                 <div className="font-extrabold text-sm text-white">{lvl.name}</div>
                 <div className="text-[11px] text-slate-400 mt-1 line-clamp-2">{lvl.description}</div>
 
-                <div className="mt-3 pt-2 border-t border-slate-800 flex items-center justify-between text-[11px] font-mono-code font-bold">
-                  <span className="text-cyan-300">{lvl.targetWords} Từ Vựng</span>
-                  <ChevronRight className="h-4 w-4 text-slate-500 group-hover:translate-x-1 transition-transform" />
+                <div className="mt-3 pt-2 border-t border-slate-800 space-y-1 text-[11px] font-mono-code font-bold">
+                  <div className="flex items-center justify-between">
+                    <span className="text-cyan-300">{lvl.targetWords} Từ Vựng</span>
+                    <span className="text-emerald-400">
+                      Thuộc: {levelStats[lvl.id]?.mastered || 0}/{levelStats[lvl.id]?.total || 100} ({levelStats[lvl.id]?.pct || 0}%)
+                    </span>
+                  </div>
+                  <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden border border-slate-700">
+                    <div
+                      className="h-full bg-gradient-to-r from-emerald-400 to-cyan-400 transition-all duration-500"
+                      style={{ width: `${levelStats[lvl.id]?.pct || 0}%` }}
+                    ></div>
+                  </div>
                 </div>
               </button>
             );
@@ -563,6 +660,9 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                                   {card.word}
                                 </h3>
                                 <p className="text-[11px] font-mono-code text-cyan-300 mt-0.5">{card.ipa}</p>
+                                <p className="text-[10px] font-bold text-pink-300 mt-0.5 bg-pink-950/60 px-2 py-0.5 rounded-full inline-block border border-pink-500/30">
+                                  {getVietnamesePhoneticGuide(card.word)}
+                                </p>
                               </div>
                             </div>
                           ) : (
@@ -662,6 +762,9 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                           {spotlightCard.word}
                         </h2>
                         <p className="text-sm font-mono-code text-cyan-300 mt-1">{spotlightCard.ipa}</p>
+                        <p className="text-xs font-bold text-pink-300 mt-1 bg-pink-950/80 px-3 py-1 rounded-full border border-pink-500/40 inline-block shadow-md">
+                          {getVietnamesePhoneticGuide(spotlightCard.word)}
+                        </p>
                       </div>
 
                       {/* Pronunciation Audio Toolbar */}
@@ -774,16 +877,24 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                 🎮
               </div>
               <div>
-                <h3 className="text-xl font-black font-heading text-white">4,000 BÀI TẬP ĐẤU TRÍ CÓ THỜI GIAN</h3>
-                <p className="text-xs text-slate-300">Thử thách bấm đúng trước khi đồng hồ đếm ngược về 0 giây!</p>
+                <h3 className="text-xl font-black font-heading text-white">100 BÀI TẬP NGẪU NHIÊN CHO BÉ</h3>
+                <p className="text-xs text-slate-300">Phản hồi tích cực, gợi ý âm thanh & sinh động theo 4 cấp độ!</p>
               </div>
             </div>
 
             <div className="flex items-center gap-3">
               {/* Question Count Tracker */}
               <div className="rounded-2xl bg-slate-950 border border-slate-800 px-3 py-1.5 text-xs font-mono-code font-bold text-cyan-300">
-                Bài tập #{quizIndex + 1} / 4,000
+                Bài tập #{(quizIndex % 100) + 1} / 100
               </div>
+
+              {/* Streak Combo Badge */}
+              {streakCount > 0 && (
+                <div className="flex items-center gap-1 rounded-2xl bg-amber-500/20 border border-amber-400 px-3 py-1.5 text-xs font-black text-amber-300 animate-pulse shadow-lg">
+                  <Flame className="h-4 w-4 text-amber-400 fill-amber-400" />
+                  <span>Streak x{streakCount} 🔥</span>
+                </div>
+              )}
 
               {/* Total Score */}
               <div className="flex items-center gap-1.5 rounded-2xl bg-pink-950 border border-pink-500/40 px-3.5 py-1.5 text-xs font-black text-pink-300 shadow-md">
@@ -794,18 +905,29 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           </div>
 
           {/* Quiz Mode Selector Bar */}
-          <div className="grid grid-cols-3 gap-2 p-1.5 rounded-2xl bg-slate-950 border border-slate-800">
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 p-1.5 rounded-2xl bg-slate-950 border border-slate-800">
             <button
               onClick={() => { setQuizMode('image_to_word'); setQuizTimeLeft(15); setQuizAnswered(false); }}
               className={`py-2 text-xs font-bold rounded-xl transition ${quizMode === 'image_to_word' ? 'bg-pink-600 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
             >
-              🖼️ Đoán Từ Tiếng Anh
+              🖼️ Đoán Qua Icon
             </button>
             <button
               onClick={() => { setQuizMode('word_to_meaning'); setQuizTimeLeft(15); setQuizAnswered(false); }}
               className={`py-2 text-xs font-bold rounded-xl transition ${quizMode === 'word_to_meaning' ? 'bg-purple-600 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
             >
-              💡 Đoán Nghĩa Tiếng Việt
+              💡 Đoán Nghĩa TV
+            </button>
+            <button
+              onClick={() => {
+                setQuizMode('audio_to_word');
+                setQuizTimeLeft(15);
+                setQuizAnswered(false);
+                if (currentQuizCard) playWordAudio(currentQuizCard.word);
+              }}
+              className={`py-2 text-xs font-bold rounded-xl transition ${quizMode === 'audio_to_word' ? 'bg-amber-600 text-white shadow-md' : 'text-slate-400 hover:text-white'}`}
+            >
+              🔊 Nghe & Chọn Đúng
             </button>
             <button
               onClick={() => { setQuizMode('fill_sentence'); setQuizTimeLeft(15); setQuizAnswered(false); }}
@@ -837,8 +959,14 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           </div>
 
           {/* Quiz Question Card */}
-          {currentQuizCard && (
+          {currentQuizCard ? (
             <div className="rounded-3xl border border-pink-500/40 bg-slate-950 p-6 text-center space-y-4 shadow-inner relative overflow-hidden">
+              <div className="flex justify-center">
+                <span className="rounded-full px-3 py-1 text-xs font-black bg-slate-900 border border-slate-700 text-cyan-300">
+                  {currentQuizCard.level} • {currentQuizCard.hint}
+                </span>
+              </div>
+
               {quizMode === 'image_to_word' && (
                 <>
                   <div className="text-8xl md:text-9xl animate-bounce drop-shadow-2xl">
@@ -863,6 +991,21 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                 </>
               )}
 
+              {quizMode === 'audio_to_word' && (
+                <>
+                  <button
+                    onClick={() => playWordAudio(currentQuizCard.word)}
+                    className="p-6 rounded-full bg-gradient-to-tr from-amber-500 to-orange-500 text-white shadow-2xl hover:scale-110 active:scale-95 transition mx-auto flex items-center justify-center animate-pulse"
+                  >
+                    <Volume2 className="h-12 w-12" />
+                  </button>
+                  <div>
+                    <div className="text-xs font-bold uppercase tracking-wider text-amber-300">Hãy lắng nghe âm thanh và chọn từ Tiếng Anh tương ứng!</div>
+                    <div className="text-xs text-slate-400 mt-1">Gợi ý nghĩa: "{currentQuizCard.meaning}"</div>
+                  </div>
+                </>
+              )}
+
               {quizMode === 'fill_sentence' && (
                 <>
                   <div className="text-lg md:text-xl font-black text-amber-300 font-heading bg-slate-900/90 p-4 rounded-2xl border border-slate-800">
@@ -881,6 +1024,12 @@ export function KidsEnglishDashboard({ plan, addToast }) {
               >
                 <Volume2 className="h-4 w-4 text-pink-400 animate-pulse" /> Nghe Gợi Ý Phát Âm 🔊
               </button>
+            </div>
+          ) : (
+            <div className="text-center p-8 rounded-3xl border border-slate-800 bg-slate-950 text-slate-400 space-y-2">
+              <div className="text-4xl">📚</div>
+              <div className="font-bold text-slate-200">Chưa có từ vựng nào trong kho dữ liệu</div>
+              <p className="text-xs">Hiện tại danh sách từ vựng trống.</p>
             </div>
           )}
 
@@ -928,11 +1077,11 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                   const correctAnswer = quizMode === 'word_to_meaning' ? currentQuizCard?.meaning : currentQuizCard?.word;
                   return selectedQuizOption === correctAnswer ? (
                     <span className="text-emerald-400 font-bold flex items-center gap-1">
-                      <CheckCircle2 className="h-4 w-4" /> Tuyệt vời lắm Minh Anh! +5 Stars ⭐
+                      <CheckCircle2 className="h-4 w-4" /> Xuất sắc lắm bé ơi! 🎉 (+5 Stars ⭐)
                     </span>
                   ) : (
-                    <span className="text-rose-400 font-bold">
-                      Cố gắng ở câu tiếp theo nhé Minh Anh! Đáp án là '{correctAnswer}'
+                    <span className="text-amber-300 font-bold flex items-center gap-1">
+                      <Sparkles className="h-4 w-4 text-amber-400" /> Bé hãy bấm nghe lại gợi ý nhé! Đáp án đúng là '{correctAnswer}' 💪
                     </span>
                   );
                 })()}
@@ -942,7 +1091,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                 onClick={handleNextQuiz}
                 className="flex items-center gap-2 rounded-2xl bg-gradient-to-r from-pink-600 to-purple-600 px-6 py-3 text-xs font-black text-white hover:from-pink-500 hover:to-purple-500 shadow-xl transition active:scale-95"
               >
-                <span>Bài Tập Tiếp Theo (#{quizIndex + 2})</span>
+                <span>Bài Tập Tiếp Theo (#{(quizIndex % 100) + 2})</span>
                 <Sparkles className="h-4 w-4" />
               </button>
             </div>

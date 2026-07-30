@@ -1,5 +1,45 @@
 [
   {
+    "id": "log-1785382575918-g3o6",
+    "timestamp": "2026-07-30T03:36:15.918Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Bé Bắp (Tác Nhân Học Tiếng Anh Flashcard)' (KIDS_ENGLISH) đăng nhập thành công với Token HMAC",
+    "username": "behoctienganh",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785382556268-61py",
+    "timestamp": "2026-07-30T03:35:56.268Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Chị Thanh Mai (Tác Nhân Phụ Nữ Sau Sinh)' (POSTPARTUM) đăng nhập thành công với Token HMAC",
+    "username": "sausinh",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785382534987-t25z",
+    "timestamp": "2026-07-30T03:35:34.987Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'BS. CKII Nguyễn Thị Mai (Người Duyệt Chuyên Môn)' (CLINICIAN) đăng nhập thành công với Token HMAC",
+    "username": "bacti",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785382526583-qw3j",
+    "timestamp": "2026-07-30T03:35:26.583Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Chị Thu Hà (Tác Nhân Phụ Nữ Mang Thai)' (PREGNANT) đăng nhập thành công với Token HMAC",
+    "username": "mangthai",
+    "ip": "::1"
+  },
+  {
+    "id": "log-1785381116867-o927",
+    "timestamp": "2026-07-30T03:11:56.867Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Bé Bắp (Tác Nhân Học Tiếng Anh Flashcard)' (KIDS_ENGLISH) đăng nhập thành công với Token HMAC",
+    "username": "behoctienganh",
+    "ip": "::1"
+  },
+  {
     "id": "log-1785378583324-sqr1",
     "timestamp": "2026-07-30T02:29:43.324Z",
     "event": "AUTH_LOGIN_SUCCESS",
