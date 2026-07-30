@@ -1,5 +1,13 @@
 [
   {
+    "id": "log-1785419389064-rm57",
+    "timestamp": "2026-07-30T13:49:49.064Z",
+    "event": "AUTH_LOGIN_SUCCESS",
+    "details": "Tác nhân 'Quản Trị Viên Tối Cao' (ADMIN) đăng nhập thành công với Token HMAC",
+    "username": "admin",
+    "ip": "::1"
+  },
+  {
     "id": "log-1785419266685-212p",
     "timestamp": "2026-07-30T13:47:46.685Z",
     "event": "AUTH_LOGIN_SUCCESS",

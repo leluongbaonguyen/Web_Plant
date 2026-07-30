@@ -33,6 +33,7 @@ export function Header({
   isSaving,
   isFullscreen,
   onToggleFullscreen,
+  lastSyncedTime,
 }) {
   const { role, logout, roleInfo, permissions } = useRole();
   const [logoClicks, setLogoClicks] = useState(0);
