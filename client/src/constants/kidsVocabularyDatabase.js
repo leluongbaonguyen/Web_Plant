@@ -8965,7 +8965,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
     id: 1,
     pageNumber: 1,
     title: 'Trang 1: Bảng Màu & Số Đếm Kỳ Diệu 🎨🔢',
-    subtitle: '4 Phân vùng chủ đề Khởi Động Level 1 (40 Từ Vựng Cốt Lõi)',
+    subtitle: '4 Phân vùng chủ đề Khởi Động Level 1 - Phần 1 (40 Từ Vựng Cốt Lõi)',
     badge: 'Level 1 • Khởi Động',
     icon: '🎨',
     level: 'L1',
@@ -9016,15 +9016,67 @@ export const ILLUSTRATED_POSTER_PAGES = [
   {
     id: 2,
     pageNumber: 2,
-    title: 'Trang 2: Thế Giới Động Vật Hoang Dã & Gia Đình 🦁🐘👨‍👩‍👧‍👦',
-    subtitle: '4 Phân vùng chủ đề Cơ Bản Level 2 (40 Từ Vựng Cốt Lõi)',
+    title: 'Trang 2: Hình Khối, Trang Phục & Lớp Học 📐👕🎒',
+    subtitle: '4 Phân vùng chủ đề Khởi Động Level 1 - Phần 2 (40 Từ Vựng Cốt Lõi)',
+    badge: 'Level 1 • Khởi Động',
+    icon: '📐',
+    level: 'L1',
+    description: 'Tìm hiểu các hình khối cơ bản, trang phục hằng ngày và dụng cụ học tập!',
+    sections: [
+      {
+        id: 'P2-SEC1',
+        title: 'Phân vùng 1: Hình khối & Không gian 📐⭕⭐',
+        theme: 'indigo',
+        bgHeader: 'bg-indigo-600 text-white',
+        borderColor: 'border-indigo-500',
+        badgeBg: 'bg-indigo-100 text-indigo-700',
+        icon: '📐',
+        words: ['circle', 'square', 'triangle', 'star', 'heart', 'oval', 'line', 'point', 'box', 'ring']
+      },
+      {
+        id: 'P2-SEC2',
+        title: 'Phân vùng 2: Trang phục & Phụ kiện Bé yêu 👟👕🧢',
+        theme: 'pink',
+        bgHeader: 'bg-pink-600 text-white',
+        borderColor: 'border-pink-500',
+        badgeBg: 'bg-pink-100 text-pink-700',
+        icon: '👕',
+        words: ['coat', 'pants', 'skirt', 'dress', 'socks', 'gloves', 'boots', 'scarf', 'belt', 'watch']
+      },
+      {
+        id: 'P2-SEC3',
+        title: 'Phân vùng 3: Đồ dùng Lớp học Mầm non ✏️🎨📖',
+        theme: 'teal',
+        bgHeader: 'bg-teal-600 text-white',
+        borderColor: 'border-teal-500',
+        badgeBg: 'bg-teal-100 text-teal-700',
+        icon: '✏️',
+        words: ['pen', 'pencil', 'book', 'paper', 'crayon', 'glue', 'scissors', 'desk', 'chair', 'bag']
+      },
+      {
+        id: 'P2-SEC4',
+        title: 'Phân vùng 4: Côn trùng & Sinh vật Nhỏ 🐝🦋🐜',
+        theme: 'amber',
+        bgHeader: 'bg-amber-600 text-white',
+        borderColor: 'border-amber-500',
+        badgeBg: 'bg-amber-100 text-amber-700',
+        icon: '🐝',
+        words: ['ant', 'bee', 'butterfly', 'spider', 'snail', 'worm', 'fly', 'beetle', 'ladybug', 'mosquito']
+      }
+    ]
+  },
+  {
+    id: 3,
+    pageNumber: 3,
+    title: 'Trang 3: Thế Giới Động Vật Hoang Dã & Gia Đình 🦁🐘👨‍👩‍👧‍👦',
+    subtitle: '4 Phân vùng chủ đề Cơ Bản Level 2 - Phần 1 (40 Từ Vựng Cốt Lõi)',
     badge: 'Level 2 • Cơ Bản',
     icon: '🦁',
     level: 'L2',
     description: 'Tìm hiểu sư tử, voi, hổ, khỉ và tình cảm gia đình ấm áp!',
     sections: [
       {
-        id: 'P2-SEC1',
+        id: 'P3-SEC1',
         title: 'Phân vùng 1: Động vật Hoang dã Đại ngàn 🦁🐘🐅',
         theme: 'purple',
         bgHeader: 'bg-purple-600 text-white',
@@ -9034,7 +9086,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ['lion', 'elephant', 'tiger', 'monkey', 'bear', 'giraffe', 'zebra', 'hippo', 'snake', 'rabbit']
       },
       {
-        id: 'P2-SEC2',
+        id: 'P3-SEC2',
         title: 'Phân vùng 2: Gia đình & Người thân Yêu thương 👨‍👩‍👧‍👦',
         theme: 'pink',
         bgHeader: 'bg-pink-600 text-white',
@@ -9044,7 +9096,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ['mother', 'father', 'brother', 'sister', 'baby', 'grandfather', 'grandmother', 'family', 'home', 'friend']
       },
       {
-        id: 'P2-SEC3',
+        id: 'P3-SEC3',
         title: 'Phân vùng 3: Thức ăn & Đồ uống Ngon lành 🍎🍞🥛',
         theme: 'amber',
         bgHeader: 'bg-amber-600 text-white',
@@ -9054,7 +9106,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ['apple', 'banana', 'orange', 'milk', 'bread', 'rice', 'water', 'cake', 'pizza', 'egg']
       },
       {
-        id: 'P2-SEC4',
+        id: 'P3-SEC4',
         title: 'Phân vùng 4: Ngôi nhà Ấm cúng của Bé 🏠🛋️🛏️',
         theme: 'teal',
         bgHeader: 'bg-teal-600 text-white',
@@ -9066,17 +9118,69 @@ export const ILLUSTRATED_POSTER_PAGES = [
     ]
   },
   {
-    id: 3,
-    pageNumber: 3,
-    title: 'Trang 3: Khám Phá Thiên Nhiên & Trường Học 🧭🌳🏫',
-    subtitle: '4 Phân vùng chủ đề Mở Rộng Level 3 (40 Từ Vựng Cốt Lõi)',
+    id: 4,
+    pageNumber: 4,
+    title: 'Trang 4: Trái Cây, Đồ Ăn & Cảm Xúc 🍉🍕😊',
+    subtitle: '4 Phân vùng chủ đề Cơ Bản Level 2 - Phần 2 (40 Từ Vựng Cốt Lõi)',
+    badge: 'Level 2 • Cơ Bản',
+    icon: '🍎',
+    level: 'L2',
+    description: 'Thưởng thức vô số loại trái cây tươi ngon và học cách biểu lộ cảm xúc!',
+    sections: [
+      {
+        id: 'P4-SEC1',
+        title: 'Phân vùng 1: Trái cây & Rau củ Tươi xanh 🍉🍇🥦',
+        theme: 'emerald',
+        bgHeader: 'bg-emerald-600 text-white',
+        borderColor: 'border-emerald-500',
+        badgeBg: 'bg-emerald-100 text-emerald-700',
+        icon: '🍉',
+        words: ['watermelon', 'grape', 'strawberry', 'mango', 'peach', 'lemon', 'carrot', 'potato', 'tomato', 'corn']
+      },
+      {
+        id: 'P4-SEC2',
+        title: 'Phân vùng 2: Món ăn & Đồ uống Yêu thích 🍕🍔🍦',
+        theme: 'orange',
+        bgHeader: 'bg-orange-600 text-white',
+        borderColor: 'border-orange-500',
+        badgeBg: 'bg-orange-100 text-orange-700',
+        icon: '🍕',
+        words: ['burger', 'soup', 'meat', 'chicken', 'fish', 'icecream', 'juice', 'tea', 'cookie', 'candy']
+      },
+      {
+        id: 'P4-SEC3',
+        title: 'Phân vùng 3: Cảm xúc & Tâm trạng Bé 😃😢😡',
+        theme: 'amber',
+        bgHeader: 'bg-amber-600 text-white',
+        borderColor: 'border-amber-500',
+        badgeBg: 'bg-amber-100 text-amber-700',
+        icon: '😃',
+        words: ['happy', 'sad', 'angry', 'tired', 'scared', 'surprised', 'excited', 'calm', 'funny', 'brave']
+      },
+      {
+        id: 'P4-SEC4',
+        title: 'Phân vùng 4: Động vật Biển & Đại dương 🐬🐋🐙',
+        theme: 'cyan',
+        bgHeader: 'bg-cyan-600 text-white',
+        borderColor: 'border-cyan-500',
+        badgeBg: 'bg-cyan-100 text-cyan-700',
+        icon: '🐬',
+        words: ['dolphin', 'whale', 'octopus', 'shark', 'crab', 'turtle', 'seal', 'starfish', 'lobster', 'shell']
+      }
+    ]
+  },
+  {
+    id: 5,
+    pageNumber: 5,
+    title: 'Trang 5: Khám Phá Thiên Nhiên & Thời Tiết ☀️🌧️🌲',
+    subtitle: '4 Phân vùng chủ đề Mở Rộng Level 3 - Phần 1 (40 Từ Vựng Cốt Lõi)',
     badge: 'Level 3 • Mở Rộng',
     icon: '🧭',
     level: 'L3',
-    description: 'Cùng la bàn du ngoạn thiên nhiên và không gian trường học vui tươi!',
+    description: 'Cùng la bàn du ngoạn rừng xanh đại ngàn và ngắm bầu trời sao!',
     sections: [
       {
-        id: 'P3-SEC1',
+        id: 'P5-SEC1',
         title: 'Phân vùng 1: Thiên nhiên & Thời tiết Tươi đẹp ☀️🌧️🌲',
         theme: 'emerald',
         bgHeader: 'bg-emerald-600 text-white',
@@ -9086,7 +9190,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ['sun', 'moon', 'star', 'sky', 'cloud', 'rain', 'wind', 'snow', 'tree', 'leaf']
       },
       {
-        id: 'P3-SEC2',
+        id: 'P5-SEC2',
         title: 'Phân vùng 2: Dụng cụ Học tập & Lớp học ✏️📐🎒',
         theme: 'indigo',
         bgHeader: 'bg-indigo-600 text-white',
@@ -9096,7 +9200,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ['school', 'class', 'desk', 'pencil', 'ruler', 'eraser', 'paper', 'computer', 'map', 'book']
       },
       {
-        id: 'P3-SEC3',
+        id: 'P5-SEC3',
         title: 'Phân vùng 3: Phương tiện Giao thông Đô thị 🚗🚌✈️',
         theme: 'cyan',
         bgHeader: 'bg-cyan-600 text-white',
@@ -9106,7 +9210,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ['city', 'street', 'car', 'bus', 'train', 'plane', 'bike', 'ship', 'park', 'shop']
       },
       {
-        id: 'P3-SEC4',
+        id: 'P5-SEC4',
         title: 'Phân vùng 4: Thể thao & Trò chơi Năng động ⚽🏸🎨',
         theme: 'orange',
         bgHeader: 'bg-orange-600 text-white',
@@ -9118,17 +9222,69 @@ export const ILLUSTRATED_POSTER_PAGES = [
     ]
   },
   {
-    id: 4,
-    pageNumber: 4,
-    title: 'Trang 4: Hành Tinh & Vũ Trụ Bao La 🚀🪐✨',
-    subtitle: '4 Phân vùng chủ đề Nâng Cao Level 4 (40 Từ Vựng Cốt Lõi)',
+    id: 6,
+    pageNumber: 6,
+    title: 'Trang 6: Mùa Trong Năm & Địa Danh Du Lịch 🌸❄️⛰️',
+    subtitle: '4 Phân vùng chủ đề Mở Rộng Level 3 - Phần 2 (40 Từ Vựng Cốt Lõi)',
+    badge: 'Level 3 • Mở Rộng',
+    icon: '🏞️',
+    level: 'L3',
+    description: 'Tìm hiểu 4 mùa trong năm và cảnh quan địa lý tuyệt mỹ!',
+    sections: [
+      {
+        id: 'P6-SEC1',
+        title: 'Phân vùng 1: Bốn Mùa trong Năm 🌸☀️🍂❄️',
+        theme: 'rose',
+        bgHeader: 'bg-rose-600 text-white',
+        borderColor: 'border-rose-500',
+        badgeBg: 'bg-rose-100 text-rose-700',
+        icon: '🌸',
+        words: ['spring', 'summer', 'autumn', 'winter', 'warm', 'hot', 'cool', 'cold', 'sunny', 'cloudy']
+      },
+      {
+        id: 'P6-SEC2',
+        title: 'Phân vùng 2: Cảnh quan & Địa hình Kỳ vĩ ⛰️🏖️🏝️',
+        theme: 'teal',
+        bgHeader: 'bg-teal-600 text-white',
+        borderColor: 'border-teal-500',
+        badgeBg: 'bg-teal-100 text-teal-700',
+        icon: '⛰️',
+        words: ['mountain', 'river', 'lake', 'ocean', 'beach', 'island', 'cave', 'waterfall', 'desert', 'forest']
+      },
+      {
+        id: 'P6-SEC3',
+        title: 'Phân vùng 3: Đồ chơi & Nhạc cụ Yêu thích 🎸🧸🥁',
+        theme: 'purple',
+        bgHeader: 'bg-purple-600 text-white',
+        borderColor: 'border-purple-500',
+        badgeBg: 'bg-purple-100 text-purple-700',
+        icon: '🎸',
+        words: ['guitar', 'piano', 'drum', 'violin', 'flute', 'doll', 'robot', 'puzzle', 'block', 'kite']
+      },
+      {
+        id: 'P6-SEC4',
+        title: 'Phân vùng 4: Thần thoại & Nhân vật Cổ tích 🦄🐲🧙‍♂️',
+        theme: 'amber',
+        bgHeader: 'bg-amber-600 text-white',
+        borderColor: 'border-amber-500',
+        badgeBg: 'bg-amber-100 text-amber-700',
+        icon: '🦄',
+        words: ['unicorn', 'dragon', 'wizard', 'fairy', 'king', 'queen', 'prince', 'princess', 'hero', 'magic']
+      }
+    ]
+  },
+  {
+    id: 7,
+    pageNumber: 7,
+    title: 'Trang 7: Hành Tinh & Vũ Trụ Bao La 🚀🪐✨',
+    subtitle: '4 Phân vùng chủ đề Nâng Cao Level 4 - Phần 1 (40 Từ Vựng Cốt Lõi)',
     badge: 'Level 4 • Nâng Cao',
     icon: '🚀',
     level: 'L4',
     description: 'Bay tới các hành tinh xa xôi và khám phá vũ trụ ngàn sao!',
     sections: [
       {
-        id: 'P4-SEC1',
+        id: 'P7-SEC1',
         title: 'Phân vùng 1: Thiên văn & Nguyệt cầu 🪐🚀🌌',
         theme: 'purple',
         bgHeader: 'bg-purple-700 text-white',
@@ -9138,7 +9294,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ['space', 'planet', 'rocket', 'astronaut', 'galaxy', 'telescope', 'gravity', 'orbit', 'comet', 'meteor']
       },
       {
-        id: 'P4-SEC2',
+        id: 'P7-SEC2',
         title: 'Phân vùng 2: Nghề nghiệp & Ước mơ 👨‍⚕️👨‍🏫👩‍🍳',
         theme: 'teal',
         bgHeader: 'bg-teal-700 text-white',
@@ -9148,7 +9304,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ['doctor', 'nurse', 'teacher', 'pilot', 'driver', 'chef', 'artist', 'singer', 'police', 'firefighter']
       },
       {
-        id: 'P4-SEC3',
+        id: 'P7-SEC3',
         title: 'Phân vùng 3: Bảo vệ Môi trường & Trái Đất 🌍🌱♻️',
         theme: 'emerald',
         bgHeader: 'bg-emerald-700 text-white',
@@ -9158,7 +9314,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ['nature', 'environment', 'plant', 'flower', 'forest', 'ocean', 'river', 'protect', 'earth', 'clean']
       },
       {
-        id: 'P4-SEC4',
+        id: 'P7-SEC4',
         title: 'Phân vùng 4: Nghệ thuật & Di sản Văn hóa 🎭🎨🎻',
         theme: 'rose',
         bgHeader: 'bg-rose-700 text-white',
@@ -9170,17 +9326,69 @@ export const ILLUSTRATED_POSTER_PAGES = [
     ]
   },
   {
-    id: 5,
-    pageNumber: 5,
-    title: 'Trang 5: Công Nghệ AI & Kỹ Năng Tương Lai 💻🤖🧠',
-    subtitle: '4 Phân vùng chủ đề Tiên Phong Level 5 (40 Từ Vựng Cốt Lõi)',
+    id: 8,
+    pageNumber: 8,
+    title: 'Trang 8: Khoa Học Trái Đất & Thời Đại Số 🌋💻🛰️',
+    subtitle: '4 Phân vùng chủ đề Nâng Cao Level 4 - Phần 2 (40 Từ Vựng Cốt Lõi)',
+    badge: 'Level 4 • Nâng Cao',
+    icon: '🌋',
+    level: 'L4',
+    description: 'Học về hiện tượng địa chất, năng lượng tái tạo và thiết bị số!',
+    sections: [
+      {
+        id: 'P8-SEC1',
+        title: 'Phân vùng 1: Hiện tượng Địa chất & Núi lửa 🌋🌪️🌊',
+        theme: 'red',
+        bgHeader: 'bg-red-700 text-white',
+        borderColor: 'border-red-600',
+        badgeBg: 'bg-red-100 text-red-800',
+        icon: '🌋',
+        words: ['volcano', 'earthquake', 'tsunami', 'storm', 'lightning', 'thunder', 'flood', 'drought', 'energy', 'force']
+      },
+      {
+        id: 'P8-SEC2',
+        title: 'Phân vùng 2: Thiết bị Số & Điện tử 💻📱📷',
+        theme: 'blue',
+        bgHeader: 'bg-blue-700 text-white',
+        borderColor: 'border-blue-600',
+        badgeBg: 'bg-blue-100 text-blue-800',
+        icon: '💻',
+        words: ['laptop', 'tablet', 'screen', 'keyboard', 'camera', 'speaker', 'battery', 'cable', 'signal', 'wifi']
+      },
+      {
+        id: 'P8-SEC3',
+        title: 'Phân vùng 3: Động vật Tiền sử & Khủng long 🦕🦖🦴',
+        theme: 'amber',
+        bgHeader: 'bg-amber-700 text-white',
+        borderColor: 'border-amber-600',
+        badgeBg: 'bg-amber-100 text-amber-800',
+        icon: '🦕',
+        words: ['dinosaur', 'fossil', 'bone', 'extinct', 'ancient', 'giant', 'mammoth', 'jungle', 'hunt', 'stone']
+      },
+      {
+        id: 'P8-SEC4',
+        title: 'Phân vùng 4: Sức khỏe & Y tế Gia đình 💉🩺💊',
+        theme: 'emerald',
+        bgHeader: 'bg-emerald-700 text-white',
+        borderColor: 'border-emerald-600',
+        badgeBg: 'bg-emerald-100 text-emerald-800',
+        icon: '🩺',
+        words: ['medicine', 'clinic', 'bandage', 'fever', 'health', 'care', 'safe', 'clean', 'vitamin', 'strong']
+      }
+    ]
+  },
+  {
+    id: 9,
+    pageNumber: 9,
+    title: 'Trang 9: Công Nghệ AI & Kỹ Năng Tương Lai 💻🤖🧠',
+    subtitle: '4 Phân vùng chủ đề Tiên Phong Level 5 - Phần 1 (40 Từ Vựng Cốt Lõi)',
     badge: 'Level 5 • Tiên Phong',
     icon: '💻',
     level: 'L5',
     description: 'Học về robot, trí tuệ nhân tạo AI và kỹ năng tư duy phản biện!',
     sections: [
       {
-        id: 'P5-SEC1',
+        id: 'P9-SEC1',
         title: 'Phân vùng 1: Trí tuệ Nhân tạo & Công nghệ Số 🤖💻🌐',
         theme: 'blue',
         bgHeader: 'bg-blue-700 text-white',
@@ -9190,7 +9398,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ['technology', 'computer', 'robot', 'internet', 'AI', 'data', 'code', 'screen', 'digital', 'smart']
       },
       {
-        id: 'P5-SEC2',
+        id: 'P9-SEC2',
         title: 'Phân vùng 2: Tư duy Phản biện & Giải quyết Lỗi 🧠💡🎯',
         theme: 'amber',
         bgHeader: 'bg-amber-700 text-white',
@@ -9200,7 +9408,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ['logic', 'problem', 'solution', 'think', 'create', 'analyze', 'focus', 'learn', 'practice', 'improve']
       },
       {
-        id: 'P5-SEC3',
+        id: 'P9-SEC3',
         title: 'Phân vùng 3: Sức khỏe Thể chất & Dinh dưỡng 🫀🦾🏃‍♂️',
         theme: 'rose',
         bgHeader: 'bg-rose-700 text-white',
@@ -9210,7 +9418,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ['health', 'fitness', 'exercise', 'muscle', 'heart', 'brain', 'diet', 'sleep', 'energy', 'strong']
       },
       {
-        id: 'P5-SEC4',
+        id: 'P9-SEC4',
         title: 'Phân vùng 4: Du lịch & Khám phá Thế giới ✈️🗺️🧳',
         theme: 'indigo',
         bgHeader: 'bg-indigo-700 text-white',
@@ -9222,9 +9430,61 @@ export const ILLUSTRATED_POSTER_PAGES = [
     ]
   },
   {
-    id: 6,
-    pageNumber: 6,
-    title: 'Trang 6: Khoa Học Tự Nhiên & Toán Học Chuẩn Quốc Tế 🔬🧮🧬',
+    id: 10,
+    pageNumber: 10,
+    title: 'Trang 10: Đổi Mới Sáng Tạo & Lãnh Đạo Tương Lai 🚀🏆💡',
+    subtitle: '4 Phân vùng chủ đề Tiên Phong Level 5 - Phần 2 (40 Từ Vựng Cốt Lõi)',
+    badge: 'Level 5 • Tiên Phong',
+    icon: '🏆',
+    level: 'L5',
+    description: 'Phát triển tinh thần lãnh đạo, tư duy thiết kế và tinh thần làm việc nhóm!',
+    sections: [
+      {
+        id: 'P10-SEC1',
+        title: 'Phân vùng 1: Đổi mới Sáng tạo & Phát minh 💡⚙️🚀',
+        theme: 'purple',
+        bgHeader: 'bg-purple-700 text-white',
+        borderColor: 'border-purple-600',
+        badgeBg: 'bg-purple-100 text-purple-800',
+        icon: '💡',
+        words: ['innovation', 'design', 'invent', 'future', 'network', 'system', 'process', 'project', 'vision', 'mind']
+      },
+      {
+        id: 'P10-SEC2',
+        title: 'Phân vùng 2: Kỹ năng Lãnh đạo & Đồng đội 👑🤝📢',
+        theme: 'indigo',
+        bgHeader: 'bg-indigo-700 text-white',
+        borderColor: 'border-indigo-600',
+        badgeBg: 'bg-indigo-100 text-indigo-800',
+        icon: '👑',
+        words: ['leader', 'team', 'trust', 'respect', 'share', 'support', 'guide', 'inspire', 'achieve', 'success']
+      },
+      {
+        id: 'P10-SEC3',
+        title: 'Phân vùng 3: Quản lý Thời gian & Mục tiêu ⏳🎯📈',
+        theme: 'emerald',
+        bgHeader: 'bg-emerald-700 text-white',
+        borderColor: 'border-emerald-600',
+        badgeBg: 'bg-emerald-100 text-emerald-800',
+        icon: '🎯',
+        words: ['goal', 'plan', 'schedule', 'time', 'action', 'result', 'progress', 'effort', 'victory', 'award']
+      },
+      {
+        id: 'P10-SEC4',
+        title: 'Phân vùng 4: Giao tiếp & Ngoại ngữ Toàn cầu 🗣️💬📚',
+        theme: 'cyan',
+        bgHeader: 'bg-cyan-700 text-white',
+        borderColor: 'border-cyan-600',
+        badgeBg: 'bg-cyan-100 text-cyan-800',
+        icon: '🗣️',
+        words: ['speak', 'listen', 'read', 'write', 'fluency', 'dialogue', 'express', 'opinion', 'debate', 'connect']
+      }
+    ]
+  },
+  {
+    id: 11,
+    pageNumber: 11,
+    title: 'Trang 11: Khoa Học Tự Nhiên & Toán Học Chuẩn Quốc Tế 🔬🧮🧬',
     subtitle: '4 Phân vùng chủ đề Hội Nhập Level 6 - Phần 1 (40 Từ Vựng CEFR)',
     badge: 'Level 6 • Hội Nhập 1',
     icon: '🏙️',
@@ -9232,7 +9492,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
     description: 'Tiếp cận thuật ngữ Sinh học, Toán học và Hóa học chuyên sâu!',
     sections: [
       {
-        id: 'P6-SEC1',
+        id: 'P11-SEC1',
         title: 'Phân vùng 1: Sinh học & Cơ quan Cơ thể 🧬🫀🔬',
         theme: 'emerald',
         bgHeader: 'bg-emerald-800 text-white',
@@ -9242,7 +9502,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ['cell', 'organ', 'tissue', 'bone', 'muscle', 'blood', 'heart', 'brain', 'lung', 'stomach']
       },
       {
-        id: 'P6-SEC2',
+        id: 'P11-SEC2',
         title: 'Phân vùng 2: Toán học & Phép tính Phức hợp 🧮📊📐',
         theme: 'cyan',
         bgHeader: 'bg-cyan-800 text-white',
@@ -9252,7 +9512,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ['subtraction', 'multiplication', 'division', 'fraction', 'decimal', 'percentage', 'equation', 'graph', 'measurement']
       },
       {
-        id: 'P6-SEC3',
+        id: 'P11-SEC3',
         title: 'Phân vùng 3: Hóa học & Phản ứng Phòng Thí nghiệm 🧪⚛️⚗️',
         theme: 'purple',
         bgHeader: 'bg-purple-800 text-white',
@@ -9262,7 +9522,7 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ['atom', 'molecule', 'element', 'compound', 'acid', 'base', 'reaction', 'temperature', 'laboratory', 'chemical']
       },
       {
-        id: 'P6-SEC4',
+        id: 'P11-SEC4',
         title: 'Phân vùng 4: Nghệ thuật Mỹ thuật & Thiết kế 🖼️🖌️🎨',
         theme: 'pink',
         bgHeader: 'bg-pink-800 text-white',
@@ -9274,17 +9534,17 @@ export const ILLUSTRATED_POSTER_PAGES = [
     ]
   },
   {
-    id: 7,
-    pageNumber: 7,
-    title: 'Trang 7: Công Dân Toàn Cầu & Trách Nhiệm Xã Hội 🌐⚖️🏛️',
+    id: 12,
+    pageNumber: 12,
+    title: 'Trang 12: Công Dân Toàn Cầu & Trách Nhiệm Xã Hội 🌐⚖️🏛️',
     subtitle: '4 Phân vùng chủ đề Hội Nhập Level 6 - Phần 2 (40 Từ Vựng CEFR)',
-    badge: 'Level 7 • Hội Nhập 2',
+    badge: 'Level 12 • Hội Nhập 2',
     icon: '🌐',
     level: 'L6',
     description: 'Trải nghiệm tri thức công dân toàn cầu, luật pháp và sự phát triển bền vững!',
     sections: [
       {
-        id: 'P7-SEC1',
+        id: 'P12-SEC1',
         title: 'Phân vùng 1: Công dân & Quyền lợi Xã hội 🧑‍🤝‍🧑⚖️🤝',
         theme: 'indigo',
         bgHeader: 'bg-indigo-800 text-white',
@@ -9294,34 +9554,34 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ['citizen', 'community', 'law', 'rule', 'responsibility', 'right', 'equality', 'respect', 'volunteer', 'government']
       },
       {
-        id: 'P7-SEC2',
+        id: 'P12-SEC2',
         title: 'Phân vùng 2: Kinh tế & Quản lý Tài chính 💰📊🏢',
         theme: 'amber',
         bgHeader: 'bg-amber-800 text-white',
         borderColor: 'border-amber-700',
         badgeBg: 'bg-amber-100 text-amber-900',
         icon: '💰',
-        words: ['citizen', 'community', 'law', 'rule', 'responsibility', 'right', 'equality', 'respect', 'volunteer', 'government']
+        words: ['finance', 'economy', 'money', 'business', 'trade', 'market', 'product', 'service', 'value', 'budget']
       },
       {
-        id: 'P7-SEC3',
+        id: 'P12-SEC3',
         title: 'Phân vùng 3: Ngoại giao & Hòa bình Thế giới 🕊️🌐🤝',
         theme: 'blue',
         bgHeader: 'bg-blue-800 text-white',
         borderColor: 'border-blue-700',
         badgeBg: 'bg-blue-100 text-blue-900',
         icon: '🌐',
-        words: ['citizen', 'community', 'law', 'rule', 'responsibility', 'right', 'equality', 'respect', 'volunteer', 'government']
+        words: ['diplomacy', 'nation', 'treaty', 'peace', 'alliance', 'global', 'international', 'communication', 'leadership', 'summit']
       },
       {
-        id: 'P7-SEC4',
+        id: 'P12-SEC4',
         title: 'Phân vùng 4: Phát triển Bền vững & Trái đất Green ♻️🌳🌍',
         theme: 'emerald',
         bgHeader: 'bg-emerald-800 text-white',
         borderColor: 'border-emerald-700',
         badgeBg: 'bg-emerald-100 text-emerald-900',
         icon: '🌍',
-        words: ['citizen', 'community', 'law', 'rule', 'responsibility', 'right', 'equality', 'respect', 'volunteer', 'government']
+        words: ['sustainability', 'ecology', 'renewable', 'climate', 'conservation', 'biodiversity', 'future', 'harmony', 'earth', 'planet']
       }
     ]
   }
