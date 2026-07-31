@@ -1,17 +1,17 @@
 {
   "_kangaroo_meta": {
     "vault": "kids_progress_vault",
-    "lastHopTime": "2026-07-31T00:39:17.149Z",
-    "checksum": "kng-1785458357149-ahwnns"
+    "lastHopTime": "2026-07-31T00:42:20.692Z",
+    "checksum": "kng-1785458540692-206sfy"
   },
   "payload": {
-    "stars": 163,
+    "stars": 168,
     "masteredCards": [
       "vocab-1",
       "vocab-2",
       "vocab-3"
     ],
-    "quizScore": 16,
-    "updatedAt": "2026-07-31T00:39:16.922Z"
+    "quizScore": 0,
+    "updatedAt": "2026-07-31T00:42:20.459Z"
   }
 }

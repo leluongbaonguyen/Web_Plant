@@ -24,6 +24,34 @@ export function KidsEnglishDashboard({ plan, addToast }) {
   const [tablePage, setTablePage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(20);
 
+  // Dual Actor Role State: 'minh_anh' (Student - Learn/View/Quiz only) | 'bao_nguyen' (Admin - Full Management & CRUD)
+  const [currentActor, setCurrentActor] = useState(() => {
+    try {
+      return localStorage.getItem('kids_active_actor') || 'minh_anh';
+    } catch {
+      return 'minh_anh';
+    }
+  });
+
+  const handleSwitchActor = (actorId) => {
+    setCurrentActor(actorId);
+    try {
+      localStorage.setItem('kids_active_actor', actorId);
+    } catch (e) {
+      console.error(e);
+    }
+    if (actorId === 'minh_anh') {
+      if (activeTab === 'db_table') {
+        setActiveTab('poster');
+      }
+      if (addToast) addToast('👧 Đã chuyển sang Tác nhân Nguyễn Ngọc Minh Anh (Chỉ Học & Làm Bài Tập - Giao diện gọn sạch)', 'info');
+      playWordAudio('Chào mừng bé Minh Anh đến với không gian học tập!');
+    } else {
+      if (addToast) addToast('👨‍💼 Đã chuyển sang Tác nhân Lê Lương Bảo Nguyên (Quyền Quản Trị Hệ Thống & CRUD)', 'success');
+      playWordAudio('Đã mở quyền quản trị hệ thống!');
+    }
+  };
+
   // 600 Vocabulary Expanded Database State & Persistence
   const [vocabDatabase, setVocabDatabase] = useState(() => {
     try {
@@ -1553,6 +1581,48 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
   return (
     <div className="space-y-6 animate-fadeIn font-sans">
+      {/* Dual Actor Role Selection Bar */}
+      <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-3xl border-2 border-pink-400/60 bg-slate-950/95 shadow-2xl backdrop-blur-xl">
+        <div className="flex items-center gap-2.5 flex-wrap">
+          <span className="text-xs font-black uppercase tracking-wider text-slate-300 flex items-center gap-1.5">
+            <UserCheck className="h-4 w-4 text-pink-400" /> Tác Nhân Hệ Thống:
+          </span>
+          {currentActor === 'minh_anh' ? (
+            <span className="px-3.5 py-1 rounded-full text-xs font-black bg-pink-500/20 text-pink-300 border border-pink-400/60 flex items-center gap-1.5 animate-pulse shadow-md">
+              👧 Nguyễn Ngọc Minh Anh (Chỉ Học & Làm Bài Tập - Giao Diện Gọn Sạch)
+            </span>
+          ) : (
+            <span className="px-3.5 py-1 rounded-full text-xs font-black bg-purple-500/20 text-purple-300 border border-purple-400/60 flex items-center gap-1.5 shadow-md">
+              👨‍💼 Lê Lương Bảo Nguyên (Quyền Quản Trị Hệ Thống & CRUD Dữ Liệu)
+            </span>
+          )}
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => handleSwitchActor('minh_anh')}
+            className={`px-4 py-2 rounded-2xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer ${
+              currentActor === 'minh_anh'
+                ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white border border-pink-300 shadow-xl scale-105'
+                : 'bg-slate-900 text-slate-400 border border-slate-800 hover:text-white'
+            }`}
+          >
+            <span>👧 Bé Minh Anh (Học Viên)</span>
+          </button>
+
+          <button
+            onClick={() => handleSwitchActor('bao_nguyen')}
+            className={`px-4 py-2 rounded-2xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer ${
+              currentActor === 'bao_nguyen'
+                ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white border border-purple-300 shadow-xl scale-105'
+                : 'bg-slate-900 text-slate-400 border border-slate-800 hover:text-white'
+            }`}
+          >
+            <span>👨‍💼 Ba Bảo Nguyên (Quản Trị)</span>
+          </button>
+        </div>
+      </div>
+
       {/* 3D Dynamic Animated Hero Banner - DEDICATED TO DAUGHTER NGUYỄN NGỌC MINH ANH */}
       <div className="relative overflow-hidden rounded-3xl border-2 border-pink-400/60 bg-gradient-to-r from-pink-950/90 via-slate-900 to-purple-950/90 p-6 md:p-8 shadow-2xl backdrop-blur-2xl">
         <div className="absolute top-0 right-0 -mt-10 -mr-10 h-72 w-72 rounded-full bg-pink-500/25 blur-3xl pointer-events-none animate-pulse"></div>
@@ -1777,55 +1847,59 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           <span>🔄 Chu Kỳ Ôn Tập 5 Bước</span>
         </button>
 
-        <button
-          onClick={() => setActiveTab('db_table')}
-          className={`flex-1 py-3 px-4 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 ${
-            activeTab === 'db_table' ? 'bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          <FileText className="h-4 w-4 text-cyan-300" />
-          <span>🗃️ Bảng CSDL (Data Table)</span>
-        </button>
+        {currentActor === 'bao_nguyen' && (
+          <>
+            <button
+              onClick={() => setActiveTab('db_table')}
+              className={`flex-1 py-3 px-4 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 ${
+                activeTab === 'db_table' ? 'bg-gradient-to-r from-cyan-600 via-blue-600 to-indigo-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <FileText className="h-4 w-4 text-cyan-300" />
+              <span>🗃️ Bảng CSDL (Data Table)</span>
+            </button>
 
-        <button
-          onClick={() => setActiveTab('import_wizard')}
-          className={`flex-1 py-3 px-4 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 ${
-            activeTab === 'import_wizard' ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          <UploadCloud className="h-4 w-4 text-emerald-300" />
-          <span>🚀 Wizard Nhập Hàng Loạt</span>
-        </button>
+            <button
+              onClick={() => setActiveTab('import_wizard')}
+              className={`flex-1 py-3 px-4 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 ${
+                activeTab === 'import_wizard' ? 'bg-gradient-to-r from-emerald-600 via-teal-600 to-cyan-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <UploadCloud className="h-4 w-4 text-emerald-300" />
+              <span>🚀 Wizard Nhập Hàng Loạt</span>
+            </button>
 
-        <button
-          onClick={() => setActiveTab('trash_can')}
-          className={`flex-1 py-3 px-4 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 ${
-            activeTab === 'trash_can' ? 'bg-gradient-to-r from-rose-600 to-red-700 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          <Archive className="h-4 w-4 text-rose-300" />
-          <span>🗑️ Thùng Rác ({trashCan.length})</span>
-        </button>
+            <button
+              onClick={() => setActiveTab('trash_can')}
+              className={`flex-1 py-3 px-4 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 ${
+                activeTab === 'trash_can' ? 'bg-gradient-to-r from-rose-600 to-red-700 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <Archive className="h-4 w-4 text-rose-300" />
+              <span>🗑️ Thùng Rác ({trashCan.length})</span>
+            </button>
 
-        <button
-          onClick={() => setActiveTab('audit_log')}
-          className={`flex-1 py-3 px-4 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 ${
-            activeTab === 'audit_log' ? 'bg-gradient-to-r from-purple-600 to-indigo-700 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          <History className="h-4 w-4 text-purple-300" />
-          <span>📜 Audit Log ({auditLogs.length})</span>
-        </button>
+            <button
+              onClick={() => setActiveTab('audit_log')}
+              className={`flex-1 py-3 px-4 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 ${
+                activeTab === 'audit_log' ? 'bg-gradient-to-r from-purple-600 to-indigo-700 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <History className="h-4 w-4 text-purple-300" />
+              <span>📜 Audit Log ({auditLogs.length})</span>
+            </button>
 
-        <button
-          onClick={() => setActiveTab('qa_checklist')}
-          className={`flex-1 py-3 px-4 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 ${
-            activeTab === 'qa_checklist' ? 'bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'
-          }`}
-        >
-          <FileCheck className="h-4 w-4 text-teal-300" />
-          <span>📊 QA Checklist ({qaMetrics.completenessScore}%)</span>
-        </button>
+            <button
+              onClick={() => setActiveTab('qa_checklist')}
+              className={`flex-1 py-3 px-4 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 ${
+                activeTab === 'qa_checklist' ? 'bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-lg' : 'text-slate-400 hover:text-slate-200'
+              }`}
+            >
+              <FileCheck className="h-4 w-4 text-teal-300" />
+              <span>📊 QA Checklist ({qaMetrics.completenessScore}%)</span>
+            </button>
+          </>
+        )}
 
         <button
           onClick={() => setShowAiModal(true)}
@@ -2533,15 +2607,17 @@ export function KidsEnglishDashboard({ plan, addToast }) {
             </div>
 
             <div className="flex items-center gap-2.5 flex-wrap">
-              {/* Add New Exercise Button */}
-              <button
-                onClick={() => handleOpenSuperAdd('L1-U01', 'L1')}
-                className="px-3.5 py-2 rounded-2xl font-black text-xs bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-xl hover:scale-105 active:scale-95 transition flex items-center gap-1.5 border border-emerald-400/80 cursor-pointer"
-                title="Tạo thêm bài tập mới cho bé"
-              >
-                <Plus className="h-4 w-4 text-emerald-200" />
-                <span>➕ Thêm Bài Tập Mới</span>
-              </button>
+              {/* Add New Exercise Button (Admin Only) */}
+              {currentActor === 'bao_nguyen' && (
+                <button
+                  onClick={() => handleOpenSuperAdd('L1-U01', 'L1')}
+                  className="px-3.5 py-2 rounded-2xl font-black text-xs bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-xl hover:scale-105 active:scale-95 transition flex items-center gap-1.5 border border-emerald-400/80 cursor-pointer"
+                  title="Tạo thêm bài tập mới cho bé"
+                >
+                  <Plus className="h-4 w-4 text-emerald-200" />
+                  <span>➕ Thêm Bài Tập Mới</span>
+                </button>
+              )}
 
               {/* Random Shuffle Button */}
               <button
@@ -2698,29 +2774,31 @@ export function KidsEnglishDashboard({ plan, addToast }) {
               </div>
 
               {/* Quick CRUD Action Controls for Parent / Admin on Current Exercise */}
-              <div className="flex flex-wrap items-center justify-center gap-2 pt-3 border-t border-slate-900/80">
-                <button
-                  onClick={() => handleOpenSuperAdd(currentQuizCard.category || 'L1-U01', currentQuizCard.level || 'L1')}
-                  className="px-3 py-1.5 rounded-xl bg-emerald-950/90 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-600 hover:text-white font-bold text-xs flex items-center gap-1.5 transition shadow-md active:scale-95"
-                  title="Tạo thêm bài tập mới"
-                >
-                  <Plus className="h-3.5 w-3.5 text-emerald-400" /> Thêm Bài Tập Mới
-                </button>
-                <button
-                  onClick={() => handleOpenSuperEdit(currentQuizCard)}
-                  className="px-3 py-1.5 rounded-xl bg-amber-950/90 border border-amber-500/40 text-amber-300 hover:bg-amber-600 hover:text-slate-950 font-bold text-xs flex items-center gap-1.5 transition shadow-md active:scale-95"
-                  title="Sửa nội dung bài tập hiện tại"
-                >
-                  <Edit className="h-3.5 w-3.5 text-amber-400" /> Sửa Bài Tập Này
-                </button>
-                <button
-                  onClick={() => handleDeleteSuperCard(currentQuizCard.id, currentQuizCard.word)}
-                  className="px-3 py-1.5 rounded-xl bg-rose-950/90 border border-rose-500/40 text-rose-300 hover:bg-rose-600 hover:text-white font-bold text-xs flex items-center gap-1.5 transition shadow-md active:scale-95"
-                  title="Xóa bài tập này khỏi hệ thống"
-                >
-                  <Trash2 className="h-3.5 w-3.5 text-rose-400" /> Xóa Bài Tập Này
-                </button>
-              </div>
+              {currentActor === 'bao_nguyen' && (
+                <div className="flex flex-wrap items-center justify-center gap-2 pt-3 border-t border-slate-900/80">
+                  <button
+                    onClick={() => handleOpenSuperAdd(currentQuizCard.category || 'L1-U01', currentQuizCard.level || 'L1')}
+                    className="px-3 py-1.5 rounded-xl bg-emerald-950/90 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-600 hover:text-white font-bold text-xs flex items-center gap-1.5 transition shadow-md active:scale-95"
+                    title="Tạo thêm bài tập mới"
+                  >
+                    <Plus className="h-3.5 w-3.5 text-emerald-400" /> Thêm Bài Tập Mới
+                  </button>
+                  <button
+                    onClick={() => handleOpenSuperEdit(currentQuizCard)}
+                    className="px-3 py-1.5 rounded-xl bg-amber-950/90 border border-amber-500/40 text-amber-300 hover:bg-amber-600 hover:text-slate-950 font-bold text-xs flex items-center gap-1.5 transition shadow-md active:scale-95"
+                    title="Sửa nội dung bài tập hiện tại"
+                  >
+                    <Edit className="h-3.5 w-3.5 text-amber-400" /> Sửa Bài Tập Này
+                  </button>
+                  <button
+                    onClick={() => handleDeleteSuperCard(currentQuizCard.id, currentQuizCard.word)}
+                    className="px-3 py-1.5 rounded-xl bg-rose-950/90 border border-rose-500/40 text-rose-300 hover:bg-rose-600 hover:text-white font-bold text-xs flex items-center gap-1.5 transition shadow-md active:scale-95"
+                    title="Xóa bài tập này khỏi hệ thống"
+                  >
+                    <Trash2 className="h-3.5 w-3.5 text-rose-400" /> Xóa Bài Tập Này
+                  </button>
+                </div>
+              )}
             </div>
           ) : (
             <div className="text-center p-8 rounded-3xl border border-slate-800 bg-slate-950 text-slate-400 space-y-2">
