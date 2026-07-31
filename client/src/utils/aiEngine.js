@@ -6,7 +6,8 @@ import { DAYS } from '../constants/index.js';
  * and performs 1-tap automated schedule optimization.
  */
 
-export function calculateProductivityMetrics(schedule = []) {
+export function calculateProductivityMetrics(rawSchedule = []) {
+  const schedule = Array.isArray(rawSchedule) ? rawSchedule : [];
   let totalWorkStudy = 0;
   let totalHealth = 0;
   let totalRest = 0;

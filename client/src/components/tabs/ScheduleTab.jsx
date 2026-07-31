@@ -142,7 +142,7 @@ export function ScheduleTab({
             </h3>
           </div>
           <span className="text-[11px] font-mono-code font-bold text-slate-400">
-            Hiển thị {filteredSchedule.length} / {schedule.length} khung giờ
+            Hiển thị {(filteredSchedule || []).length} / {(schedule || []).length} khung giờ
           </span>
         </div>
 

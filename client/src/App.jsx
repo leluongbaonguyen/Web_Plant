@@ -372,7 +372,7 @@ function MainAppContent() {
 
   // Live schedule calculations
   const liveScheduleStatus = useMemo(() => {
-    if (!plan || !plan.schedule) return { currentSlot: null, overdueSlots: [], upcomingSlots: [], nextSlot: null };
+    if (!plan || !Array.isArray(plan.schedule)) return { currentSlot: null, overdueSlots: [], upcomingSlots: [], nextSlot: null };
 
     const todayKey = getCurrentDayKey();
     const nowMinutes = currentTime.getHours() * 60 + currentTime.getMinutes();
