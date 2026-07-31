@@ -916,6 +916,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
   const [quizTimeLeft, setQuizTimeLeft] = useState(15);
   const [quizMode, setQuizMode] = useState('image_to_word'); // 'image_to_word' | 'word_to_meaning' | 'audio_to_word' | 'fill_sentence'
   const [customShuffledPool, setCustomShuffledPool] = useState(null);
+  const autoNextTimerRef = useRef(null);
 
   // Quiz Streak Engine
   const [streakCount, setStreakCount] = useState(0);
@@ -1522,11 +1523,30 @@ export function KidsEnglishDashboard({ plan, addToast }) {
   };
 
   const handleNextQuiz = () => {
+    if (autoNextTimerRef.current) {
+      clearTimeout(autoNextTimerRef.current);
+      autoNextTimerRef.current = null;
+    }
     setQuizAnswered(false);
     setSelectedQuizOption(null);
     setQuizTimeLeft(15);
     setQuizIndex((prev) => prev + 1);
   };
+
+  // Auto-advance to next exercise 1.4 seconds after answering
+  useEffect(() => {
+    if (quizAnswered && activeTab === 'quiz') {
+      autoNextTimerRef.current = setTimeout(() => {
+        handleNextQuiz();
+      }, 1400);
+    }
+    return () => {
+      if (autoNextTimerRef.current) {
+        clearTimeout(autoNextTimerRef.current);
+        autoNextTimerRef.current = null;
+      }
+    };
+  }, [quizAnswered, activeTab]);
 
   return (
     <div className="space-y-6 animate-fadeIn font-sans">
