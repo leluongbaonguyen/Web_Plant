@@ -6,6 +6,7 @@ import { LiveReminderBanner } from './components/LiveReminderBanner.jsx';
 import { MobileAutomationDock } from './components/MobileAutomationDock.jsx';
 import { AnimatedMascots } from './components/AnimatedMascots.jsx';
 import { BackgroundMusicPlayer } from './components/BackgroundMusicPlayer.jsx';
+import { Dynamic3DBackground } from './components/Dynamic3DBackground.jsx';
 import { ButlerAiAssistant } from './components/ButlerAiAssistant.jsx';
 import { MobileBottomNav } from './components/common/MobileBottomNav.jsx';
 import { ToastContainer } from './components/common/ToastContainer.jsx';
@@ -38,6 +39,17 @@ function MainAppContent() {
   const [isSaving, setIsSaving] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [lastSyncedTime, setLastSyncedTime] = useState(new Date());
+
+  // Dynamic 3D Background Config
+  const [bgConfig, setBgConfig] = useState(() => {
+    try {
+      const saved = localStorage.getItem('system_bg_config_v1');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      console.warn(e);
+    }
+    return { theme: 'auto', customUrl: '', customType: 'image', opacity: 0.85, blur: 0, speed: 1.0 };
+  });
 
   // Filters
   const [search, setSearch] = useState('');
@@ -525,7 +537,10 @@ function MainAppContent() {
   }
 
   return (
-    <div className="min-h-screen bg-[#0b0f19] text-slate-100 pb-20 md:pb-10 pt-3 md:pt-5 px-3 sm:px-6 lg:px-8 space-y-4 w-full font-sans transition-all">
+    <div className="min-h-screen bg-[#0b0f19] text-slate-100 pb-20 md:pb-10 pt-3 md:pt-5 px-3 sm:px-6 lg:px-8 space-y-4 w-full font-sans transition-all relative">
+      {/* Dynamic Animated 3D Background Engine per tab/custom */}
+      <Dynamic3DBackground activeTab={activeTab} customBgConfig={bgConfig} />
+
       {/* Toast System */}
       <ToastContainer toasts={toasts} />
 
@@ -690,10 +705,12 @@ function MainAppContent() {
         />
       )}
 
-      {/* Global Super Cute Background Music Player */}
+      {/* Global Super Cute Background Music Player & 3D Background Manager */}
       <BackgroundMusicPlayer
         currentActor={role === 'kids_english' ? (localStorage.getItem('kids_active_actor') || 'minh_anh') : 'bao_nguyen'}
         addToast={addToast}
+        onBgConfigChange={setBgConfig}
+        currentBgConfig={bgConfig}
       />
     </div>
   );

@@ -429,3 +429,16 @@
   animation: floatSlow 4s infinite ease-in-out;
   filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
 }
+
+@keyframes horizontalPan {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-horizontalPan {
+  animation: horizontalPan 35s linear infinite;
+}

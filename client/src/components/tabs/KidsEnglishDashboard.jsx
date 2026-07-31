@@ -283,6 +283,10 @@ export function KidsEnglishDashboard({ plan, addToast }) {
   const [autoPlayTimer, setAutoPlayTimer] = useState(5);
   const [autoPlayIndex, setAutoPlayIndex] = useState(0);
 
+  // Poster Illustration Board Autoplay Engine
+  const [isPosterAutoplay, setIsPosterAutoplay] = useState(false);
+  const [posterAutoplayWordIndex, setPosterAutoplayWordIndex] = useState(0);
+
   // Celebration Fireworks & Sad Face Overlays States
   const [showFireworksOverlay, setShowFireworksOverlay] = useState(false);
   const [celebrationMessage, setCelebrationMessage] = useState('');
@@ -336,6 +340,44 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     level: 'L1',
     category: 'L1-U01'
   });
+
+  // Poster Illustration Board Autoplay Loop Effect
+  useEffect(() => {
+    if (!isPosterAutoplay) return;
+
+    const currentPg = typeof activePosterPage === 'number' ? activePosterPage : 1;
+    const currentPageObj = posterPages.find((p) => p.pageNumber === currentPg) || posterPages[0];
+    if (!currentPageObj) return;
+
+    const allPageWords = [];
+    currentPageObj.sections.forEach((sec) => {
+      sec.words.forEach((w) => {
+        const v = vocabDatabase.find((item) => item.word.toLowerCase() === w.toLowerCase());
+        if (v) allPageWords.push(v);
+      });
+    });
+
+    if (allPageWords.length === 0) return;
+
+    const timer = setInterval(() => {
+      setPosterAutoplayWordIndex((prev) => {
+        const nextIdx = (prev + 1) % allPageWords.length;
+        const currentW = allPageWords[nextIdx];
+        if (currentW) {
+          playWordAudio(currentW.word);
+        }
+        if (nextIdx === 0 && posterPages.length > 1) {
+          setActivePosterPage((prevPg) => {
+            const num = typeof prevPg === 'number' ? prevPg : 1;
+            return num >= posterPages.length ? 1 : num + 1;
+          });
+        }
+        return nextIdx;
+      });
+    }, autoPlaySeconds * 1000);
+
+    return () => clearInterval(timer);
+  }, [isPosterAutoplay, activePosterPage, autoPlaySeconds, posterPages, vocabDatabase]);
 
   // =========================================================================
   // CFP-BRD-DATA-CRUD-001 ENTERPRISE ENGINES (RBAC, AUDIT, TRASH, IMPORT)
@@ -2416,33 +2458,137 @@ export function KidsEnglishDashboard({ plan, addToast }) {
               </div>
             </div>
 
-            {/* Page Buttons Dynamic 1 - N */}
-            <div className="flex flex-wrap items-center gap-2 pt-2 border-t border-pink-500/30">
-              {posterPages.map((pg) => (
+            {/* Compact 1-2 Page Navigation Bar with Next Page & Poster Autoplay Engine */}
+            <div className="flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-pink-500/30">
+              {/* Left Side: Compact 1-2 Pages + Previous/Next Controls */}
+              <div className="flex items-center gap-2 flex-wrap">
+                {/* Previous Page Button */}
                 <button
-                  key={pg.pageNumber}
-                  onClick={() => setActivePosterPage(pg.pageNumber)}
-                  className={`px-4 py-2 rounded-2xl text-xs font-extrabold transition flex items-center gap-2 shadow-md ${
-                    activePosterPage === pg.pageNumber
-                      ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white border-2 border-pink-300 scale-105'
-                      : 'bg-slate-950/80 border border-slate-800 text-slate-300 hover:bg-slate-800 hover:text-white'
+                  disabled={typeof activePosterPage === 'number' && activePosterPage <= 1}
+                  onClick={() => {
+                    const currentPg = typeof activePosterPage === 'number' ? activePosterPage : 1;
+                    if (currentPg > 1) setActivePosterPage(currentPg - 1);
+                  }}
+                  className="px-3.5 py-2 rounded-2xl text-xs font-black bg-slate-900 border border-slate-700 text-slate-300 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed transition shadow"
+                  title="Quay về trang trước"
+                >
+                  ◀️ Trang Trước
+                </button>
+
+                {/* Page Button 1 */}
+                {(() => {
+                  const currentPg = typeof activePosterPage === 'number' ? activePosterPage : 1;
+                  const p1 = currentPg;
+                  const p2 = currentPg + 1 <= posterPages.length ? currentPg + 1 : (currentPg > 1 ? currentPg - 1 : null);
+
+                  return (
+                    <>
+                      <button
+                        onClick={() => setActivePosterPage(p1)}
+                        className={`px-4 py-2 rounded-2xl text-xs font-black transition flex items-center gap-1.5 shadow-md ${
+                          activePosterPage === p1
+                            ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white border-2 border-pink-300 scale-105 shadow-pink-500/40'
+                            : 'bg-slate-950/80 border border-slate-800 text-slate-300 hover:bg-slate-800'
+                        }`}
+                      >
+                        <span>📄 Trang {p1}</span>
+                      </button>
+
+                      {p2 && (
+                        <button
+                          onClick={() => setActivePosterPage(p2)}
+                          className={`px-4 py-2 rounded-2xl text-xs font-black transition flex items-center gap-1.5 shadow-md ${
+                            activePosterPage === p2
+                              ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white border-2 border-pink-300 scale-105 shadow-pink-500/40'
+                              : 'bg-slate-950/80 border border-slate-800 text-slate-300 hover:bg-slate-800'
+                          }`}
+                        >
+                          <span>📄 Trang {p2}</span>
+                        </button>
+                      )}
+                    </>
+                  );
+                })()}
+
+                {/* Next Page Button */}
+                <button
+                  disabled={typeof activePosterPage === 'number' && activePosterPage >= posterPages.length}
+                  onClick={() => {
+                    const currentPg = typeof activePosterPage === 'number' ? activePosterPage : 1;
+                    if (currentPg < posterPages.length) setActivePosterPage(currentPg + 1);
+                  }}
+                  className="px-4 py-2 rounded-2xl text-xs font-black bg-gradient-to-r from-purple-600 to-pink-600 text-white hover:from-purple-500 hover:to-pink-500 border border-purple-300/40 transition shadow-lg flex items-center gap-1 cursor-pointer"
+                  title="Chuyển sang trang tiếp theo"
+                >
+                  <span>Trang Tiếp</span>
+                  <span className="font-mono-code">⏭️</span>
+                </button>
+
+                {/* Dropdown Quick Jump */}
+                <select
+                  value={activePosterPage}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setActivePosterPage(val === 'all' ? 'all' : Number(val));
+                  }}
+                  className="rounded-2xl border border-slate-700 bg-slate-950 px-3 py-2 text-xs font-bold text-pink-300 focus:border-pink-400 focus:outline-none cursor-pointer"
+                >
+                  {posterPages.map((pg) => (
+                    <option key={pg.pageNumber} value={pg.pageNumber}>
+                      📄 Chọn Nhanh Trang {pg.pageNumber} ({pg.sections.length} Phân Vùng)
+                    </option>
+                  ))}
+                  <option value="all">🌈 Xem Tất Cả {posterPages.length} Trang</option>
+                </select>
+
+                <button
+                  onClick={() => setActivePosterPage('all')}
+                  className={`px-3.5 py-2 rounded-2xl text-xs font-extrabold transition flex items-center gap-1.5 shadow-md ${
+                    activePosterPage === 'all'
+                      ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black border-2 border-amber-300 scale-105'
+                      : 'bg-slate-950/80 border border-slate-800 text-amber-300 hover:bg-slate-800'
                   }`}
                 >
-                  <span>📄 Trang {pg.pageNumber}</span>
-                  <span className="text-[10px] opacity-80">({pg.sections.length} Phân Vùng)</span>
+                  <span>🌈 Tất Cả {posterPages.length} Trang</span>
                 </button>
-              ))}
+              </div>
 
-              <button
-                onClick={() => setActivePosterPage('all')}
-                className={`px-4 py-2 rounded-2xl text-xs font-extrabold transition flex items-center gap-2 shadow-md ${
-                  activePosterPage === 'all'
-                    ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-slate-950 font-black border-2 border-amber-300 scale-105'
-                    : 'bg-slate-950/80 border border-slate-800 text-amber-300 hover:bg-slate-800'
-                }`}
-              >
-                <span>🌈 Xem Tất Cả {posterPages.length} Trang</span>
-              </button>
+              {/* Right Side: Autoplay Words Controller for Poster Board */}
+              <div className="flex items-center gap-2 bg-slate-900/90 p-1.5 rounded-2xl border border-pink-500/40 shadow-inner">
+                <button
+                  onClick={() => {
+                    const nextState = !isPosterAutoplay;
+                    setIsPosterAutoplay(nextState);
+                    if (nextState && addToast) {
+                      addToast(`🔄 Đã bật chế độ TỰ ĐỘNG LẬT TỪ VỰNG & PHÁT ÂM (${autoPlaySeconds}s / từ)`, 'info');
+                    } else if (addToast) {
+                      addToast('⏸️ Đã tạm dừng tự động chuyển từ vựng bảng minh họa.', 'info');
+                    }
+                  }}
+                  className={`px-4 py-2 rounded-xl text-xs font-black transition flex items-center gap-1.5 shadow-md ${
+                    isPosterAutoplay
+                      ? 'bg-gradient-to-r from-emerald-500 to-teal-600 text-white animate-pulse border border-emerald-300'
+                      : 'bg-slate-800 text-pink-300 hover:bg-slate-700'
+                  }`}
+                >
+                  <span>{isPosterAutoplay ? '⏸️ Tạm Dừng Autoplay' : '⏯️ Tự Động Chuyển Từ Vựng'}</span>
+                </button>
+
+                {/* Autoplay Speed Selector */}
+                <select
+                  value={autoPlaySeconds}
+                  onChange={(e) => setAutoPlaySeconds(Number(e.target.value))}
+                  className="rounded-xl border border-slate-700 bg-slate-950 px-2 py-1.5 text-xs font-bold text-emerald-400 focus:outline-none cursor-pointer"
+                  title="Chọn thời gian tự động đổi từ vựng (giây)"
+                >
+                  <option value={5}>⚡ 5 giây</option>
+                  <option value={10}>⏱️ 10 giây</option>
+                  <option value={15}>⏱️ 15 giây</option>
+                  <option value={20}>⏱️ 20 giây</option>
+                  <option value={25}>⏱️ 25 giây</option>
+                  <option value={30}>🐢 30 giây</option>
+                </select>
+              </div>
             </div>
           </div>
 
