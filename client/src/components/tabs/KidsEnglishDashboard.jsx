@@ -600,7 +600,62 @@ export function KidsEnglishDashboard({ plan, addToast }) {
   };
 
   const handleSelectTestAnswer = (qIndex, choiceWord) => {
-    setTestSelectedAnswers((prev) => ({ ...prev, [qIndex]: choiceWord }));
+    setTestSelectedAnswers((prev) => {
+      const updated = { ...prev, [qIndex]: choiceWord };
+      
+      // Tự động chuyển câu hoặc nộp bài test sau 600ms
+      setTimeout(() => {
+        if (qIndex < testQuestions.length - 1) {
+          setCurrentTestQIndex(qIndex + 1);
+        } else {
+          let score = 0;
+          testQuestions.forEach((q, idx) => {
+            if (updated[idx] === q.correctChoiceId) {
+              score += 1;
+            }
+          });
+
+          setTestScore(score);
+          setTestFinished(true);
+
+          const passed = score >= 4;
+          setTestPassed(passed);
+
+          if (passed) {
+            setShowFireworksOverlay(true);
+            setCelebrationMessage(`🎉 XUẤT SẮC! BÉ MINH ANH ĐÃ THI ĐỖ BÀI TEST LEVEL UP ${testLevelId} (${score}/5 ĐIỂM)! 🏆`);
+
+            const lvlOrder = ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'];
+            const currentIdx = lvlOrder.indexOf(testLevelId);
+            if (currentIdx >= 0 && currentIdx < lvlOrder.length - 1) {
+              const nextLvlId = lvlOrder[currentIdx + 1];
+              setAdminLevelOverrides((prevOverrides) => {
+                const updatedOverrides = { ...prevOverrides, [nextLvlId]: true };
+                try {
+                  localStorage.setItem('kids_admin_level_overrides', JSON.stringify(updatedOverrides));
+                } catch (e) {}
+                return updatedOverrides;
+              });
+            }
+
+            setStars((prevStars) => {
+              const newS = prevStars + 50;
+              try { localStorage.setItem('kids_stars_2000', newS.toString()); } catch(e){}
+              return newS;
+            });
+
+            playWordAudio(`Chúc mừng con gái Nguyễn Ngọc Minh Anh đã xuất sắc vượt qua bài test trình độ ${testLevelId}! Con đã được mở khóa cấp độ mới và nhận thêm 50 ngôi sao!`);
+            addToast?.(`🎉 Xuất sắc! Minh Anh đã đỗ bài test ${testLevelId} (+50 ⭐) và mở khóa Cấp độ tiếp theo!`, 'success');
+          } else {
+            setShowSadOverlay(true);
+            playWordAudio(`Bé Minh Anh cố lên nhé! Con đạt ${score} trên 5 điểm. Hãy ôn tập lại một chút và thử lại lần nữa con nhé!`);
+            addToast?.(`💪 Bé Minh Anh đạt ${score}/5 điểm. Cần đạt 4/5 điểm để đỗ. Cố lên nhé con!`, 'info');
+          }
+        }
+      }, 600);
+
+      return updated;
+    });
   };
 
   const handleNextTestQuestion = () => {
