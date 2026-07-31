@@ -651,6 +651,19 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     }
   };
 
+  // Longman Super-Detailed Dictionary Modal State
+  const [showLongmanModal, setShowLongmanModal] = useState(false);
+  const [longmanSearchTerm, setLongmanSearchTerm] = useState('apple');
+  const [longmanCustomInput, setLongmanCustomInput] = useState('');
+
+  const handleOpenLongmanModal = (term) => {
+    const target = (typeof term === 'string' && term.trim()) ? term.trim() : 'apple';
+    setLongmanSearchTerm(target);
+    setLongmanCustomInput(target);
+    setShowLongmanModal(true);
+    playWordAudio(`Đối soát từ điển Longman siêu chi tiết từ ${target}`);
+  };
+
   // Data Table Pagination State (20 items/page by default)
   const [tablePage, setTablePage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(20);
@@ -2012,7 +2025,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
   // Filter Vocabulary Database — nghiêm ngặt: Minh Anh chỉ thấy từ của level đã unlock
   const filteredDatabase = useMemo(() => {
-    const unlockedLevels = ['L1', 'L2', 'L3', 'L4'].filter((lvl) => isLevelUnlocked(lvl));
+    const unlockedLevels = ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'].filter((lvl) => isLevelUnlocked(lvl));
     return vocabDatabase.filter((item) => {
       // BẢO MẬT: nếu là Minh Anh, chỉ được xem từ của level đã mở khóa
       if (currentActor === 'minh_anh' && !unlockedLevels.includes(item.level)) return false;
@@ -2573,6 +2586,14 @@ export function KidsEnglishDashboard({ plan, addToast }) {
         >
           <RotateCw className="h-4 w-4 text-amber-300" />
           <span>🔄 Trang Chu Kỳ Ôn Tập</span>
+        </button>
+
+        <button
+          onClick={() => handleOpenLongmanModal('apple')}
+          className="flex-1 py-3 px-4 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 bg-gradient-to-r from-cyan-600 via-indigo-600 to-purple-600 text-white shadow-lg hover:scale-105 cursor-pointer border border-cyan-400/40"
+        >
+          <BookOpen className="h-4 w-4 text-cyan-300 animate-pulse" />
+          <span>📖 Tra Từ Điển Longman</span>
         </button>
 
         {currentActor === 'bao_nguyen' && (
@@ -7155,6 +7176,183 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           </div>
         </div>
       )}
+      {/* 📖 LONGMAN SUPER-DETAILED DICTIONARY MODAL */}
+      {showLongmanModal && (() => {
+        const detail = LongmanEngine.lookupSuperDetailed(longmanSearchTerm);
+        return (
+          <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-xl animate-fadeIn">
+            <div className="relative w-full max-w-2xl bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-950 border-2 border-cyan-500/50 rounded-3xl p-6 md:p-8 shadow-[0_0_50px_rgba(6,182,212,0.3)] space-y-6 max-h-[90vh] overflow-y-auto">
+              
+              {/* Header Badge & Close Button */}
+              <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+                <div className="flex items-center gap-3">
+                  <div className="p-3 rounded-2xl bg-cyan-500/20 border border-cyan-400/40 text-cyan-300 text-2xl shadow-lg">
+                    📖
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-extrabold text-white flex items-center gap-2">
+                      TỪ ĐIỂN LONGMAN SIÊU CHI TIẾT
+                    </h2>
+                    <p className="text-xs text-cyan-400 font-medium">
+                      Longman Dictionary of Contemporary English (6th Edition Verified)
+                    </p>
+                  </div>
+                </div>
+
+                <button
+                  onClick={() => setShowLongmanModal(false)}
+                  className="w-10 h-10 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition border border-slate-700 font-bold cursor-pointer"
+                >
+                  ✕
+                </button>
+              </div>
+
+              {/* Instant Search Bar inside Modal */}
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (longmanCustomInput.trim()) {
+                    setLongmanSearchTerm(longmanCustomInput.trim());
+                    playWordAudio(`Tra cứu từ ${longmanCustomInput.trim()} trong từ điển Longman`);
+                  }
+                }}
+                className="flex items-center gap-2"
+              >
+                <div className="relative flex-1">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-cyan-400" />
+                  <input
+                    type="text"
+                    value={longmanCustomInput}
+                    onChange={(e) => setLongmanCustomInput(e.target.value)}
+                    placeholder="Nhập từ tiếng Anh để tra từ điển Longman..."
+                    className="w-full pl-12 pr-4 py-3 bg-slate-950/90 border border-slate-700 rounded-2xl text-white placeholder-slate-500 text-sm font-semibold focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 transition"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  className="px-6 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 text-white font-extrabold text-sm rounded-2xl hover:scale-105 transition shadow-lg flex items-center gap-1.5 cursor-pointer"
+                >
+                  <span>TRA CỨU 🔍</span>
+                </button>
+              </form>
+
+              {/* Word Details Display Card */}
+              {detail && (
+                <div className="space-y-5 bg-slate-950/60 p-6 rounded-2xl border border-slate-800">
+                  {/* Word Header Title & Audio Playback */}
+                  <div className="flex items-start justify-between flex-wrap gap-4 border-b border-slate-800/80 pb-4">
+                    <div>
+                      <div className="flex items-center gap-3">
+                        <span className="text-3xl font-black text-white tracking-wide capitalize">{detail.word}</span>
+                        <span className="px-2.5 py-1 rounded-lg bg-cyan-950 border border-cyan-500/40 text-cyan-300 font-bold text-xs">
+                          {detail.cefr || 'A1'}
+                        </span>
+                        <span className="px-2.5 py-1 rounded-lg bg-amber-950 border border-amber-500/40 text-amber-300 font-bold text-xs">
+                          {detail.type || 'Noun'}
+                        </span>
+                      </div>
+
+                      <div className="flex items-center gap-3 mt-1.5">
+                        <span className="text-sm font-bold text-purple-300 font-mono">{detail.ipa}</span>
+                        <span className="text-xs font-semibold text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-500/30">
+                          🔊 Đọc chuẩn: {detail.viPhonetic}
+                        </span>
+                      </div>
+                    </div>
+
+                    <button
+                      onClick={() => playWordAudio(detail.word)}
+                      className="px-4 py-2.5 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-600 text-white font-black text-xs hover:scale-105 transition shadow-md flex items-center gap-2 cursor-pointer"
+                    >
+                      <Volume2 className="h-4 w-4" />
+                      <span>PHÁT ÂM NAM AI 🔊</span>
+                    </button>
+                  </div>
+
+                  {/* Longman Authentic Definition */}
+                  <div className="space-y-1">
+                    <div className="text-xs font-black text-cyan-400 uppercase tracking-wider">📖 ĐỊNH NGHĨA CHUẨN LONGMAN (ENGLISH):</div>
+                    <div className="text-sm italic text-slate-200 bg-slate-900/80 p-3 rounded-xl border border-slate-800">
+                      "{detail.longmanDefinition}"
+                    </div>
+                  </div>
+
+                  {/* Vietnamese Meaning */}
+                  <div className="space-y-1">
+                    <div className="text-xs font-black text-amber-400 uppercase tracking-wider">🇻🇳 NGHĨA TIẾNG VIỆT CHÍNH XÁC:</div>
+                    <div className="text-base font-extrabold text-amber-200">
+                      {detail.meaning}
+                    </div>
+                  </div>
+
+                  {/* Contextual Example Sentence */}
+                  {detail.example && (
+                    <div className="space-y-1">
+                      <div className="text-xs font-black text-purple-400 uppercase tracking-wider">💬 CÂU VÍ DỤ NGỮ CẢNH:</div>
+                      <div className="p-3.5 rounded-xl bg-slate-900/80 border border-purple-500/30 space-y-1">
+                        <p className="text-sm font-semibold text-purple-200">"{detail.example}"</p>
+                        {detail.exampleVi && (
+                          <p className="text-xs text-slate-400">➔ {detail.exampleVi}</p>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Collocations & Synonyms */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    {detail.collocations && detail.collocations.length > 0 && (
+                      <div className="space-y-1.5">
+                        <div className="text-xs font-black text-teal-400 uppercase tracking-wider">🔗 CỤM TỪ ĐI KÈM (COLLOCATIONS):</div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {detail.collocations.map((col, cIdx) => (
+                            <span key={cIdx} className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-teal-950/80 border border-teal-500/40 text-teal-200">
+                              {col}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {detail.synonyms && detail.synonyms.length > 0 && (
+                      <div className="space-y-1.5">
+                        <div className="text-xs font-black text-pink-400 uppercase tracking-wider">✨ TỪ ĐỒNG NGHĨA (SYNONYMS):</div>
+                        <div className="flex flex-wrap gap-1.5">
+                          {detail.synonyms.map((syn, sIdx) => (
+                            <span key={sIdx} className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-pink-950/80 border border-pink-500/40 text-pink-200">
+                              {syn}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Mnemonic Hint */}
+                  {detail.hint && (
+                    <div className="p-3.5 rounded-xl bg-gradient-to-r from-amber-950/80 to-yellow-950/80 border border-amber-500/40 text-amber-200 text-xs font-medium space-y-1">
+                      <div className="font-extrabold text-amber-300 text-xs flex items-center gap-1">
+                        💡 MẸO GHI NHỚ LONGMAN CHO MINH ANH:
+                      </div>
+                      <p>{detail.hint}</p>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Action Footer */}
+              <div className="flex items-center justify-end gap-3 pt-2">
+                <button
+                  onClick={() => setShowLongmanModal(false)}
+                  className="px-6 py-3 rounded-xl bg-slate-800 text-slate-200 font-bold text-xs hover:bg-slate-700 transition border border-slate-700 cursor-pointer"
+                >
+                  ĐÓNG CỬA SỔ
+                </button>
+              </div>
+
+            </div>
+          </div>
+        );
+      })()}
     </div>
   );
 }
