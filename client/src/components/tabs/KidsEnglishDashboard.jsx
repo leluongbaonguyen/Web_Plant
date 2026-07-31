@@ -1677,53 +1677,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
         </div>
       </div>
 
-      {/* ========================================================================= */}
-      {/* ENTERPRISE RBAC ROLE CONTROL BAR & BRD SPECIFICATION COUNTER (CFP-BRD-DATA-CRUD-001) */}
-      {/* ========================================================================= */}
-      <div className="rounded-2xl border border-cyan-500/40 bg-slate-950 p-3 shadow-xl flex flex-wrap items-center justify-between gap-3 text-xs">
-        <div className="flex items-center gap-2">
-          <Shield className="h-5 w-5 text-cyan-400 animate-pulse" />
-          <span className="font-black text-white">VAI TRÒ QUẢN TRỊ (RBAC MATRIX):</span>
-          <select
-            value={userRole}
-            onChange={(e) => {
-              setUserRole(e.target.value);
-              addToast?.(`Đã chuyển sang vai trò: ${e.target.value}`, 'info');
-            }}
-            className="rounded-xl border border-slate-700 bg-slate-900 px-3 py-1.5 text-xs font-extrabold text-cyan-300 focus:border-cyan-400 focus:outline-none"
-          >
-            <option value="SUPER_ADMIN">👑 Super Admin (Full CRUD, Hard Delete, Rollback)</option>
-            <option value="CONTENT_ADMIN">⚙️ Content Admin (Quản trị nội dung & Nhập liệu)</option>
-            <option value="TEACHER">👩‍🏫 Giáo viên / Biên tập viên (Soạn nháp)</option>
-            <option value="REVIEWER">🔍 Người Duyệt Nội Dung (Approve/Publish)</option>
-            <option value="CSKH">🎧 CSKH / Hỗ Trợ Phụ Huynh (Read-only)</option>
-            <option value="PARENT">👨‍👩‍👧 Phụ Huynh (Xem Tiến Độ)</option>
-          </select>
 
-          <button
-            onClick={handleAutoEnrichSuperDetails}
-            disabled={isEnrichingSuperDetails}
-            className="px-3.5 py-1.5 rounded-xl font-black text-xs bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 text-white shadow-lg hover:scale-105 transition flex items-center gap-1.5 border border-pink-400 cursor-pointer"
-            title="Tự động bổ sung 100% IPA, đọc Tiếng Việt, mẹo nhớ, ví dụ và bài tập trắc nghiệm cho tất cả từ vựng!"
-          >
-            <Sparkles className={`h-4 w-4 text-yellow-300 ${isEnrichingSuperDetails ? 'animate-spin' : 'animate-bounce'}`} />
-            <span>{isEnrichingSuperDetails ? '⚡ Đang Nạp Thông Tin...' : '⚡ Nạp Thông Tin Siêu Chi Tiết'}</span>
-          </button>
-
-          <span className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">
-            📊 Tổng CSDL: <span className="text-yellow-300 font-black">{vocabDatabase.length}</span> từ
-          </span>
-          <span className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">
-            🗑️ Thùng rác: <span className="text-rose-400 font-black">{trashCan.length}</span> từ
-          </span>
-          <span className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">
-            📜 Nhật ký Audit: <span className="text-cyan-400 font-black">{auditLogs.length}</span> sự kiện
-          </span>
-          <span className="px-2.5 py-1 rounded-lg bg-slate-900 border border-slate-800 text-slate-300">
-            ⭐ Độ chuẩn QA: <span className="text-emerald-400 font-black">{qaMetrics.completenessScore}%</span>
-          </span>
-        </div>
-      </div>
 
       {/* Main Feature Tabs (Illustrated Poster Charts vs Flashcard Gallery vs Timed Quiz Game vs Spaced Repetition Review vs AI Manager) */}
       <div className="flex flex-wrap rounded-2xl bg-slate-950 p-1.5 border border-slate-800 gap-1">
