@@ -179,3 +179,69 @@ export async function createWordBuffer(plan) {
 
   return Packer.toBuffer(doc);
 }
+
+export async function createBrdWordBuffer() {
+  const title = 'TÀI LIỆU ĐẶC TẢ NGHIỆP VỤ NÂNG CẤP\nBẢNG TỪ VỰNG MINH HỌA TRỰC QUAN – 12 TRANG CHO BÉ\nCHRONOFLOW PREMIUM (CFP-BRD-IVB-002 v2.0)';
+
+  const controlRows = [
+    ['Mã tài liệu', 'CFP-BRD-IVB-002'],
+    ['Phiên bản', 'v2.0 (Phát hành chính thức)'],
+    ['Ngày phê duyệt', new Date().toISOString().slice(0, 10)],
+    ['Đơn vị xây dựng', 'ChronoFlow Architecture & Quality Assurance Team'],
+    ['Trạng thái', 'APPROVED / PUBLISHED'],
+    ['Cấp độ bảo mật', 'INTERNAL / RESTRICTED'],
+    ['Phạm vi ứng dụng', 'Hệ thống Quản lý Học liệu 12 Trang - ChronoFlow Premium Visual Vocabulary Board'],
+  ];
+
+  const versionHistory = [
+    ['v1.0', '2026-07-28', 'Khởi tạo đặc tả Bảng từ vựng minh họa 8 trang ban đầu', 'Content Team'],
+    ['v2.0', '2026-07-31', 'Nâng cấp toàn diện 12 Trang, CRUD nâng cao, AI quét tranh, Audio event telemetry, Dry-run 8 bước & Rollback job', 'ChronoFlow Enterprise Team'],
+  ];
+
+  const sectionsList = [
+    ['Phần 1', 'Mô hình dữ liệu 3 cấp (Tập poster -> Trang poster -> Phân vùng/Chủ đề -> Thẻ từ vựng -> Biến thể Media/Audio).'],
+    ['Phần 2', 'Bảng quy hoạch 12 Trang từ vựng minh họa (Chi tiết 12 trang x 4 phân vùng x 10 từ = 480 từ cốt lõi mở rộng lên 2,000 từ).'],
+    ['Phần 3', 'Quy trình CRUD nâng cao & Khôi phục dữ liệu (Tạo draft, Soft Delete có lý do, Trash Can 30 ngày, Hard Delete Super Admin + MFA).'],
+    ['Phần 4', 'Nhập dữ liệu hàng loạt 8 bước (Wizard, Dry-Run kiểm duyệt từng dòng, 5 chế độ trùng lặp, Rollback Job nguyên tử).'],
+    ['Phần 5', 'Hỗ trợ AI quét tranh & OCR (Tải ảnh tranh, Bounding box, gán nhãn EN/VI/IPA/Audio, Duyệt thủ công 4 mắt, Quota log).'],
+    ['Phần 6', 'Âm thanh & Phát âm (Hướng dẫn đọc từng trang, Playback đơn lẻ chống chồng âm, Audio event telemetry).'],
+    ['Phần 7', 'Kiểm soát chất lượng QA Checklist (7 chỉ số hoàn thiện, Lifecycle State Machine, Separation of Duties).'],
+    ['Phần 8', 'Phân quyền RBAC & An toàn trẻ em (Kid Mode 100% sạch, Parent Mode, Content Admin, Super Admin MFA).'],
+  ];
+
+  const doc = new Document({
+    styles: {
+      default: {
+        document: {
+          run: { font: FONT, size: SIZE_13 },
+          paragraph: { spacing: { after: 100, line: 240 } },
+        },
+      },
+    },
+    sections: [
+      {
+        properties: {
+          page: {
+            size: { width: 11906, height: 16838, orientation: PageOrientation.PORTRAIT },
+            margin: { top: 720, bottom: 720, left: 720, right: 720 },
+          },
+        },
+        children: [
+          new Paragraph({
+            alignment: AlignmentType.CENTER,
+            spacing: { after: 200 },
+            children: [new TextRun({ text: title, bold: true, font: FONT, size: 28, color: BLUE })],
+          }),
+          ...keyValueTable('THÔNG TIN KIỂM SOÁT TÀI LIỆU', controlRows),
+          new Paragraph({ spacing: { before: 200, after: 100 } }),
+          ...keyValueTable('LỊCH SỬ THAY ĐỔI PHIÊN BẢN', versionHistory),
+          new Paragraph({ spacing: { before: 200, after: 100 } }),
+          ...keyValueTable('CÁC PHÂN HỆ NGHIỆP VỤ CỐT LÕI', sectionsList),
+        ],
+      },
+    ],
+  });
+
+  return Packer.toBuffer(doc);
+}
+

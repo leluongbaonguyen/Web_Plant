@@ -3,7 +3,7 @@ import express from 'express';
 import path from 'node:path';
 import { existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { createWordBuffer } from './exportWord.js';
+import { createWordBuffer, createBrdWordBuffer } from './exportWord.js';
 import { readPlan, resetPlan, writePlan, readKidsProgress, writeKidsProgress } from './store.js';
 import { sanitizePlan } from './validation.js';
 import { appendAuditLog, readAuditLogs, readUsers, writeUsers } from './db.js';
@@ -237,6 +237,19 @@ app.get('/api/export/word', async (_req, res, next) => {
     const plan = await readPlan();
     const buffer = await createWordBuffer(plan);
     const filename = `Lich_sinh_hoat_1_tuan_${new Date().toISOString().slice(0, 10)}.docx`;
+    res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+    res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+    res.setHeader('Content-Length', buffer.length);
+    res.send(buffer);
+  } catch (error) {
+    next(error);
+  }
+});
+
+app.get('/api/export/brd-doc', async (_req, res, next) => {
+  try {
+    const buffer = await createBrdWordBuffer();
+    const filename = `Dac_Ta_Nghiep_Vu_ChronoFlow_Premium_12_Trang_v2.0.docx`;
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
     res.setHeader('Content-Length', buffer.length);

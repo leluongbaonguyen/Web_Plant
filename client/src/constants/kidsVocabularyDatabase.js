@@ -9334,6 +9334,110 @@ export const ILLUSTRATED_POSTER_PAGES = [
         words: ["dream", "goal", "future", "practice", "progress", "success", "challenge", "learn", "achieve", "promise"]
       }
     ]
+  },
+  {
+    pageNumber: 11,
+    title: "Illustrated English Vocabulary - Page 11",
+    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 11",
+    badge: "Level 4 • Nâng Cao - Khoa học, Hóa học & Cơ thể (40 Từ)",
+    sections: [
+      {
+        id: "L4-U09",
+        title: "Science & Experiment / Hóa học & Sinh học cơ bản",
+        theme: "red",
+        bgHeader: "bg-rose-600 text-white",
+        borderColor: "border-rose-500",
+        badgeBg: "bg-rose-100 text-rose-700",
+        icon: "🧪",
+        categoryId: "L4-U09",
+        words: ["cell", "atom", "molecule", "reaction", "organism", "DNA", "climate", "oxygen", "acid", "base"]
+      },
+      {
+        id: "L4-U10",
+        title: "Mathematics & Geometry / Toán học & Hình khối",
+        theme: "blue",
+        bgHeader: "bg-indigo-600 text-white",
+        borderColor: "border-indigo-500",
+        badgeBg: "bg-indigo-100 text-indigo-700",
+        icon: "🧮",
+        categoryId: "L4-U10",
+        words: ["cube", "sphere", "cylinder", "pyramid", "fraction", "percent", "plus", "minus", "multiply", "divide"]
+      },
+      {
+        id: "L4-U11",
+        title: "Art & Design / Nghệ thuật & Thiết kế",
+        theme: "green",
+        bgHeader: "bg-emerald-600 text-white",
+        borderColor: "border-emerald-500",
+        badgeBg: "bg-emerald-100 text-emerald-700",
+        icon: "🖼️",
+        categoryId: "L4-U11",
+        words: ["canvas", "brush", "sculpture", "gallery", "portrait", "landscape", "sketch", "texture", "pattern", "harmony"]
+      },
+      {
+        id: "L4-U12",
+        title: "Human Body Inside / Cơ thể người bên trong",
+        theme: "purple",
+        bgHeader: "bg-violet-600 text-white",
+        borderColor: "border-violet-500",
+        badgeBg: "bg-violet-100 text-violet-700",
+        icon: "🫀",
+        categoryId: "L4-U12",
+        words: ["brain", "heart", "lungs", "stomach", "bone", "muscle", "blood", "vein", "nerve", "skin"]
+      }
+    ]
+  },
+  {
+    pageNumber: 12,
+    title: "Illustrated English Vocabulary - Page 12",
+    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 12",
+    badge: "Level 4 • Đột Phá - Xã hội, Tương lai & Giá trị sống (40 Từ)",
+    sections: [
+      {
+        id: "L4-U13",
+        title: "Society & Citizenship / Xã hội & Công dân",
+        theme: "red",
+        bgHeader: "bg-amber-600 text-white",
+        borderColor: "border-amber-500",
+        badgeBg: "bg-amber-100 text-amber-700",
+        icon: "⚖️",
+        categoryId: "L4-U13",
+        words: ["law", "duty", "rights", "leader", "vote", "peace", "justice", "equality", "freedom", "volunteer"]
+      },
+      {
+        id: "L4-U14",
+        title: "Future Careers / Tương lai & Hướng nghiệp",
+        theme: "blue",
+        bgHeader: "bg-sky-600 text-white",
+        borderColor: "border-sky-500",
+        badgeBg: "bg-sky-100 text-sky-700",
+        icon: "🌟",
+        categoryId: "L4-U14",
+        words: ["architect", "engineer", "astronaut", "scientist", "inventor", "musician", "chef", "pilot", "lawyer", "entrepreneur"]
+      },
+      {
+        id: "L4-U15",
+        title: "Global Environment / Môi trường toàn cầu",
+        theme: "green",
+        bgHeader: "bg-teal-600 text-white",
+        borderColor: "border-teal-500",
+        badgeBg: "bg-teal-100 text-teal-700",
+        icon: "🌱",
+        categoryId: "L4-U15",
+        words: ["ecosystem", "biodiversity", "habitat", "solar power", "wind energy", "conservation", "sustainability", "atmosphere", "climate change", "footprint"]
+      },
+      {
+        id: "L4-U16",
+        title: "Wisdom & Values / Giá trị sống & Phẩm chất",
+        theme: "purple",
+        bgHeader: "bg-fuchsia-600 text-white",
+        borderColor: "border-fuchsia-500",
+        badgeBg: "bg-fuchsia-100 text-fuchsia-700",
+        icon: "💎",
+        categoryId: "L4-U16",
+        words: ["wisdom", "courage", "empathy", "integrity", "respect", "perseverance", "gratitude", "curiosity", "kindness", "responsibility"]
+      }
+    ]
   }
 ];
 

@@ -9,8 +9,10 @@ import {
   AlertTriangle, AlertCircle, Archive, Sliders, CheckSquare, FileSpreadsheet
 } from 'lucide-react';
 import { COURSE_LEVELS, VOCAB_CATEGORIES, VOCABULARY_DATABASE, ILLUSTRATED_POSTER_PAGES, getSuperDetailedVocabInfo } from '../../constants/kidsVocabularyDatabase.js';
+import ChronoFlowBrdModal from './ChronoFlowBrdModal.jsx';
 
 export function KidsEnglishDashboard({ plan, addToast }) {
+  const [showBrdModal, setShowBrdModal] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState('all'); // 'all' | 'L1' | 'L2' | 'L3' | 'L4'
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -1705,9 +1707,16 @@ export function KidsEnglishDashboard({ plan, addToast }) {
             <option value="CSKH">🎧 CSKH / Hỗ Trợ Phụ Huynh (Read-only)</option>
             <option value="PARENT">👨‍👩‍👧 Phụ Huynh (Xem Tiến Độ)</option>
           </select>
-        </div>
 
-        <div className="flex flex-wrap items-center gap-2 text-[11px] font-bold">
+          <button
+            onClick={() => setShowBrdModal(true)}
+            className="px-3.5 py-1.5 rounded-xl font-black text-xs bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg hover:scale-105 transition flex items-center gap-1.5 border border-indigo-400 cursor-pointer"
+            title="Xem toàn văn tài liệu đặc tả nghiệp vụ BRD v2.0 & Tải tệp Word (.docx)"
+          >
+            <FileText className="h-4 w-4 text-indigo-300" />
+            <span>📜 Tài Liệu Đặc Tả BRD (CFP-BRD-IVB-002 v2.0)</span>
+          </button>
+
           <button
             onClick={handleAutoEnrichSuperDetails}
             disabled={isEnrichingSuperDetails}
@@ -5027,6 +5036,13 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           </div>
         </div>
       )}
+
+      {/* ChronoFlow Premium BRD Specification Modal */}
+      <ChronoFlowBrdModal
+        isOpen={showBrdModal}
+        onClose={() => setShowBrdModal(false)}
+        addToast={addToast}
+      />
     </div>
   );
 }
