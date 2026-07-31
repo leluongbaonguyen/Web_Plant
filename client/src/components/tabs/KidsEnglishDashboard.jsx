@@ -279,9 +279,24 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
   // Autoplay Flashcards Engine (30s Auto Advance Individual Single Cards)
   const [isAutoPlay, setIsAutoPlay] = useState(false);
-  const [autoPlaySeconds, setAutoPlaySeconds] = useState(30);
-  const [autoPlayTimer, setAutoPlayTimer] = useState(30);
+  const [autoPlaySeconds, setAutoPlaySeconds] = useState(5);
+  const [autoPlayTimer, setAutoPlayTimer] = useState(5);
   const [autoPlayIndex, setAutoPlayIndex] = useState(0);
+
+  // Celebration Fireworks & Sad Face Overlays States
+  const [showFireworksOverlay, setShowFireworksOverlay] = useState(false);
+  const [celebrationMessage, setCelebrationMessage] = useState('');
+  const [showSadOverlay, setShowSadOverlay] = useState(false);
+
+  // Parent Admin Reminders State & Persistence
+  const [parentReminder, setParentReminder] = useState(() => {
+    try {
+      return localStorage.getItem('kids_parent_reminder') || 'Minh Anh ơi! Ba Bảo Nguyên nhắc con hôm nay hoàn thành 5 bài tập Tiếng Anh để thưởng sao nhé! 💖✨';
+    } catch {
+      return 'Minh Anh ơi! Ba Bảo Nguyên nhắc con hôm nay hoàn thành 5 bài tập Tiếng Anh để thưởng sao nhé! 💖✨';
+    }
+  });
+  const [parentReminderInput, setParentReminderInput] = useState('');
 
 
   // Admin Vocabulary Edit Form Modal States
@@ -1033,6 +1048,86 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     return { L1: calc('L1'), L2: calc('L2'), L3: calc('L3'), L4: calc('L4') };
   }, [vocabDatabase, masteredCards]);
 
+  // Parent Admin Level Unlock Overrides (Ba Bảo Nguyên privileges)
+  const [adminLevelOverrides, setAdminLevelOverrides] = useState(() => {
+    try {
+      const saved = localStorage.getItem('kids_admin_level_overrides');
+      return saved ? JSON.parse(saved) : { L1: true, L2: false, L3: false, L4: false };
+    } catch {
+      return { L1: true, L2: false, L3: false, L4: false };
+    }
+  });
+
+  const saveAdminLevelOverrides = (newOverrides) => {
+    setAdminLevelOverrides(newOverrides);
+    try {
+      localStorage.setItem('kids_admin_level_overrides', JSON.stringify(newOverrides));
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
+  // Level Lock Guidance Modal State
+  const [showLevelLockModal, setShowLevelLockModal] = useState({
+    isOpen: false,
+    targetLevel: null,
+    requiredPrevLevel: null,
+    currentPrevPct: 0
+  });
+
+  // Strict Level Unlock Verification Function (Sequential Level 1 -> Level 4; >= 90% threshold)
+  const isLevelUnlocked = (lvlId) => {
+    if (!lvlId || lvlId === 'all' || lvlId === 'L1') return true;
+    if (currentActor === 'bao_nguyen') return true; // Ba Bảo Nguyên always has full management access
+    if (adminLevelOverrides[lvlId]) return true; // Admin force-unlocked this level
+
+    const pctL1 = levelStats.L1?.pct || 0;
+    const pctL2 = levelStats.L2?.pct || 0;
+    const pctL3 = levelStats.L3?.pct || 0;
+
+    if (lvlId === 'L2') return pctL1 >= 90;
+    if (lvlId === 'L3') return pctL1 >= 90 && pctL2 >= 90;
+    if (lvlId === 'L4') return pctL1 >= 90 && pctL2 >= 90 && pctL3 >= 90;
+
+    return true;
+  };
+
+  // Quick Action Handlers for Ba Bảo Nguyên (Parent Admin)
+  const handleAdminToggleForceUnlock = (lvlId) => {
+    if (currentActor !== 'bao_nguyen') {
+      if (addToast) addToast('Chỉ Quản trị viên Lê Lương Bảo Nguyên mới có quyền mở khóa cưỡng chế!', 'error');
+      return;
+    }
+    const nextState = {
+      ...adminLevelOverrides,
+      [lvlId]: !adminLevelOverrides[lvlId]
+    };
+    saveAdminLevelOverrides(nextState);
+    const statusText = nextState[lvlId] ? 'ĐÃ MỞ KHÓA CƯỠNG CHẾ 🔓' : 'ĐÃ KHÓA THEO TIẾN ĐỘ 90% 🔒';
+    if (addToast) addToast(`👨‍💼 [Bảo Nguyên Admin] Đã cập nhật ${lvlId}: ${statusText}`, 'info');
+  };
+
+  const handleAdminQuickFill90Pct = (lvlId) => {
+    if (currentActor !== 'bao_nguyen') {
+      if (addToast) addToast('Chỉ Quản trị viên Lê Lương Bảo Nguyên mới có quyền thao tác!', 'error');
+      return;
+    }
+    const levelItems = vocabDatabase.filter((i) => i.level === lvlId);
+    const targetCount = Math.ceil((levelItems.length || 150) * 0.9);
+    const newMasteredIds = new Set(masteredCards);
+
+    levelItems.slice(0, targetCount).forEach((i) => newMasteredIds.add(i.id));
+    const nextMastered = Array.from(newMasteredIds);
+
+    setMasteredCards(nextMastered);
+    try {
+      localStorage.setItem('kids_mastered_words_2000', JSON.stringify(nextMastered));
+    } catch (e) {}
+
+    if (addToast) addToast(`🔓 Đã nạp nhanh 90% tiến độ thuộc từ cho ${lvlId}! Level tiếp theo đã tự động mở khóa cho Minh Anh!`, 'success');
+    playWordAudio(`Đã mở khóa level mới cho bé Minh Anh!`);
+  };
+
   // Mascot Speech Bubble State
   const [mascotQuoteIndex, setMascotQuoteIndex] = useState(0);
   const mascotQuotes = [
@@ -1442,6 +1537,27 @@ export function KidsEnglishDashboard({ plan, addToast }) {
   }, [isAutoPlay, activeTab, autoPlaySeconds, filteredDatabase, pageSize]);
 
   const handleLevelChange = (levelId) => {
+    if (levelId !== 'all' && !isLevelUnlocked(levelId)) {
+      const prevLevelMap = { L2: 'L1', L3: 'L2', L4: 'L3' };
+      const reqPrev = prevLevelMap[levelId] || 'L1';
+      const curPct = levelStats[reqPrev]?.pct || 0;
+      const levelNames = { L1: 'L1 Khởi Động', L2: 'L2 Cơ Bản', L3: 'L3 Mở Rộng', L4: 'L4 Nâng Cao' };
+
+      playWordAudio(`Cấp độ ${levelNames[levelId] || levelId} đang tạm khóa! Minh Anh ơi, bé cần đạt tối thiểu 90% ở cấp độ trước đó để tự động mở khóa nhé!`);
+
+      if (addToast) {
+        addToast(`🔒 Cấp độ ${levelNames[levelId] || levelId} đang khóa! Cần ≥ 90% ở ${levelNames[reqPrev]} (Hiện tại: ${curPct}%)`, 'warning');
+      }
+
+      setShowLevelLockModal({
+        isOpen: true,
+        targetLevel: levelId,
+        requiredPrevLevel: reqPrev,
+        currentPrevPct: curPct
+      });
+      return;
+    }
+
     setSelectedLevel(levelId);
     setCurrentPage(1);
     if (addToast) {
@@ -1462,9 +1578,12 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     }
     window.speechSynthesis.cancel();
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-US';
-    utterance.rate = slow ? 0.65 : 0.95;
-    utterance.pitch = 1.1;
+
+    // AI Voice Guard: Detect Vietnamese diacritics vs English vocabulary
+    const isVietnamese = /[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i.test(text);
+    utterance.lang = isVietnamese ? 'vi-VN' : 'en-US';
+    utterance.rate = slow ? 0.65 : (isVietnamese ? 1.0 : 0.9);
+    utterance.pitch = isVietnamese ? 1.0 : 1.1;
     window.speechSynthesis.speak(utterance);
   };
 
@@ -1488,6 +1607,13 @@ export function KidsEnglishDashboard({ plan, addToast }) {
       setStars(newStars);
       localStorage.setItem('kids_earned_stars_2000', String(newStars));
       if (addToast) addToast(`🎉 Hoan hô Bé Bắp! Đã thuộc từ '${word}' (+2 Stars ⭐)`, 'success');
+
+      // 🎆 Celebratory burst when mastering a multiple of 5 words!
+      if (next.length > 0 && next.length % 5 === 0) {
+        setCelebrationMessage(`🎉 XUẤT SẮC MINH ANH ƠI! BÉ ĐÃ HỌC THUỘC XUẤT SẮC ${next.length} TỪ VỰNG TIẾNG ANH! 🏆⭐`);
+        setShowFireworksOverlay(true);
+        playWordAudio(`Hoan hô Minh Anh! Bé đã học thuộc xuất sắc ${next.length} từ vựng Tiếng Anh!`);
+      }
     }
     localStorage.setItem('kids_mastered_words_2000', JSON.stringify(next));
   };
@@ -1536,7 +1662,10 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
     if (quizTimeLeft <= 0) {
       setQuizAnswered(true);
+      setStreakCount(0);
+      setShowSadOverlay(true);
       if (addToast) addToast(`⏰ Hết giờ rồi Minh Anh ơi! Đáp án đúng là: ${correctAnswer}`, 'warning');
+      playWordAudio(`Hết giờ rồi Minh Anh ơi! Bé thử lại câu tiếp theo nhé!`);
       return;
     }
 
@@ -1570,13 +1699,21 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     const correctAnswer = quizMode === 'word_to_meaning' ? currentQuizCard.meaning : currentQuizCard.word;
 
     if (option === correctAnswer) {
-      setQuizScore((prev) => prev + 1);
+      const newScore = quizScore + 1;
+      setQuizScore(newScore);
       const newStreak = streakCount + 1;
       setStreakCount(newStreak);
 
       const bonusStars = quizTimeLeft > 5 ? 5 : 3;
       let streakBonus = 0;
-      if (newStreak % 3 === 0) {
+
+      // 🎆 Trigger full-screen fireworks celebratory burst every 5 correct answers / streak!
+      if (newStreak > 0 && newStreak % 5 === 0) {
+        streakBonus = 15;
+        setCelebrationMessage(`🎆 TRÀNG PHÁO HOA CHÚC MỪNG MINH ANH! BÉ ĐÃ TRẢ LỜI ĐÚNG ${newStreak} CÂU LIÊN TIẾP! 🦄🎉`);
+        setShowFireworksOverlay(true);
+        playWordAudio(`Xuất sắc quá Minh Anh ơi! Bé đã trả lời đúng ${newStreak} câu liên tiếp!`);
+      } else if (newStreak % 3 === 0) {
         streakBonus = 10;
         if (addToast) addToast(`🔥 COMBO STREAK x${newStreak}! Xuất sắc quá bé ơi! (+${streakBonus} Bonus Stars ⭐)`, 'success');
       } else {
@@ -1589,7 +1726,9 @@ export function KidsEnglishDashboard({ plan, addToast }) {
       playWordAudio(currentQuizCard.word);
     } else {
       setStreakCount(0);
+      setShowSadOverlay(true);
       if (addToast) addToast(`Bé hãy nghe gợi ý và thử lại nhé! Đáp án là: ${correctAnswer}`, 'info');
+      playWordAudio(`Không sao đâu Minh Anh ơi! Bé thử lại câu này nhé!`);
     }
   };
 
@@ -1621,6 +1760,188 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
   return (
     <div className="space-y-6 animate-fadeIn font-sans">
+      {/* Full-Screen Fireworks & Icon Burst Overlay (5 Correct Answers / Mastered Words) */}
+      {showFireworksOverlay && (
+        <div
+          onClick={() => setShowFireworksOverlay(false)}
+          className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-slate-950/90 backdrop-blur-md p-6 animate-fadeIn cursor-pointer"
+        >
+          {/* Floating fireworks icons burst */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {['🎆', '🎉', '✨', '⭐', '🏆', '🦄', '💖', '🎈', '🌟', '👑', '🎆', '🎉'].map((emoji, idx) => (
+              <div
+                key={idx}
+                className="absolute text-5xl md:text-7xl animate-bounce"
+                style={{
+                  top: `${(idx * 17) % 85}%`,
+                  left: `${(idx * 23) % 90}%`,
+                  animationDuration: `${1 + (idx % 3) * 0.5}s`,
+                  animationDelay: `${(idx % 4) * 0.2}s`,
+                }}
+              >
+                {emoji}
+              </div>
+            ))}
+          </div>
+
+          <div className="relative z-10 max-w-xl text-center space-y-6 bg-gradient-to-br from-pink-900/90 via-purple-900/90 to-slate-950 p-8 rounded-3xl border-4 border-yellow-400 shadow-[0_0_80px_rgba(250,204,21,0.5)]">
+            <div className="text-7xl md:text-8xl animate-pulse">🎆 🏆 🦄</div>
+            <h2 className="text-2xl md:text-4xl font-black font-heading text-yellow-300 drop-shadow-lg leading-tight">
+              {celebrationMessage || 'TRÀNG PHÁO HOA CHÚC MỪNG BÉ MINH ANH! 🎉'}
+            </h2>
+            <p className="text-sm md:text-base text-pink-200 font-bold">
+              Ba Bảo Nguyên rất tự hào về thành tích học tập xuất sắc của Minh Anh! 💖
+            </p>
+            <button
+              onClick={() => setShowFireworksOverlay(false)}
+              className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-yellow-400 to-amber-500 text-slate-950 font-black text-sm shadow-2xl hover:scale-105 active:scale-95 transition cursor-pointer"
+            >
+              🌟 TIẾP TỤC HỌC CÙNG BÉ BẮP 🚀
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Full-Screen Sad Face Overlay on Incorrect Answer */}
+      {showSadOverlay && (
+        <div
+          onClick={() => setShowSadOverlay(false)}
+          className="fixed inset-0 z-[9998] flex flex-col items-center justify-center bg-slate-950/85 backdrop-blur-sm p-6 animate-fadeIn cursor-pointer"
+        >
+          {/* Floating sad icons */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {['😢', '💔', '🌧️', '🥺', '😿', '🌧️', '😢', '💔'].map((emoji, idx) => (
+              <div
+                key={idx}
+                className="absolute text-5xl md:text-6xl animate-pulse"
+                style={{
+                  top: `${(idx * 19) % 80}%`,
+                  left: `${(idx * 29) % 85}%`,
+                  animationDuration: `${1.5 + (idx % 2)}s`,
+                }}
+              >
+                {emoji}
+              </div>
+            ))}
+          </div>
+
+          <div className="relative z-10 max-w-md text-center space-y-4 bg-slate-900/95 border-2 border-rose-500/80 p-6 rounded-3xl shadow-2xl">
+            <div className="text-6xl animate-bounce">🥺 🌧️</div>
+            <h3 className="text-xl md:text-2xl font-black text-rose-300">
+              Tiếc quá! Minh Anh thử lại câu này nhé! 💔
+            </h3>
+            <p className="text-xs text-slate-300 font-bold">
+              Đừng nản lòng bé ơi, Ba Bảo Nguyên luôn tin tưởng Minh Anh làm được! 💖💪
+            </p>
+            <button
+              onClick={() => setShowSadOverlay(false)}
+              className="px-6 py-2.5 rounded-xl bg-rose-600 text-white font-black text-xs hover:bg-rose-500 transition cursor-pointer"
+            >
+              💪 THỬ LẠI NGAY
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Persistent Glowing Parent Reminder Banner for Minh Anh */}
+      {parentReminder && (
+        <div className="p-4 rounded-3xl border-2 border-amber-400/80 bg-gradient-to-r from-amber-950/90 via-slate-900 to-pink-950/90 shadow-xl flex flex-col md:flex-row items-center justify-between gap-4 animate-fadeIn">
+          <div className="flex items-center gap-3">
+            <div className="p-3 rounded-2xl bg-amber-500/20 border border-amber-400 text-2xl animate-bounce">
+              👨‍💼
+            </div>
+            <div>
+              <div className="text-xs font-black text-amber-300 uppercase tracking-wider flex items-center gap-1.5">
+                <BellRing className="h-4 w-4 text-amber-400 animate-pulse" />
+                NHẮC NHỞ HỌC TẬP TỪ BA LÊ LƯƠNG BẢO NGUYÊN:
+              </div>
+              <p className="text-sm font-extrabold text-white mt-0.5">{parentReminder}</p>
+            </div>
+          </div>
+
+          <button
+            onClick={() => playWordAudio(parentReminder)}
+            className="shrink-0 px-4 py-2 rounded-2xl bg-gradient-to-r from-amber-500 to-pink-600 text-slate-950 font-black text-xs hover:opacity-90 transition shadow-lg flex items-center gap-1.5 cursor-pointer"
+          >
+            <Volume2 className="h-4 w-4 text-slate-950" />
+            <span>🔊 Nghe Ba Nhắc Nhở</span>
+          </button>
+        </div>
+      )}
+
+      {/* Admin Parent Learning Reminders & Progress Control Box (Bảo Nguyên Only) */}
+      {currentActor === 'bao_nguyen' && (
+        <div className="p-5 rounded-3xl border-2 border-purple-500/50 bg-gradient-to-br from-purple-950/90 via-slate-900 to-slate-950 space-y-4 shadow-xl">
+          <div className="flex items-center justify-between border-b border-purple-500/20 pb-3 flex-wrap gap-2">
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5 text-purple-400" />
+              <h3 className="text-sm font-black text-white uppercase tracking-wider">
+                👨‍💼 QUẢN TRỊ VIÊN BẢO NGUYÊN: XEM TIẾN ĐỘ & GỬI NHẮC NHỞ HỌC TẬP TỚI BÉ MINH ANH
+              </h3>
+            </div>
+            <span className="text-xs text-purple-300 font-mono-code font-bold">
+              Minh Anh Mastered: {masteredCards.length} từ | Quiz Streak: {streakCount} | Stars: {stars} ⭐
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-12 gap-3 items-center">
+            <div className="md:col-span-8 relative">
+              <input
+                type="text"
+                value={parentReminderInput || parentReminder}
+                onChange={(e) => setParentReminderInput(e.target.value)}
+                placeholder="Nhập nội dung nhắc nhở học tập gửi tới màn hình Bé Minh Anh..."
+                className="w-full rounded-2xl border border-purple-500/40 bg-slate-950 px-4 py-2.5 text-xs text-white placeholder-slate-500 focus:border-purple-400 focus:outline-none font-bold"
+              />
+            </div>
+            <div className="md:col-span-4 flex items-center gap-2">
+              <button
+                onClick={() => {
+                  const val = parentReminderInput.trim() || parentReminder;
+                  setParentReminder(val);
+                  try {
+                    localStorage.setItem('kids_parent_reminder', val);
+                  } catch (e) {
+                    console.error(e);
+                  }
+                  if (addToast) addToast('🚀 Đã gửi nhắc nhở học tập tới màn hình Bé Minh Anh!', 'success');
+                  playWordAudio(`Đã phát thông báo nhắc nhở tới bé Minh Anh: ${val}`);
+                }}
+                className="w-full py-2.5 px-4 rounded-2xl bg-gradient-to-r from-purple-500 to-pink-600 text-white font-black text-xs hover:from-purple-400 hover:to-pink-500 shadow-lg flex items-center justify-center gap-1.5 transition active:scale-95 cursor-pointer"
+              >
+                <Send className="h-4 w-4" />
+                <span>Gửi Nhắc Nhở Ngay</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="flex flex-wrap items-center gap-2 text-[11px]">
+            <span className="text-slate-400 font-bold">Mẫu nhanh:</span>
+            {[
+              'Minh Anh ơi! Hôm nay con nhớ học 5 từ vựng mới để thưởng 10 sao bé ngoan nhé! 💖✨',
+              'Con gái Minh Anh làm bài tập xuất sắc lắm, Ba Bảo Nguyên luôn tin tưởng con! 🏆⭐',
+              'Minh Anh ơi, hoàn thành bài tập Level hôm nay nhé! 🦄⭐',
+            ].map((preset, i) => (
+              <button
+                key={i}
+                onClick={() => {
+                  setParentReminderInput(preset);
+                  setParentReminder(preset);
+                  try {
+                    localStorage.setItem('kids_parent_reminder', preset);
+                  } catch (e) {
+                    console.error(e);
+                  }
+                  if (addToast) addToast('🚀 Đã chọn mẫu nhắc nhở nhanh!', 'info');
+                }}
+                className="px-2.5 py-1 rounded-xl bg-purple-900/40 border border-purple-500/30 text-purple-200 font-bold hover:bg-purple-800/60 transition cursor-pointer"
+              >
+                Mẫu {i + 1}
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
       {/* Dual Actor Role Selection Bar */}
       <div className="flex flex-wrap items-center justify-between gap-3 p-3.5 rounded-3xl border-2 border-pink-400/60 bg-slate-950/95 shadow-2xl backdrop-blur-xl">
         <div className="flex items-center gap-2.5 flex-wrap">
@@ -1783,12 +2104,65 @@ export function KidsEnglishDashboard({ plan, addToast }) {
       </div>
 
       {/* ========================================================================= */}
-      {/* COURSE ROADMAP SELECTOR: 4 CEFR LEVELS (BASIC -> ADVANCED) */}
+      {/* COURSE ROADMAP SELECTOR: 4 CEFR LEVELS (STRICT SEQUENTIAL 90% UNLOCK) */}
       {/* ========================================================================= */}
       <div className="space-y-3">
+        {/* Parent Admin Control Panel for Ba Bảo Nguyên */}
+        {currentActor === 'bao_nguyen' && (
+          <div className="p-4 rounded-3xl border-2 border-purple-500/60 bg-gradient-to-r from-purple-950 via-slate-900 to-indigo-950 shadow-2xl space-y-3 animate-fadeIn">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-purple-500/30 pb-2">
+              <div className="flex items-center gap-2 text-xs font-black text-purple-200">
+                <ShieldCheck className="h-4 w-4 text-purple-400" />
+                <span>👨‍💼 BẢNG QUẢN LÝ KHÓA CẤP ĐỘ (ĐẶC QUYỀN LÊ LƯƠNG BẢO NGUYÊN)</span>
+              </div>
+              <div className="text-[11px] font-bold text-emerald-400 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-500/40">
+                ✓ Toàn quyền Mở/Khóa Cưỡng Chế
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {['L1', 'L2', 'L3', 'L4'].map((lvlId) => {
+                const isOverridden = adminLevelOverrides[lvlId];
+                const stats = levelStats[lvlId] || { pct: 0 };
+                return (
+                  <div key={lvlId} className="p-2.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
+                    <div className="flex items-center justify-between font-extrabold text-white">
+                      <span>{lvlId} ({stats.pct}%)</span>
+                      <span className={isOverridden ? 'text-amber-400' : 'text-cyan-400'}>
+                        {isOverridden ? '🔓 Mở Cưỡng Chế' : '🔒 Khóa 90%'}
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col gap-1">
+                      <button
+                        onClick={() => handleAdminToggleForceUnlock(lvlId)}
+                        className={`w-full py-1 px-2 rounded-xl text-[10px] font-black transition border ${
+                          isOverridden
+                            ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 hover:bg-amber-500/30'
+                            : 'bg-indigo-600 text-white border-indigo-400 hover:bg-indigo-500'
+                        }`}
+                      >
+                        {isOverridden ? '🔒 Bật Lại Khóa 90%' : '🔓 Mở Cưỡng Chế Ngay'}
+                      </button>
+
+                      <button
+                        onClick={() => handleAdminQuickFill90Pct(lvlId)}
+                        className="w-full py-1 px-2 rounded-xl text-[10px] font-black bg-emerald-950 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-800 transition"
+                      >
+                        ⚡ Nạp 90% Tiến Độ
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
         <div className="text-xs font-extrabold uppercase tracking-wider text-cyan-300 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <GraduationCap className="h-4 w-4 text-cyan-400" /> Ma Trận Lộ Trình 4 Cấp Độ Tiếng Anh Cho Bé (400 Từ Cốt Lõi):
+            <GraduationCap className="h-4 w-4 text-cyan-400" />
+            <span>Lộ Trình 4 Cấp Độ (Minh Anh Học Theo Thứ Tự • Mở Cấp Tiếp Theo Khi Đạt ≥ 90%):</span>
           </div>
           <button
             onClick={() => handleLevelChange('all')}
@@ -1798,13 +2172,17 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                 : 'bg-slate-900 text-cyan-300 border-slate-700 hover:bg-slate-800'
             }`}
           >
-            🌈 Tất Cả 4 Cấp Độ (400 Từ)
+            🌈 Tất Cả 4 Cấp Độ
           </button>
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
           {COURSE_LEVELS.map((lvl) => {
             const isSelected = selectedLevel === lvl.id;
+            const unlocked = isLevelUnlocked(lvl.id);
+            const stats = levelStats[lvl.id] || { total: 150, mastered: 0, pct: 0 };
+            const isForceUnlocked = adminLevelOverrides[lvl.id];
+
             return (
               <button
                 key={lvl.id}
@@ -1812,31 +2190,78 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                 className={`p-4 rounded-2xl border text-left transition-all duration-300 relative overflow-hidden group ${
                   isSelected
                     ? `bg-slate-900 border-2 ${lvl.color} shadow-xl scale-[1.02]`
-                    : 'bg-slate-950/80 border-slate-800 text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+                    : unlocked
+                    ? 'bg-slate-950/80 border-slate-800 text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+                    : 'bg-slate-950/50 border-rose-950 text-slate-500 opacity-95 hover:border-amber-500/50'
                 }`}
               >
+                {/* Lock Badge Header */}
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-3xl group-hover:scale-125 transition-transform duration-300">{lvl.icon}</span>
-                  <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-black border ${lvl.bgBadge}`}>
-                    {lvl.badge}
-                  </span>
-                </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className={`text-3xl transition-transform duration-300 ${unlocked ? 'group-hover:scale-125' : 'grayscale opacity-70'}`}>
+                      {lvl.icon}
+                    </span>
+                    {!unlocked && <Lock className="h-5 w-5 text-amber-400 animate-pulse" />}
+                  </div>
 
-                <div className="font-extrabold text-sm text-white">{lvl.name}</div>
-                <div className="text-[11px] text-slate-400 mt-1 line-clamp-2">{lvl.description}</div>
-
-                <div className="mt-3 pt-2 border-t border-slate-800 space-y-1 text-[11px] font-mono-code font-bold">
-                  <div className="flex items-center justify-between">
-                    <span className="text-cyan-300">{lvl.targetWords} Từ Vựng</span>
-                    <span className="text-emerald-400">
-                      Thuộc: {levelStats[lvl.id]?.mastered || 0}/{levelStats[lvl.id]?.total || 100} ({levelStats[lvl.id]?.pct || 0}%)
+                  <div className="flex flex-col items-end gap-1">
+                    <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-black border ${lvl.bgBadge}`}>
+                      {lvl.badge}
+                    </span>
+                    
+                    <span className={`text-[9px] font-black px-2 py-0.5 rounded-full border ${
+                      !unlocked
+                        ? 'bg-rose-950/90 text-rose-300 border-rose-500/50'
+                        : isForceUnlocked
+                        ? 'bg-amber-950/90 text-amber-300 border-amber-500/50'
+                        : currentActor === 'bao_nguyen'
+                        ? 'bg-purple-950/90 text-purple-300 border-purple-500/50'
+                        : 'bg-emerald-950/90 text-emerald-300 border-emerald-500/50'
+                    }`}>
+                      {!unlocked
+                        ? '🔒 Khóa (Cần ≥90% Level trước)'
+                        : isForceUnlocked
+                        ? '🔓 Admin Mở Cưỡng Chế'
+                        : currentActor === 'bao_nguyen'
+                        ? '👨‍💼 Admin Quản Trị'
+                        : '🟢 Đã Mở Khóa'}
                     </span>
                   </div>
-                  <div className="h-1.5 w-full bg-slate-800 rounded-full overflow-hidden border border-slate-700">
+                </div>
+
+                <div className="font-extrabold text-sm text-white flex items-center justify-between">
+                  <span>{lvl.name}</span>
+                </div>
+                <div className="text-[11px] text-slate-400 mt-1 line-clamp-2">{lvl.description}</div>
+
+                {/* Progress Bar & 90% Threshold Line */}
+                <div className="mt-3 pt-2 border-t border-slate-800 space-y-1 text-[11px] font-mono-code font-bold">
+                  <div className="flex items-center justify-between">
+                    <span className="text-cyan-300">{lvl.targetWords} Từ</span>
+                    <span className={stats.pct >= 90 ? 'text-emerald-400' : 'text-amber-300'}>
+                      Thuộc: {stats.mastered}/{stats.total} ({stats.pct}%)
+                    </span>
+                  </div>
+
+                  <div className="relative h-2 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-700">
                     <div
-                      className="h-full bg-gradient-to-r from-emerald-400 to-cyan-400 transition-all duration-500"
-                      style={{ width: `${levelStats[lvl.id]?.pct || 0}%` }}
+                      className={`h-full transition-all duration-500 ${
+                        stats.pct >= 90
+                          ? 'bg-gradient-to-r from-emerald-400 to-teal-300'
+                          : 'bg-gradient-to-r from-amber-500 to-orange-400'
+                      }`}
+                      style={{ width: `${stats.pct}%` }}
                     ></div>
+                    {/* 90% Milestone Marker Line */}
+                    <div
+                      className="absolute top-0 bottom-0 left-[90%] w-0.5 bg-yellow-300 z-10 shadow-[0_0_8px_rgba(253,224,71,0.8)]"
+                      title="Vạch ngưỡng mở khóa Level tiếp theo (90%)"
+                    ></div>
+                  </div>
+
+                  <div className="flex justify-between text-[9px] text-slate-500 pt-0.5">
+                    <span>Tiến độ bài học</span>
+                    <span className="text-yellow-400 font-bold">⭐ Ngưỡng mở: 90%</span>
                   </div>
                 </div>
               </button>
@@ -2238,15 +2663,15 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                 </button>
 
                 {/* Autoplay Time Selector */}
-                <div className="flex items-center gap-1 rounded-2xl bg-pink-950/80 p-1 border border-pink-500/40 text-xs font-bold shadow-md">
-                  {[10, 15, 30].map((sec) => (
+                <div className="flex items-center gap-1 rounded-2xl bg-pink-950/80 p-1 border border-pink-500/40 text-xs font-bold shadow-md flex-wrap">
+                  {[5, 10, 15, 20, 25, 30].map((sec) => (
                     <button
                       key={sec}
                       onClick={() => {
                         setAutoPlaySeconds(sec);
                         setAutoPlayTimer(sec);
                       }}
-                      className={`px-3 py-1.5 rounded-xl transition ${
+                      className={`px-2.5 py-1 rounded-xl transition ${
                         autoPlaySeconds === sec ? 'bg-gradient-to-r from-pink-400 to-rose-400 text-slate-950 font-black shadow-md' : 'text-pink-300 hover:text-white'
                       }`}
                     >
@@ -5450,6 +5875,111 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                 🔑 Mật khẩu mặc định: <code className="text-pink-300 font-bold">123456</code> hoặc <code className="text-pink-300 font-bold">baobaonguyen</code>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {/* ========================================================================= */}
+      {/* STRICT LEVEL LOCK GUIDANCE MODAL FOR MINH ANH */}
+      {/* ========================================================================= */}
+      {showLevelLockModal.isOpen && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md animate-fadeIn">
+          <div className="relative w-full max-w-lg rounded-3xl border-2 border-amber-400/80 bg-gradient-to-b from-slate-900 via-slate-950 to-slate-900 p-6 md:p-8 shadow-2xl space-y-5 animate-scaleIn border-glow">
+            {/* Top Close Button */}
+            <button
+              onClick={() => setShowLevelLockModal({ isOpen: false, targetLevel: null, requiredPrevLevel: null, currentPrevPct: 0 })}
+              className="absolute top-4 right-4 p-2 rounded-full bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition"
+            >
+              <X className="h-5 w-5" />
+            </button>
+
+            {/* Glowing Icon & Header */}
+            <div className="text-center space-y-3">
+              <div className="mx-auto flex h-20 w-20 items-center justify-center rounded-3xl bg-amber-500/20 border-2 border-amber-400 text-4xl shadow-xl shadow-amber-500/20 animate-bounce">
+                🔒
+              </div>
+
+              <div>
+                <h3 className="text-2xl font-black font-heading text-white tracking-tight">
+                  CẤP ĐỘ [{showLevelLockModal.targetLevel}] ĐANG TẠM KHÓA!
+                </h3>
+                <p className="text-xs font-bold text-amber-300 mt-1">
+                  Minh Anh cần đạt tối thiểu 90% ở Level trước đó để mở khóa nhé!
+                </p>
+              </div>
+            </div>
+
+            {/* Detailed Requirement Status Card */}
+            {(() => {
+              const reqLvl = showLevelLockModal.requiredPrevLevel || 'L1';
+              const reqStats = levelStats[reqLvl] || { mastered: 0, total: 150, pct: 0 };
+              const targetNeeded = Math.ceil(reqStats.total * 0.9);
+              const remainingWords = Math.max(0, targetNeeded - reqStats.mastered);
+
+              return (
+                <div className="rounded-2xl border border-slate-800 bg-slate-950 p-4 space-y-3 shadow-inner">
+                  <div className="flex justify-between items-center text-xs font-black">
+                    <span className="text-cyan-300">Tiến độ cấp độ {reqLvl}:</span>
+                    <span className="text-amber-400 font-mono-code">{reqStats.pct}% / 90% Ngưỡng mở</span>
+                  </div>
+
+                  {/* Progress Bar */}
+                  <div className="relative h-3 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-700">
+                    <div
+                      className="h-full bg-gradient-to-r from-amber-400 to-orange-400 transition-all duration-500"
+                      style={{ width: `${reqStats.pct}%` }}
+                    ></div>
+                    <div
+                      className="absolute top-0 bottom-0 left-[90%] w-0.5 bg-yellow-300 z-10 shadow-[0_0_8px_rgba(253,224,71,0.9)]"
+                    ></div>
+                  </div>
+
+                  <div className="flex justify-between items-center text-[11px] font-bold text-slate-400 pt-1">
+                    <span>Đã thuộc: <strong className="text-emerald-300 font-mono-code">{reqStats.mastered}</strong> / {reqStats.total} từ</span>
+                    <span>Cần thêm: <strong className="text-yellow-300 font-mono-code">{remainingWords}</strong> từ nữa</span>
+                  </div>
+
+                  {/* Encouraging Quote for Minh Anh */}
+                  <div className="p-3 rounded-xl bg-pink-950/60 border border-pink-500/30 text-xs font-bold text-pink-200 text-center leading-relaxed italic">
+                    "Minh Anh ơi, bé hãy làm thêm vài câu đố ⏰ hoặc lật thẻ 3D 🔄 để thuộc thêm <span className="text-yellow-300 text-sm font-extrabold">{remainingWords} từ</span> nữa là Cấp độ [{showLevelLockModal.targetLevel}] sẽ tự động mở khóa rực rỡ nhé! 💖✨"
+                  </div>
+                </div>
+              );
+            })()}
+
+            {/* Action Buttons */}
+            <div className="space-y-2 pt-1">
+              <button
+                onClick={() => setShowLevelLockModal({ isOpen: false, targetLevel: null, requiredPrevLevel: null, currentPrevPct: 0 })}
+                className="w-full py-3.5 px-4 rounded-2xl bg-gradient-to-r from-pink-600 via-rose-500 to-purple-600 text-white font-black text-xs shadow-xl hover:scale-[1.02] transition flex items-center justify-center gap-2 border border-pink-400 cursor-pointer"
+              >
+                <span>💪 Bé Minh Anh Tiếp Tục Học Thêm Từ Vựng</span>
+              </button>
+
+              {/* Admin Override Action if Parent is logged in or wants to override */}
+              <div className="flex items-center justify-between pt-2 border-t border-slate-800 text-xs">
+                {currentActor === 'bao_nguyen' ? (
+                  <button
+                    onClick={() => {
+                      handleAdminToggleForceUnlock(showLevelLockModal.targetLevel);
+                      setShowLevelLockModal({ isOpen: false, targetLevel: null, requiredPrevLevel: null, currentPrevPct: 0 });
+                    }}
+                    className="w-full py-2.5 px-3 rounded-xl bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30 font-bold transition text-center"
+                  >
+                    👨‍💼 [Bảo Nguyên Admin] Mở Khóa Cưỡng Chế Cấp [{showLevelLockModal.targetLevel}] Ngay
+                  </button>
+                ) : (
+                  <button
+                    onClick={() => {
+                      setShowLevelLockModal({ isOpen: false, targetLevel: null, requiredPrevLevel: null, currentPrevPct: 0 });
+                      setShowAdminAuthModal(true);
+                    }}
+                    className="w-full py-2 text-[11px] font-bold text-purple-300 hover:text-purple-200 transition text-center"
+                  >
+                    🔑 Ba Bảo Nguyên đăng nhập mở khóa cưỡng chế cho bé →
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         </div>
       )}

@@ -5,10 +5,12 @@ import { Header } from './components/common/Header.jsx';
 import { LiveReminderBanner } from './components/LiveReminderBanner.jsx';
 import { MobileAutomationDock } from './components/MobileAutomationDock.jsx';
 import { AnimatedMascots } from './components/AnimatedMascots.jsx';
+import { BackgroundMusicPlayer } from './components/BackgroundMusicPlayer.jsx';
 import { ButlerAiAssistant } from './components/ButlerAiAssistant.jsx';
 import { MobileBottomNav } from './components/common/MobileBottomNav.jsx';
 import { ToastContainer } from './components/common/ToastContainer.jsx';
 import { NoteModal } from './components/common/NoteModal.jsx';
+import { NotificationModal } from './components/modals/NotificationModal.jsx';
 import { SystemErrorModal } from './components/modals/SystemErrorModal.jsx';
 import { lookupSystemError } from './utils/systemErrorCatalog.js';
 import { RoleSelectorModal } from './components/RoleSelectorModal.jsx';
@@ -687,6 +689,12 @@ function MainAppContent() {
           }}
         />
       )}
+
+      {/* Global Super Cute Background Music Player */}
+      <BackgroundMusicPlayer
+        currentActor={role === 'kids_english' ? (localStorage.getItem('kids_active_actor') || 'minh_anh') : 'bao_nguyen'}
+        addToast={addToast}
+      />
     </div>
   );
 }

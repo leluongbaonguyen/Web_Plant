@@ -1,0 +1,1634 @@
+[
+  {
+    "id": "snap-1785457267166-p9utv",
+    "timestamp": "2026-07-31T00:21:07.166+00:00",
+    "username": "behoctienganh",
+    "role": "kids_english",
+    "action": "Cập nhật Lịch sinh hoạt bởi tác nhân 'behoctienganh'",
+    "summary": {
+      "score": 0,
+      "title": "KẾ HOẠCH SINH HOẠT 1 TUẦN",
+      "totalCells": 105,
+      "totalGoals": 3,
+      "totalSlots": 15,
+      "completedCells": 11,
+      "completedGoals": 3,
+      "overallPercent": 10,
+      "goalProgressPercent": 100
+    },
+    "snapshot": {
+      "meta": {
+        "note": "Ngủ từ 00:15 đến 06:00 chỉ được 5 giờ 45 phút. Hãy ưu tiên ngủ trưa và cân nhắc ngủ sớm hơn để cơ thể phục hồi tốt hơn.",
+        "title": "KẾ HOẠCH SINH HOẠT 1 TUẦN",
+        "wakeTime": "06:00",
+        "sleepTime": "00:15",
+        "updatedAt": "2026-07-31T00:21:06.881Z"
+      },
+      "summary": {
+        "mood": "Bình thường",
+        "wins": "",
+        "score": 0,
+        "lessons": "",
+        "nextWeek": "",
+        "incomplete": ""
+      },
+      "schedule": [
+        {
+          "id": "slot-1",
+          "end": "06:15",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Thức dậy, uống nước, vệ sinh cá nhân",
+              "notes": "",
+              "category": "health"
+            },
+            "monday": {
+              "done": false,
+              "text": "Thức dậy, uống nước, vệ sinh cá nhân",
+              "notes": "",
+              "category": "health"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Thức dậy, uống nước, vệ sinh cá nhân",
+              "notes": "",
+              "category": "health"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Thức dậy, uống nước, vệ sinh cá nhân",
+              "notes": "",
+              "category": "health"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Thức dậy, uống nước, vệ sinh cá nhân",
+              "notes": "",
+              "category": "health"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Thức dậy, uống nước, vệ sinh cá nhân",
+              "notes": "",
+              "category": "health"
+            },
+            "wednesday": {
+              "done": true,
+              "text": "Thức dậy, uống nước, vệ sinh cá nhân",
+              "notes": "",
+              "category": "health"
+            }
+          },
+          "start": "06:00"
+        },
+        {
+          "id": "slot-2",
+          "end": "06:45",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Toàn thân nhẹ",
+              "notes": "",
+              "category": "health"
+            },
+            "monday": {
+              "done": false,
+              "text": "Đi bộ nhanh / cardio nhẹ",
+              "notes": "",
+              "category": "health"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Yoga / giãn cơ",
+              "notes": "",
+              "category": "health"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Giãn cơ + bụng",
+              "notes": "",
+              "category": "health"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Thể thao ngoài trời",
+              "notes": "",
+              "category": "health"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Đi bộ ngoài trời",
+              "notes": "",
+              "category": "health"
+            },
+            "wednesday": {
+              "done": true,
+              "text": "Tập sức mạnh",
+              "notes": "",
+              "category": "health"
+            }
+          },
+          "start": "06:15"
+        },
+        {
+          "id": "slot-3",
+          "end": "07:30",
+          "cells": {
+            "friday": {
+              "done": true,
+              "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
+              "notes": "",
+              "category": "health"
+            },
+            "monday": {
+              "done": false,
+              "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
+              "notes": "",
+              "category": "health"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
+              "notes": "",
+              "category": "health"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
+              "notes": "",
+              "category": "health"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
+              "notes": "",
+              "category": "health"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
+              "notes": "",
+              "category": "health"
+            },
+            "wednesday": {
+              "done": true,
+              "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
+              "notes": "",
+              "category": "health"
+            }
+          },
+          "start": "06:45"
+        },
+        {
+          "id": "slot-4",
+          "end": "08:00",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Tổng kết việc cần hoàn thành",
+              "notes": "",
+              "category": "health"
+            },
+            "monday": {
+              "done": false,
+              "text": "Lập 3 ưu tiên trong ngày",
+              "notes": "",
+              "category": "health"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Lên kế hoạch tuần mới",
+              "notes": "",
+              "category": "health"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Ôn mục tiêu + chuẩn bị",
+              "notes": "",
+              "category": "health"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Lên kế hoạch cuối tuần",
+              "notes": "",
+              "category": "health"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Ôn mục tiêu + chuẩn bị",
+              "notes": "",
+              "category": "health"
+            },
+            "wednesday": {
+              "done": true,
+              "text": "Lập 3 ưu tiên trong ngày",
+              "notes": "",
+              "category": "health"
+            }
+          },
+          "start": "07:30"
+        },
+        {
+          "id": "slot-5",
+          "end": "11:30",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Hoàn thành việc quan trọng",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Làm việc / học tập tập trung",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Nghỉ ngơi / thời gian gia đình",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Làm việc / học tập tập trung",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Dọn dẹp + việc cá nhân",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": true,
+              "text": "Làm việc / học tập tập trung",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": true,
+              "text": "Làm việc / học tập tập trung",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "08:00"
+        },
+        {
+          "id": "slot-6",
+          "end": "12:30",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Ăn trưa, thư giãn, hạn chế điện thoại",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Ăn trưa, thư giãn, hạn chế điện thoại",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Ăn trưa, thư giãn, hạn chế điện thoại",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Ăn trưa, thư giãn, hạn chế điện thoại",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Ăn trưa, thư giãn, hạn chế điện thoại",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Ăn trưa, thư giãn, hạn chế điện thoại",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": true,
+              "text": "Ăn trưa, thư giãn, hạn chế điện thoại",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "11:30"
+        },
+        {
+          "id": "slot-7",
+          "end": "13:00",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Ngủ trưa 20 phút + thức dậy nhẹ nhàng",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Ngủ trưa 20 phút + thức dậy nhẹ nhàng",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Ngủ trưa 20 phút + thức dậy nhẹ nhàng",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Ngủ trưa 20 phút + thức dậy nhẹ nhàng",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Ngủ trưa 20 phút + thức dậy nhẹ nhàng",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Ngủ trưa 20 phút + thức dậy nhẹ nhàng",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": true,
+              "text": "Ngủ trưa 20 phút + thức dậy nhẹ nhàng",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "12:30"
+        },
+        {
+          "id": "slot-8",
+          "end": "17:00",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Kết thúc việc tuần + tổng kết",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Làm việc / học tập",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Đọc sách + chuẩn bị cho tuần mới",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Làm việc / học tập",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Mua sắm / việc riêng / đi chơi",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Làm việc / học tập",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": false,
+              "text": "Làm việc / học tập",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "13:00"
+        },
+        {
+          "id": "slot-9",
+          "end": "18:00",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Đi bộ nhẹ",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Đi bộ + giãn cơ",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Đi bộ nhẹ",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Tập luyện",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Hoạt động ngoài trời",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Tập luyện",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": false,
+              "text": "Đi bộ thư giãn",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "17:00"
+        },
+        {
+          "id": "slot-10",
+          "end": "19:00",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Tắm, ăn tối, dọn dẹp",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Tắm, ăn tối, dọn dẹp",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Tắm, ăn tối, dọn dẹp",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Tắm, ăn tối, dọn dẹp",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Tắm, ăn tối, dọn dẹp",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Tắm, ăn tối, dọn dẹp",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": false,
+              "text": "Tắm, ăn tối, dọn dẹp",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "18:00"
+        },
+        {
+          "id": "slot-11",
+          "end": "21:00",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Giải trí có giới hạn",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Ôn lại công việc / học thêm",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Chuẩn bị quần áo, lịch và mục tiêu tuần",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Học kỹ năng mới",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Sở thích / bạn bè / gia đình",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Dự án cá nhân",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": false,
+              "text": "Gặp gỡ / trò chuyện",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "19:00"
+        },
+        {
+          "id": "slot-12",
+          "end": "22:00",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Thư giãn, trò chuyện với gia đình",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Thư giãn, trò chuyện với gia đình",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Thư giãn, trò chuyện với gia đình",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Thư giãn, trò chuyện với gia đình",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Thư giãn, trò chuyện với gia đình",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": true,
+              "text": "Thư giãn, trò chuyện với gia đình",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": false,
+              "text": "Thư giãn, trò chuyện với gia đình",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "21:00"
+        },
+        {
+          "id": "slot-13",
+          "end": "23:00",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Sắp xếp phòng + chuẩn bị cuối tuần",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Việc cá nhân + chuẩn bị ngày mai",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Sắp xếp bàn học / bàn làm việc",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Việc cá nhân + chuẩn bị ngày mai",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Thư giãn nhẹ",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Việc cá nhân + chuẩn bị ngày mai",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": false,
+              "text": "Việc cá nhân + chuẩn bị ngày mai",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "22:00"
+        },
+        {
+          "id": "slot-14",
+          "end": "23:45",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Đọc sách, nghe nhạc nhẹ, hạn chế màn hình",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Đọc sách, nghe nhạc nhẹ, hạn chế màn hình",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Đọc sách, nghe nhạc nhẹ, hạn chế màn hình",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Đọc sách, nghe nhạc nhẹ, hạn chế màn hình",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Đọc sách, nghe nhạc nhẹ, hạn chế màn hình",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Đọc sách, nghe nhạc nhẹ, hạn chế màn hình",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": false,
+              "text": "Đọc sách, nghe nhạc nhẹ, hạn chế màn hình",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "23:00"
+        },
+        {
+          "id": "slot-15",
+          "end": "00:15",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Vệ sinh cá nhân, thư giãn và đi ngủ",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Vệ sinh cá nhân, thư giãn và đi ngủ",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Vệ sinh cá nhân, thư giãn và đi ngủ",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Vệ sinh cá nhân, thư giãn và đi ngủ",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Vệ sinh cá nhân, thư giãn và đi ngủ",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Vệ sinh cá nhân, thư giãn và đi ngủ",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": true,
+              "text": "Vệ sinh cá nhân, thư giãn và đi ngủ",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "23:45"
+        }
+      ],
+      "settings": {
+        "compact": false,
+        "fontSize": 13,
+        "fontFamily": "Times New Roman",
+        "weekendHighlight": true
+      },
+      "dailyFocus": {
+        "friday": "Hoàn thành việc tồn, tổng kết kết quả và đóng tuần làm việc.",
+        "monday": "Khởi động tuần, xác định ưu tiên và bắt đầu việc khó nhất.",
+        "sunday": "Nghỉ ngơi có chủ đích và chuẩn bị kỹ cho tuần tiếp theo.",
+        "tuesday": "Duy trì nhịp làm việc, học thêm một kỹ năng thực tế.",
+        "saturday": "Chăm sóc không gian sống, sức khỏe và các mối quan hệ.",
+        "thursday": "Tập trung dự án cá nhân hoặc nhiệm vụ cần chiều sâu.",
+        "wednesday": "Rà soát giữa tuần, điều chỉnh tiến độ và phục hồi năng lượng."
+      },
+      "weeklyGoals": [
+        {
+          "id": "goal-1",
+          "done": true,
+          "notes": "",
+          "title": "Hoàn thành 3 nhiệm vụ quan trọng nhất",
+          "dueDay": "Thứ Sáu",
+          "result": "Ít nhất 3 đầu việc có kết quả cụ thể",
+          "priority": "Cao"
+        },
+        {
+          "id": "goal-2",
+          "done": true,
+          "notes": "",
+          "title": "Vận động tối thiểu 5 buổi",
+          "dueDay": "Chủ Nhật",
+          "result": "Mỗi buổi từ 25–45 phút",
+          "priority": "Cao"
+        },
+        {
+          "id": "goal-3",
+          "done": true,
+          "notes": "",
+          "title": "Học thêm kỹ năng chuyên môn",
+          "dueDay": "Chủ Nhật",
+          "result": "Có ghi chú và một sản phẩm nhỏ",
+          "priority": "Trung bình"
+        }
+      ]
+    }
+  },
+  {
+    "id": "snap-1785421980048-ys7rb",
+    "timestamp": "2026-07-30T14:33:00.048+00:00",
+    "username": "SYSTEM",
+    "role": "admin",
+    "action": "Chủ động đồng bộ dữ liệu ban đầu lên Supabase Cloud",
+    "summary": {
+      "score": 0,
+      "title": "KẾ HOẠCH SINH HOẠT 1 TUẦN",
+      "totalCells": 105,
+      "totalGoals": 3,
+      "totalSlots": 15,
+      "completedCells": 10,
+      "completedGoals": 3,
+      "overallPercent": 10,
+      "goalProgressPercent": 100
+    },
+    "snapshot": {
+      "meta": {
+        "note": "Ngủ từ 00:15 đến 06:00 chỉ được 5 giờ 45 phút. Hãy ưu tiên ngủ trưa và cân nhắc ngủ sớm hơn để cơ thể phục hồi tốt hơn.",
+        "title": "KẾ HOẠCH SINH HOẠT 1 TUẦN",
+        "wakeTime": "06:00",
+        "sleepTime": "00:15",
+        "updatedAt": "2026-07-30T14:32:59.468Z"
+      },
+      "summary": {
+        "mood": "Bình thường",
+        "wins": "",
+        "score": 0,
+        "lessons": "",
+        "nextWeek": "",
+        "incomplete": ""
+      },
+      "schedule": [
+        {
+          "id": "slot-1",
+          "end": "06:15",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Thức dậy, uống nước, vệ sinh cá nhân",
+              "notes": "",
+              "category": "health"
+            },
+            "monday": {
+              "done": false,
+              "text": "Thức dậy, uống nước, vệ sinh cá nhân",
+              "notes": "",
+              "category": "health"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Thức dậy, uống nước, vệ sinh cá nhân",
+              "notes": "",
+              "category": "health"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Thức dậy, uống nước, vệ sinh cá nhân",
+              "notes": "",
+              "category": "health"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Thức dậy, uống nước, vệ sinh cá nhân",
+              "notes": "",
+              "category": "health"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Thức dậy, uống nước, vệ sinh cá nhân",
+              "notes": "",
+              "category": "health"
+            },
+            "wednesday": {
+              "done": true,
+              "text": "Thức dậy, uống nước, vệ sinh cá nhân",
+              "notes": "",
+              "category": "health"
+            }
+          },
+          "start": "06:00"
+        },
+        {
+          "id": "slot-2",
+          "end": "06:45",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Toàn thân nhẹ",
+              "notes": "",
+              "category": "health"
+            },
+            "monday": {
+              "done": false,
+              "text": "Đi bộ nhanh / cardio nhẹ",
+              "notes": "",
+              "category": "health"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Yoga / giãn cơ",
+              "notes": "",
+              "category": "health"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Giãn cơ + bụng",
+              "notes": "",
+              "category": "health"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Thể thao ngoài trời",
+              "notes": "",
+              "category": "health"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Đi bộ ngoài trời",
+              "notes": "",
+              "category": "health"
+            },
+            "wednesday": {
+              "done": true,
+              "text": "Tập sức mạnh",
+              "notes": "",
+              "category": "health"
+            }
+          },
+          "start": "06:15"
+        },
+        {
+          "id": "slot-3",
+          "end": "07:30",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
+              "notes": "",
+              "category": "health"
+            },
+            "monday": {
+              "done": false,
+              "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
+              "notes": "",
+              "category": "health"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
+              "notes": "",
+              "category": "health"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
+              "notes": "",
+              "category": "health"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
+              "notes": "",
+              "category": "health"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
+              "notes": "",
+              "category": "health"
+            },
+            "wednesday": {
+              "done": true,
+              "text": "Tắm, ăn sáng, chuẩn bị ngày mới",
+              "notes": "",
+              "category": "health"
+            }
+          },
+          "start": "06:45"
+        },
+        {
+          "id": "slot-4",
+          "end": "08:00",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Tổng kết việc cần hoàn thành",
+              "notes": "",
+              "category": "health"
+            },
+            "monday": {
+              "done": false,
+              "text": "Lập 3 ưu tiên trong ngày",
+              "notes": "",
+              "category": "health"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Lên kế hoạch tuần mới",
+              "notes": "",
+              "category": "health"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Ôn mục tiêu + chuẩn bị",
+              "notes": "",
+              "category": "health"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Lên kế hoạch cuối tuần",
+              "notes": "",
+              "category": "health"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Ôn mục tiêu + chuẩn bị",
+              "notes": "",
+              "category": "health"
+            },
+            "wednesday": {
+              "done": true,
+              "text": "Lập 3 ưu tiên trong ngày",
+              "notes": "",
+              "category": "health"
+            }
+          },
+          "start": "07:30"
+        },
+        {
+          "id": "slot-5",
+          "end": "11:30",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Hoàn thành việc quan trọng",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Làm việc / học tập tập trung",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Nghỉ ngơi / thời gian gia đình",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Làm việc / học tập tập trung",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Dọn dẹp + việc cá nhân",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": true,
+              "text": "Làm việc / học tập tập trung",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": true,
+              "text": "Làm việc / học tập tập trung",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "08:00"
+        },
+        {
+          "id": "slot-6",
+          "end": "12:30",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Ăn trưa, thư giãn, hạn chế điện thoại",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Ăn trưa, thư giãn, hạn chế điện thoại",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Ăn trưa, thư giãn, hạn chế điện thoại",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Ăn trưa, thư giãn, hạn chế điện thoại",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Ăn trưa, thư giãn, hạn chế điện thoại",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Ăn trưa, thư giãn, hạn chế điện thoại",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": true,
+              "text": "Ăn trưa, thư giãn, hạn chế điện thoại",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "11:30"
+        },
+        {
+          "id": "slot-7",
+          "end": "13:00",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Ngủ trưa 20 phút + thức dậy nhẹ nhàng",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Ngủ trưa 20 phút + thức dậy nhẹ nhàng",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Ngủ trưa 20 phút + thức dậy nhẹ nhàng",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Ngủ trưa 20 phút + thức dậy nhẹ nhàng",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Ngủ trưa 20 phút + thức dậy nhẹ nhàng",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Ngủ trưa 20 phút + thức dậy nhẹ nhàng",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": true,
+              "text": "Ngủ trưa 20 phút + thức dậy nhẹ nhàng",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "12:30"
+        },
+        {
+          "id": "slot-8",
+          "end": "17:00",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Kết thúc việc tuần + tổng kết",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Làm việc / học tập",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Đọc sách + chuẩn bị cho tuần mới",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Làm việc / học tập",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Mua sắm / việc riêng / đi chơi",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Làm việc / học tập",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": false,
+              "text": "Làm việc / học tập",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "13:00"
+        },
+        {
+          "id": "slot-9",
+          "end": "18:00",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Đi bộ nhẹ",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Đi bộ + giãn cơ",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Đi bộ nhẹ",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Tập luyện",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Hoạt động ngoài trời",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Tập luyện",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": false,
+              "text": "Đi bộ thư giãn",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "17:00"
+        },
+        {
+          "id": "slot-10",
+          "end": "19:00",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Tắm, ăn tối, dọn dẹp",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Tắm, ăn tối, dọn dẹp",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Tắm, ăn tối, dọn dẹp",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Tắm, ăn tối, dọn dẹp",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Tắm, ăn tối, dọn dẹp",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Tắm, ăn tối, dọn dẹp",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": false,
+              "text": "Tắm, ăn tối, dọn dẹp",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "18:00"
+        },
+        {
+          "id": "slot-11",
+          "end": "21:00",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Giải trí có giới hạn",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Ôn lại công việc / học thêm",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Chuẩn bị quần áo, lịch và mục tiêu tuần",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Học kỹ năng mới",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Sở thích / bạn bè / gia đình",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Dự án cá nhân",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": false,
+              "text": "Gặp gỡ / trò chuyện",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "19:00"
+        },
+        {
+          "id": "slot-12",
+          "end": "22:00",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Thư giãn, trò chuyện với gia đình",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Thư giãn, trò chuyện với gia đình",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Thư giãn, trò chuyện với gia đình",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Thư giãn, trò chuyện với gia đình",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Thư giãn, trò chuyện với gia đình",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": true,
+              "text": "Thư giãn, trò chuyện với gia đình",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": false,
+              "text": "Thư giãn, trò chuyện với gia đình",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "21:00"
+        },
+        {
+          "id": "slot-13",
+          "end": "23:00",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Sắp xếp phòng + chuẩn bị cuối tuần",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Việc cá nhân + chuẩn bị ngày mai",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Sắp xếp bàn học / bàn làm việc",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Việc cá nhân + chuẩn bị ngày mai",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Thư giãn nhẹ",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Việc cá nhân + chuẩn bị ngày mai",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": false,
+              "text": "Việc cá nhân + chuẩn bị ngày mai",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "22:00"
+        },
+        {
+          "id": "slot-14",
+          "end": "23:45",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Đọc sách, nghe nhạc nhẹ, hạn chế màn hình",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Đọc sách, nghe nhạc nhẹ, hạn chế màn hình",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Đọc sách, nghe nhạc nhẹ, hạn chế màn hình",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Đọc sách, nghe nhạc nhẹ, hạn chế màn hình",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Đọc sách, nghe nhạc nhẹ, hạn chế màn hình",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Đọc sách, nghe nhạc nhẹ, hạn chế màn hình",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": false,
+              "text": "Đọc sách, nghe nhạc nhẹ, hạn chế màn hình",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "23:00"
+        },
+        {
+          "id": "slot-15",
+          "end": "00:15",
+          "cells": {
+            "friday": {
+              "done": false,
+              "text": "Vệ sinh cá nhân, thư giãn và đi ngủ",
+              "notes": "",
+              "category": "default"
+            },
+            "monday": {
+              "done": false,
+              "text": "Vệ sinh cá nhân, thư giãn và đi ngủ",
+              "notes": "",
+              "category": "default"
+            },
+            "sunday": {
+              "done": false,
+              "text": "Vệ sinh cá nhân, thư giãn và đi ngủ",
+              "notes": "",
+              "category": "default"
+            },
+            "tuesday": {
+              "done": false,
+              "text": "Vệ sinh cá nhân, thư giãn và đi ngủ",
+              "notes": "",
+              "category": "default"
+            },
+            "saturday": {
+              "done": false,
+              "text": "Vệ sinh cá nhân, thư giãn và đi ngủ",
+              "notes": "",
+              "category": "default"
+            },
+            "thursday": {
+              "done": false,
+              "text": "Vệ sinh cá nhân, thư giãn và đi ngủ",
+              "notes": "",
+              "category": "default"
+            },
+            "wednesday": {
+              "done": true,
+              "text": "Vệ sinh cá nhân, thư giãn và đi ngủ",
+              "notes": "",
+              "category": "default"
+            }
+          },
+          "start": "23:45"
+        }
+      ],
+      "settings": {
+        "compact": false,
+        "fontSize": 13,
+        "fontFamily": "Times New Roman",
+        "weekendHighlight": true
+      },
+      "dailyFocus": {
+        "friday": "Hoàn thành việc tồn, tổng kết kết quả và đóng tuần làm việc.",
+        "monday": "Khởi động tuần, xác định ưu tiên và bắt đầu việc khó nhất.",
+        "sunday": "Nghỉ ngơi có chủ đích và chuẩn bị kỹ cho tuần tiếp theo.",
+        "tuesday": "Duy trì nhịp làm việc, học thêm một kỹ năng thực tế.",
+        "saturday": "Chăm sóc không gian sống, sức khỏe và các mối quan hệ.",
+        "thursday": "Tập trung dự án cá nhân hoặc nhiệm vụ cần chiều sâu.",
+        "wednesday": "Rà soát giữa tuần, điều chỉnh tiến độ và phục hồi năng lượng."
+      },
+      "weeklyGoals": [
+        {
+          "id": "goal-1",
+          "done": true,
+          "notes": "",
+          "title": "Hoàn thành 3 nhiệm vụ quan trọng nhất",
+          "dueDay": "Thứ Sáu",
+          "result": "Ít nhất 3 đầu việc có kết quả cụ thể",
+          "priority": "Cao"
+        },
+        {
+          "id": "goal-2",
+          "done": true,
+          "notes": "",
+          "title": "Vận động tối thiểu 5 buổi",
+          "dueDay": "Chủ Nhật",
+          "result": "Mỗi buổi từ 25–45 phút",
+          "priority": "Cao"
+        },
+        {
+          "id": "goal-3",
+          "done": true,
+          "notes": "",
+          "title": "Học thêm kỹ năng chuyên môn",
+          "dueDay": "Chủ Nhật",
+          "result": "Có ghi chú và một sản phẩm nhỏ",
+          "priority": "Trung bình"
+        }
+      ]
+    }
+  }
+]
