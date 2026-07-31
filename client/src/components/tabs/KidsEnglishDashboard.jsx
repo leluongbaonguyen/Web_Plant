@@ -1087,16 +1087,16 @@ export function KidsEnglishDashboard({ plan, addToast }) {
       const pct = Math.round((masteredInLevel.length / total) * 100);
       return { total, mastered: masteredInLevel.length, pct };
     };
-    return { L1: calc('L1'), L2: calc('L2'), L3: calc('L3'), L4: calc('L4') };
+    return { L1: calc('L1'), L2: calc('L2'), L3: calc('L3'), L4: calc('L4'), L5: calc('L5'), L6: calc('L6') };
   }, [vocabDatabase, masteredCards]);
 
   // Parent Admin Level Unlock Overrides (Ba Bảo Nguyên privileges)
   const [adminLevelOverrides, setAdminLevelOverrides] = useState(() => {
     try {
       const saved = localStorage.getItem('kids_admin_level_overrides');
-      return saved ? JSON.parse(saved) : { L1: true, L2: false, L3: false, L4: false };
+      return saved ? JSON.parse(saved) : { L1: true, L2: false, L3: false, L4: false, L5: false, L6: false };
     } catch {
-      return { L1: true, L2: false, L3: false, L4: false };
+      return { L1: true, L2: false, L3: false, L4: false, L5: false, L6: false };
     }
   });
 
@@ -1117,7 +1117,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     currentPrevPct: 0
   });
 
-  // Strict Level Unlock Verification Function (Sequential Level 1 -> Level 4; >= 90% threshold)
+  // Strict Level Unlock Verification Function (Sequential L1->L6; >= 90% threshold)
   const isLevelUnlocked = (lvlId) => {
     if (!lvlId || lvlId === 'all' || lvlId === 'L1') return true;
     if (currentActor === 'bao_nguyen') return true; // Ba Bảo Nguyên always has full management access
@@ -1126,10 +1126,14 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     const pctL1 = levelStats.L1?.pct || 0;
     const pctL2 = levelStats.L2?.pct || 0;
     const pctL3 = levelStats.L3?.pct || 0;
+    const pctL4 = levelStats.L4?.pct || 0;
+    const pctL5 = levelStats.L5?.pct || 0;
 
     if (lvlId === 'L2') return pctL1 >= 90;
     if (lvlId === 'L3') return pctL1 >= 90 && pctL2 >= 90;
     if (lvlId === 'L4') return pctL1 >= 90 && pctL2 >= 90 && pctL3 >= 90;
+    if (lvlId === 'L5') return pctL1 >= 90 && pctL2 >= 90 && pctL3 >= 90 && pctL4 >= 90;
+    if (lvlId === 'L6') return pctL1 >= 90 && pctL2 >= 90 && pctL3 >= 90 && pctL4 >= 90 && pctL5 >= 90;
 
     return true;
   };
@@ -1168,6 +1172,42 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
     if (addToast) addToast(`🔓 Đã nạp nhanh 90% tiến độ thuộc từ cho ${lvlId}! Level tiếp theo đã tự động mở khóa cho Minh Anh!`, 'success');
     playWordAudio(`Đã mở khóa level mới cho bé Minh Anh!`);
+  };
+
+  // Reset tiến độ học tập theo từng level (chỉ Admin)
+  const handleResetLevelProgress = (lvlId) => {
+    if (currentActor !== 'bao_nguyen') {
+      if (addToast) addToast('Chỉ Quản trị viên Lê Lương Bảo Nguyên mới có quyền reset tiến độ!', 'error');
+      return;
+    }
+    if (!window.confirm(`Xác nhận reset tiến độ học của cấp độ ${lvlId}? Toàn bộ từ đã thuộc ở ${lvlId} sẽ bị xóa!`)) return;
+    const levelItemIds = new Set(vocabDatabase.filter(i => i.level === lvlId).map(i => i.id));
+    const newMastered = masteredCards.filter(id => !levelItemIds.has(id));
+    setMasteredCards(newMastered);
+    try { localStorage.setItem('kids_mastered_words_2000', JSON.stringify(newMastered)); } catch(e) {}
+    logAuditEvent('RESET', 'LEVEL_PROGRESS', lvlId, { count: masteredCards.length - newMastered.length }, null, `Reset tiến độ học ${lvlId}`);
+    if (addToast) addToast(`🔄 Đã reset tiến độ học tập Cấp Độ ${lvlId}! (${masteredCards.length - newMastered.length} từ đã xóa)`, 'warning');
+  };
+
+  // Reset TOÀN BỘ tiến độ học (chỉ Admin)
+  const handleResetAllProgress = () => {
+    if (currentActor !== 'bao_nguyen') {
+      if (addToast) addToast('Chỉ Quản trị viên mới có quyền reset toàn bộ tiến độ!', 'error');
+      return;
+    }
+    if (!window.confirm('⚠️ CẢNH BÁO: Reset toàn bộ tiến độ học tập của Minh Anh? Tất cả từ đã thuộc, sao ⭐ và thành tích sẽ bị xóa sạch!')) return;
+    const totalBefore = masteredCards.length;
+    setMasteredCards([]);
+    setStars(0);
+    setClaimedRewards([]);
+    try {
+      localStorage.setItem('kids_mastered_words_2000', JSON.stringify([]));
+      localStorage.setItem('kids_stars_total', '0');
+      localStorage.setItem('kids_claimed_rewards', JSON.stringify([]));
+    } catch(e) {}
+    logAuditEvent('RESET', 'ALL_PROGRESS', 'FULL_RESET', { totalWords: totalBefore, stars }, null, 'Reset toàn bộ tiến độ học tập');
+    if (addToast) addToast(`🔄 Đã reset toàn bộ tiến độ! (${totalBefore} từ, ${stars} sao đã xóa). Minh Anh bắt đầu lại từ đầu!`, 'warning');
+    playWordAudio('Đã reset toàn bộ tiến độ học tập. Minh Anh hãy bắt đầu lại từ đầu nhé!');
   };
 
   // Mascot Speech Bubble State
@@ -1504,9 +1544,12 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     }, 1800);
   };
 
-  // Filter Vocabulary Database (Preserves Strict Original Curriculum Order)
+  // Filter Vocabulary Database — nghiêm ngặt: Minh Anh chỉ thấy từ của level đã unlock
   const filteredDatabase = useMemo(() => {
+    const unlockedLevels = ['L1', 'L2', 'L3', 'L4'].filter((lvl) => isLevelUnlocked(lvl));
     return vocabDatabase.filter((item) => {
+      // BẢO MẬT: nếu là Minh Anh, chỉ được xem từ của level đã mở khóa
+      if (currentActor === 'minh_anh' && !unlockedLevels.includes(item.level)) return false;
       const matchLevel = selectedLevel === 'all' || item.level === selectedLevel;
       const matchCategory = selectedCategory === 'all' || item.category === selectedCategory;
       const matchSearch =
@@ -1516,7 +1559,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
         (item.ipa && item.ipa.toLowerCase().includes(searchQuery.toLowerCase().trim()));
       return matchLevel && matchCategory && matchSearch;
     });
-  }, [vocabDatabase, selectedLevel, selectedCategory, searchQuery]);
+  }, [vocabDatabase, selectedLevel, selectedCategory, searchQuery, currentActor, adminLevelOverrides, levelStats]);
 
   // Pagination calculation for Flashcards
   const totalPages = Math.ceil(filteredDatabase.length / pageSize) || 1;
@@ -1580,10 +1623,10 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
   const handleLevelChange = (levelId) => {
     if (levelId !== 'all' && !isLevelUnlocked(levelId)) {
-      const prevLevelMap = { L2: 'L1', L3: 'L2', L4: 'L3' };
+      const prevLevelMap = { L2: 'L1', L3: 'L2', L4: 'L3', L5: 'L4', L6: 'L5' };
       const reqPrev = prevLevelMap[levelId] || 'L1';
       const curPct = levelStats[reqPrev]?.pct || 0;
-      const levelNames = { L1: 'L1 Khởi Động', L2: 'L2 Cơ Bản', L3: 'L3 Mở Rộng', L4: 'L4 Nâng Cao' };
+      const levelNames = { L1: 'L1 Khởi Động', L2: 'L2 Cơ Bản', L3: 'L3 Mở Rộng', L4: 'L4 Nâng Cao', L5: 'L5 Tiên Phong', L6: 'L6 Hội Nhập Quốc Tế' };
 
       playWordAudio(`Cấp độ ${levelNames[levelId] || levelId} đang tạm khóa! Minh Anh ơi, bé cần đạt tối thiểu 90% ở cấp độ trước đó để tự động mở khóa nhé!`);
 
@@ -2162,8 +2205,8 @@ export function KidsEnglishDashboard({ plan, addToast }) {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-              {['L1', 'L2', 'L3', 'L4'].map((lvlId) => {
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+              {['L1', 'L2', 'L3', 'L4', 'L5', 'L6'].map((lvlId) => {
                 const isOverridden = adminLevelOverrides[lvlId];
                 const stats = levelStats[lvlId] || { pct: 0 };
                 return (
@@ -2193,13 +2236,35 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                       >
                         ⚡ Nạp 90% Tiến Độ
                       </button>
+
+                      {/* Nút Reset Tiến Độ Level */}
+                      <button
+                        onClick={() => handleResetLevelProgress(lvlId)}
+                        className="w-full py-1 px-2 rounded-xl text-[10px] font-black bg-rose-950 text-rose-300 border border-rose-500/40 hover:bg-rose-800 transition"
+                        title={`Xóa sạch tiến độ học của ${lvlId}`}
+                      >
+                        🔄 Reset Tiến Độ {lvlId}
+                      </button>
                     </div>
                   </div>
                 );
               })}
             </div>
+
+            {/* Nút Reset Toàn Bộ Tiến Độ */}
+            <div className="pt-2 border-t border-purple-500/30">
+              <button
+                onClick={handleResetAllProgress}
+                className="w-full py-2.5 px-4 rounded-2xl text-xs font-black bg-gradient-to-r from-rose-900 to-red-900 text-rose-200 border border-rose-500/50 hover:from-rose-800 hover:to-red-800 transition flex items-center justify-center gap-2 shadow-lg"
+                title="Xóa sạch TOÀN BỘ tiến độ, sao ⭐ và thành tích của Minh Anh"
+              >
+                <RefreshCw className="h-3.5 w-3.5" />
+                ⚠️ RESET TOÀN BỘ TIẾN ĐỘ HỌC TẬP MINH ANH (Xóa Sao ⭐ + Từ Đã Thuộc + Thành Tích)
+              </button>
+            </div>
           </div>
         )}
+
 
         <div className="text-xs font-extrabold uppercase tracking-wider text-cyan-300 flex items-center justify-between">
           <div className="flex items-center gap-2">

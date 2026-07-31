@@ -40,13 +40,33 @@ export const COURSE_LEVELS = [
     "description": "Từ học thuật cơ bản, khoa học, tư duy và công dân. Khoa học cơ bản, không gian, từ học thuật, giao tiếp, giải quyết vấn đề, cảm xúc nâng cao, quốc gia/văn hóa, an toàn số, kể chuyện, mục tiêu, toán học, cơ thể bên trong, hóa học, nghệ thuật & xã hội.",
     "icon": "👑",
     "targetWords": 150
+  },
+  {
+    "id": "L5",
+    "name": "Cấp độ L5: Tiên Phong (10–12 tuổi)",
+    "badge": "Tiên Phong • 150 Từ (15 Chủ Đề)",
+    "color": "from-rose-500 to-orange-500 border-rose-400 text-rose-300",
+    "bgBadge": "bg-rose-500/20 text-rose-300 border-rose-500/40",
+    "description": "Ngôn ngữ học thuật đọc hiểu, viết văn, thuyết trình. Văn học thiếu nhi, địa lý thế giới, lịch sử, tư duy phê phán, lập trình cơ bản, kinh tế học, sinh học, vật lý, âm nhạc học, triết học cho bé, thiện nguyện, quyền trẻ em, thành ngữ, toàn cầu hóa & nhân vật lịch sử.",
+    "icon": "🌟",
+    "targetWords": 150
+  },
+  {
+    "id": "L6",
+    "name": "Cấp độ L6: Hội Nhập Quốc Tế (12+ tuổi)",
+    "badge": "Quốc Tế • 150 Từ (15 Chủ Đề)",
+    "color": "from-teal-500 to-cyan-500 border-teal-400 text-teal-300",
+    "bgBadge": "bg-teal-500/20 text-teal-300 border-teal-500/40",
+    "description": "Ngôn ngữ học thuật quốc tế, IELTS/TOEFL cơ bản, giao tiếp toàn cầu. Tài chính cá nhân, ngôn ngữ học, văn hóa Đông Tây, AI/phần mềm, thành công nghề nghiệp, tư duy tăng trưởng, đạo đức, vấn đề toàn cầu, lãnh đạo, sức khỏe tâm thần, giao tiếp ưu việt, chính trị học, IELTS vocab, thành ngữ nâng cao & tư duy hệ thống.",
+    "icon": "🌎",
+    "targetWords": 150
   }
 ];
 
 export const VOCAB_CATEGORIES = [
   {
     "id": "all",
-    "name": "Tất Cả 4 Cấp Độ & 60 Chủ Đề (600 Từ Mở Rộng)",
+    "name": "Tất Cả 6 Cấp Độ & 90 Chủ Đề (900 Từ Mở Rộng)",
     "icon": "🌈"
   },
   {
@@ -408,7 +428,37 @@ export const VOCAB_CATEGORIES = [
     "name": "L4 • 15. Xã hội & Công dân (Society & Citizenship)",
     "icon": "⚖️",
     "level": "L4"
-  }
+  },
+  { "id": "L5-U01", "name": "L5 • 01. Văn học Thiếu Nhi (Children's Literature)", "icon": "📚", "level": "L5" },
+  { "id": "L5-U02", "name": "L5 • 02. Địa Lý Thế Giới (World Geography)", "icon": "🗺️", "level": "L5" },
+  { "id": "L5-U03", "name": "L5 • 03. Lịch Sử Thế Giới (World History)", "icon": "🏛️", "level": "L5" },
+  { "id": "L5-U04", "name": "L5 • 04. Tư Duy Phê Phán (Critical Thinking)", "icon": "🧠", "level": "L5" },
+  { "id": "L5-U05", "name": "L5 • 05. Lập Trình Cơ Bản (Basic Coding)", "icon": "💻", "level": "L5" },
+  { "id": "L5-U06", "name": "L5 • 06. Kinh Tế Học Cơ Bản (Basic Economics)", "icon": "💰", "level": "L5" },
+  { "id": "L5-U07", "name": "L5 • 07. Sinh Học (Biology)", "icon": "🧬", "level": "L5" },
+  { "id": "L5-U08", "name": "L5 • 08. Vật Lý Cơ Bản (Physics Basics)", "icon": "⚡", "level": "L5" },
+  { "id": "L5-U09", "name": "L5 • 09. Âm Nhạc Học (Music Theory)", "icon": "🎵", "level": "L5" },
+  { "id": "L5-U10", "name": "L5 • 10. Triết Học Cho Bé (Philosophy for Kids)", "icon": "💡", "level": "L5" },
+  { "id": "L5-U11", "name": "L5 • 11. Hoạt Động Thiện Nguyện (Volunteering)", "icon": "🤝", "level": "L5" },
+  { "id": "L5-U12", "name": "L5 • 12. Quyền Trẻ Em (Children's Rights)", "icon": "🌈", "level": "L5" },
+  { "id": "L5-U13", "name": "L5 • 13. Thành Ngữ Tiếng Anh (English Idioms)", "icon": "💬", "level": "L5" },
+  { "id": "L5-U14", "name": "L5 • 14. Toàn Cầu Hóa (Globalization)", "icon": "🌐", "level": "L5" },
+  { "id": "L5-U15", "name": "L5 • 15. Nhân Vật Lịch Sử Nổi Tiếng (Famous Historical Figures)", "icon": "🏅", "level": "L5" },
+  { "id": "L6-U01", "name": "L6 • 01. Tài Chính Cá Nhân (Personal Finance)", "icon": "💳", "level": "L6" },
+  { "id": "L6-U02", "name": "L6 • 02. Ngôn Ngữ Học (Linguistics)", "icon": "🔤", "level": "L6" },
+  { "id": "L6-U03", "name": "L6 • 03. Văn Hóa Đông & Tây (East vs West Culture)", "icon": "🎯", "level": "L6" },
+  { "id": "L6-U04", "name": "L6 • 04. Phần Mềm & AI (Software & AI)", "icon": "🤖", "level": "L6" },
+  { "id": "L6-U05", "name": "L6 • 05. Thành Công Nghề Nghiệp (Career Success)", "icon": "👔", "level": "L6" },
+  { "id": "L6-U06", "name": "L6 • 06. Tư Duy Tăng Trưởng (Growth Mindset)", "icon": "🌱", "level": "L6" },
+  { "id": "L6-U07", "name": "L6 • 07. Đạo Đức Học (Ethics)", "icon": "⚖️", "level": "L6" },
+  { "id": "L6-U08", "name": "L6 • 08. Vấn Đề Toàn Cầu (Global Issues)", "icon": "🌍", "level": "L6" },
+  { "id": "L6-U09", "name": "L6 • 09. Lãnh Đạo (Leadership)", "icon": "📌", "level": "L6" },
+  { "id": "L6-U10", "name": "L6 • 10. Sức Khỏe Tâm Thần (Mental Health)", "icon": "🧨", "level": "L6" },
+  { "id": "L6-U11", "name": "L6 • 11. Giao Tiếp Ưu Việt (Excellent Communication)", "icon": "🗣️", "level": "L6" },
+  { "id": "L6-U12", "name": "L6 • 12. Chính Trị Học (Basic Political Science)", "icon": "🏦", "level": "L6" },
+  { "id": "L6-U13", "name": "L6 • 13. IELTS / TOEFL Từ Vựng (Academic Vocabulary)", "icon": "📝", "level": "L6" },
+  { "id": "L6-U14", "name": "L6 • 14. Thành Ngữ Nâng Cao (Advanced Idioms & Proverbs)", "icon": "📖", "level": "L6" },
+  { "id": "L6-U15", "name": "L6 • 15. Tư Duy Hệ Thống (Systems Thinking)", "icon": "♾️", "level": "L6" }
 ];
 
 export const VOCABULARY_DATABASE = [
