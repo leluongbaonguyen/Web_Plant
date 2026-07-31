@@ -1031,9 +1031,10 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     if (!currentPageObj) return;
 
     const allPageWords = [];
-    currentPageObj.sections.forEach((sec) => {
-      sec.words.forEach((w) => {
-        const v = vocabDatabase.find((item) => item.word.toLowerCase() === w.toLowerCase());
+    (currentPageObj.sections || []).forEach((sec) => {
+      (sec?.words || []).forEach((w) => {
+        if (!w) return;
+        const v = vocabDatabase.find((item) => item && item.word && item.word.toLowerCase() === w.toLowerCase());
         if (v) allPageWords.push(v);
       });
     });
@@ -3352,7 +3353,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                 >
                   {posterPages.map((pg) => (
                     <option key={pg.pageNumber} value={pg.pageNumber}>
-                      📄 Chọn Nhanh Trang {pg.pageNumber} ({pg.sections.length} Phân Vùng)
+                      📄 Chọn Nhanh Trang {pg.pageNumber} ({(pg.sections || []).length} Phân Vùng)
                     </option>
                   ))}
                   <option value="all">🌈 Xem Tất Cả {posterPages.length} Trang</option>
@@ -3414,9 +3415,10 @@ export function KidsEnglishDashboard({ plan, addToast }) {
             (pg) => activePosterPage === 'all' || pg.pageNumber === activePosterPage
           ).map((pageObj) => {
             const pageFlatWords = [];
-            pageObj.sections.forEach((sec) => {
-              sec.words.forEach((w) => {
-                const v = vocabDatabase.find((item) => item.word.toLowerCase() === w.toLowerCase());
+            (pageObj.sections || []).forEach((sec) => {
+              (sec?.words || []).forEach((w) => {
+                if (!w) return;
+                const v = vocabDatabase.find((item) => item && item.word && item.word.toLowerCase() === w.toLowerCase());
                 if (v) pageFlatWords.push(v);
               });
             });
@@ -3449,9 +3451,9 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
                 {/* 4 Thematic Color Grids Per Page */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                  {pageObj.sections.map((section) => {
-                    const sectionVocab = section.words
-                      .map((w) => vocabDatabase.find((item) => item.word.toLowerCase() === w.toLowerCase()))
+                  {(pageObj.sections || []).map((section) => {
+                    const sectionVocab = (section?.words || [])
+                      .map((w) => w && vocabDatabase.find((item) => item && item.word && item.word.toLowerCase() === w.toLowerCase()))
                       .filter(Boolean);
 
                     return (
@@ -6457,9 +6459,9 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                 {/* Display Quadrant Sections for Scanned Page */}
                 {posterPages.filter((p) => p.pageNumber === scanPosterPage).map((pg) => (
                   <div key={pg.pageNumber} className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {pg.sections.map((sec) => {
-                      const secWords = sec.words
-                        .map((w) => vocabDatabase.find((v) => v.word.toLowerCase() === w.toLowerCase()))
+                    {(pg.sections || []).map((sec) => {
+                      const secWords = (sec?.words || [])
+                        .map((w) => w && vocabDatabase.find((v) => v && v.word && v.word.toLowerCase() === w.toLowerCase()))
                         .filter(Boolean);
 
                       return (
@@ -7001,9 +7003,10 @@ export function KidsEnglishDashboard({ plan, addToast }) {
         
         let activeWordList = [];
         if (activeTab === 'poster' && currentPageObj) {
-          currentPageObj.sections.forEach((sec) => {
-            sec.words.forEach((w) => {
-              const v = vocabDatabase.find((item) => item.word.toLowerCase() === w.toLowerCase());
+          (currentPageObj.sections || []).forEach((sec) => {
+            (sec?.words || []).forEach((w) => {
+              if (!w) return;
+              const v = vocabDatabase.find((item) => item && item.word && item.word.toLowerCase() === w.toLowerCase());
               if (v) activeWordList.push(v);
             });
           });
@@ -7012,7 +7015,9 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           activeWordList = filteredDatabase.length > 0 ? filteredDatabase : vocabDatabase;
         }
 
-        const currIdx = activeWordList.findIndex(item => item.id === zoomModalCard.id || item.word.toLowerCase() === zoomModalCard.word.toLowerCase());
+        const targetWord = (zoomModalCard?.word || '').toLowerCase();
+        const targetId = zoomModalCard?.id;
+        const currIdx = activeWordList.findIndex(item => item && (item.id === targetId || (item.word && item.word.toLowerCase() === targetWord)));
         const hasPrev = currIdx > 0;
         const hasNext = currIdx >= 0 && currIdx < activeWordList.length - 1;
 
@@ -7370,7 +7375,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
                   {/* Collocations & Synonyms */}
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {detail.collocations && detail.collocations.length > 0 && (
+                    {Array.isArray(detail.collocations) && detail.collocations.length > 0 && (
                       <div className="space-y-1.5">
                         <div className="text-xs font-black text-teal-400 uppercase tracking-wider">🔗 CỤM TỪ ĐI KÈM (COLLOCATIONS):</div>
                         <div className="flex flex-wrap gap-1.5">
@@ -7383,7 +7388,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                       </div>
                     )}
 
-                    {detail.synonyms && detail.synonyms.length > 0 && (
+                    {Array.isArray(detail.synonyms) && detail.synonyms.length > 0 && (
                       <div className="space-y-1.5">
                         <div className="text-xs font-black text-pink-400 uppercase tracking-wider">✨ TỪ ĐỒNG NGHĨA (SYNONYMS):</div>
                         <div className="flex flex-wrap gap-1.5">
