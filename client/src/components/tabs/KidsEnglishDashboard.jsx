@@ -915,6 +915,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
   const [selectedQuizOption, setSelectedQuizOption] = useState(null);
   const [quizTimeLeft, setQuizTimeLeft] = useState(15);
   const [quizMode, setQuizMode] = useState('image_to_word'); // 'image_to_word' | 'word_to_meaning' | 'audio_to_word' | 'fill_sentence'
+  const [customShuffledPool, setCustomShuffledPool] = useState(null);
 
   // Quiz Streak Engine
   const [streakCount, setStreakCount] = useState(0);
@@ -1419,8 +1420,33 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     localStorage.setItem('kids_mastered_words_2000', JSON.stringify(next));
   };
 
+  // Random Shuffle Engine for 100 Quiz Exercises
+  const handleShuffle100Quiz = () => {
+    const baseList = vocabDatabase && vocabDatabase.length > 0 ? [...vocabDatabase] : [...VOCABULARY_DATABASE];
+    // Fisher-Yates Shuffle
+    for (let i = baseList.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [baseList[i], baseList[j]] = [baseList[j], baseList[i]];
+    }
+    const shuffled100 = baseList.slice(0, 100);
+    setCustomShuffledPool(shuffled100);
+    setQuizIndex(0);
+    setQuizAnswered(false);
+    setSelectedQuizOption(null);
+    setQuizTimeLeft(15);
+
+    // Randomize quiz mode for engaging variation
+    const modes = ['image_to_word', 'word_to_meaning', 'audio_to_word', 'fill_sentence'];
+    const randomMode = modes[Math.floor(Math.random() * modes.length)];
+    setQuizMode(randomMode);
+
+    if (addToast) addToast('🎲 Đã trộn ngẫu nhiên 100 bài tập mới thành công! Chúc bé làm bài tốt!', 'success');
+    playWordAudio('Đã trộn ngẫu nhiên 100 bài tập mới cho bé!');
+  };
+
   // Quiz Option Generator based on current filtered dataset and selected quiz mode
-  const quizPool = filteredDatabase.length > 0 ? filteredDatabase : VOCABULARY_DATABASE;
+  const activeQuizSource = customShuffledPool && customShuffledPool.length > 0 ? customShuffledPool : filteredDatabase;
+  const quizPool = activeQuizSource.length > 0 ? activeQuizSource : VOCABULARY_DATABASE;
   const currentQuizCard = (quizPool && quizPool.length > 0) ? quizPool[quizIndex % quizPool.length] : null;
 
   // Timed Quiz Countdown Timer (Thời Gian Đếm Nguồn 15 Giây)
@@ -2476,22 +2502,32 @@ export function KidsEnglishDashboard({ plan, addToast }) {
               </div>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2.5 flex-wrap">
+              {/* Random Shuffle Button */}
+              <button
+                onClick={handleShuffle100Quiz}
+                className="px-4 py-2 rounded-2xl font-black text-xs bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white shadow-xl hover:scale-105 active:scale-95 transition flex items-center gap-2 border border-pink-400/80 cursor-pointer animate-pulse"
+                title="Xáo trộn ngẫu nhiên bộ 100 bài tập mới"
+              >
+                <RotateCw className="h-4 w-4 text-yellow-300 animate-spin-slow" />
+                <span>🎲 Trộn Ngẫu Nhiên 100 Bài Tập</span>
+              </button>
+
               {/* Question Count Tracker */}
-              <div className="rounded-2xl bg-slate-950 border border-slate-800 px-3 py-1.5 text-xs font-mono-code font-bold text-cyan-300">
-                Bài tập #{(quizIndex % 100) + 1} / 100
+              <div className="rounded-2xl bg-slate-950 border border-slate-800 px-3 py-2 text-xs font-mono-code font-bold text-cyan-300 shadow-inner">
+                Bài tập #{(quizIndex % (quizPool.length > 100 ? 100 : (quizPool.length || 1))) + 1} / {quizPool.length > 100 ? 100 : (quizPool.length || 100)}
               </div>
 
               {/* Streak Combo Badge */}
               {streakCount > 0 && (
-                <div className="flex items-center gap-1 rounded-2xl bg-amber-500/20 border border-amber-400 px-3 py-1.5 text-xs font-black text-amber-300 animate-pulse shadow-lg">
+                <div className="flex items-center gap-1 rounded-2xl bg-amber-500/20 border border-amber-400 px-3 py-2 text-xs font-black text-amber-300 animate-pulse shadow-lg">
                   <Flame className="h-4 w-4 text-amber-400 fill-amber-400" />
                   <span>Streak x{streakCount} 🔥</span>
                 </div>
               )}
 
               {/* Total Score */}
-              <div className="flex items-center gap-1.5 rounded-2xl bg-pink-950 border border-pink-500/40 px-3.5 py-1.5 text-xs font-black text-pink-300 shadow-md">
+              <div className="flex items-center gap-1.5 rounded-2xl bg-pink-950 border border-pink-500/40 px-3.5 py-2 text-xs font-black text-pink-300 shadow-md">
                 <Trophy className="h-4 w-4 text-yellow-400" />
                 <span>Điểm: {quizScore}</span>
               </div>
