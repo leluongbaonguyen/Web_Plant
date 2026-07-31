@@ -20,6 +20,10 @@ export function KidsEnglishDashboard({ plan, addToast }) {
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
 
+  // Data Table Pagination State (20 items/page by default)
+  const [tablePage, setTablePage] = useState(1);
+  const [itemsPerPage, setItemsPerPage] = useState(20);
+
   // 600 Vocabulary Expanded Database State & Persistence
   const [vocabDatabase, setVocabDatabase] = useState(() => {
     try {
@@ -1304,12 +1308,26 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     });
   }, [vocabDatabase, selectedLevel, selectedCategory, searchQuery]);
 
-  // Pagination calculation
+  // Pagination calculation for Flashcards
   const totalPages = Math.ceil(filteredDatabase.length / pageSize) || 1;
   const paginatedCards = useMemo(() => {
     const startIdx = (currentPage - 1) * pageSize;
     return filteredDatabase.slice(startIdx, startIdx + pageSize);
   }, [filteredDatabase, currentPage]);
+
+  // Reset Data Table page when search query or category changes
+  useEffect(() => {
+    setTablePage(1);
+  }, [searchQuery, selectedLevel, selectedCategory]);
+
+  // Data Table Pagination Calculations (20 items/page default)
+  const totalTablePages = Math.ceil(filteredDatabase.length / itemsPerPage) || 1;
+  const safeTablePage = Math.min(Math.max(1, tablePage), totalTablePages);
+  const tableStartIndex = (safeTablePage - 1) * itemsPerPage;
+  const tableEndIndex = Math.min(tableStartIndex + itemsPerPage, filteredDatabase.length);
+  const paginatedTableDatabase = useMemo(() => {
+    return filteredDatabase.slice(tableStartIndex, tableEndIndex);
+  }, [filteredDatabase, tableStartIndex, tableEndIndex]);
 
   // Ref to always track latest spotlightCard without causing double-step state mutations
   const spotlightCardRef = useRef(spotlightCard);
@@ -3689,6 +3707,66 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
           {/* Interactive Responsive Data Table */}
           <div className="rounded-3xl border border-slate-800 bg-slate-900/90 shadow-2xl overflow-hidden">
+            {/* Top Pagination Control Header */}
+            <div className="flex flex-wrap items-center justify-between gap-3 p-4 bg-slate-950/90 border-b border-slate-800 text-xs font-bold text-slate-300">
+              <div className="flex items-center gap-2 flex-wrap">
+                <span className="text-slate-400">Hiển thị:</span>
+                <select
+                  value={itemsPerPage}
+                  onChange={(e) => {
+                    setItemsPerPage(Number(e.target.value));
+                    setTablePage(1);
+                  }}
+                  className="rounded-xl border border-slate-700 bg-slate-900 px-3 py-1 text-xs font-black text-cyan-300 focus:border-cyan-400 focus:outline-none shadow-inner"
+                >
+                  <option value={20}>20 từ / trang</option>
+                  <option value={50}>50 từ / trang</option>
+                  <option value={100}>100 từ / trang</option>
+                  <option value={filteredDatabase.length || 99999}>Tất cả ({filteredDatabase.length} từ)</option>
+                </select>
+                <span className="text-slate-400">
+                  | Đang xem từ <span className="text-yellow-300 font-black">{filteredDatabase.length > 0 ? tableStartIndex + 1 : 0}</span> đến <span className="text-yellow-300 font-black">{tableEndIndex}</span> (Tổng <span className="text-cyan-300 font-black">{filteredDatabase.length}</span> từ)
+                </span>
+              </div>
+
+              {/* Top Page Buttons */}
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <button
+                  onClick={() => setTablePage(1)}
+                  disabled={safeTablePage === 1}
+                  className="px-2.5 py-1 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-800 font-black transition"
+                  title="Trang đầu"
+                >
+                  ««
+                </button>
+                <button
+                  onClick={() => setTablePage(prev => Math.max(1, prev - 1))}
+                  disabled={safeTablePage === 1}
+                  className="px-2.5 py-1 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-800 font-bold transition"
+                >
+                  ‹ Trước
+                </button>
+                <span className="px-3 py-1 rounded-lg bg-indigo-950 border border-indigo-500/40 text-indigo-300 font-black">
+                  Trang {safeTablePage} / {totalTablePages}
+                </span>
+                <button
+                  onClick={() => setTablePage(prev => Math.min(totalTablePages, prev + 1))}
+                  disabled={safeTablePage === totalTablePages}
+                  className="px-2.5 py-1 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-800 font-bold transition"
+                >
+                  Sau ›
+                </button>
+                <button
+                  onClick={() => setTablePage(totalTablePages)}
+                  disabled={safeTablePage === totalTablePages}
+                  className="px-2.5 py-1 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-800 font-black transition"
+                  title="Trang cuối"
+                >
+                  »»
+                </button>
+              </div>
+            </div>
+
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs font-sans">
                 <thead className="bg-slate-950 text-cyan-300 font-black uppercase text-[11px] tracking-wider border-b border-slate-800">
@@ -3705,20 +3783,27 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800/80 text-slate-200">
-                  {filteredDatabase.slice(0, 100).map((item, idx) => {
+                  {paginatedTableDatabase.map((item, idx) => {
                     const sInfo = getSuperDetailedVocabInfo(item);
                     return (
                       <tr key={item.id} className="hover:bg-slate-800/50 transition">
-                        <td className="p-3 text-center text-slate-400 font-mono-code">{idx + 1}</td>
+                        <td className="p-3 text-center text-slate-400 font-mono-code font-bold">{tableStartIndex + idx + 1}</td>
                         <td className="p-3 text-center text-2xl">{item.image}</td>
                         <td className="p-3 font-black text-white text-sm">
-                          {item.word}
+                          <div className="flex items-center gap-1.5">
+                            <span>{item.word}</span>
+                            {item.isLongmanVerified && (
+                              <span className="text-[9px] font-bold px-1.5 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-500/40" title="Đã đối soát từ điển Longman">
+                                📖 Longman
+                              </span>
+                            )}
+                          </div>
                           <button
                             onClick={() => playWordAudio(item.word)}
-                            className="ml-2 text-cyan-400 hover:text-cyan-200"
-                            title="Đọc từ"
+                            className="mt-1 text-cyan-400 hover:text-cyan-200 flex items-center gap-1 text-[11px] font-bold"
+                            title="Nghe phát âm"
                           >
-                            <Volume2 className="h-3.5 w-3.5 inline" />
+                            <Volume2 className="h-3.5 w-3.5 inline" /> Phát âm
                           </button>
                         </td>
                         <td className="p-3 space-y-0.5">
@@ -3744,7 +3829,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                             </div>
                           )}
                         </td>
-                        <td className="p-3 text-center space-x-1">
+                        <td className="p-3 text-center space-x-1 whitespace-nowrap">
                           <button
                             onClick={() => handleOpenSuperEdit(item)}
                             className="p-1.5 rounded bg-amber-500/20 text-amber-300 hover:bg-amber-500 hover:text-slate-950 font-bold text-xs"
@@ -3765,12 +3850,95 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                   })}
                 </tbody>
               </table>
+            </div>
 
-              {filteredDatabase.length > 100 && (
-                <div className="p-4 text-center text-xs font-bold text-slate-400 border-t border-slate-800">
-                  Hiển thị 100 / {filteredDatabase.length} từ vựng. Sử dụng ô tìm kiếm để xem các từ khác.
+            {/* Bottom Comprehensive Pagination Control Bar */}
+            <div className="flex flex-wrap items-center justify-between gap-3 p-4 bg-slate-950/90 border-t border-slate-800 text-xs font-bold text-slate-300">
+              <div className="text-slate-400">
+                Hiển thị từ <span className="text-yellow-300 font-black">{filteredDatabase.length > 0 ? tableStartIndex + 1 : 0}</span> đến <span className="text-yellow-300 font-black">{tableEndIndex}</span> trong tổng số <span className="text-cyan-300 font-black">{filteredDatabase.length}</span> từ vựng
+              </div>
+
+              {/* Numbered Page Buttons & Navigation */}
+              <div className="flex items-center gap-1.5 flex-wrap">
+                <button
+                  onClick={() => setTablePage(1)}
+                  disabled={safeTablePage === 1}
+                  className="px-2.5 py-1 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-800 font-black transition"
+                  title="Trang đầu"
+                >
+                  ««
+                </button>
+                <button
+                  onClick={() => setTablePage(prev => Math.max(1, prev - 1))}
+                  disabled={safeTablePage === 1}
+                  className="px-2.5 py-1 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-800 font-bold transition flex items-center gap-1"
+                >
+                  ‹ Trước
+                </button>
+
+                {Array.from({ length: totalTablePages }, (_, i) => i + 1)
+                  .filter(p => p === 1 || p === totalTablePages || Math.abs(p - safeTablePage) <= 2)
+                  .reduce((acc, p, idx, arr) => {
+                    if (idx > 0 && p - arr[idx - 1] > 1) {
+                      acc.push('...');
+                    }
+                    acc.push(p);
+                    return acc;
+                  }, [])
+                  .map((item, idx) => {
+                    if (item === '...') {
+                      return <span key={`dots-${idx}`} className="px-1 text-slate-500">...</span>;
+                    }
+                    return (
+                      <button
+                        key={item}
+                        onClick={() => setTablePage(item)}
+                        className={`px-3 py-1 rounded-lg text-xs font-black transition ${
+                          safeTablePage === item
+                            ? 'bg-gradient-to-r from-cyan-500 to-blue-600 text-white shadow-lg border border-cyan-400 scale-105'
+                            : 'border border-slate-800 bg-slate-950 text-slate-400 hover:text-white hover:bg-slate-800'
+                        }`}
+                      >
+                        {item}
+                      </button>
+                    );
+                  })}
+
+                <button
+                  onClick={() => setTablePage(prev => Math.min(totalTablePages, prev + 1))}
+                  disabled={safeTablePage === totalTablePages}
+                  className="px-2.5 py-1 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-800 font-bold transition flex items-center gap-1"
+                >
+                  Sau ›
+                </button>
+                <button
+                  onClick={() => setTablePage(totalTablePages)}
+                  disabled={safeTablePage === totalTablePages}
+                  className="px-2.5 py-1 rounded-lg border border-slate-700 bg-slate-900 text-slate-300 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-slate-800 font-black transition"
+                  title="Trang cuối"
+                >
+                  »»
+                </button>
+
+                {/* Direct Page Input Jump */}
+                <div className="flex items-center gap-1 ml-2 border-l border-slate-800 pl-2">
+                  <span className="text-[11px] text-slate-400">Chuyển tới:</span>
+                  <input
+                    type="number"
+                    min={1}
+                    max={totalTablePages}
+                    value={safeTablePage}
+                    onChange={(e) => {
+                      const val = Number(e.target.value);
+                      if (val >= 1 && val <= totalTablePages) {
+                        setTablePage(val);
+                      }
+                    }}
+                    className="w-12 text-center rounded-lg border border-slate-700 bg-slate-950 text-yellow-300 font-black py-0.5 text-xs focus:border-cyan-400 focus:outline-none"
+                  />
+                  <span className="text-[11px] text-slate-400">/ {totalTablePages}</span>
                 </div>
-              )}
+              </div>
             </div>
           </div>
         </div>
