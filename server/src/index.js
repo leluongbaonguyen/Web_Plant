@@ -23,12 +23,15 @@ app.use(express.json({ limit: '2mb' }));
 app.use((req, _res, next) => {
   const authHeader = req.headers['authorization'];
   const stealthHeader = req.headers['x-stealth-token'];
+  const queryToken = req.query?.token;
   let token = null;
 
   if (authHeader && authHeader.startsWith('Bearer ')) {
     token = authHeader.substring(7);
   } else if (stealthHeader) {
     token = stealthHeader;
+  } else if (queryToken) {
+    token = queryToken;
   }
 
   if (token) {
@@ -43,7 +46,12 @@ app.use((req, _res, next) => {
 
 // Middleware bắt buộc tất cả tác nhân phải đăng nhập tài khoản trước khi truy cập API
 app.use('/api', (req, res, next) => {
-  const publicPaths = ['/auth/login', '/health', '/roles', '/admin/auth', '/kids/progress', '/api/auth/login', '/api/health', '/api/roles', '/api/admin/auth', '/api/kids/progress'];
+  const publicPaths = [
+    '/auth/login', '/health', '/roles', '/admin/auth', '/kids/progress',
+    '/export/brd-doc', '/export/word',
+    '/api/auth/login', '/api/health', '/api/roles', '/api/admin/auth', '/api/kids/progress',
+    '/api/export/brd-doc', '/api/export/word'
+  ];
   if (publicPaths.includes(req.path) || publicPaths.includes(req.originalUrl)) {
     return next();
   }
