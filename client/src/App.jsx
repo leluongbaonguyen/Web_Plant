@@ -763,6 +763,10 @@ class ErrorBoundary extends React.Component {
               </button>
               <button
                 onClick={() => {
+                  try {
+                    localStorage.clear();
+                    sessionStorage.clear();
+                  } catch (e) {}
                   this.setState({ hasError: false, error: null, errorInfo: null });
                   window.location.reload();
                 }}
