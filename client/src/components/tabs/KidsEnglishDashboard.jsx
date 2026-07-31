@@ -478,10 +478,10 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     const safeVocab = Array.isArray(vocabDatabase) ? vocabDatabase : [];
 
     const prevLvlId = lvlOrder[idx - 1];
-    const prevWords = safeVocab.filter((w) => w.level === prevLvlId);
+    const prevWords = safeVocab.filter((w) => w && w.level === prevLvlId);
     if (prevWords.length === 0) return true;
 
-    const masteredInPrev = prevWords.filter((w) => safeMastered.includes(w.id) || safeMastered.includes(w.word)).length;
+    const masteredInPrev = prevWords.filter((w) => w && (safeMastered.includes(w.id) || safeMastered.includes(w.word))).length;
     const pct = (masteredInPrev / prevWords.length) * 100;
     return pct >= 90;
   }, [adminLevelOverrides, vocabDatabase, masteredCards]);
@@ -492,9 +492,9 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     const safeVocab = Array.isArray(vocabDatabase) ? vocabDatabase : [];
 
     ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'].forEach((lvlId) => {
-      const lvlWords = safeVocab.filter((w) => w.level === lvlId);
+      const lvlWords = safeVocab.filter((w) => w && w.level === lvlId);
       const total = lvlWords.length || 100;
-      const mastered = lvlWords.filter((w) => safeMastered.includes(w.id) || safeMastered.includes(w.word)).length;
+      const mastered = lvlWords.filter((w) => w && (safeMastered.includes(w.id) || safeMastered.includes(w.word))).length;
       const pct = Math.min(100, Math.round((mastered / total) * 100));
       stats[lvlId] = { total, mastered, pct };
     });
@@ -2087,20 +2087,28 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
   // Filter Vocabulary Database — nghiêm ngặt: Minh Anh chỉ thấy từ của level đã unlock
   const filteredDatabase = useMemo(() => {
+    const safeVocab = Array.isArray(vocabDatabase) ? vocabDatabase : [];
     const unlockedLevels = ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'].filter((lvl) => isLevelUnlocked(lvl));
-    return vocabDatabase.filter((item) => {
+    return safeVocab.filter((item) => {
+      if (!item) return false;
       // BẢO MẬT: nếu là Minh Anh, chỉ được xem từ của level đã mở khóa
       if (currentActor === 'minh_anh' && !unlockedLevels.includes(item.level)) return false;
       const matchLevel = selectedLevel === 'all' || item.level === selectedLevel;
       const matchCategory = selectedCategory === 'all' || item.category === selectedCategory;
+
+      const q = (searchQuery || '').toLowerCase().trim();
+      const wordStr = (item.word || '').toLowerCase();
+      const meaningStr = (item.meaning || '').toLowerCase();
+      const ipaStr = (item.ipa || '').toLowerCase();
+
       const matchSearch =
-        !searchQuery.trim() ||
-        item.word.toLowerCase().includes(searchQuery.toLowerCase().trim()) ||
-        item.meaning.toLowerCase().includes(searchQuery.toLowerCase().trim()) ||
-        (item.ipa && item.ipa.toLowerCase().includes(searchQuery.toLowerCase().trim()));
+        !q ||
+        wordStr.includes(q) ||
+        meaningStr.includes(q) ||
+        ipaStr.includes(q);
       return matchLevel && matchCategory && matchSearch;
     });
-  }, [vocabDatabase, selectedLevel, selectedCategory, searchQuery, currentActor, adminLevelOverrides, levelStats]);
+  }, [vocabDatabase, selectedLevel, selectedCategory, searchQuery, currentActor, adminLevelOverrides, levelStats, isLevelUnlocked]);
 
   // Pagination calculation for Flashcards
   const totalPages = Math.ceil(filteredDatabase.length / pageSize) || 1;
