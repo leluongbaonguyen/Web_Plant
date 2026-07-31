@@ -90,6 +90,20 @@ function MainAppContent() {
     }, 3500);
   };
 
+  // Register Service Worker for Mobile Push & Lock Screen Notifications
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+      navigator.serviceWorker
+        .register('/sw.js')
+        .then((reg) => {
+          console.log('⚡ ChronoFlow Service Worker registered:', reg.scope);
+        })
+        .catch((err) => {
+          console.error('Service Worker registration error:', err);
+        });
+    }
+  }, []);
+
   // Fullscreen Listener
   useEffect(() => {
     const handleFullscreenChange = () => {
