@@ -9,10 +9,9 @@ import {
   AlertTriangle, AlertCircle, Archive, Sliders, CheckSquare, FileSpreadsheet
 } from 'lucide-react';
 import { COURSE_LEVELS, VOCAB_CATEGORIES, VOCABULARY_DATABASE, ILLUSTRATED_POSTER_PAGES, getSuperDetailedVocabInfo } from '../../constants/kidsVocabularyDatabase.js';
-import ChronoFlowBrdModal from './ChronoFlowBrdModal.jsx';
+import LongmanEngine from '../../services/longmanDictionary.js';
 
 export function KidsEnglishDashboard({ plan, addToast }) {
-  const [showBrdModal, setShowBrdModal] = useState(false);
   const [selectedLevel, setSelectedLevel] = useState('all'); // 'all' | 'L1' | 'L2' | 'L3' | 'L4'
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -568,13 +567,14 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
   const handleAutoEnrichSuperDetails = () => {
     setIsEnrichingSuperDetails(true);
-    playWordAudio("Bắt đầu tự động nạp và bổ sung thông tin siêu chi tiết cho toàn bộ kho từ vựng và bảng minh họa...");
+    playWordAudio("Bắt đầu đối soát Từ điển Longman và tự động nạp thông tin âm chuẩn IPA cho toàn bộ kho từ vựng!");
 
     setTimeout(() => {
       let enrichedCount = 0;
       const enrichedDb = vocabDatabase.map((item) => {
+        const longmanItem = LongmanEngine.enrichVocabItem(item);
         let isUpdated = false;
-        const newItem = { ...item };
+        const newItem = { ...longmanItem };
 
         // 1. Enrich IPA
         if (!newItem.ipa || newItem.ipa === '/.../' || newItem.ipa === '/' || newItem.ipa === 'N/A') {
@@ -591,11 +591,6 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           else if (wLower === 'cat') phon = 'Cát-tơ';
           else if (wLower === 'dog') phon = 'Đóc-gơ';
           else if (wLower === 'elephant') phon = 'E-lơ-phơn-tơ';
-          else if (wLower === 'butterfly') phon = 'Bơ-tơ-phơ-lai';
-          else if (wLower === 'rainbow') phon = 'Rên-bâu';
-          else if (wLower === 'sunflower') phon = 'Sân-phơ-la-u-ơ';
-          else if (wLower === 'telescope') phon = 'Te-lơ-sơ-cốp';
-          else if (wLower === 'explorer') phon = 'Ích-xơ-pơ-lo-rơ';
           else {
             phon = wLower.charAt(0).toUpperCase() + wLower.slice(1) + "-ơ";
           }
@@ -603,37 +598,16 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           isUpdated = true;
         }
 
-        // 3. Enrich Mnemonic Hint / Memory Trick
+        // 3. Enrich Mnemonic Hint
         if (!newItem.hint && !newItem.mnemonicHint) {
-          newItem.hint = `💡 Mẹo ghi nhớ siêu chi tiết cho "${newItem.word}": Đọc theo âm "${newItem.vietnamesePhonetic || newItem.word}" và liên tưởng hình ảnh ${newItem.image || '⭐'} để thuộc lòng trong 3 giây!`;
+          newItem.hint = `💡 Mẹo ghi nhớ Longman cho "${newItem.word}": Đọc theo âm "${newItem.vietnamesePhonetic || newItem.word}" và hình ảnh ${newItem.image || '⭐'} để thuộc lòng trong 3 giây!`;
           isUpdated = true;
         }
 
-        // 4. Enrich Bilingual Example Sentences
-        if (!newItem.example || !newItem.sentence) {
-          newItem.example = `The ${newItem.word} is very wonderful!`;
-          newItem.sentence = `The ${newItem.word} is very wonderful!`;
-          newItem.exampleVi = `${newItem.meaning ? newItem.meaning.charAt(0).toUpperCase() + newItem.meaning.slice(1) : 'Từ này'} rất tuyệt vời!`;
-          newItem.sentenceVi = `${newItem.meaning ? newItem.meaning.charAt(0).toUpperCase() + newItem.meaning.slice(1) : 'Từ này'} rất tuyệt vời!`;
-          isUpdated = true;
-        }
+        // Mark verified by Longman
+        newItem.isLongmanVerified = true;
 
-        // 5. Enrich Type & Level
-        if (!newItem.type) {
-          newItem.type = 'Danh từ';
-          isUpdated = true;
-        }
-        if (!newItem.level) {
-          newItem.level = 'L1';
-          isUpdated = true;
-        }
-
-        // 6. Enrich Quiz Questions & Review Stage
-        if (!newItem.spacedRepetitionStage) {
-          newItem.spacedRepetitionStage = 1;
-        }
-
-        if (isUpdated) enrichedCount++;
+        if (isUpdated || !item.isLongmanVerified) enrichedCount++;
         return newItem;
       });
 
@@ -5027,13 +5001,6 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           </div>
         </div>
       )}
-
-      {/* ChronoFlow Premium BRD Specification Modal */}
-      <ChronoFlowBrdModal
-        isOpen={showBrdModal}
-        onClose={() => setShowBrdModal(false)}
-        addToast={addToast}
-      />
     </div>
   );
 }
