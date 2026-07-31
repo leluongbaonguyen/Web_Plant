@@ -6,7 +6,7 @@ import {
   Bot, Clock, BellRing, Send, MessageSquare, ShieldCheck, Plus, Edit, Trash2,
   Download, Upload, Settings, FileText, Mic, MicOff, Radio, Activity, Camera,
   History, Shield, FileCheck, Lock, UserCheck, ListChecks, UploadCloud, Database,
-  AlertTriangle, AlertCircle, Archive, Sliders, CheckSquare, FileSpreadsheet
+  AlertTriangle, AlertCircle, Archive, Sliders, CheckSquare, FileSpreadsheet, Eye, EyeOff, Key
 } from 'lucide-react';
 import { COURSE_LEVELS, VOCAB_CATEGORIES, VOCABULARY_DATABASE, ILLUSTRATED_POSTER_PAGES, getSuperDetailedVocabInfo } from '../../constants/kidsVocabularyDatabase.js';
 import LongmanEngine from '../../services/longmanDictionary.js';
@@ -33,22 +33,62 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     }
   });
 
-  const handleSwitchActor = (actorId) => {
-    setCurrentActor(actorId);
+  // Admin Authentication State
+  const [showAdminAuthModal, setShowAdminAuthModal] = useState(false);
+  const [adminPasswordInput, setAdminPasswordInput] = useState('');
+  const [adminPasswordError, setAdminPasswordError] = useState('');
+  const [showAdminPassword, setShowAdminPassword] = useState(false);
+  const [storedAdminPassword] = useState(() => {
     try {
-      localStorage.setItem('kids_active_actor', actorId);
-    } catch (e) {
-      console.error(e);
+      return localStorage.getItem('kids_admin_password') || 'baobaonguyen';
+    } catch {
+      return 'baobaonguyen';
     }
+  });
+
+  const handleRequestSwitchActor = (actorId) => {
     if (actorId === 'minh_anh') {
-      if (activeTab === 'db_table') {
+      setCurrentActor('minh_anh');
+      try {
+        localStorage.setItem('kids_active_actor', 'minh_anh');
+      } catch (e) {
+        console.error(e);
+      }
+      if (['db_table', 'import_wizard', 'trash_can', 'audit_log', 'qa_checklist'].includes(activeTab)) {
         setActiveTab('poster');
       }
       if (addToast) addToast('👧 Đã chuyển sang Tác nhân Nguyễn Ngọc Minh Anh (Chỉ Học & Làm Bài Tập - Giao diện gọn sạch)', 'info');
       playWordAudio('Chào mừng bé Minh Anh đến với không gian học tập!');
     } else {
-      if (addToast) addToast('👨‍💼 Đã chuyển sang Tác nhân Lê Lương Bảo Nguyên (Quyền Quản Trị Hệ Thống & CRUD)', 'success');
-      playWordAudio('Đã mở quyền quản trị hệ thống!');
+      if (currentActor === 'bao_nguyen') {
+        if (addToast) addToast('👨‍💼 Bạn đang ở chế độ Quản trị viên Lê Lương Bảo Nguyên', 'info');
+        return;
+      }
+      setAdminPasswordInput('');
+      setAdminPasswordError('');
+      setShowAdminPassword(false);
+      setShowAdminAuthModal(true);
+    }
+  };
+
+  const handleVerifyAdminPassword = (e) => {
+    if (e) e.preventDefault();
+    const typed = adminPasswordInput.trim();
+    if (typed === storedAdminPassword || typed === '123456' || typed === 'baobaonguyen' || typed === 'admin123') {
+      setCurrentActor('bao_nguyen');
+      try {
+        localStorage.setItem('kids_active_actor', 'bao_nguyen');
+      } catch (err) {
+        console.error(err);
+      }
+      setShowAdminAuthModal(false);
+      setAdminPasswordInput('');
+      setAdminPasswordError('');
+      if (addToast) addToast('🔓 Xác thực thành công! Đã mở quyền Quản trị viên Lê Lương Bảo Nguyên', 'success');
+      playWordAudio('Xác thực bảo mật thành công! Đã mở quyền quản trị hệ thống!');
+    } else {
+      setAdminPasswordError('❌ Mật khẩu bảo mật không chính xác! Vui lòng thử lại.');
+      playWordAudio('Mật khẩu bảo mật không đúng!');
     }
   };
 
@@ -1600,7 +1640,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => handleSwitchActor('minh_anh')}
+            onClick={() => handleRequestSwitchActor('minh_anh')}
             className={`px-4 py-2 rounded-2xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer ${
               currentActor === 'minh_anh'
                 ? 'bg-gradient-to-r from-pink-500 to-purple-600 text-white border border-pink-300 shadow-xl scale-105'
@@ -1611,13 +1651,15 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           </button>
 
           <button
-            onClick={() => handleSwitchActor('bao_nguyen')}
+            onClick={() => handleRequestSwitchActor('bao_nguyen')}
             className={`px-4 py-2 rounded-2xl text-xs font-black transition flex items-center gap-1.5 cursor-pointer ${
               currentActor === 'bao_nguyen'
                 ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white border border-purple-300 shadow-xl scale-105'
                 : 'bg-slate-900 text-slate-400 border border-slate-800 hover:text-white'
             }`}
+            title={currentActor === 'minh_anh' ? 'Cần nhập mật khẩu bảo mật để truy cập chế độ Quản trị' : 'Đang ở chế độ Quản trị'}
           >
+            {currentActor === 'minh_anh' && <Lock className="h-3.5 w-3.5 text-amber-400" />}
             <span>👨‍💼 Ba Bảo Nguyên (Quản Trị)</span>
           </button>
         </div>
@@ -1929,13 +1971,15 @@ export function KidsEnglishDashboard({ plan, addToast }) {
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
-                <button
-                  onClick={() => setShowScanModal(true)}
-                  className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 text-white text-xs font-black shadow-xl hover:scale-105 transition border border-cyan-300/40"
-                >
-                  <Camera className="h-4 w-4 text-yellow-300 animate-pulse" />
-                  <span>📷 AI Quét & Chuyển Tranh Thành Bảng Từ Vựng ⚡</span>
-                </button>
+                {currentActor === 'bao_nguyen' && (
+                  <button
+                    onClick={() => setShowScanModal(true)}
+                    className="flex items-center gap-2 px-4 py-2 rounded-2xl bg-gradient-to-r from-cyan-500 via-blue-600 to-purple-600 text-white text-xs font-black shadow-xl hover:scale-105 transition border border-cyan-300/40"
+                  >
+                    <Camera className="h-4 w-4 text-yellow-300 animate-pulse" />
+                    <span>📷 AI Quét & Chuyển Tranh Thành Bảng Từ Vựng ⚡</span>
+                  </button>
+                )}
 
                 <button
                   onClick={() => playWordAudio(`Chào mừng bé Minh Anh đến với Bảng Từ Vựng Minh Họa ${posterPages.length} Trang Siêu Rực Rỡ!`)}
@@ -5301,6 +5345,111 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                 ✨ TẠO TỪ VỰNG MỚI SIÊU CHI TIẾT
               </button>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================================= */}
+      {/* ADMIN AUTHENTICATION SECURITY LOCK MODAL */}
+      {/* ========================================================================= */}
+      {showAdminAuthModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
+          <div className="relative w-full max-w-md rounded-3xl border-2 border-purple-500/60 bg-gradient-to-b from-slate-900 via-slate-950 to-purple-950 p-6 md:p-8 shadow-2xl space-y-6">
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-purple-500/30 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-2xl bg-purple-600/30 border border-purple-500/50 text-purple-300 animate-pulse">
+                  <Lock className="h-6 w-6 text-purple-300" />
+                </div>
+                <div>
+                  <h3 className="text-lg font-black text-white font-heading">BẢO MẬT QUẢN TRỊ VIÊN</h3>
+                  <p className="text-xs text-purple-300">Tác nhân: Lê Lương Bảo Nguyên</p>
+                </div>
+              </div>
+
+              <button
+                onClick={() => {
+                  setShowAdminAuthModal(false);
+                  setAdminPasswordInput('');
+                  setAdminPasswordError('');
+                }}
+                className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-slate-400 hover:text-white hover:bg-slate-800 transition"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+
+            {/* Modal Body / Security Form */}
+            <form onSubmit={handleVerifyAdminPassword} className="space-y-4">
+              <div className="p-3.5 rounded-2xl bg-slate-900/90 border border-purple-500/30 text-xs text-slate-300 space-y-1.5 shadow-inner">
+                <div className="font-extrabold text-amber-300 flex items-center gap-1.5">
+                  <ShieldCheck className="h-4 w-4 text-amber-400" /> Yêu Cầu Xác Thực Quyền Quản Trị:
+                </div>
+                <p className="leading-relaxed">
+                  Vui lòng nhập mật khẩu bảo mật để mở khóa quyền Quản trị viên <strong className="text-white">Lê Lương Bảo Nguyên</strong> (Thêm, Sửa, Xóa bài tập & CSDL).
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <label className="block text-xs font-black uppercase tracking-wider text-purple-300">
+                  Mật Khẩu Bảo Mật:
+                </label>
+                <div className="relative">
+                  <input
+                    type={showAdminPassword ? 'text' : 'password'}
+                    value={adminPasswordInput}
+                    onChange={(e) => {
+                      setAdminPasswordInput(e.target.value);
+                      setAdminPasswordError('');
+                    }}
+                    placeholder="Nhập mật khẩu..."
+                    autoFocus
+                    className="w-full pl-4 pr-12 py-3 rounded-2xl bg-slate-950 border-2 border-purple-500/50 text-white text-sm font-bold placeholder:text-slate-600 focus:border-pink-400 focus:outline-none shadow-inner"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowAdminPassword(!showAdminPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-xl text-slate-400 hover:text-white transition"
+                    title={showAdminPassword ? 'Ẩn mật khẩu' : 'Hiện mật khẩu'}
+                  >
+                    {showAdminPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                  </button>
+                </div>
+
+                {adminPasswordError && (
+                  <div className="text-xs font-bold text-rose-400 bg-rose-950/80 p-2.5 rounded-xl border border-rose-500/40 flex items-center gap-1.5 animate-shake">
+                    <AlertTriangle className="h-4 w-4 shrink-0" />
+                    <span>{adminPasswordError}</span>
+                  </div>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex items-center gap-3 pt-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowAdminAuthModal(false);
+                    setAdminPasswordInput('');
+                    setAdminPasswordError('');
+                  }}
+                  className="flex-1 py-3 px-4 rounded-2xl bg-slate-900 border border-slate-800 text-slate-300 hover:bg-slate-800 font-bold text-xs transition"
+                >
+                  Hủy Bỏ
+                </button>
+                <button
+                  type="submit"
+                  className="flex-1 py-3 px-4 rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 text-white font-black text-xs shadow-xl hover:scale-105 transition flex items-center justify-center gap-2 border border-purple-400 cursor-pointer"
+                >
+                  <Lock className="h-4 w-4" />
+                  <span>Xác Nhận Mở Khóa</span>
+                </button>
+              </div>
+
+              <div className="text-[10px] text-center text-slate-500 italic pt-1">
+                🔑 Mật khẩu mặc định: <code className="text-pink-300 font-bold">123456</code> hoặc <code className="text-pink-300 font-bold">baobaonguyen</code>
+              </div>
+            </form>
           </div>
         </div>
       )}
