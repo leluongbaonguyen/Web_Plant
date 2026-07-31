@@ -8961,13 +8961,370 @@ export function getSuperDetailedVocabInfo(item) {
 }
 
 export const ILLUSTRATED_POSTER_PAGES = [
-  { id: 1, title: 'Trang 1: Bảng Màu & Số Đếm Kỳ Diệu 🎨🔢', icon: '🎨', level: 'L1', description: 'Khám phá các màu sắc rực rỡ và những số đếm cơ bản cùng mascot Pinky!' },
-  { id: 2, title: 'Trang 2: Thế Giới Động Vật Hoang Dã 🦁🐘', icon: '🦁', level: 'L2', description: 'Tìm hiểu sư tử, voi, hổ, khỉ và các bạn động vật đáng yêu!' },
-  { id: 3, title: 'Trang 3: Hoa Quả & Món Ăn Tuyệt Hảo 🍎🍉', icon: '🍎', level: 'L2', description: 'Thưởng thức các loại trái cây tươi ngon và đồ ăn bổ dưỡng!' },
-  { id: 4, title: 'Trang 4: Hành Trình Khám Phá Thiên Nhiên 🧭🌳', icon: '🧭', level: 'L3', description: 'Cùng la bàn và bản đồ du ngoạn rừng xanh đại ngàn!' },
-  { id: 5, title: 'Trang 5: Nguyệt Cầu & Vũ Trụ Bao La 🚀🪐', icon: '🚀', level: 'L4', description: 'Bay tới các hành tinh xa xôi và khám phá vũ trụ ngàn sao!' },
-  { id: 6, title: 'Trang 6: Thành Phố Thông Minh & Nghề Nghiệp 🏙️👨‍⚕️', icon: '🏙️', level: 'L5', description: 'Học về các ngành nghề cao quý và nhịp sống đô thị hiện đại!' },
-  { id: 7, title: 'Trang 7: Công Nghệ AI & Hội Nhập Toàn Cầu 💻🌐', icon: '🌐', level: 'L6', description: 'Trải nghiệm đỉnh cao tri thức chuẩn quốc tế CEFR B2-C1!' },
+  {
+    id: 1,
+    pageNumber: 1,
+    title: 'Trang 1: Bảng Màu & Số Đếm Kỳ Diệu 🎨🔢',
+    subtitle: '4 Phân vùng chủ đề Khởi Động Level 1 (40 Từ Vựng Cốt Lõi)',
+    badge: 'Level 1 • Khởi Động',
+    icon: '🎨',
+    level: 'L1',
+    description: 'Khám phá các màu sắc rực rỡ và những số đếm cơ bản cùng mascot Pinky!',
+    sections: [
+      {
+        id: 'P1-SEC1',
+        title: 'Phân vùng 1: Thế giới Màu sắc Rực rỡ 🔴🔵🟡',
+        theme: 'red',
+        bgHeader: 'bg-red-600 text-white',
+        borderColor: 'border-red-500',
+        badgeBg: 'bg-red-100 text-red-700',
+        icon: '🎨',
+        words: ['red', 'blue', 'yellow', 'green', 'orange', 'purple', 'pink', 'brown', 'black', 'white']
+      },
+      {
+        id: 'P1-SEC2',
+        title: 'Phân vùng 2: Số đếm & Hình khối Kỳ diệu 🔢📐',
+        theme: 'blue',
+        bgHeader: 'bg-blue-600 text-white',
+        borderColor: 'border-blue-500',
+        badgeBg: 'bg-blue-100 text-blue-700',
+        icon: '🔢',
+        words: ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten']
+      },
+      {
+        id: 'P1-SEC3',
+        title: 'Phân vùng 3: Các bạn Động vật Xinh xắn 🐱🐶🐥',
+        theme: 'amber',
+        bgHeader: 'bg-amber-600 text-white',
+        borderColor: 'border-amber-500',
+        badgeBg: 'bg-amber-100 text-amber-700',
+        icon: '🐶',
+        words: ['cat', 'dog', 'bird', 'fish', 'duck', 'pig', 'cow', 'horse', 'sheep', 'frog']
+      },
+      {
+        id: 'P1-SEC4',
+        title: 'Phân vùng 4: Đồ dùng sinh hoạt của Bé 🎒👕👟',
+        theme: 'emerald',
+        bgHeader: 'bg-emerald-600 text-white',
+        borderColor: 'border-emerald-500',
+        badgeBg: 'bg-emerald-100 text-emerald-700',
+        icon: '🎒',
+        words: ['hat', 'shirt', 'shoes', 'bag', 'cup', 'ball', 'car', 'toy', 'bed', 'door']
+      }
+    ]
+  },
+  {
+    id: 2,
+    pageNumber: 2,
+    title: 'Trang 2: Thế Giới Động Vật Hoang Dã & Gia Đình 🦁🐘👨‍👩‍👧‍👦',
+    subtitle: '4 Phân vùng chủ đề Cơ Bản Level 2 (40 Từ Vựng Cốt Lõi)',
+    badge: 'Level 2 • Cơ Bản',
+    icon: '🦁',
+    level: 'L2',
+    description: 'Tìm hiểu sư tử, voi, hổ, khỉ và tình cảm gia đình ấm áp!',
+    sections: [
+      {
+        id: 'P2-SEC1',
+        title: 'Phân vùng 1: Động vật Hoang dã Đại ngàn 🦁🐘🐅',
+        theme: 'purple',
+        bgHeader: 'bg-purple-600 text-white',
+        borderColor: 'border-purple-500',
+        badgeBg: 'bg-purple-100 text-purple-700',
+        icon: '🦁',
+        words: ['lion', 'elephant', 'tiger', 'monkey', 'bear', 'giraffe', 'zebra', 'hippo', 'snake', 'rabbit']
+      },
+      {
+        id: 'P2-SEC2',
+        title: 'Phân vùng 2: Gia đình & Người thân Yêu thương 👨‍👩‍👧‍👦',
+        theme: 'pink',
+        bgHeader: 'bg-pink-600 text-white',
+        borderColor: 'border-pink-500',
+        badgeBg: 'bg-pink-100 text-pink-700',
+        icon: '❤️',
+        words: ['mother', 'father', 'brother', 'sister', 'baby', 'grandfather', 'grandmother', 'family', 'home', 'friend']
+      },
+      {
+        id: 'P2-SEC3',
+        title: 'Phân vùng 3: Thức ăn & Đồ uống Ngon lành 🍎🍞🥛',
+        theme: 'amber',
+        bgHeader: 'bg-amber-600 text-white',
+        borderColor: 'border-amber-500',
+        badgeBg: 'bg-amber-100 text-amber-700',
+        icon: '🍎',
+        words: ['apple', 'banana', 'orange', 'milk', 'bread', 'rice', 'water', 'cake', 'pizza', 'egg']
+      },
+      {
+        id: 'P2-SEC4',
+        title: 'Phân vùng 4: Ngôi nhà Ấm cúng của Bé 🏠🛋️🛏️',
+        theme: 'teal',
+        bgHeader: 'bg-teal-600 text-white',
+        borderColor: 'border-teal-500',
+        badgeBg: 'bg-teal-100 text-teal-700',
+        icon: '🏠',
+        words: ['house', 'room', 'table', 'chair', 'clock', 'phone', 'lamp', 'sofa', 'TV', 'kitchen']
+      }
+    ]
+  },
+  {
+    id: 3,
+    pageNumber: 3,
+    title: 'Trang 3: Khám Phá Thiên Nhiên & Trường Học 🧭🌳🏫',
+    subtitle: '4 Phân vùng chủ đề Mở Rộng Level 3 (40 Từ Vựng Cốt Lõi)',
+    badge: 'Level 3 • Mở Rộng',
+    icon: '🧭',
+    level: 'L3',
+    description: 'Cùng la bàn du ngoạn thiên nhiên và không gian trường học vui tươi!',
+    sections: [
+      {
+        id: 'P3-SEC1',
+        title: 'Phân vùng 1: Thiên nhiên & Thời tiết Tươi đẹp ☀️🌧️🌲',
+        theme: 'emerald',
+        bgHeader: 'bg-emerald-600 text-white',
+        borderColor: 'border-emerald-500',
+        badgeBg: 'bg-emerald-100 text-emerald-700',
+        icon: '🌳',
+        words: ['sun', 'moon', 'star', 'sky', 'cloud', 'rain', 'wind', 'snow', 'tree', 'leaf']
+      },
+      {
+        id: 'P3-SEC2',
+        title: 'Phân vùng 2: Dụng cụ Học tập & Lớp học ✏️📐🎒',
+        theme: 'indigo',
+        bgHeader: 'bg-indigo-600 text-white',
+        borderColor: 'border-indigo-500',
+        badgeBg: 'bg-indigo-100 text-indigo-700',
+        icon: '✏️',
+        words: ['school', 'class', 'desk', 'pencil', 'ruler', 'eraser', 'paper', 'computer', 'map', 'book']
+      },
+      {
+        id: 'P3-SEC3',
+        title: 'Phân vùng 3: Phương tiện Giao thông Đô thị 🚗🚌✈️',
+        theme: 'cyan',
+        bgHeader: 'bg-cyan-600 text-white',
+        borderColor: 'border-cyan-500',
+        badgeBg: 'bg-cyan-100 text-cyan-700',
+        icon: '🚀',
+        words: ['city', 'street', 'car', 'bus', 'train', 'plane', 'bike', 'ship', 'park', 'shop']
+      },
+      {
+        id: 'P3-SEC4',
+        title: 'Phân vùng 4: Thể thao & Trò chơi Năng động ⚽🏸🎨',
+        theme: 'orange',
+        bgHeader: 'bg-orange-600 text-white',
+        borderColor: 'border-orange-500',
+        badgeBg: 'bg-orange-100 text-orange-700',
+        icon: '⚽',
+        words: ['sports', 'game', 'music', 'song', 'art', 'dance', 'ball', 'swim', 'run', 'jump']
+      }
+    ]
+  },
+  {
+    id: 4,
+    pageNumber: 4,
+    title: 'Trang 4: Hành Tinh & Vũ Trụ Bao La 🚀🪐✨',
+    subtitle: '4 Phân vùng chủ đề Nâng Cao Level 4 (40 Từ Vựng Cốt Lõi)',
+    badge: 'Level 4 • Nâng Cao',
+    icon: '🚀',
+    level: 'L4',
+    description: 'Bay tới các hành tinh xa xôi và khám phá vũ trụ ngàn sao!',
+    sections: [
+      {
+        id: 'P4-SEC1',
+        title: 'Phân vùng 1: Thiên văn & Nguyệt cầu 🪐🚀🌌',
+        theme: 'purple',
+        bgHeader: 'bg-purple-700 text-white',
+        borderColor: 'border-purple-600',
+        badgeBg: 'bg-purple-100 text-purple-800',
+        icon: '🌌',
+        words: ['space', 'planet', 'rocket', 'astronaut', 'galaxy', 'telescope', 'gravity', 'orbit', 'comet', 'meteor']
+      },
+      {
+        id: 'P4-SEC2',
+        title: 'Phân vùng 2: Nghề nghiệp & Ước mơ 👨‍⚕️👨‍🏫👩‍🍳',
+        theme: 'teal',
+        bgHeader: 'bg-teal-700 text-white',
+        borderColor: 'border-teal-600',
+        badgeBg: 'bg-teal-100 text-teal-800',
+        icon: '👩‍⚕️',
+        words: ['doctor', 'nurse', 'teacher', 'pilot', 'driver', 'chef', 'artist', 'singer', 'police', 'firefighter']
+      },
+      {
+        id: 'P4-SEC3',
+        title: 'Phân vùng 3: Bảo vệ Môi trường & Trái Đất 🌍🌱♻️',
+        theme: 'emerald',
+        bgHeader: 'bg-emerald-700 text-white',
+        borderColor: 'border-emerald-600',
+        badgeBg: 'bg-emerald-100 text-emerald-800',
+        icon: '🌱',
+        words: ['nature', 'environment', 'plant', 'flower', 'forest', 'ocean', 'river', 'protect', 'earth', 'clean']
+      },
+      {
+        id: 'P4-SEC4',
+        title: 'Phân vùng 4: Nghệ thuật & Di sản Văn hóa 🎭🎨🎻',
+        theme: 'rose',
+        bgHeader: 'bg-rose-700 text-white',
+        borderColor: 'border-rose-600',
+        badgeBg: 'bg-rose-100 text-rose-800',
+        icon: '🎭',
+        words: ['museum', 'theater', 'painting', 'sculpture', 'culture', 'story', 'legend', 'tradition', 'hero', 'history']
+      }
+    ]
+  },
+  {
+    id: 5,
+    pageNumber: 5,
+    title: 'Trang 5: Công Nghệ AI & Kỹ Năng Tương Lai 💻🤖🧠',
+    subtitle: '4 Phân vùng chủ đề Tiên Phong Level 5 (40 Từ Vựng Cốt Lõi)',
+    badge: 'Level 5 • Tiên Phong',
+    icon: '💻',
+    level: 'L5',
+    description: 'Học về robot, trí tuệ nhân tạo AI và kỹ năng tư duy phản biện!',
+    sections: [
+      {
+        id: 'P5-SEC1',
+        title: 'Phân vùng 1: Trí tuệ Nhân tạo & Công nghệ Số 🤖💻🌐',
+        theme: 'blue',
+        bgHeader: 'bg-blue-700 text-white',
+        borderColor: 'border-blue-600',
+        badgeBg: 'bg-blue-100 text-blue-800',
+        icon: '🤖',
+        words: ['technology', 'computer', 'robot', 'internet', 'AI', 'data', 'code', 'screen', 'digital', 'smart']
+      },
+      {
+        id: 'P5-SEC2',
+        title: 'Phân vùng 2: Tư duy Phản biện & Giải quyết Lỗi 🧠💡🎯',
+        theme: 'amber',
+        bgHeader: 'bg-amber-700 text-white',
+        borderColor: 'border-amber-600',
+        badgeBg: 'bg-amber-100 text-amber-800',
+        icon: '💡',
+        words: ['logic', 'problem', 'solution', 'think', 'create', 'analyze', 'focus', 'learn', 'practice', 'improve']
+      },
+      {
+        id: 'P5-SEC3',
+        title: 'Phân vùng 3: Sức khỏe Thể chất & Dinh dưỡng 🫀🦾🏃‍♂️',
+        theme: 'rose',
+        bgHeader: 'bg-rose-700 text-white',
+        borderColor: 'border-rose-600',
+        badgeBg: 'bg-rose-100 text-rose-800',
+        icon: '🏃‍♂️',
+        words: ['health', 'fitness', 'exercise', 'muscle', 'heart', 'brain', 'diet', 'sleep', 'energy', 'strong']
+      },
+      {
+        id: 'P5-SEC4',
+        title: 'Phân vùng 4: Du lịch & Khám phá Thế giới ✈️🗺️🧳',
+        theme: 'indigo',
+        bgHeader: 'bg-indigo-700 text-white',
+        borderColor: 'border-indigo-600',
+        badgeBg: 'bg-indigo-100 text-indigo-800',
+        icon: '🗺️',
+        words: ['travel', 'world', 'country', 'flag', 'language', 'journey', 'explore', 'map', 'compass', 'passport']
+      }
+    ]
+  },
+  {
+    id: 6,
+    pageNumber: 6,
+    title: 'Trang 6: Khoa Học Tự Nhiên & Toán Học Chuẩn Quốc Tế 🔬🧮🧬',
+    subtitle: '4 Phân vùng chủ đề Hội Nhập Level 6 - Phần 1 (40 Từ Vựng CEFR)',
+    badge: 'Level 6 • Hội Nhập 1',
+    icon: '🏙️',
+    level: 'L6',
+    description: 'Tiếp cận thuật ngữ Sinh học, Toán học và Hóa học chuyên sâu!',
+    sections: [
+      {
+        id: 'P6-SEC1',
+        title: 'Phân vùng 1: Sinh học & Cơ quan Cơ thể 🧬🫀🔬',
+        theme: 'emerald',
+        bgHeader: 'bg-emerald-800 text-white',
+        borderColor: 'border-emerald-700',
+        badgeBg: 'bg-emerald-100 text-emerald-900',
+        icon: '🔬',
+        words: ['cell', 'organ', 'tissue', 'bone', 'muscle', 'blood', 'heart', 'brain', 'lung', 'stomach']
+      },
+      {
+        id: 'P6-SEC2',
+        title: 'Phân vùng 2: Toán học & Phép tính Phức hợp 🧮📊📐',
+        theme: 'cyan',
+        bgHeader: 'bg-cyan-800 text-white',
+        borderColor: 'border-cyan-700',
+        badgeBg: 'bg-cyan-100 text-cyan-900',
+        icon: '🧮',
+        words: ['subtraction', 'multiplication', 'division', 'fraction', 'decimal', 'percentage', 'equation', 'graph', 'measurement']
+      },
+      {
+        id: 'P6-SEC3',
+        title: 'Phân vùng 3: Hóa học & Phản ứng Phòng Thí nghiệm 🧪⚛️⚗️',
+        theme: 'purple',
+        bgHeader: 'bg-purple-800 text-white',
+        borderColor: 'border-purple-700',
+        badgeBg: 'bg-purple-100 text-purple-900',
+        icon: '🧪',
+        words: ['atom', 'molecule', 'element', 'compound', 'acid', 'base', 'reaction', 'temperature', 'laboratory', 'chemical']
+      },
+      {
+        id: 'P6-SEC4',
+        title: 'Phân vùng 4: Nghệ thuật Mỹ thuật & Thiết kế 🖼️🖌️🎨',
+        theme: 'pink',
+        bgHeader: 'bg-pink-800 text-white',
+        borderColor: 'border-pink-700',
+        badgeBg: 'bg-pink-100 text-pink-900',
+        icon: '🎨',
+        words: ['canvas', 'brush', 'palette', 'sketch', 'portrait', 'landscape', 'sculpture', 'gallery', 'pattern', 'texture']
+      }
+    ]
+  },
+  {
+    id: 7,
+    pageNumber: 7,
+    title: 'Trang 7: Công Dân Toàn Cầu & Trách Nhiệm Xã Hội 🌐⚖️🏛️',
+    subtitle: '4 Phân vùng chủ đề Hội Nhập Level 6 - Phần 2 (40 Từ Vựng CEFR)',
+    badge: 'Level 7 • Hội Nhập 2',
+    icon: '🌐',
+    level: 'L6',
+    description: 'Trải nghiệm tri thức công dân toàn cầu, luật pháp và sự phát triển bền vững!',
+    sections: [
+      {
+        id: 'P7-SEC1',
+        title: 'Phân vùng 1: Công dân & Quyền lợi Xã hội 🧑‍🤝‍🧑⚖️🤝',
+        theme: 'indigo',
+        bgHeader: 'bg-indigo-800 text-white',
+        borderColor: 'border-indigo-700',
+        badgeBg: 'bg-indigo-100 text-indigo-900',
+        icon: '🏛️',
+        words: ['citizen', 'community', 'law', 'rule', 'responsibility', 'right', 'equality', 'respect', 'volunteer', 'government']
+      },
+      {
+        id: 'P7-SEC2',
+        title: 'Phân vùng 2: Kinh tế & Quản lý Tài chính 💰📊🏢',
+        theme: 'amber',
+        bgHeader: 'bg-amber-800 text-white',
+        borderColor: 'border-amber-700',
+        badgeBg: 'bg-amber-100 text-amber-900',
+        icon: '💰',
+        words: ['citizen', 'community', 'law', 'rule', 'responsibility', 'right', 'equality', 'respect', 'volunteer', 'government']
+      },
+      {
+        id: 'P7-SEC3',
+        title: 'Phân vùng 3: Ngoại giao & Hòa bình Thế giới 🕊️🌐🤝',
+        theme: 'blue',
+        bgHeader: 'bg-blue-800 text-white',
+        borderColor: 'border-blue-700',
+        badgeBg: 'bg-blue-100 text-blue-900',
+        icon: '🌐',
+        words: ['citizen', 'community', 'law', 'rule', 'responsibility', 'right', 'equality', 'respect', 'volunteer', 'government']
+      },
+      {
+        id: 'P7-SEC4',
+        title: 'Phân vùng 4: Phát triển Bền vững & Trái đất Green ♻️🌳🌍',
+        theme: 'emerald',
+        bgHeader: 'bg-emerald-800 text-white',
+        borderColor: 'border-emerald-700',
+        badgeBg: 'bg-emerald-100 text-emerald-900',
+        icon: '🌍',
+        words: ['citizen', 'community', 'law', 'rule', 'responsibility', 'right', 'equality', 'respect', 'volunteer', 'government']
+      }
+    ]
+  }
 ];
 
 export default VOCABULARY_DATABASE;
