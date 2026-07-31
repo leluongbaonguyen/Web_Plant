@@ -165,7 +165,7 @@ export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
             <div className="flex flex-wrap items-center gap-3 pt-2">
               <div className="flex items-center gap-2 rounded-2xl border border-red-500/40 bg-red-950/60 px-4 py-2 text-xs font-black text-red-300">
                 <Users className="h-4 w-4 text-red-400" />
-                <span>{agents.length} Tác Nhân Đang Quản Lý</span>
+                <span>{(agents || []).length} Tác Nhân Đang Quản Lý</span>
               </div>
 
               <div className="flex items-center gap-2 rounded-2xl border border-cyan-500/40 bg-cyan-950/60 px-4 py-2 text-xs font-black text-cyan-300">
@@ -196,7 +196,7 @@ export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
           }`}
         >
           <Users className="h-4 w-4" />
-          <span>1. Quản Lý Tác Nhân ({agents.length})</span>
+          <span>1. Quản Lý Tác Nhân ({(agents || []).length})</span>
         </button>
 
         <button
@@ -218,7 +218,7 @@ export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
             <div>
               <h3 className="text-lg font-black text-white font-heading flex items-center gap-2">
                 <Users className="h-5 w-5 text-red-400" />
-                DANH SÁCH & PHÂN QUYỀN TÁC NHÂN HỆ THỐNG ({agents.length})
+                DANH SÁCH & PHÂN QUYỀN TÁC NHÂN HỆ THỐNG ({(agents || []).length})
               </h3>
               <p className="text-xs text-slate-400">Quản lý thêm, sửa, xóa, khóa tài khoản và phân quyền cho từng tác nhân riêng biệt</p>
             </div>
@@ -256,7 +256,7 @@ export function AdminMasterControl({ plan, onUpdatePlan, addToast }) {
                 onChange={(e) => setAgentRoleFilter(e.target.value)}
                 className="rounded-xl border border-slate-700 bg-slate-950 px-3 py-2 text-xs text-white font-bold"
               >
-                <option value="ALL">Tất cả vai trò ({agents.length})</option>
+                <option value="ALL">Tất cả vai trò ({(agents || []).length})</option>
                 <option value="admin">Quản Trị Viên (Admin)</option>
                 <option value="kids_english">Bé Học Tiếng Anh</option>
                 <option value="editor">Biên Tập Viên</option>

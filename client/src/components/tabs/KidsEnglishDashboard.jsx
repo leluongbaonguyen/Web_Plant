@@ -357,7 +357,8 @@ export function KidsEnglishDashboard({ plan, addToast }) {
   const [masteredCards, setMasteredCards] = useState(() => {
     try {
       const saved = localStorage.getItem('kids_mastered_words_2000');
-      return saved ? JSON.parse(saved) : [];
+      const parsed = saved ? JSON.parse(saved) : [];
+      return Array.isArray(parsed) ? parsed : [];
     } catch {
       return [];
     }
@@ -467,27 +468,33 @@ export function KidsEnglishDashboard({ plan, addToast }) {
   // Level Lock & Progression Logic (90% Threshold)
   const isLevelUnlocked = useCallback((lvlId) => {
     if (lvlId === 'L1') return true;
-    if (adminLevelOverrides[lvlId]) return true;
+    if (adminLevelOverrides?.[lvlId]) return true;
 
     const lvlOrder = ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'];
     const idx = lvlOrder.indexOf(lvlId);
     if (idx <= 0) return true;
 
+    const safeMastered = Array.isArray(masteredCards) ? masteredCards : [];
+    const safeVocab = Array.isArray(vocabDatabase) ? vocabDatabase : [];
+
     const prevLvlId = lvlOrder[idx - 1];
-    const prevWords = vocabDatabase.filter((w) => w.level === prevLvlId);
+    const prevWords = safeVocab.filter((w) => w.level === prevLvlId);
     if (prevWords.length === 0) return true;
 
-    const masteredInPrev = prevWords.filter((w) => masteredCards.includes(w.id) || masteredCards.includes(w.word)).length;
+    const masteredInPrev = prevWords.filter((w) => safeMastered.includes(w.id) || safeMastered.includes(w.word)).length;
     const pct = (masteredInPrev / prevWords.length) * 100;
     return pct >= 90;
   }, [adminLevelOverrides, vocabDatabase, masteredCards]);
 
   const levelStats = useMemo(() => {
     const stats = {};
+    const safeMastered = Array.isArray(masteredCards) ? masteredCards : [];
+    const safeVocab = Array.isArray(vocabDatabase) ? vocabDatabase : [];
+
     ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'].forEach((lvlId) => {
-      const lvlWords = vocabDatabase.filter((w) => w.level === lvlId);
+      const lvlWords = safeVocab.filter((w) => w.level === lvlId);
       const total = lvlWords.length || 100;
-      const mastered = lvlWords.filter((w) => masteredCards.includes(w.id) || masteredCards.includes(w.word)).length;
+      const mastered = lvlWords.filter((w) => safeMastered.includes(w.id) || safeMastered.includes(w.word)).length;
       const pct = Math.min(100, Math.round((mastered / total) * 100));
       stats[lvlId] = { total, mastered, pct };
     });

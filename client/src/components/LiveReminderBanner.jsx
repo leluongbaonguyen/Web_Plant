@@ -2,7 +2,7 @@ import { Bell, CheckCircle2, Clock, Sparkles } from 'lucide-react';
 import { getCurrentDayKey } from '../constants/index.js';
 
 export function LiveReminderBanner({ liveScheduleStatus, onOpenReminders, onMarkDone }) {
-  const { currentSlot, nextSlot, overdueSlots } = liveScheduleStatus;
+  const { currentSlot, nextSlot, overdueSlots = [] } = liveScheduleStatus || {};
   const todayKey = getCurrentDayKey();
 
   return (
@@ -14,7 +14,7 @@ export function LiveReminderBanner({ liveScheduleStatus, onOpenReminders, onMark
           title="Mở Trung Tâm Nhắc Nhở & Chuông Báo"
         >
           <Bell className="h-5 w-5 text-indigo-300 animate-bounce" />
-          {(currentSlot || overdueSlots.length > 0) && (
+          {(currentSlot || (overdueSlots?.length || 0) > 0) && (
             <span className="absolute -top-1 -right-1 flex h-3 w-3">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
@@ -72,7 +72,7 @@ export function LiveReminderBanner({ liveScheduleStatus, onOpenReminders, onMark
         >
           <Bell className="h-4 w-4 text-indigo-400" />
           <span>Trung tâm nhắc nhở</span>
-          {overdueSlots.length > 0 && (
+          {(overdueSlots?.length || 0) > 0 && (
             <span className="rounded-full bg-amber-400 px-1.5 py-0.2 text-[10px] font-black text-slate-950">
               {overdueSlots.length}
             </span>

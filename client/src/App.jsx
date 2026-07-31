@@ -562,7 +562,7 @@ function MainAppContent() {
         onOpenStateHistory={() => setShowStateHistoryModal(true)}
         onOpenErrorHandbook={handleOpenErrorHandbook}
         onOpenReminders={() => setShowNotificationDrawer(true)}
-        reminderBadgeCount={liveScheduleStatus.overdueSlots.length}
+        reminderBadgeCount={liveScheduleStatus?.overdueSlots?.length || 0}
         onResetPlan={handleResetPlan}
         onDownloadJson={handleDownloadJson}
         onImportJson={handleImportJson}
@@ -636,7 +636,7 @@ function MainAppContent() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         onOpenReminders={() => setShowNotificationDrawer(true)}
-        reminderBadgeCount={liveScheduleStatus.overdueSlots.length}
+        reminderBadgeCount={liveScheduleStatus?.overdueSlots?.length || 0}
       />
 
       {/* Role Manager Modal */}
@@ -731,6 +731,7 @@ class ErrorBoundary extends React.Component {
 
   componentDidCatch(error, errorInfo) {
     console.error('UI ErrorBoundary caught exception:', error, errorInfo);
+    this.setState({ errorInfo });
   }
 
   render() {
@@ -742,13 +743,27 @@ class ErrorBoundary extends React.Component {
             <h2 className="text-2xl font-extrabold text-amber-400 font-heading">
               Đã Xảy Ra Sự Cố Hiển Thị Giao Diện
             </h2>
-            <p className="text-xs text-slate-300 bg-slate-900 p-3 rounded-xl border border-slate-800 font-mono-code">
+            <p className="text-xs text-slate-300 bg-slate-900 p-3 rounded-xl border border-slate-800 font-mono-code text-left overflow-auto max-h-32">
               {this.state.error?.toString() || 'Lỗi hiển thị không xác định'}
             </p>
-            <div className="flex justify-center gap-3 pt-2">
+            {this.state.errorInfo?.componentStack && (
+              <details className="text-left text-[10px] text-slate-400 bg-slate-900/60 p-2 rounded-xl border border-slate-800 font-mono-code cursor-pointer">
+                <summary className="font-bold text-indigo-300">Xem Chi Tiết Stack Trace</summary>
+                <pre className="mt-1 whitespace-pre-wrap overflow-x-auto max-h-40">{this.state.errorInfo.componentStack}</pre>
+              </details>
+            )}
+            <div className="flex flex-wrap justify-center gap-3 pt-2">
               <button
                 onClick={() => {
-                  this.setState({ hasError: false, error: null });
+                  this.setState({ hasError: false, error: null, errorInfo: null });
+                }}
+                className="rounded-2xl bg-slate-800 border border-slate-700 px-5 py-2.5 text-xs font-bold text-slate-200 hover:bg-slate-700 transition"
+              >
+                Thử Lại Giao Diện ⚡
+              </button>
+              <button
+                onClick={() => {
+                  this.setState({ hasError: false, error: null, errorInfo: null });
                   window.location.reload();
                 }}
                 className="rounded-2xl bg-gradient-to-r from-indigo-600 to-purple-600 px-6 py-2.5 text-xs font-bold text-white hover:scale-105 transition shadow-lg"
