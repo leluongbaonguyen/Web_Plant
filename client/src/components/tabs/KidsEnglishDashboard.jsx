@@ -1420,14 +1420,18 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     localStorage.setItem('kids_mastered_words_2000', JSON.stringify(next));
   };
 
-  // Random Shuffle Engine for 100 Quiz Exercises
+  // Random Shuffle Engine for 100 Quiz Exercises (Strictly within current section)
   const handleShuffle100Quiz = () => {
-    const baseList = vocabDatabase && vocabDatabase.length > 0 ? [...vocabDatabase] : [...VOCABULARY_DATABASE];
-    // Fisher-Yates Shuffle
+    const baseList = (filteredDatabase && filteredDatabase.length > 0)
+      ? [...filteredDatabase]
+      : (vocabDatabase && vocabDatabase.length > 0 ? [...vocabDatabase] : [...VOCABULARY_DATABASE]);
+
+    // Fisher-Yates Shuffle within current section
     for (let i = baseList.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [baseList[i], baseList[j]] = [baseList[j], baseList[i]];
     }
+
     const shuffled100 = baseList.slice(0, 100);
     setCustomShuffledPool(shuffled100);
     setQuizIndex(0);
@@ -1435,13 +1439,16 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     setSelectedQuizOption(null);
     setQuizTimeLeft(15);
 
-    // Randomize quiz mode for engaging variation
-    const modes = ['image_to_word', 'word_to_meaning', 'audio_to_word', 'fill_sentence'];
-    const randomMode = modes[Math.floor(Math.random() * modes.length)];
-    setQuizMode(randomMode);
+    const modeLabels = {
+      image_to_word: '🖼️ Đoán Qua Icon',
+      word_to_meaning: '💡 Đoán Nghĩa TV',
+      audio_to_word: '🔊 Nghe & Chọn Đúng',
+      fill_sentence: '📝 Điền Từ Vào Câu'
+    };
+    const currentModeName = modeLabels[quizMode] || 'phần hiện tại';
 
-    if (addToast) addToast('🎲 Đã trộn ngẫu nhiên 100 bài tập mới thành công! Chúc bé làm bài tốt!', 'success');
-    playWordAudio('Đã trộn ngẫu nhiên 100 bài tập mới cho bé!');
+    if (addToast) addToast(`🎲 Đã trộn ngẫu nhiên câu hỏi trong phần [${currentModeName}]!`, 'success');
+    playWordAudio(`Đã trộn ngẫu nhiên các câu hỏi trong phần ${currentModeName.replace(/[^a-zA-Z0-9\sàáạảãâầấậẩẫăằắặẳẵèéẹẻẽêềếệểễìíịỉĩòóọỏõôồốộổỗơờớợởỡùúụủũưừứựửữỳýỵỷỹđÀÁẠẢÃÂẦẤẬẨẪĂẰẮẶẲẴÈÉẸẺẼÊỀẾỆỂỄÌÍỊỈĨÒÓỌỎÕÔỒỐỘỔỖƠỜỚỢỞỠÙÚỤỦŨƯỪỨỰỬỮỲÝỴỶỸĐ]/g, '')}!`);
   };
 
   // Quiz Option Generator based on current filtered dataset and selected quiz mode
