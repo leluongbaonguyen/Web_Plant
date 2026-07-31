@@ -820,6 +820,9 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     const itemToDelete = vocabDatabase.find(i => i.id === cardId);
     if (itemToDelete) {
       handleSoftDeleteVocab(itemToDelete);
+      if (activeTab === 'quiz') {
+        handleNextQuiz();
+      }
     }
   };
 
@@ -2530,6 +2533,16 @@ export function KidsEnglishDashboard({ plan, addToast }) {
             </div>
 
             <div className="flex items-center gap-2.5 flex-wrap">
+              {/* Add New Exercise Button */}
+              <button
+                onClick={() => handleOpenSuperAdd('L1-U01', 'L1')}
+                className="px-3.5 py-2 rounded-2xl font-black text-xs bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-xl hover:scale-105 active:scale-95 transition flex items-center gap-1.5 border border-emerald-400/80 cursor-pointer"
+                title="Tạo thêm bài tập mới cho bé"
+              >
+                <Plus className="h-4 w-4 text-emerald-200" />
+                <span>➕ Thêm Bài Tập Mới</span>
+              </button>
+
               {/* Random Shuffle Button */}
               <button
                 onClick={handleShuffle100Quiz}
@@ -2675,12 +2688,39 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                 </>
               )}
 
-              <button
-                onClick={() => playWordAudio(currentQuizCard.word)}
-                className="inline-flex items-center gap-1.5 rounded-xl bg-pink-600/30 border border-pink-500/40 px-3.5 py-1.5 text-xs font-bold text-pink-200 hover:bg-pink-600/50 transition active:scale-95 shadow-md"
-              >
-                <Volume2 className="h-4 w-4 text-pink-400 animate-pulse" /> Nghe Gợi Ý Phát Âm 🔊
-              </button>
+              <div className="flex flex-wrap items-center justify-center gap-3">
+                <button
+                  onClick={() => playWordAudio(currentQuizCard.word)}
+                  className="inline-flex items-center gap-1.5 rounded-xl bg-pink-600/30 border border-pink-500/40 px-3.5 py-1.5 text-xs font-bold text-pink-200 hover:bg-pink-600/50 transition active:scale-95 shadow-md"
+                >
+                  <Volume2 className="h-4 w-4 text-pink-400 animate-pulse" /> Nghe Gợi Ý Phát Âm 🔊
+                </button>
+              </div>
+
+              {/* Quick CRUD Action Controls for Parent / Admin on Current Exercise */}
+              <div className="flex flex-wrap items-center justify-center gap-2 pt-3 border-t border-slate-900/80">
+                <button
+                  onClick={() => handleOpenSuperAdd(currentQuizCard.category || 'L1-U01', currentQuizCard.level || 'L1')}
+                  className="px-3 py-1.5 rounded-xl bg-emerald-950/90 border border-emerald-500/40 text-emerald-300 hover:bg-emerald-600 hover:text-white font-bold text-xs flex items-center gap-1.5 transition shadow-md active:scale-95"
+                  title="Tạo thêm bài tập mới"
+                >
+                  <Plus className="h-3.5 w-3.5 text-emerald-400" /> Thêm Bài Tập Mới
+                </button>
+                <button
+                  onClick={() => handleOpenSuperEdit(currentQuizCard)}
+                  className="px-3 py-1.5 rounded-xl bg-amber-950/90 border border-amber-500/40 text-amber-300 hover:bg-amber-600 hover:text-slate-950 font-bold text-xs flex items-center gap-1.5 transition shadow-md active:scale-95"
+                  title="Sửa nội dung bài tập hiện tại"
+                >
+                  <Edit className="h-3.5 w-3.5 text-amber-400" /> Sửa Bài Tập Này
+                </button>
+                <button
+                  onClick={() => handleDeleteSuperCard(currentQuizCard.id, currentQuizCard.word)}
+                  className="px-3 py-1.5 rounded-xl bg-rose-950/90 border border-rose-500/40 text-rose-300 hover:bg-rose-600 hover:text-white font-bold text-xs flex items-center gap-1.5 transition shadow-md active:scale-95"
+                  title="Xóa bài tập này khỏi hệ thống"
+                >
+                  <Trash2 className="h-3.5 w-3.5 text-rose-400" /> Xóa Bài Tập Này
+                </button>
+              </div>
             </div>
           ) : (
             <div className="text-center p-8 rounded-3xl border border-slate-800 bg-slate-950 text-slate-400 space-y-2">
