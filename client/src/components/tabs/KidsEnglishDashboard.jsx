@@ -1582,24 +1582,24 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           </div>
 
           {/* Interactive Cute Pet Companion Selector */}
-          <div className="p-5 rounded-3xl border-2 border-pink-400/80 bg-slate-900/95 shadow-2xl backdrop-blur-md space-y-3">
-            <div className="text-center space-y-2">
-              <div className="text-xs font-black uppercase tracking-wider text-pink-300 flex items-center justify-center gap-1">
-                <Heart className="h-3.5 w-3.5 text-pink-400 fill-pink-400 animate-bounce" /> Chọn Bạn Nhỏ Đồng Hành:
+          <div className="p-6 md:p-8 rounded-3xl border-2 border-pink-400/90 bg-slate-900/95 shadow-2xl backdrop-blur-md space-y-4 w-full sm:w-auto min-w-[320px] md:min-w-[420px] flex-1">
+            <div className="text-center space-y-3">
+              <div className="text-xs md:text-sm font-black uppercase tracking-wider text-pink-300 flex items-center justify-center gap-1.5">
+                <Heart className="h-4 w-4 text-pink-400 fill-pink-400 animate-bounce" /> Chọn Bạn Nhỏ Đồng Hành:
               </div>
-              <div className="text-6xl animate-bounce drop-shadow-xl cursor-pointer" onClick={() => playWordAudio(PETS.find((p) => p.id === activePet)?.quote || '')}>
+              <div className="text-7xl md:text-8xl animate-bounce drop-shadow-2xl cursor-pointer hover:scale-110 transition-transform" onClick={() => playWordAudio(PETS.find((p) => p.id === activePet)?.quote || '')}>
                 {PETS.find((p) => p.id === activePet)?.icon || '🦄'}
               </div>
-              <div className="text-sm font-black text-white font-heading">
+              <div className="text-base md:text-lg font-black text-white font-heading">
                 {PETS.find((p) => p.id === activePet)?.name}
               </div>
-              <p className="text-[11px] font-bold text-pink-200 bg-pink-950/80 p-2 rounded-xl border border-pink-500/40 italic">
+              <p className="text-xs md:text-sm font-bold text-pink-200 bg-pink-950/80 p-3 rounded-2xl border border-pink-500/50 italic shadow-inner">
                 "{PETS.find((p) => p.id === activePet)?.quote}"
               </p>
             </div>
 
             {/* Pet Switch Buttons */}
-            <div className="grid grid-cols-4 gap-1.5 pt-1">
+            <div className="grid grid-cols-4 gap-2 pt-2">
               {PETS.map((pet) => (
                 <button
                   key={pet.id}
@@ -1607,10 +1607,10 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                     setActivePet(pet.id);
                     playWordAudio(pet.quote);
                   }}
-                  className={`p-2 rounded-xl text-lg transition border flex items-center justify-center ${
+                  className={`p-3 rounded-2xl text-2xl md:text-3xl transition border flex items-center justify-center cursor-pointer ${
                     activePet === pet.id
-                      ? 'bg-pink-600 border-pink-400 text-white shadow-lg scale-110'
-                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:bg-slate-800'
+                      ? 'bg-pink-600 border-2 border-pink-300 text-white shadow-xl scale-110'
+                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-200 hover:scale-105'
                   }`}
                   title={pet.name}
                 >
