@@ -4,62 +4,62 @@ export const COURSE_LEVELS = [
   {
     "id": "L1",
     "name": "Cấp độ L1: Khởi Động (4–5 tuổi)",
-    "badge": "Khởi Động • 150 Từ (15 Chủ Đề)",
+    "badge": "Khởi Động • 100 Từ (10 Chủ Đề)",
     "color": "from-amber-500 to-orange-500 border-amber-400 text-amber-300",
     "bgBadge": "bg-amber-500/20 text-amber-300 border-amber-500/40",
-    "description": "Từ đơn, nhận biết hình ảnh, phản xạ nghe–chọn. Màu sắc, số đếm 1-10, hình dạng, gia đình, cơ thể, động vật, đồ ăn, lớp học, động từ, cảm xúc, đồ chơi, côn trùng, phòng tắm, nông trại & trái nghĩa.",
-    "icon": "🐥",
-    "targetWords": 150
+    "description": "Từ đơn, nhận biết hình ảnh, phản xạ nghe–chọn. Màu sắc, số đếm 1-10, hình dạng, gia đình, cơ thể, động vật, đồ ăn, lớp học, động từ, cảm xúc.",
+    "icon": "🐣",
+    "targetWords": 100
   },
   {
     "id": "L2",
     "name": "Cấp độ L2: Cơ Bản (5–7 tuổi)",
-    "badge": "Cơ Bản • 150 Từ (15 Chủ Đề)",
+    "badge": "Cơ Bản • 100 Từ (10 Chủ Đề)",
     "color": "from-blue-500 to-cyan-500 border-blue-400 text-blue-300",
     "bgBadge": "bg-blue-500/20 text-blue-300 border-blue-500/40",
-    "description": "Câu ngắn, sinh hoạt, trường học, mô tả vị trí. Ngôi nhà, quần áo, sinh hoạt hằng ngày, thời tiết, giao thông, địa điểm, nghề nghiệp, trái cây/rau củ, thời gian, thể thao, môn học, nhà bếp, động vật biển, mùa & vị trí.",
+    "description": "Câu ngắn, sinh hoạt, trường học, mô tả vị trí. Ngôi nhà, quần áo, sinh hoạt hằng ngày, thời tiết, giao thông, địa điểm, nghề nghiệp, trái cây.",
     "icon": "🦁",
-    "targetWords": 150
+    "targetWords": 100
   },
   {
     "id": "L3",
     "name": "Cấp độ L3: Mở Rộng (7–9 tuổi)",
-    "badge": "Mở Rộng • 150 Từ (15 Chủ Đề)",
+    "badge": "Mở Rộng • 100 Từ (10 Chủ Đề)",
     "color": "from-emerald-500 to-teal-500 border-emerald-400 text-emerald-300",
     "bgBadge": "bg-emerald-500/20 text-emerald-300 border-emerald-500/40",
-    "description": "Giao tiếp thực tế, xã hội, công nghệ và thiên nhiên. Thiên nhiên, sức khỏe, mua sắm, du lịch, công nghệ, sở thích, cộng đồng, lễ hội, tính cách, bảo vệ Trái Đất, nhà hàng, văn phòng, thiên tai, truyền thông & miêu tả con người.",
+    "description": "Giao tiếp thực tế, xã hội, công nghệ và thiên nhiên. Thiên nhiên, sức khỏe, mua sắm, du lịch, công nghệ, sở thích, cộng đồng, lễ hội.",
     "icon": "🚀",
-    "targetWords": 150
+    "targetWords": 100
   },
   {
     "id": "L4",
     "name": "Cấp độ L4: Nâng Cao Cho Bé (8–10 tuổi)",
-    "badge": "Nâng Cao • 150 Từ (15 Chủ Đề)",
+    "badge": "Nâng Cao • 100 Từ (10 Chủ Đề)",
     "color": "from-purple-500 to-pink-500 border-purple-400 text-purple-300",
     "bgBadge": "bg-purple-500/20 text-purple-300 border-purple-500/40",
-    "description": "Từ học thuật cơ bản, khoa học, tư duy và công dân. Khoa học cơ bản, không gian, từ học thuật, giao tiếp, giải quyết vấn đề, cảm xúc nâng cao, quốc gia/văn hóa, an toàn số, kể chuyện, mục tiêu, toán học, cơ thể bên trong, hóa học, nghệ thuật & xã hội.",
+    "description": "Từ học thuật cơ bản, khoa học, tư duy và công dân. Khoa học cơ bản, không gian, từ học thuật, giao tiếp, giải quyết vấn đề, cảm xúc nâng cao.",
     "icon": "👑",
-    "targetWords": 150
+    "targetWords": 100
   },
   {
     "id": "L5",
     "name": "Cấp độ L5: Tiên Phong (10–12 tuổi)",
-    "badge": "Tiên Phong • 150 Từ (15 Chủ Đề)",
+    "badge": "Tiên Phong • 100 Từ (10 Chủ Đề)",
     "color": "from-rose-500 to-orange-500 border-rose-400 text-rose-300",
     "bgBadge": "bg-rose-500/20 text-rose-300 border-rose-500/40",
-    "description": "Ngôn ngữ học thuật đọc hiểu, viết văn, thuyết trình. Văn học thiếu nhi, địa lý thế giới, lịch sử, tư duy phê phán, lập trình cơ bản, kinh tế học, sinh học, vật lý, âm nhạc học, triết học cho bé, thiện nguyện, quyền trẻ em, thành ngữ, toàn cầu hóa & nhân vật lịch sử.",
+    "description": "Ngôn ngữ học thuật đọc hiểu, viết văn, thuyết trình. Văn học thiếu nhi, địa lý thế giới, lịch sử, tư duy phê phán, lập trình cơ bản, kinh tế học.",
     "icon": "🌟",
-    "targetWords": 150
+    "targetWords": 100
   },
   {
     "id": "L6",
     "name": "Cấp độ L6: Hội Nhập Quốc Tế (12+ tuổi)",
-    "badge": "Quốc Tế • 150 Từ (15 Chủ Đề)",
+    "badge": "Quốc Tế • 100 Từ (10 Chủ Đề)",
     "color": "from-teal-500 to-cyan-500 border-teal-400 text-teal-300",
     "bgBadge": "bg-teal-500/20 text-teal-300 border-teal-500/40",
-    "description": "Ngôn ngữ học thuật quốc tế, IELTS/TOEFL cơ bản, giao tiếp toàn cầu. Tài chính cá nhân, ngôn ngữ học, văn hóa Đông Tây, AI/phần mềm, thành công nghề nghiệp, tư duy tăng trưởng, đạo đức, vấn đề toàn cầu, lãnh đạo, sức khỏe tâm thần, giao tiếp ưu việt, chính trị học, IELTS vocab, thành ngữ nâng cao & tư duy hệ thống.",
+    "description": "Ngôn ngữ học thuật quốc tế, IELTS/TOEFL cơ bản, giao tiếp toàn cầu. Tài chính cá nhân, ngôn ngữ học, văn hóa Đông Tây, AI/phần mềm.",
     "icon": "🌎",
-    "targetWords": 150
+    "targetWords": 100
   }
 ];
 
@@ -463,7 +463,7 @@ export const VOCAB_CATEGORIES = [
 
 export const VOCABULARY_DATABASE = [
   {
-    "id": "vocab-L1-L1-U01-W01",
+    "id": "vocab-L1-U01-W1",
     "word": "red",
     "ipa": "/rˈɛd/",
     "vietnamesePhonetic": "Rét",
@@ -477,7 +477,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U01-W02",
+    "id": "vocab-L1-U01-W2",
     "word": "blue",
     "ipa": "/blˈu/",
     "vietnamesePhonetic": "Bờ-lu",
@@ -491,7 +491,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U01-W03",
+    "id": "vocab-L1-U01-W3",
     "word": "yellow",
     "ipa": "/jˈɛloʊ/",
     "vietnamesePhonetic": "Dét-lô",
@@ -505,7 +505,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U01-W04",
+    "id": "vocab-L1-U01-W4",
     "word": "green",
     "ipa": "/ɡrˈin/",
     "vietnamesePhonetic": "Gờ-rin",
@@ -519,7 +519,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U01-W05",
+    "id": "vocab-L1-U01-W5",
     "word": "orange",
     "ipa": "/ˈɔrəndʒ/",
     "vietnamesePhonetic": "Ó-rin-jơ",
@@ -533,7 +533,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U01-W06",
+    "id": "vocab-L1-U01-W6",
     "word": "purple",
     "ipa": "/pˈɝpəl/",
     "vietnamesePhonetic": "Pơ-pồ",
@@ -547,7 +547,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U01-W07",
+    "id": "vocab-L1-U01-W7",
     "word": "pink",
     "ipa": "/pˈɪŋk/",
     "vietnamesePhonetic": "Pinh-kơ",
@@ -561,7 +561,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U01-W08",
+    "id": "vocab-L1-U01-W8",
     "word": "black",
     "ipa": "/blˈæk/",
     "vietnamesePhonetic": "Bơ-lắc",
@@ -575,7 +575,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U01-W09",
+    "id": "vocab-L1-U01-W9",
     "word": "white",
     "ipa": "/wˈaɪt/",
     "vietnamesePhonetic": "Quai-tơ",
@@ -589,7 +589,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U01-W10",
+    "id": "vocab-L1-U01-W10",
     "word": "brown",
     "ipa": "/brˈaʊn/",
     "vietnamesePhonetic": "Bơ-rao",
@@ -603,7 +603,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U02-W01",
+    "id": "vocab-L1-U02-W11",
     "word": "one",
     "ipa": "/wˈʌn/",
     "vietnamesePhonetic": "Oăn",
@@ -617,7 +617,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U02-W02",
+    "id": "vocab-L1-U02-W12",
     "word": "two",
     "ipa": "/tˈu/",
     "vietnamesePhonetic": "Tu",
@@ -631,7 +631,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U02-W03",
+    "id": "vocab-L1-U02-W13",
     "word": "three",
     "ipa": "/θrˈi/",
     "vietnamesePhonetic": "Tờ-ri",
@@ -645,7 +645,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U02-W04",
+    "id": "vocab-L1-U02-W14",
     "word": "four",
     "ipa": "/fˈɔr/",
     "vietnamesePhonetic": "Pho",
@@ -659,7 +659,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U02-W05",
+    "id": "vocab-L1-U02-W15",
     "word": "five",
     "ipa": "/fˈaɪv/",
     "vietnamesePhonetic": "Phai-vơ",
@@ -673,7 +673,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U02-W06",
+    "id": "vocab-L1-U02-W16",
     "word": "six",
     "ipa": "/sˈɪks/",
     "vietnamesePhonetic": "Sích-sơ",
@@ -687,7 +687,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U02-W07",
+    "id": "vocab-L1-U02-W17",
     "word": "seven",
     "ipa": "/sˈɛvən/",
     "vietnamesePhonetic": "Se-vần",
@@ -701,7 +701,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U02-W08",
+    "id": "vocab-L1-U02-W18",
     "word": "eight",
     "ipa": "/ˈeɪt/",
     "vietnamesePhonetic": "Eit-tơ",
@@ -715,7 +715,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U02-W09",
+    "id": "vocab-L1-U02-W19",
     "word": "nine",
     "ipa": "/nˈaɪn/",
     "vietnamesePhonetic": "Nain",
@@ -729,7 +729,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U02-W10",
+    "id": "vocab-L1-U02-W20",
     "word": "ten",
     "ipa": "/tˈɛn/",
     "vietnamesePhonetic": "Ten",
@@ -743,7 +743,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U03-W01",
+    "id": "vocab-L1-U03-W21",
     "word": "circle",
     "ipa": "/sˈɝkəl/",
     "vietnamesePhonetic": "Sơ-cồ",
@@ -757,7 +757,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U03-W02",
+    "id": "vocab-L1-U03-W22",
     "word": "square",
     "ipa": "/skwˈɛr/",
     "vietnamesePhonetic": "Sờ-que",
@@ -771,7 +771,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U03-W03",
+    "id": "vocab-L1-U03-W23",
     "word": "triangle",
     "ipa": "/trˈaɪˌæŋɡəl/",
     "vietnamesePhonetic": "Tờ-rai-eng-gồ",
@@ -785,7 +785,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U03-W04",
+    "id": "vocab-L1-U03-W24",
     "word": "rectangle",
     "ipa": "/rˈɛktæŋɡəl/",
     "vietnamesePhonetic": "Réc-teng-gồ",
@@ -799,7 +799,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U03-W05",
+    "id": "vocab-L1-U03-W25",
     "word": "star",
     "ipa": "/stˈɑr/",
     "vietnamesePhonetic": "Sờ-ta",
@@ -813,7 +813,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U03-W06",
+    "id": "vocab-L1-U03-W26",
     "word": "heart",
     "ipa": "/hˈɑrt/",
     "vietnamesePhonetic": "Hát-tơ",
@@ -827,7 +827,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U03-W07",
+    "id": "vocab-L1-U03-W27",
     "word": "oval",
     "ipa": "/ˈoʊvəl/",
     "vietnamesePhonetic": "Ô-vần",
@@ -841,7 +841,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U03-W08",
+    "id": "vocab-L1-U03-W28",
     "word": "diamond",
     "ipa": "/dˈaɪmənd/",
     "vietnamesePhonetic": "Đai-mần",
@@ -855,7 +855,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U03-W09",
+    "id": "vocab-L1-U03-W29",
     "word": "line",
     "ipa": "/lˈaɪn/",
     "vietnamesePhonetic": "Lai-nơ",
@@ -869,7 +869,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U03-W10",
+    "id": "vocab-L1-U03-W30",
     "word": "dot",
     "ipa": "/dˈɑt/",
     "vietnamesePhonetic": "Đót-tơ",
@@ -883,7 +883,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U04-W01",
+    "id": "vocab-L1-U04-W31",
     "word": "mother",
     "ipa": "/mˈʌðɚ/",
     "vietnamesePhonetic": "Mó-đơ",
@@ -897,7 +897,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U04-W02",
+    "id": "vocab-L1-U04-W32",
     "word": "father",
     "ipa": "/fˈɑðɚ/",
     "vietnamesePhonetic": "Pha-đơ",
@@ -911,7 +911,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U04-W03",
+    "id": "vocab-L1-U04-W33",
     "word": "sister",
     "ipa": "/sˈɪstɚ/",
     "vietnamesePhonetic": "Sít-stơ",
@@ -925,7 +925,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U04-W04",
+    "id": "vocab-L1-U04-W34",
     "word": "brother",
     "ipa": "/brˈʌðɚ/",
     "vietnamesePhonetic": "Bơ-ra-đơ",
@@ -939,7 +939,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U04-W05",
+    "id": "vocab-L1-U04-W35",
     "word": "grandmother",
     "ipa": "/ɡrˈændmˌʌðɚ/",
     "vietnamesePhonetic": "Gơ-ren-mó-đơ",
@@ -953,7 +953,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U04-W06",
+    "id": "vocab-L1-U04-W36",
     "word": "grandfather",
     "ipa": "/ɡrˈændfˌɑðɚ/",
     "vietnamesePhonetic": "Gơ-ren-pha-đơ",
@@ -967,7 +967,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U04-W07",
+    "id": "vocab-L1-U04-W37",
     "word": "baby",
     "ipa": "/bˈeɪbi/",
     "vietnamesePhonetic": "Bê-bi",
@@ -981,7 +981,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U04-W08",
+    "id": "vocab-L1-U04-W38",
     "word": "family",
     "ipa": "/fˈæməli/",
     "vietnamesePhonetic": "Phem-mi-li",
@@ -995,7 +995,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U04-W09",
+    "id": "vocab-L1-U04-W39",
     "word": "aunt",
     "ipa": "/ˈænt/",
     "vietnamesePhonetic": "Ent-tơ",
@@ -1009,7 +1009,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U04-W10",
+    "id": "vocab-L1-U04-W40",
     "word": "uncle",
     "ipa": "/ˈʌŋkəl/",
     "vietnamesePhonetic": "Ăng-cồ",
@@ -1023,7 +1023,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U05-W01",
+    "id": "vocab-L1-U05-W41",
     "word": "head",
     "ipa": "/hˈɛd/",
     "vietnamesePhonetic": "Hét-đơ",
@@ -1037,7 +1037,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U05-W02",
+    "id": "vocab-L1-U05-W42",
     "word": "hair",
     "ipa": "/hˈɛr/",
     "vietnamesePhonetic": "He-ơ",
@@ -1051,7 +1051,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U05-W03",
+    "id": "vocab-L1-U05-W43",
     "word": "eye",
     "ipa": "/ˈaɪ/",
     "vietnamesePhonetic": "Ai",
@@ -1065,7 +1065,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U05-W04",
+    "id": "vocab-L1-U05-W44",
     "word": "ear",
     "ipa": "/ˈir/",
     "vietnamesePhonetic": "I-ơ",
@@ -1079,7 +1079,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U05-W05",
+    "id": "vocab-L1-U05-W45",
     "word": "nose",
     "ipa": "/nˈoʊz/",
     "vietnamesePhonetic": "Nâu-zơ",
@@ -1093,7 +1093,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U05-W06",
+    "id": "vocab-L1-U05-W46",
     "word": "mouth",
     "ipa": "/mˈaʊθ/",
     "vietnamesePhonetic": "Mau-thơ",
@@ -1107,7 +1107,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U05-W07",
+    "id": "vocab-L1-U05-W47",
     "word": "hand",
     "ipa": "/hˈænd/",
     "vietnamesePhonetic": "Hen-đơ",
@@ -1121,7 +1121,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U05-W08",
+    "id": "vocab-L1-U05-W48",
     "word": "arm",
     "ipa": "/ˈɑrm/",
     "vietnamesePhonetic": "Am-mơ",
@@ -1135,7 +1135,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U05-W09",
+    "id": "vocab-L1-U05-W49",
     "word": "leg",
     "ipa": "/lˈɛɡ/",
     "vietnamesePhonetic": "Léc-gơ",
@@ -1149,7 +1149,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U05-W10",
+    "id": "vocab-L1-U05-W50",
     "word": "foot",
     "ipa": "/fˈʊt/",
     "vietnamesePhonetic": "Phút-tơ",
@@ -1163,7 +1163,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U06-W01",
+    "id": "vocab-L1-U06-W51",
     "word": "cat",
     "ipa": "/kˈæt/",
     "vietnamesePhonetic": "Cát-tơ",
@@ -1177,7 +1177,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L1-L1-U06-W02",
+    "id": "vocab-L1-U06-W52",
     "word": "dog",
     "ipa": "/dˈɔɡ/",
     "vietnamesePhonetic": "Đót-gơ",
@@ -1191,7 +1191,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L1-L1-U06-W03",
+    "id": "vocab-L1-U06-W53",
     "word": "bird",
     "ipa": "/bˈɝd/",
     "vietnamesePhonetic": "Bớt-đơ",
@@ -1205,7 +1205,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L1-L1-U06-W04",
+    "id": "vocab-L1-U06-W54",
     "word": "fish",
     "ipa": "/fˈɪʃ/",
     "vietnamesePhonetic": "Phít-shơ",
@@ -1219,7 +1219,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L1-L1-U06-W05",
+    "id": "vocab-L1-U06-W55",
     "word": "rabbit",
     "ipa": "/rˈæbət/",
     "vietnamesePhonetic": "Rép-bít",
@@ -1233,7 +1233,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L1-L1-U06-W06",
+    "id": "vocab-L1-U06-W56",
     "word": "duck",
     "ipa": "/dˈʌk/",
     "vietnamesePhonetic": "Đắc-kơ",
@@ -1247,7 +1247,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L1-L1-U06-W07",
+    "id": "vocab-L1-U06-W57",
     "word": "cow",
     "ipa": "/kˈaʊ/",
     "vietnamesePhonetic": "Cao",
@@ -1261,7 +1261,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L1-L1-U06-W08",
+    "id": "vocab-L1-U06-W58",
     "word": "pig",
     "ipa": "/pˈɪɡ/",
     "vietnamesePhonetic": "Píc-gơ",
@@ -1275,7 +1275,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L1-L1-U06-W09",
+    "id": "vocab-L1-U06-W59",
     "word": "horse",
     "ipa": "/hˈɔrs/",
     "vietnamesePhonetic": "Hót-sơ",
@@ -1289,7 +1289,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L1-L1-U06-W10",
+    "id": "vocab-L1-U06-W60",
     "word": "sheep",
     "ipa": "/ʃˈip/",
     "vietnamesePhonetic": "Síp-pơ",
@@ -1303,7 +1303,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L1-L1-U07-W01",
+    "id": "vocab-L1-U07-W61",
     "word": "apple",
     "ipa": "/ˈæpəl/",
     "vietnamesePhonetic": "Ép-pồ",
@@ -1317,7 +1317,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L1-L1-U07-W02",
+    "id": "vocab-L1-U07-W62",
     "word": "banana",
     "ipa": "/bənˈænə/",
     "vietnamesePhonetic": "Bờ-na-na",
@@ -1331,7 +1331,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L1-L1-U07-W03",
+    "id": "vocab-L1-U07-W63",
     "word": "orange",
     "ipa": "/ˈɔrəndʒ/",
     "vietnamesePhonetic": "Ó-rin-jơ",
@@ -1345,7 +1345,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L1-L1-U07-W04",
+    "id": "vocab-L1-U07-W64",
     "word": "rice",
     "ipa": "/rˈaɪs/",
     "vietnamesePhonetic": "Rai-sơ",
@@ -1359,7 +1359,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L1-L1-U07-W05",
+    "id": "vocab-L1-U07-W65",
     "word": "bread",
     "ipa": "/brˈɛd/",
     "vietnamesePhonetic": "Bơ-rét",
@@ -1373,7 +1373,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L1-L1-U07-W06",
+    "id": "vocab-L1-U07-W66",
     "word": "milk",
     "ipa": "/mˈɪlk/",
     "vietnamesePhonetic": "Miu-kơ",
@@ -1387,7 +1387,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L1-L1-U07-W07",
+    "id": "vocab-L1-U07-W67",
     "word": "egg",
     "ipa": "/ˈɛɡ/",
     "vietnamesePhonetic": "Éc-gơ",
@@ -1401,7 +1401,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L1-L1-U07-W08",
+    "id": "vocab-L1-U07-W68",
     "word": "cake",
     "ipa": "/kˈeɪk/",
     "vietnamesePhonetic": "Cếch-kơ",
@@ -1415,7 +1415,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L1-L1-U07-W09",
+    "id": "vocab-L1-U07-W69",
     "word": "water",
     "ipa": "/wˈɔtɚ/",
     "vietnamesePhonetic": "Quót-tơ",
@@ -1429,7 +1429,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L1-L1-U07-W10",
+    "id": "vocab-L1-U07-W70",
     "word": "juice",
     "ipa": "/dʒˈus/",
     "vietnamesePhonetic": "Giút-sơ",
@@ -1443,7 +1443,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L1-L1-U08-W01",
+    "id": "vocab-L1-U08-W71",
     "word": "book",
     "ipa": "/bˈʊk/",
     "vietnamesePhonetic": "Búc-kơ",
@@ -1457,7 +1457,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L1-L1-U08-W02",
+    "id": "vocab-L1-U08-W72",
     "word": "pen",
     "ipa": "/pˈɛn/",
     "vietnamesePhonetic": "Pen",
@@ -1471,7 +1471,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L1-L1-U08-W03",
+    "id": "vocab-L1-U08-W73",
     "word": "pencil",
     "ipa": "/pˈɛnsəl/",
     "vietnamesePhonetic": "Pên-sần",
@@ -1485,7 +1485,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L1-L1-U08-W04",
+    "id": "vocab-L1-U08-W74",
     "word": "ruler",
     "ipa": "/rˈulɚ/",
     "vietnamesePhonetic": "Rú-lơ",
@@ -1499,7 +1499,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L1-L1-U08-W05",
+    "id": "vocab-L1-U08-W75",
     "word": "eraser",
     "ipa": "/ɪrˈeɪsɚ/",
     "vietnamesePhonetic": "I-rai-sơ",
@@ -1513,7 +1513,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L1-L1-U08-W06",
+    "id": "vocab-L1-U08-W76",
     "word": "bag",
     "ipa": "/bˈæɡ/",
     "vietnamesePhonetic": "Béc-gơ",
@@ -1527,7 +1527,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L1-L1-U08-W07",
+    "id": "vocab-L1-U08-W77",
     "word": "chair",
     "ipa": "/tʃˈɛr/",
     "vietnamesePhonetic": "Che-ơ",
@@ -1541,7 +1541,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L1-L1-U08-W08",
+    "id": "vocab-L1-U08-W78",
     "word": "table",
     "ipa": "/tˈeɪbəl/",
     "vietnamesePhonetic": "Tê-bồ",
@@ -1555,7 +1555,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L1-L1-U08-W09",
+    "id": "vocab-L1-U08-W79",
     "word": "door",
     "ipa": "/dˈɔr/",
     "vietnamesePhonetic": "Đo-ơ",
@@ -1569,7 +1569,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L1-L1-U08-W10",
+    "id": "vocab-L1-U08-W80",
     "word": "window",
     "ipa": "/wˈɪndoʊ/",
     "vietnamesePhonetic": "Quin-đâu",
@@ -1583,7 +1583,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L1-L1-U09-W01",
+    "id": "vocab-L1-U09-W81",
     "word": "run",
     "ipa": "/rˈʌn/",
     "vietnamesePhonetic": "Răn",
@@ -1597,7 +1597,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L1-L1-U09-W02",
+    "id": "vocab-L1-U09-W82",
     "word": "jump",
     "ipa": "/dʒˈʌmp/",
     "vietnamesePhonetic": "Giăm-pơ",
@@ -1611,7 +1611,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L1-L1-U09-W03",
+    "id": "vocab-L1-U09-W83",
     "word": "walk",
     "ipa": "/wˈɔk/",
     "vietnamesePhonetic": "Quốc-kơ",
@@ -1625,7 +1625,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L1-L1-U09-W04",
+    "id": "vocab-L1-U09-W84",
     "word": "sit",
     "ipa": "/sˈɪt/",
     "vietnamesePhonetic": "Sít-tơ",
@@ -1639,7 +1639,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L1-L1-U09-W05",
+    "id": "vocab-L1-U09-W85",
     "word": "stand",
     "ipa": "/stˈænd/",
     "vietnamesePhonetic": "Sten-đơ",
@@ -1653,7 +1653,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L1-L1-U09-W06",
+    "id": "vocab-L1-U09-W86",
     "word": "clap",
     "ipa": "/klˈæp/",
     "vietnamesePhonetic": "Cơ-lép",
@@ -1667,7 +1667,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L1-L1-U09-W07",
+    "id": "vocab-L1-U09-W87",
     "word": "sing",
     "ipa": "/sˈɪŋ/",
     "vietnamesePhonetic": "Sinh",
@@ -1681,7 +1681,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L1-L1-U09-W08",
+    "id": "vocab-L1-U09-W88",
     "word": "dance",
     "ipa": "/dˈæns/",
     "vietnamesePhonetic": "Đen-sơ",
@@ -1695,7 +1695,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L1-L1-U09-W09",
+    "id": "vocab-L1-U09-W89",
     "word": "eat",
     "ipa": "/ˈit/",
     "vietnamesePhonetic": "Ít-tơ",
@@ -1709,7 +1709,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L1-L1-U09-W10",
+    "id": "vocab-L1-U09-W90",
     "word": "drink",
     "ipa": "/drˈɪŋk/",
     "vietnamesePhonetic": "Đơ-rinh-kơ",
@@ -1723,7 +1723,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L1-L1-U10-W01",
+    "id": "vocab-L1-U10-W91",
     "word": "happy",
     "ipa": "/hˈæpi/",
     "vietnamesePhonetic": "Hép-pi",
@@ -1737,7 +1737,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L1-L1-U10-W02",
+    "id": "vocab-L1-U10-W92",
     "word": "sad",
     "ipa": "/sˈæd/",
     "vietnamesePhonetic": "Sét-đơ",
@@ -1751,7 +1751,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L1-L1-U10-W03",
+    "id": "vocab-L1-U10-W93",
     "word": "angry",
     "ipa": "/ˈæŋɡri/",
     "vietnamesePhonetic": "Eng-gơ-ri",
@@ -1765,7 +1765,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L1-L1-U10-W04",
+    "id": "vocab-L1-U10-W94",
     "word": "scared",
     "ipa": "/skˈɛrd/",
     "vietnamesePhonetic": "Sơ-ke-đơ",
@@ -1779,7 +1779,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L1-L1-U10-W05",
+    "id": "vocab-L1-U10-W95",
     "word": "tired",
     "ipa": "/tˈaɪɚd/",
     "vietnamesePhonetic": "Tai-ơ-đơ",
@@ -1793,7 +1793,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L1-L1-U10-W06",
+    "id": "vocab-L1-U10-W96",
     "word": "hungry",
     "ipa": "/hˈʌŋɡri/",
     "vietnamesePhonetic": "Hăng-gơ-ri",
@@ -1807,7 +1807,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L1-L1-U10-W07",
+    "id": "vocab-L1-U10-W97",
     "word": "thirsty",
     "ipa": "/θˈɝsti/",
     "vietnamesePhonetic": "Thớt-stơ-ti",
@@ -1821,7 +1821,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L1-L1-U10-W08",
+    "id": "vocab-L1-U10-W98",
     "word": "excited",
     "ipa": "/ɪksˈaɪtəd/",
     "vietnamesePhonetic": "Ích-sai-tịt",
@@ -1835,7 +1835,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L1-L1-U10-W09",
+    "id": "vocab-L1-U10-W99",
     "word": "calm",
     "ipa": "/kˈɑm/",
     "vietnamesePhonetic": "Cam-mơ",
@@ -1849,7 +1849,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L1-L1-U10-W10",
+    "id": "vocab-L1-U10-W100",
     "word": "sleepy",
     "ipa": "/slˈipi/",
     "vietnamesePhonetic": "Sơ-li-pi",
@@ -1863,7 +1863,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U01-W01",
+    "id": "vocab-L2-U01-W101",
     "word": "house",
     "ipa": "/hˈaʊs/",
     "vietnamesePhonetic": "House",
@@ -1877,7 +1877,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L2-L2-U01-W02",
+    "id": "vocab-L2-U01-W102",
     "word": "living room",
     "ipa": "/lˈɪvɪŋ rˈum/",
     "vietnamesePhonetic": "Living room",
@@ -1891,7 +1891,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L2-L2-U01-W03",
+    "id": "vocab-L2-U01-W103",
     "word": "bedroom",
     "ipa": "/bˈɛdrˌum/",
     "vietnamesePhonetic": "Bedroom",
@@ -1905,7 +1905,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L2-L2-U01-W04",
+    "id": "vocab-L2-U01-W104",
     "word": "kitchen",
     "ipa": "/kˈɪtʃən/",
     "vietnamesePhonetic": "Kitchen",
@@ -1919,7 +1919,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L2-L2-U01-W05",
+    "id": "vocab-L2-U01-W105",
     "word": "bathroom",
     "ipa": "/bˈæθrˌum/",
     "vietnamesePhonetic": "Bathroom",
@@ -1933,7 +1933,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L2-L2-U01-W06",
+    "id": "vocab-L2-U01-W106",
     "word": "garden",
     "ipa": "/ɡˈɑrdən/",
     "vietnamesePhonetic": "Garden",
@@ -1947,7 +1947,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L2-L2-U01-W07",
+    "id": "vocab-L2-U01-W107",
     "word": "bed",
     "ipa": "/bˈɛd/",
     "vietnamesePhonetic": "Bed",
@@ -1961,7 +1961,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L2-L2-U01-W08",
+    "id": "vocab-L2-U01-W108",
     "word": "sofa",
     "ipa": "/sˈoʊfə/",
     "vietnamesePhonetic": "Sofa",
@@ -1975,7 +1975,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L2-L2-U01-W09",
+    "id": "vocab-L2-U01-W109",
     "word": "lamp",
     "ipa": "/lˈæmp/",
     "vietnamesePhonetic": "Lamp",
@@ -1989,7 +1989,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L2-L2-U01-W10",
+    "id": "vocab-L2-U01-W110",
     "word": "clock",
     "ipa": "/klˈɑk/",
     "vietnamesePhonetic": "Clock",
@@ -2003,7 +2003,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L2-L2-U02-W01",
+    "id": "vocab-L2-U02-W111",
     "word": "shirt",
     "ipa": "/ʃˈɝt/",
     "vietnamesePhonetic": "Shirt",
@@ -2017,7 +2017,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L2-L2-U02-W02",
+    "id": "vocab-L2-U02-W112",
     "word": "T-shirt",
     "ipa": "/tˈi-ʃˈɝt/",
     "vietnamesePhonetic": "T-shirt",
@@ -2031,7 +2031,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L2-L2-U02-W03",
+    "id": "vocab-L2-U02-W113",
     "word": "dress",
     "ipa": "/drˈɛs/",
     "vietnamesePhonetic": "Dress",
@@ -2045,7 +2045,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L2-L2-U02-W04",
+    "id": "vocab-L2-U02-W114",
     "word": "skirt",
     "ipa": "/skˈɝt/",
     "vietnamesePhonetic": "Skirt",
@@ -2059,7 +2059,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L2-L2-U02-W05",
+    "id": "vocab-L2-U02-W115",
     "word": "trousers",
     "ipa": "/trˈaʊzɚz/",
     "vietnamesePhonetic": "Trousers",
@@ -2073,7 +2073,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L2-L2-U02-W06",
+    "id": "vocab-L2-U02-W116",
     "word": "shorts",
     "ipa": "/ʃˈɔrts/",
     "vietnamesePhonetic": "Shorts",
@@ -2087,7 +2087,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L2-L2-U02-W07",
+    "id": "vocab-L2-U02-W117",
     "word": "shoes",
     "ipa": "/ʃˈuz/",
     "vietnamesePhonetic": "Shoes",
@@ -2101,7 +2101,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L2-L2-U02-W08",
+    "id": "vocab-L2-U02-W118",
     "word": "socks",
     "ipa": "/sˈɑks/",
     "vietnamesePhonetic": "Socks",
@@ -2115,7 +2115,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L2-L2-U02-W09",
+    "id": "vocab-L2-U02-W119",
     "word": "hat",
     "ipa": "/hˈæt/",
     "vietnamesePhonetic": "Hat",
@@ -2129,7 +2129,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L2-L2-U02-W10",
+    "id": "vocab-L2-U02-W120",
     "word": "jacket",
     "ipa": "/dʒˈækət/",
     "vietnamesePhonetic": "Jacket",
@@ -2143,7 +2143,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L2-L2-U03-W01",
+    "id": "vocab-L2-U03-W121",
     "word": "wake up",
     "ipa": "/wˈeɪk ˈʌp/",
     "vietnamesePhonetic": "Wake up",
@@ -2157,7 +2157,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L2-L2-U03-W02",
+    "id": "vocab-L2-U03-W122",
     "word": "brush",
     "ipa": "/brˈʌʃ/",
     "vietnamesePhonetic": "Brush",
@@ -2171,7 +2171,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L2-L2-U03-W03",
+    "id": "vocab-L2-U03-W123",
     "word": "wash",
     "ipa": "/wˈɑʃ/",
     "vietnamesePhonetic": "Wash",
@@ -2185,7 +2185,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L2-L2-U03-W04",
+    "id": "vocab-L2-U03-W124",
     "word": "get dressed",
     "ipa": "/ɡˈɛt drˈɛst/",
     "vietnamesePhonetic": "Get dressed",
@@ -2199,7 +2199,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L2-L2-U03-W05",
+    "id": "vocab-L2-U03-W125",
     "word": "have breakfast",
     "ipa": "/hˈæv brˈɛkfəst/",
     "vietnamesePhonetic": "Have breakfast",
@@ -2213,7 +2213,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L2-L2-U03-W06",
+    "id": "vocab-L2-U03-W126",
     "word": "go to school",
     "ipa": "/ɡˈoʊ tˈu skˈul/",
     "vietnamesePhonetic": "Go to school",
@@ -2227,7 +2227,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L2-L2-U03-W07",
+    "id": "vocab-L2-U03-W127",
     "word": "study",
     "ipa": "/stˈʌdi/",
     "vietnamesePhonetic": "Study",
@@ -2241,7 +2241,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L2-L2-U03-W08",
+    "id": "vocab-L2-U03-W128",
     "word": "play",
     "ipa": "/plˈeɪ/",
     "vietnamesePhonetic": "Play",
@@ -2255,7 +2255,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L2-L2-U03-W09",
+    "id": "vocab-L2-U03-W129",
     "word": "have dinner",
     "ipa": "/hˈæv dˈɪnɚ/",
     "vietnamesePhonetic": "Have dinner",
@@ -2269,7 +2269,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L2-L2-U03-W10",
+    "id": "vocab-L2-U03-W130",
     "word": "sleep",
     "ipa": "/slˈip/",
     "vietnamesePhonetic": "Sleep",
@@ -2283,7 +2283,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L2-L2-U04-W01",
+    "id": "vocab-L2-U04-W131",
     "word": "sunny",
     "ipa": "/sˈʌni/",
     "vietnamesePhonetic": "Sunny",
@@ -2297,7 +2297,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L2-L2-U04-W02",
+    "id": "vocab-L2-U04-W132",
     "word": "rainy",
     "ipa": "/rˈeɪni/",
     "vietnamesePhonetic": "Rainy",
@@ -2311,7 +2311,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L2-L2-U04-W03",
+    "id": "vocab-L2-U04-W133",
     "word": "cloudy",
     "ipa": "/klˈaʊdi/",
     "vietnamesePhonetic": "Cloudy",
@@ -2325,7 +2325,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L2-L2-U04-W04",
+    "id": "vocab-L2-U04-W134",
     "word": "windy",
     "ipa": "/wˈɪndi/",
     "vietnamesePhonetic": "Windy",
@@ -2339,7 +2339,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L2-L2-U04-W05",
+    "id": "vocab-L2-U04-W135",
     "word": "hot",
     "ipa": "/hˈɑt/",
     "vietnamesePhonetic": "Hot",
@@ -2353,7 +2353,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L2-L2-U04-W06",
+    "id": "vocab-L2-U04-W136",
     "word": "cold",
     "ipa": "/kˈoʊld/",
     "vietnamesePhonetic": "Cold",
@@ -2367,7 +2367,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L2-L2-U04-W07",
+    "id": "vocab-L2-U04-W137",
     "word": "warm",
     "ipa": "/wˈɔrm/",
     "vietnamesePhonetic": "Warm",
@@ -2381,7 +2381,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L2-L2-U04-W08",
+    "id": "vocab-L2-U04-W138",
     "word": "cool",
     "ipa": "/kˈul/",
     "vietnamesePhonetic": "Cool",
@@ -2395,7 +2395,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L2-L2-U04-W09",
+    "id": "vocab-L2-U04-W139",
     "word": "storm",
     "ipa": "/stˈɔrm/",
     "vietnamesePhonetic": "Storm",
@@ -2409,7 +2409,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L2-L2-U04-W10",
+    "id": "vocab-L2-U04-W140",
     "word": "rainbow",
     "ipa": "/rˈeɪnbˌoʊ/",
     "vietnamesePhonetic": "Rainbow",
@@ -2423,7 +2423,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L2-L2-U05-W01",
+    "id": "vocab-L2-U05-W141",
     "word": "bicycle",
     "ipa": "/bˈaɪsɪkəl/",
     "vietnamesePhonetic": "Bicycle",
@@ -2437,7 +2437,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L2-L2-U05-W02",
+    "id": "vocab-L2-U05-W142",
     "word": "motorbike",
     "ipa": "/mˈoʊtɚbˌaɪk/",
     "vietnamesePhonetic": "Motorbike",
@@ -2451,7 +2451,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L2-L2-U05-W03",
+    "id": "vocab-L2-U05-W143",
     "word": "car",
     "ipa": "/kˈɑr/",
     "vietnamesePhonetic": "Car",
@@ -2465,7 +2465,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L2-L2-U05-W04",
+    "id": "vocab-L2-U05-W144",
     "word": "bus",
     "ipa": "/bˈʌs/",
     "vietnamesePhonetic": "Bus",
@@ -2479,7 +2479,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L2-L2-U05-W05",
+    "id": "vocab-L2-U05-W145",
     "word": "train",
     "ipa": "/trˈeɪn/",
     "vietnamesePhonetic": "Train",
@@ -2493,7 +2493,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L2-L2-U05-W06",
+    "id": "vocab-L2-U05-W146",
     "word": "plane",
     "ipa": "/plˈeɪn/",
     "vietnamesePhonetic": "Plane",
@@ -2507,7 +2507,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L2-L2-U05-W07",
+    "id": "vocab-L2-U05-W147",
     "word": "boat",
     "ipa": "/bˈoʊt/",
     "vietnamesePhonetic": "Boat",
@@ -2521,7 +2521,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L2-L2-U05-W08",
+    "id": "vocab-L2-U05-W148",
     "word": "taxi",
     "ipa": "/tˈæksi/",
     "vietnamesePhonetic": "Taxi",
@@ -2535,7 +2535,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L2-L2-U05-W09",
+    "id": "vocab-L2-U05-W149",
     "word": "truck",
     "ipa": "/trˈʌk/",
     "vietnamesePhonetic": "Truck",
@@ -2549,7 +2549,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L2-L2-U05-W10",
+    "id": "vocab-L2-U05-W150",
     "word": "scooter",
     "ipa": "/skˈutɚ/",
     "vietnamesePhonetic": "Scooter",
@@ -2563,7 +2563,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L2-L2-U06-W01",
+    "id": "vocab-L2-U06-W151",
     "word": "school",
     "ipa": "/skˈul/",
     "vietnamesePhonetic": "School",
@@ -2577,7 +2577,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U06-W02",
+    "id": "vocab-L2-U06-W152",
     "word": "hospital",
     "ipa": "/hˈɑspˌɪtəl/",
     "vietnamesePhonetic": "Hospital",
@@ -2591,7 +2591,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U06-W03",
+    "id": "vocab-L2-U06-W153",
     "word": "park",
     "ipa": "/pˈɑrk/",
     "vietnamesePhonetic": "Park",
@@ -2605,7 +2605,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U06-W04",
+    "id": "vocab-L2-U06-W154",
     "word": "supermarket",
     "ipa": "/sˈupɚmˌɑrkɪt/",
     "vietnamesePhonetic": "Supermarket",
@@ -2619,7 +2619,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U06-W05",
+    "id": "vocab-L2-U06-W155",
     "word": "library",
     "ipa": "/lˈaɪbrɛrˌi/",
     "vietnamesePhonetic": "Library",
@@ -2633,7 +2633,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U06-W06",
+    "id": "vocab-L2-U06-W156",
     "word": "zoo",
     "ipa": "/zˈu/",
     "vietnamesePhonetic": "Zoo",
@@ -2647,7 +2647,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U06-W07",
+    "id": "vocab-L2-U06-W157",
     "word": "cinema",
     "ipa": "/sˈɪnəmə/",
     "vietnamesePhonetic": "Cinema",
@@ -2661,7 +2661,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U06-W08",
+    "id": "vocab-L2-U06-W158",
     "word": "restaurant",
     "ipa": "/rˈɛstɚˌɑnt/",
     "vietnamesePhonetic": "Restaurant",
@@ -2675,7 +2675,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U06-W09",
+    "id": "vocab-L2-U06-W159",
     "word": "bank",
     "ipa": "/bˈæŋk/",
     "vietnamesePhonetic": "Bank",
@@ -2689,7 +2689,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U06-W10",
+    "id": "vocab-L2-U06-W160",
     "word": "post office",
     "ipa": "/pˈoʊst ˈɔfɪs/",
     "vietnamesePhonetic": "Post office",
@@ -2703,7 +2703,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U07-W01",
+    "id": "vocab-L2-U07-W161",
     "word": "teacher",
     "ipa": "/tˈitʃɚ/",
     "vietnamesePhonetic": "Teacher",
@@ -2717,7 +2717,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U07-W02",
+    "id": "vocab-L2-U07-W162",
     "word": "doctor",
     "ipa": "/dˈɑktɚ/",
     "vietnamesePhonetic": "Doctor",
@@ -2731,7 +2731,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U07-W03",
+    "id": "vocab-L2-U07-W163",
     "word": "nurse",
     "ipa": "/nˈɝs/",
     "vietnamesePhonetic": "Nurse",
@@ -2745,7 +2745,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U07-W04",
+    "id": "vocab-L2-U07-W164",
     "word": "police officer",
     "ipa": "/pəlˈis ˈɔfəsɚ/",
     "vietnamesePhonetic": "Police officer",
@@ -2759,7 +2759,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U07-W05",
+    "id": "vocab-L2-U07-W165",
     "word": "firefighter",
     "ipa": "/fˈaɪrfˌaɪtɚ/",
     "vietnamesePhonetic": "Firefighter",
@@ -2773,7 +2773,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U07-W06",
+    "id": "vocab-L2-U07-W166",
     "word": "farmer",
     "ipa": "/fˈɑrmɚ/",
     "vietnamesePhonetic": "Farmer",
@@ -2787,7 +2787,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U07-W07",
+    "id": "vocab-L2-U07-W167",
     "word": "cook",
     "ipa": "/kˈʊk/",
     "vietnamesePhonetic": "Cook",
@@ -2801,7 +2801,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U07-W08",
+    "id": "vocab-L2-U07-W168",
     "word": "driver",
     "ipa": "/drˈaɪvɚ/",
     "vietnamesePhonetic": "Driver",
@@ -2815,7 +2815,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U07-W09",
+    "id": "vocab-L2-U07-W169",
     "word": "pilot",
     "ipa": "/pˈaɪlət/",
     "vietnamesePhonetic": "Pilot",
@@ -2829,7 +2829,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U07-W10",
+    "id": "vocab-L2-U07-W170",
     "word": "artist",
     "ipa": "/ˈɑrtəst/",
     "vietnamesePhonetic": "Artist",
@@ -2843,7 +2843,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U08-W01",
+    "id": "vocab-L2-U08-W171",
     "word": "mango",
     "ipa": "/mˈæŋɡoʊ/",
     "vietnamesePhonetic": "Mango",
@@ -2857,7 +2857,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U08-W02",
+    "id": "vocab-L2-U08-W172",
     "word": "grape",
     "ipa": "/ɡrˈeɪp/",
     "vietnamesePhonetic": "Grape",
@@ -2871,7 +2871,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U08-W03",
+    "id": "vocab-L2-U08-W173",
     "word": "watermelon",
     "ipa": "/wˈɔtɚmˌɛlən/",
     "vietnamesePhonetic": "Watermelon",
@@ -2885,7 +2885,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U08-W04",
+    "id": "vocab-L2-U08-W174",
     "word": "strawberry",
     "ipa": "/strˈɔbˌɛri/",
     "vietnamesePhonetic": "Strawberry",
@@ -2899,7 +2899,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U08-W05",
+    "id": "vocab-L2-U08-W175",
     "word": "pineapple",
     "ipa": "/pˈaɪnˌæpəl/",
     "vietnamesePhonetic": "Pineapple",
@@ -2913,7 +2913,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U08-W06",
+    "id": "vocab-L2-U08-W176",
     "word": "carrot",
     "ipa": "/kˈærət/",
     "vietnamesePhonetic": "Carrot",
@@ -2927,7 +2927,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U08-W07",
+    "id": "vocab-L2-U08-W177",
     "word": "tomato",
     "ipa": "/təmˈeɪtˌoʊ/",
     "vietnamesePhonetic": "Tomato",
@@ -2941,7 +2941,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U08-W08",
+    "id": "vocab-L2-U08-W178",
     "word": "potato",
     "ipa": "/pətˈeɪtˌoʊ/",
     "vietnamesePhonetic": "Potato",
@@ -2955,7 +2955,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U08-W09",
+    "id": "vocab-L2-U08-W179",
     "word": "corn",
     "ipa": "/kˈɔrn/",
     "vietnamesePhonetic": "Corn",
@@ -2969,7 +2969,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U08-W10",
+    "id": "vocab-L2-U08-W180",
     "word": "cucumber",
     "ipa": "/kjˈukəmbɚ/",
     "vietnamesePhonetic": "Cucumber",
@@ -2983,7 +2983,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U09-W01",
+    "id": "vocab-L2-U09-W181",
     "word": "morning",
     "ipa": "/mˈɔrnɪŋ/",
     "vietnamesePhonetic": "Morning",
@@ -2997,7 +2997,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U09-W02",
+    "id": "vocab-L2-U09-W182",
     "word": "afternoon",
     "ipa": "/ˌæftɚnˈun/",
     "vietnamesePhonetic": "Afternoon",
@@ -3011,7 +3011,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U09-W03",
+    "id": "vocab-L2-U09-W183",
     "word": "evening",
     "ipa": "/ˈivnɪŋ/",
     "vietnamesePhonetic": "Evening",
@@ -3025,7 +3025,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U09-W04",
+    "id": "vocab-L2-U09-W184",
     "word": "night",
     "ipa": "/nˈaɪt/",
     "vietnamesePhonetic": "Night",
@@ -3039,7 +3039,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U09-W05",
+    "id": "vocab-L2-U09-W185",
     "word": "today",
     "ipa": "/tədˈeɪ/",
     "vietnamesePhonetic": "Today",
@@ -3053,7 +3053,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U09-W06",
+    "id": "vocab-L2-U09-W186",
     "word": "tomorrow",
     "ipa": "/təmˈɑrˌoʊ/",
     "vietnamesePhonetic": "Tomorrow",
@@ -3067,7 +3067,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U09-W07",
+    "id": "vocab-L2-U09-W187",
     "word": "yesterday",
     "ipa": "/jˈɛstɚdˌeɪ/",
     "vietnamesePhonetic": "Yesterday",
@@ -3081,7 +3081,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U09-W08",
+    "id": "vocab-L2-U09-W188",
     "word": "Monday",
     "ipa": "/mˈʌndi/",
     "vietnamesePhonetic": "Monday",
@@ -3095,7 +3095,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U09-W09",
+    "id": "vocab-L2-U09-W189",
     "word": "weekend",
     "ipa": "/wˈikˌɛnd/",
     "vietnamesePhonetic": "Weekend",
@@ -3109,7 +3109,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U09-W10",
+    "id": "vocab-L2-U09-W190",
     "word": "birthday",
     "ipa": "/bˈɝθdˌeɪ/",
     "vietnamesePhonetic": "Birthday",
@@ -3123,7 +3123,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U10-W01",
+    "id": "vocab-L2-U10-W191",
     "word": "football",
     "ipa": "/fˈʊtbˌɔl/",
     "vietnamesePhonetic": "Football",
@@ -3137,7 +3137,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U10-W02",
+    "id": "vocab-L2-U10-W192",
     "word": "basketball",
     "ipa": "/bˈæskətbˌɔl/",
     "vietnamesePhonetic": "Basketball",
@@ -3151,7 +3151,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U10-W03",
+    "id": "vocab-L2-U10-W193",
     "word": "badminton",
     "ipa": "/bˈædmˌɪntən/",
     "vietnamesePhonetic": "Badminton",
@@ -3165,7 +3165,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U10-W04",
+    "id": "vocab-L2-U10-W194",
     "word": "swimming",
     "ipa": "/swˈɪmɪŋ/",
     "vietnamesePhonetic": "Swimming",
@@ -3179,7 +3179,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U10-W05",
+    "id": "vocab-L2-U10-W195",
     "word": "running",
     "ipa": "/rˈʌnɪŋ/",
     "vietnamesePhonetic": "Running",
@@ -3193,7 +3193,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U10-W06",
+    "id": "vocab-L2-U10-W196",
     "word": "cycling",
     "ipa": "/sˈaɪkəlɪŋ/",
     "vietnamesePhonetic": "Cycling",
@@ -3207,7 +3207,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U10-W07",
+    "id": "vocab-L2-U10-W197",
     "word": "tennis",
     "ipa": "/tˈɛnəs/",
     "vietnamesePhonetic": "Tennis",
@@ -3221,7 +3221,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U10-W08",
+    "id": "vocab-L2-U10-W198",
     "word": "volleyball",
     "ipa": "/vˈɑlibˌɔl/",
     "vietnamesePhonetic": "Volleyball",
@@ -3235,7 +3235,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U10-W09",
+    "id": "vocab-L2-U10-W199",
     "word": "yoga",
     "ipa": "/jˈoʊɡə/",
     "vietnamesePhonetic": "Yoga",
@@ -3249,7 +3249,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U10-W10",
+    "id": "vocab-L2-U10-W200",
     "word": "skating",
     "ipa": "/skˈeɪtɪŋ/",
     "vietnamesePhonetic": "Skating",
@@ -3263,7 +3263,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L3-L3-U01-W01",
+    "id": "vocab-L3-U01-W201",
     "word": "forest",
     "ipa": "/fˈɔrəst/",
     "vietnamesePhonetic": "Forest",
@@ -3277,7 +3277,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U01-W02",
+    "id": "vocab-L3-U01-W202",
     "word": "mountain",
     "ipa": "/mˈaʊntən/",
     "vietnamesePhonetic": "Mountain",
@@ -3291,7 +3291,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U01-W03",
+    "id": "vocab-L3-U01-W203",
     "word": "river",
     "ipa": "/rˈɪvɚ/",
     "vietnamesePhonetic": "River",
@@ -3305,7 +3305,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U01-W04",
+    "id": "vocab-L3-U01-W204",
     "word": "lake",
     "ipa": "/lˈeɪk/",
     "vietnamesePhonetic": "Lake",
@@ -3319,7 +3319,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U01-W05",
+    "id": "vocab-L3-U01-W205",
     "word": "ocean",
     "ipa": "/ˈoʊʃən/",
     "vietnamesePhonetic": "Ocean",
@@ -3333,7 +3333,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U01-W06",
+    "id": "vocab-L3-U01-W206",
     "word": "beach",
     "ipa": "/bˈitʃ/",
     "vietnamesePhonetic": "Beach",
@@ -3347,7 +3347,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U01-W07",
+    "id": "vocab-L3-U01-W207",
     "word": "island",
     "ipa": "/ˈaɪlənd/",
     "vietnamesePhonetic": "Island",
@@ -3361,7 +3361,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U01-W08",
+    "id": "vocab-L3-U01-W208",
     "word": "waterfall",
     "ipa": "/wˈɔtɚfˌɔl/",
     "vietnamesePhonetic": "Waterfall",
@@ -3375,7 +3375,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U01-W09",
+    "id": "vocab-L3-U01-W209",
     "word": "flower",
     "ipa": "/flˈaʊɚ/",
     "vietnamesePhonetic": "Flower",
@@ -3389,7 +3389,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U01-W10",
+    "id": "vocab-L3-U01-W210",
     "word": "tree",
     "ipa": "/trˈi/",
     "vietnamesePhonetic": "Tree",
@@ -3403,7 +3403,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U02-W01",
+    "id": "vocab-L3-U02-W211",
     "word": "healthy",
     "ipa": "/hˈɛlθi/",
     "vietnamesePhonetic": "Healthy",
@@ -3417,7 +3417,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U02-W02",
+    "id": "vocab-L3-U02-W212",
     "word": "sick",
     "ipa": "/sˈɪk/",
     "vietnamesePhonetic": "Sick",
@@ -3431,7 +3431,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U02-W03",
+    "id": "vocab-L3-U02-W213",
     "word": "fever",
     "ipa": "/fˈivɚ/",
     "vietnamesePhonetic": "Fever",
@@ -3445,7 +3445,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U02-W04",
+    "id": "vocab-L3-U02-W214",
     "word": "cough",
     "ipa": "/kˈɑf/",
     "vietnamesePhonetic": "Cough",
@@ -3459,7 +3459,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U02-W05",
+    "id": "vocab-L3-U02-W215",
     "word": "headache",
     "ipa": "/hˈɛdˌeɪk/",
     "vietnamesePhonetic": "Headache",
@@ -3473,7 +3473,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U02-W06",
+    "id": "vocab-L3-U02-W216",
     "word": "medicine",
     "ipa": "/mˈɛdəsən/",
     "vietnamesePhonetic": "Medicine",
@@ -3487,7 +3487,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U02-W07",
+    "id": "vocab-L3-U02-W217",
     "word": "doctor",
     "ipa": "/dˈɑktɚ/",
     "vietnamesePhonetic": "Doctor",
@@ -3501,7 +3501,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U02-W08",
+    "id": "vocab-L3-U02-W218",
     "word": "hospital",
     "ipa": "/hˈɑspˌɪtəl/",
     "vietnamesePhonetic": "Hospital",
@@ -3515,7 +3515,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U02-W09",
+    "id": "vocab-L3-U02-W219",
     "word": "exercise",
     "ipa": "/ˈɛksɚsˌaɪz/",
     "vietnamesePhonetic": "Exercise",
@@ -3529,7 +3529,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U02-W10",
+    "id": "vocab-L3-U02-W220",
     "word": "rest",
     "ipa": "/rˈɛst/",
     "vietnamesePhonetic": "Rest",
@@ -3543,7 +3543,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U03-W01",
+    "id": "vocab-L3-U03-W221",
     "word": "shop",
     "ipa": "/ʃˈɑp/",
     "vietnamesePhonetic": "Shop",
@@ -3557,7 +3557,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U03-W02",
+    "id": "vocab-L3-U03-W222",
     "word": "price",
     "ipa": "/prˈaɪs/",
     "vietnamesePhonetic": "Price",
@@ -3571,7 +3571,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U03-W03",
+    "id": "vocab-L3-U03-W223",
     "word": "money",
     "ipa": "/mˈʌni/",
     "vietnamesePhonetic": "Money",
@@ -3585,7 +3585,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U03-W04",
+    "id": "vocab-L3-U03-W224",
     "word": "cheap",
     "ipa": "/tʃˈip/",
     "vietnamesePhonetic": "Cheap",
@@ -3599,7 +3599,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U03-W05",
+    "id": "vocab-L3-U03-W225",
     "word": "expensive",
     "ipa": "/ɪkspˈɛnsɪv/",
     "vietnamesePhonetic": "Expensive",
@@ -3613,7 +3613,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U03-W06",
+    "id": "vocab-L3-U03-W226",
     "word": "buy",
     "ipa": "/bˈaɪ/",
     "vietnamesePhonetic": "Buy",
@@ -3627,7 +3627,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U03-W07",
+    "id": "vocab-L3-U03-W227",
     "word": "sell",
     "ipa": "/sˈɛl/",
     "vietnamesePhonetic": "Sell",
@@ -3641,7 +3641,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U03-W08",
+    "id": "vocab-L3-U03-W228",
     "word": "pay",
     "ipa": "/pˈeɪ/",
     "vietnamesePhonetic": "Pay",
@@ -3655,7 +3655,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U03-W09",
+    "id": "vocab-L3-U03-W229",
     "word": "receipt",
     "ipa": "/rɪsˈit/",
     "vietnamesePhonetic": "Receipt",
@@ -3669,7 +3669,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U03-W10",
+    "id": "vocab-L3-U03-W230",
     "word": "change",
     "ipa": "/tʃˈeɪndʒ/",
     "vietnamesePhonetic": "Change",
@@ -3683,7 +3683,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U04-W01",
+    "id": "vocab-L3-U04-W231",
     "word": "ticket",
     "ipa": "/tˈɪkət/",
     "vietnamesePhonetic": "Ticket",
@@ -3697,7 +3697,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U04-W02",
+    "id": "vocab-L3-U04-W232",
     "word": "passport",
     "ipa": "/pˈæspˌɔrt/",
     "vietnamesePhonetic": "Passport",
@@ -3711,7 +3711,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U04-W03",
+    "id": "vocab-L3-U04-W233",
     "word": "suitcase",
     "ipa": "/sˈutkˌeɪs/",
     "vietnamesePhonetic": "Suitcase",
@@ -3725,7 +3725,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U04-W04",
+    "id": "vocab-L3-U04-W234",
     "word": "airport",
     "ipa": "/ˈɛrpˌɔrt/",
     "vietnamesePhonetic": "Airport",
@@ -3739,7 +3739,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U04-W05",
+    "id": "vocab-L3-U04-W235",
     "word": "hotel",
     "ipa": "/hoʊtˈɛl/",
     "vietnamesePhonetic": "Hotel",
@@ -3753,7 +3753,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U04-W06",
+    "id": "vocab-L3-U04-W236",
     "word": "map",
     "ipa": "/mˈæp/",
     "vietnamesePhonetic": "Map",
@@ -3767,7 +3767,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U04-W07",
+    "id": "vocab-L3-U04-W237",
     "word": "journey",
     "ipa": "/dʒˈɝni/",
     "vietnamesePhonetic": "Journey",
@@ -3781,7 +3781,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U04-W08",
+    "id": "vocab-L3-U04-W238",
     "word": "tourist",
     "ipa": "/tˈʊrəst/",
     "vietnamesePhonetic": "Tourist",
@@ -3795,7 +3795,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U04-W09",
+    "id": "vocab-L3-U04-W239",
     "word": "visit",
     "ipa": "/vˈɪzɪt/",
     "vietnamesePhonetic": "Visit",
@@ -3809,7 +3809,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U04-W10",
+    "id": "vocab-L3-U04-W240",
     "word": "arrive",
     "ipa": "/ɚˈaɪv/",
     "vietnamesePhonetic": "Arrive",
@@ -3823,7 +3823,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U05-W01",
+    "id": "vocab-L3-U05-W241",
     "word": "computer",
     "ipa": "/kəmpjˈutɚ/",
     "vietnamesePhonetic": "Computer",
@@ -3837,7 +3837,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U05-W02",
+    "id": "vocab-L3-U05-W242",
     "word": "laptop",
     "ipa": "/lˈæptˌɑp/",
     "vietnamesePhonetic": "Laptop",
@@ -3851,7 +3851,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U05-W03",
+    "id": "vocab-L3-U05-W243",
     "word": "tablet",
     "ipa": "/tˈæblət/",
     "vietnamesePhonetic": "Tablet",
@@ -3865,7 +3865,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U05-W04",
+    "id": "vocab-L3-U05-W244",
     "word": "screen",
     "ipa": "/skrˈin/",
     "vietnamesePhonetic": "Screen",
@@ -3879,7 +3879,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U05-W05",
+    "id": "vocab-L3-U05-W245",
     "word": "keyboard",
     "ipa": "/kˈibˌɔrd/",
     "vietnamesePhonetic": "Keyboard",
@@ -3893,7 +3893,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U05-W06",
+    "id": "vocab-L3-U05-W246",
     "word": "mouse",
     "ipa": "/mˈaʊs/",
     "vietnamesePhonetic": "Mouse",
@@ -3907,7 +3907,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U05-W07",
+    "id": "vocab-L3-U05-W247",
     "word": "internet",
     "ipa": "/ˈɪntɚnˌɛt/",
     "vietnamesePhonetic": "Internet",
@@ -3921,7 +3921,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U05-W08",
+    "id": "vocab-L3-U05-W248",
     "word": "website",
     "ipa": "/wˈɛbsˌaɪt/",
     "vietnamesePhonetic": "Website",
@@ -3935,7 +3935,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U05-W09",
+    "id": "vocab-L3-U05-W249",
     "word": "email",
     "ipa": "/imˈeɪl/",
     "vietnamesePhonetic": "Email",
@@ -3949,7 +3949,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U05-W10",
+    "id": "vocab-L3-U05-W250",
     "word": "password",
     "ipa": "/pˈæswˌɝd/",
     "vietnamesePhonetic": "Password",
@@ -3963,7 +3963,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U06-W01",
+    "id": "vocab-L3-U06-W251",
     "word": "reading",
     "ipa": "/rˈidɪŋ/",
     "vietnamesePhonetic": "Reading",
@@ -3977,7 +3977,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L3-L3-U06-W02",
+    "id": "vocab-L3-U06-W252",
     "word": "drawing",
     "ipa": "/drˈɔɪŋ/",
     "vietnamesePhonetic": "Drawing",
@@ -3991,7 +3991,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L3-L3-U06-W03",
+    "id": "vocab-L3-U06-W253",
     "word": "painting",
     "ipa": "/pˈeɪntɪŋ/",
     "vietnamesePhonetic": "Painting",
@@ -4005,7 +4005,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L3-L3-U06-W04",
+    "id": "vocab-L3-U06-W254",
     "word": "cooking",
     "ipa": "/kˈʊkɪŋ/",
     "vietnamesePhonetic": "Cooking",
@@ -4019,7 +4019,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L3-L3-U06-W05",
+    "id": "vocab-L3-U06-W255",
     "word": "gardening",
     "ipa": "/ɡˈɑrdənɪŋ/",
     "vietnamesePhonetic": "Gardening",
@@ -4033,7 +4033,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L3-L3-U06-W06",
+    "id": "vocab-L3-U06-W256",
     "word": "singing",
     "ipa": "/sˈɪŋɪŋ/",
     "vietnamesePhonetic": "Singing",
@@ -4047,7 +4047,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L3-L3-U06-W07",
+    "id": "vocab-L3-U06-W257",
     "word": "dancing",
     "ipa": "/dˈænsɪŋ/",
     "vietnamesePhonetic": "Dancing",
@@ -4061,7 +4061,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L3-L3-U06-W08",
+    "id": "vocab-L3-U06-W258",
     "word": "photography",
     "ipa": "/fətˈɑɡrəfi/",
     "vietnamesePhonetic": "Photography",
@@ -4075,7 +4075,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L3-L3-U06-W09",
+    "id": "vocab-L3-U06-W259",
     "word": "collecting",
     "ipa": "/kəlˈɛktɪŋ/",
     "vietnamesePhonetic": "Collecting",
@@ -4089,7 +4089,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L3-L3-U06-W10",
+    "id": "vocab-L3-U06-W260",
     "word": "camping",
     "ipa": "/kˈæmpɪŋ/",
     "vietnamesePhonetic": "Camping",
@@ -4103,7 +4103,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L3-L3-U07-W01",
+    "id": "vocab-L3-U07-W261",
     "word": "neighbor",
     "ipa": "/nˈeɪbɚ/",
     "vietnamesePhonetic": "Neighbor",
@@ -4117,7 +4117,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L3-L3-U07-W02",
+    "id": "vocab-L3-U07-W262",
     "word": "police station",
     "ipa": "/pəlˈis stˈeɪʃən/",
     "vietnamesePhonetic": "Police station",
@@ -4131,7 +4131,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L3-L3-U07-W03",
+    "id": "vocab-L3-U07-W263",
     "word": "fire station",
     "ipa": "/fˈaɪɚ stˈeɪʃən/",
     "vietnamesePhonetic": "Fire station",
@@ -4145,7 +4145,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L3-L3-U07-W04",
+    "id": "vocab-L3-U07-W264",
     "word": "museum",
     "ipa": "/mjuzˈiəm/",
     "vietnamesePhonetic": "Museum",
@@ -4159,7 +4159,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L3-L3-U07-W05",
+    "id": "vocab-L3-U07-W265",
     "word": "bakery",
     "ipa": "/bˈeɪkɚi/",
     "vietnamesePhonetic": "Bakery",
@@ -4173,7 +4173,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L3-L3-U07-W06",
+    "id": "vocab-L3-U07-W266",
     "word": "market",
     "ipa": "/mˈɑrkət/",
     "vietnamesePhonetic": "Market",
@@ -4187,7 +4187,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L3-L3-U07-W07",
+    "id": "vocab-L3-U07-W267",
     "word": "playground",
     "ipa": "/plˈeɪɡrˌaʊnd/",
     "vietnamesePhonetic": "Playground",
@@ -4201,7 +4201,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L3-L3-U07-W08",
+    "id": "vocab-L3-U07-W268",
     "word": "traffic light",
     "ipa": "/trˈæfɪk lˈaɪt/",
     "vietnamesePhonetic": "Traffic light",
@@ -4215,7 +4215,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L3-L3-U07-W09",
+    "id": "vocab-L3-U07-W269",
     "word": "crossing",
     "ipa": "/krˈɔsɪŋ/",
     "vietnamesePhonetic": "Crossing",
@@ -4229,7 +4229,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L3-L3-U07-W10",
+    "id": "vocab-L3-U07-W270",
     "word": "neighborhood",
     "ipa": "/nˈeɪbɚhˌʊd/",
     "vietnamesePhonetic": "Neighborhood",
@@ -4243,7 +4243,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L3-L3-U08-W01",
+    "id": "vocab-L3-U08-W271",
     "word": "festival",
     "ipa": "/fˈɛstəvəl/",
     "vietnamesePhonetic": "Festival",
@@ -4257,7 +4257,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L3-L3-U08-W02",
+    "id": "vocab-L3-U08-W272",
     "word": "present",
     "ipa": "/prˈɛzənt/",
     "vietnamesePhonetic": "Present",
@@ -4271,7 +4271,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L3-L3-U08-W03",
+    "id": "vocab-L3-U08-W273",
     "word": "party",
     "ipa": "/pˈɑrti/",
     "vietnamesePhonetic": "Party",
@@ -4285,7 +4285,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L3-L3-U08-W04",
+    "id": "vocab-L3-U08-W274",
     "word": "candle",
     "ipa": "/kˈændəl/",
     "vietnamesePhonetic": "Candle",
@@ -4299,7 +4299,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L3-L3-U08-W05",
+    "id": "vocab-L3-U08-W275",
     "word": "costume",
     "ipa": "/kɑstˈum/",
     "vietnamesePhonetic": "Costume",
@@ -4313,7 +4313,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L3-L3-U08-W06",
+    "id": "vocab-L3-U08-W276",
     "word": "parade",
     "ipa": "/pɚˈeɪd/",
     "vietnamesePhonetic": "Parade",
@@ -4327,7 +4327,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L3-L3-U08-W07",
+    "id": "vocab-L3-U08-W277",
     "word": "holiday",
     "ipa": "/hˈɑlədˌeɪ/",
     "vietnamesePhonetic": "Holiday",
@@ -4341,7 +4341,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L3-L3-U08-W08",
+    "id": "vocab-L3-U08-W278",
     "word": "celebrate",
     "ipa": "/sˈɛləbrˌeɪt/",
     "vietnamesePhonetic": "Celebrate",
@@ -4355,7 +4355,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L3-L3-U08-W09",
+    "id": "vocab-L3-U08-W279",
     "word": "decorate",
     "ipa": "/dˈɛkɚˌeɪt/",
     "vietnamesePhonetic": "Decorate",
@@ -4369,7 +4369,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L3-L3-U08-W10",
+    "id": "vocab-L3-U08-W280",
     "word": "invitation",
     "ipa": "/ˌɪnvɪtˈeɪʃən/",
     "vietnamesePhonetic": "Invitation",
@@ -4383,7 +4383,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L3-L3-U09-W01",
+    "id": "vocab-L3-U09-W281",
     "word": "kind",
     "ipa": "/kˈaɪnd/",
     "vietnamesePhonetic": "Kind",
@@ -4397,7 +4397,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L3-L3-U09-W02",
+    "id": "vocab-L3-U09-W282",
     "word": "friendly",
     "ipa": "/frˈɛndli/",
     "vietnamesePhonetic": "Friendly",
@@ -4411,7 +4411,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L3-L3-U09-W03",
+    "id": "vocab-L3-U09-W283",
     "word": "polite",
     "ipa": "/pəlˈaɪt/",
     "vietnamesePhonetic": "Polite",
@@ -4425,7 +4425,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L3-L3-U09-W04",
+    "id": "vocab-L3-U09-W284",
     "word": "honest",
     "ipa": "/ˈɑnəst/",
     "vietnamesePhonetic": "Honest",
@@ -4439,7 +4439,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L3-L3-U09-W05",
+    "id": "vocab-L3-U09-W285",
     "word": "brave",
     "ipa": "/brˈeɪv/",
     "vietnamesePhonetic": "Brave",
@@ -4453,7 +4453,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L3-L3-U09-W06",
+    "id": "vocab-L3-U09-W286",
     "word": "clever",
     "ipa": "/klˈɛvɚ/",
     "vietnamesePhonetic": "Clever",
@@ -4467,7 +4467,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L3-L3-U09-W07",
+    "id": "vocab-L3-U09-W287",
     "word": "careful",
     "ipa": "/kˈɛrfəl/",
     "vietnamesePhonetic": "Careful",
@@ -4481,7 +4481,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L3-L3-U09-W08",
+    "id": "vocab-L3-U09-W288",
     "word": "patient",
     "ipa": "/pˈeɪʃənt/",
     "vietnamesePhonetic": "Patient",
@@ -4495,7 +4495,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L3-L3-U09-W09",
+    "id": "vocab-L3-U09-W289",
     "word": "helpful",
     "ipa": "/hˈɛlpfəl/",
     "vietnamesePhonetic": "Helpful",
@@ -4509,7 +4509,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L3-L3-U09-W10",
+    "id": "vocab-L3-U09-W290",
     "word": "shy",
     "ipa": "/ʃˈaɪ/",
     "vietnamesePhonetic": "Shy",
@@ -4523,7 +4523,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L3-L3-U10-W01",
+    "id": "vocab-L3-U10-W291",
     "word": "recycle",
     "ipa": "/risˈaɪkəl/",
     "vietnamesePhonetic": "Recycle",
@@ -4537,7 +4537,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L3-L3-U10-W02",
+    "id": "vocab-L3-U10-W292",
     "word": "reuse",
     "ipa": "/rijˈus/",
     "vietnamesePhonetic": "Reuse",
@@ -4551,7 +4551,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L3-L3-U10-W03",
+    "id": "vocab-L3-U10-W293",
     "word": "reduce",
     "ipa": "/rədˈus/",
     "vietnamesePhonetic": "Reduce",
@@ -4565,7 +4565,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L3-L3-U10-W04",
+    "id": "vocab-L3-U10-W294",
     "word": "rubbish",
     "ipa": "/rˈʌbɪʃ/",
     "vietnamesePhonetic": "Rubbish",
@@ -4579,7 +4579,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L3-L3-U10-W05",
+    "id": "vocab-L3-U10-W295",
     "word": "plastic",
     "ipa": "/plˈæstɪk/",
     "vietnamesePhonetic": "Plastic",
@@ -4593,7 +4593,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L3-L3-U10-W06",
+    "id": "vocab-L3-U10-W296",
     "word": "paper",
     "ipa": "/pˈeɪpɚ/",
     "vietnamesePhonetic": "Paper",
@@ -4607,7 +4607,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L3-L3-U10-W07",
+    "id": "vocab-L3-U10-W297",
     "word": "glass",
     "ipa": "/ɡlˈæs/",
     "vietnamesePhonetic": "Glass",
@@ -4621,7 +4621,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L3-L3-U10-W08",
+    "id": "vocab-L3-U10-W298",
     "word": "electricity",
     "ipa": "/ɪlˌɛktrˈɪsəti/",
     "vietnamesePhonetic": "Electricity",
@@ -4635,7 +4635,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L3-L3-U10-W09",
+    "id": "vocab-L3-U10-W299",
     "word": "pollution",
     "ipa": "/pəlˈuʃən/",
     "vietnamesePhonetic": "Pollution",
@@ -4649,7 +4649,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L3-L3-U10-W10",
+    "id": "vocab-L3-U10-W300",
     "word": "protect",
     "ipa": "/prətˈɛkt/",
     "vietnamesePhonetic": "Protect",
@@ -4663,7 +4663,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U01-W01",
+    "id": "vocab-L4-U01-W301",
     "word": "experiment",
     "ipa": "/ɪkspˈɛrəmənt/",
     "vietnamesePhonetic": "Experiment",
@@ -4677,7 +4677,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L4-L4-U01-W02",
+    "id": "vocab-L4-U01-W302",
     "word": "energy",
     "ipa": "/ˈɛnɚdʒi/",
     "vietnamesePhonetic": "Energy",
@@ -4691,7 +4691,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L4-L4-U01-W03",
+    "id": "vocab-L4-U01-W303",
     "word": "light",
     "ipa": "/lˈaɪt/",
     "vietnamesePhonetic": "Light",
@@ -4705,7 +4705,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L4-L4-U01-W04",
+    "id": "vocab-L4-U01-W304",
     "word": "sound",
     "ipa": "/sˈaʊnd/",
     "vietnamesePhonetic": "Sound",
@@ -4719,7 +4719,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L4-L4-U01-W05",
+    "id": "vocab-L4-U01-W305",
     "word": "heat",
     "ipa": "/hˈit/",
     "vietnamesePhonetic": "Heat",
@@ -4733,7 +4733,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L4-L4-U01-W06",
+    "id": "vocab-L4-U01-W306",
     "word": "force",
     "ipa": "/fˈɔrs/",
     "vietnamesePhonetic": "Force",
@@ -4747,7 +4747,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L4-L4-U01-W07",
+    "id": "vocab-L4-U01-W307",
     "word": "matter",
     "ipa": "/mˈætɚ/",
     "vietnamesePhonetic": "Matter",
@@ -4761,7 +4761,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L4-L4-U01-W08",
+    "id": "vocab-L4-U01-W308",
     "word": "liquid",
     "ipa": "/lˈɪkwəd/",
     "vietnamesePhonetic": "Liquid",
@@ -4775,7 +4775,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L4-L4-U01-W09",
+    "id": "vocab-L4-U01-W309",
     "word": "solid",
     "ipa": "/sˈɑləd/",
     "vietnamesePhonetic": "Solid",
@@ -4789,7 +4789,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L4-L4-U01-W10",
+    "id": "vocab-L4-U01-W310",
     "word": "gas",
     "ipa": "/ɡˈæs/",
     "vietnamesePhonetic": "Gas",
@@ -4803,7 +4803,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 1
   },
   {
-    "id": "vocab-L4-L4-U02-W01",
+    "id": "vocab-L4-U02-W311",
     "word": "planet",
     "ipa": "/plˈænət/",
     "vietnamesePhonetic": "Planet",
@@ -4817,7 +4817,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L4-L4-U02-W02",
+    "id": "vocab-L4-U02-W312",
     "word": "Earth",
     "ipa": "/ˈɝθ/",
     "vietnamesePhonetic": "Earth",
@@ -4831,7 +4831,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L4-L4-U02-W03",
+    "id": "vocab-L4-U02-W313",
     "word": "Moon",
     "ipa": "/mˈun/",
     "vietnamesePhonetic": "Moon",
@@ -4845,7 +4845,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L4-L4-U02-W04",
+    "id": "vocab-L4-U02-W314",
     "word": "Sun",
     "ipa": "/sˈʌn/",
     "vietnamesePhonetic": "Sun",
@@ -4859,7 +4859,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L4-L4-U02-W05",
+    "id": "vocab-L4-U02-W315",
     "word": "star",
     "ipa": "/stˈɑr/",
     "vietnamesePhonetic": "Sờ-ta",
@@ -4873,7 +4873,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L4-L4-U02-W06",
+    "id": "vocab-L4-U02-W316",
     "word": "astronaut",
     "ipa": "/ˈæstrənˌɑt/",
     "vietnamesePhonetic": "Astronaut",
@@ -4887,7 +4887,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L4-L4-U02-W07",
+    "id": "vocab-L4-U02-W317",
     "word": "rocket",
     "ipa": "/rˈɑkət/",
     "vietnamesePhonetic": "Rocket",
@@ -4901,7 +4901,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L4-L4-U02-W08",
+    "id": "vocab-L4-U02-W318",
     "word": "galaxy",
     "ipa": "/ɡˈæləksi/",
     "vietnamesePhonetic": "Galaxy",
@@ -4915,7 +4915,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L4-L4-U02-W09",
+    "id": "vocab-L4-U02-W319",
     "word": "telescope",
     "ipa": "/tˈɛləskˌoʊp/",
     "vietnamesePhonetic": "Telescope",
@@ -4929,7 +4929,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L4-L4-U02-W10",
+    "id": "vocab-L4-U02-W320",
     "word": "gravity",
     "ipa": "/ɡrˈævəti/",
     "vietnamesePhonetic": "Gravity",
@@ -4943,7 +4943,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 2
   },
   {
-    "id": "vocab-L4-L4-U03-W01",
+    "id": "vocab-L4-U03-W321",
     "word": "compare",
     "ipa": "/kəmpˈɛr/",
     "vietnamesePhonetic": "Compare",
@@ -4957,7 +4957,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L4-L4-U03-W02",
+    "id": "vocab-L4-U03-W322",
     "word": "describe",
     "ipa": "/dɪskrˈaɪb/",
     "vietnamesePhonetic": "Describe",
@@ -4971,7 +4971,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L4-L4-U03-W03",
+    "id": "vocab-L4-U03-W323",
     "word": "explain",
     "ipa": "/ɪksplˈeɪn/",
     "vietnamesePhonetic": "Explain",
@@ -4985,7 +4985,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L4-L4-U03-W04",
+    "id": "vocab-L4-U03-W324",
     "word": "classify",
     "ipa": "/klˈæsəfˌaɪ/",
     "vietnamesePhonetic": "Classify",
@@ -4999,7 +4999,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L4-L4-U03-W05",
+    "id": "vocab-L4-U03-W325",
     "word": "calculate",
     "ipa": "/kˈælkjəlˌeɪt/",
     "vietnamesePhonetic": "Calculate",
@@ -5013,7 +5013,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L4-L4-U03-W06",
+    "id": "vocab-L4-U03-W326",
     "word": "observe",
     "ipa": "/əbzˈɝv/",
     "vietnamesePhonetic": "Observe",
@@ -5027,7 +5027,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L4-L4-U03-W07",
+    "id": "vocab-L4-U03-W327",
     "word": "predict",
     "ipa": "/prɪdˈɪkt/",
     "vietnamesePhonetic": "Predict",
@@ -5041,7 +5041,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L4-L4-U03-W08",
+    "id": "vocab-L4-U03-W328",
     "word": "result",
     "ipa": "/rɪzˈʌlt/",
     "vietnamesePhonetic": "Result",
@@ -5055,7 +5055,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L4-L4-U03-W09",
+    "id": "vocab-L4-U03-W329",
     "word": "example",
     "ipa": "/ɪɡzˈæmpəl/",
     "vietnamesePhonetic": "Example",
@@ -5069,7 +5069,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L4-L4-U03-W10",
+    "id": "vocab-L4-U03-W330",
     "word": "information",
     "ipa": "/ˌɪnfɚmˈeɪʃən/",
     "vietnamesePhonetic": "Information",
@@ -5083,7 +5083,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 3
   },
   {
-    "id": "vocab-L4-L4-U04-W01",
+    "id": "vocab-L4-U04-W331",
     "word": "opinion",
     "ipa": "/əpˈɪnjən/",
     "vietnamesePhonetic": "Opinion",
@@ -5097,7 +5097,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L4-L4-U04-W02",
+    "id": "vocab-L4-U04-W332",
     "word": "agree",
     "ipa": "/əɡrˈi/",
     "vietnamesePhonetic": "Agree",
@@ -5111,7 +5111,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L4-L4-U04-W03",
+    "id": "vocab-L4-U04-W333",
     "word": "disagree",
     "ipa": "/dɪsəɡrˈi/",
     "vietnamesePhonetic": "Disagree",
@@ -5125,7 +5125,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L4-L4-U04-W04",
+    "id": "vocab-L4-U04-W334",
     "word": "suggest",
     "ipa": "/sədʒˈɛst/",
     "vietnamesePhonetic": "Suggest",
@@ -5139,7 +5139,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L4-L4-U04-W05",
+    "id": "vocab-L4-U04-W335",
     "word": "invite",
     "ipa": "/ˌɪnvˈaɪt/",
     "vietnamesePhonetic": "Invite",
@@ -5153,7 +5153,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L4-L4-U04-W06",
+    "id": "vocab-L4-U04-W336",
     "word": "reply",
     "ipa": "/rɪplˈaɪ/",
     "vietnamesePhonetic": "Reply",
@@ -5167,7 +5167,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L4-L4-U04-W07",
+    "id": "vocab-L4-U04-W337",
     "word": "question",
     "ipa": "/kwˈɛstʃən/",
     "vietnamesePhonetic": "Question",
@@ -5181,7 +5181,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L4-L4-U04-W08",
+    "id": "vocab-L4-U04-W338",
     "word": "answer",
     "ipa": "/ˈænsɚ/",
     "vietnamesePhonetic": "Answer",
@@ -5195,7 +5195,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L4-L4-U04-W09",
+    "id": "vocab-L4-U04-W339",
     "word": "message",
     "ipa": "/mˈɛsədʒ/",
     "vietnamesePhonetic": "Message",
@@ -5209,7 +5209,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L4-L4-U04-W10",
+    "id": "vocab-L4-U04-W340",
     "word": "conversation",
     "ipa": "/kˌɑnvɚsˈeɪʃən/",
     "vietnamesePhonetic": "Conversation",
@@ -5223,7 +5223,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 4
   },
   {
-    "id": "vocab-L4-L4-U05-W01",
+    "id": "vocab-L4-U05-W341",
     "word": "problem",
     "ipa": "/prˈɑbləm/",
     "vietnamesePhonetic": "Problem",
@@ -5237,7 +5237,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L4-L4-U05-W02",
+    "id": "vocab-L4-U05-W342",
     "word": "solution",
     "ipa": "/səlˈuʃən/",
     "vietnamesePhonetic": "Solution",
@@ -5251,7 +5251,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L4-L4-U05-W03",
+    "id": "vocab-L4-U05-W343",
     "word": "plan",
     "ipa": "/plˈæn/",
     "vietnamesePhonetic": "Plan",
@@ -5265,7 +5265,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L4-L4-U05-W04",
+    "id": "vocab-L4-U05-W344",
     "word": "choice",
     "ipa": "/tʃˈɔɪs/",
     "vietnamesePhonetic": "Choice",
@@ -5279,7 +5279,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L4-L4-U05-W05",
+    "id": "vocab-L4-U05-W345",
     "word": "reason",
     "ipa": "/rˈizən/",
     "vietnamesePhonetic": "Reason",
@@ -5293,7 +5293,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L4-L4-U05-W06",
+    "id": "vocab-L4-U05-W346",
     "word": "step",
     "ipa": "/stˈɛp/",
     "vietnamesePhonetic": "Step",
@@ -5307,7 +5307,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L4-L4-U05-W07",
+    "id": "vocab-L4-U05-W347",
     "word": "check",
     "ipa": "/tʃˈɛk/",
     "vietnamesePhonetic": "Check",
@@ -5321,7 +5321,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L4-L4-U05-W08",
+    "id": "vocab-L4-U05-W348",
     "word": "improve",
     "ipa": "/ˌɪmprˈuv/",
     "vietnamesePhonetic": "Improve",
@@ -5335,7 +5335,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L4-L4-U05-W09",
+    "id": "vocab-L4-U05-W349",
     "word": "decide",
     "ipa": "/dˌɪsˈaɪd/",
     "vietnamesePhonetic": "Decide",
@@ -5349,7 +5349,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L4-L4-U05-W10",
+    "id": "vocab-L4-U05-W350",
     "word": "complete",
     "ipa": "/kəmplˈit/",
     "vietnamesePhonetic": "Complete",
@@ -5363,7 +5363,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 5
   },
   {
-    "id": "vocab-L4-L4-U06-W01",
+    "id": "vocab-L4-U06-W351",
     "word": "proud",
     "ipa": "/prˈaʊd/",
     "vietnamesePhonetic": "Proud",
@@ -5377,7 +5377,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U06-W02",
+    "id": "vocab-L4-U06-W352",
     "word": "worried",
     "ipa": "/wˈɝid/",
     "vietnamesePhonetic": "Worried",
@@ -5391,7 +5391,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U06-W03",
+    "id": "vocab-L4-U06-W353",
     "word": "surprised",
     "ipa": "/sɚprˈaɪzd/",
     "vietnamesePhonetic": "Surprised",
@@ -5405,7 +5405,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U06-W04",
+    "id": "vocab-L4-U06-W354",
     "word": "disappointed",
     "ipa": "/dˌɪsəpˈɔɪntɪd/",
     "vietnamesePhonetic": "Disappointed",
@@ -5419,7 +5419,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U06-W05",
+    "id": "vocab-L4-U06-W355",
     "word": "confident",
     "ipa": "/kˈɑnfədənt/",
     "vietnamesePhonetic": "Confident",
@@ -5433,7 +5433,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U06-W06",
+    "id": "vocab-L4-U06-W356",
     "word": "nervous",
     "ipa": "/nˈɝvəs/",
     "vietnamesePhonetic": "Nervous",
@@ -5447,7 +5447,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U06-W07",
+    "id": "vocab-L4-U06-W357",
     "word": "curious",
     "ipa": "/kjˈʊriəs/",
     "vietnamesePhonetic": "Curious",
@@ -5461,7 +5461,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U06-W08",
+    "id": "vocab-L4-U06-W358",
     "word": "lonely",
     "ipa": "/lˈoʊnli/",
     "vietnamesePhonetic": "Lonely",
@@ -5475,7 +5475,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U06-W09",
+    "id": "vocab-L4-U06-W359",
     "word": "grateful",
     "ipa": "/ɡrˈeɪtfəl/",
     "vietnamesePhonetic": "Grateful",
@@ -5489,7 +5489,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U06-W10",
+    "id": "vocab-L4-U06-W360",
     "word": "embarrassed",
     "ipa": "/ɪmbˈɛrəst/",
     "vietnamesePhonetic": "Embarrassed",
@@ -5503,7 +5503,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U07-W01",
+    "id": "vocab-L4-U07-W361",
     "word": "country",
     "ipa": "/kˈʌntri/",
     "vietnamesePhonetic": "Country",
@@ -5517,7 +5517,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U07-W02",
+    "id": "vocab-L4-U07-W362",
     "word": "language",
     "ipa": "/lˈæŋɡwədʒ/",
     "vietnamesePhonetic": "Language",
@@ -5531,7 +5531,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U07-W03",
+    "id": "vocab-L4-U07-W363",
     "word": "culture",
     "ipa": "/kˈʌltʃɚ/",
     "vietnamesePhonetic": "Culture",
@@ -5545,7 +5545,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U07-W04",
+    "id": "vocab-L4-U07-W364",
     "word": "tradition",
     "ipa": "/trədˈɪʃən/",
     "vietnamesePhonetic": "Tradition",
@@ -5559,7 +5559,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U07-W05",
+    "id": "vocab-L4-U07-W365",
     "word": "custom",
     "ipa": "/kˈʌstəm/",
     "vietnamesePhonetic": "Custom",
@@ -5573,7 +5573,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U07-W06",
+    "id": "vocab-L4-U07-W366",
     "word": "national",
     "ipa": "/nˈæʃənəl/",
     "vietnamesePhonetic": "National",
@@ -5587,7 +5587,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U07-W07",
+    "id": "vocab-L4-U07-W367",
     "word": "local",
     "ipa": "/lˈoʊkəl/",
     "vietnamesePhonetic": "Local",
@@ -5601,7 +5601,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U07-W08",
+    "id": "vocab-L4-U07-W368",
     "word": "foreign",
     "ipa": "/fˈɔrən/",
     "vietnamesePhonetic": "Foreign",
@@ -5615,7 +5615,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U07-W09",
+    "id": "vocab-L4-U07-W369",
     "word": "famous",
     "ipa": "/fˈeɪməs/",
     "vietnamesePhonetic": "Famous",
@@ -5629,7 +5629,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U07-W10",
+    "id": "vocab-L4-U07-W370",
     "word": "history",
     "ipa": "/hˈɪstɚi/",
     "vietnamesePhonetic": "History",
@@ -5643,7 +5643,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U08-W01",
+    "id": "vocab-L4-U08-W371",
     "word": "account",
     "ipa": "/əkˈaʊnt/",
     "vietnamesePhonetic": "Account",
@@ -5657,7 +5657,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U08-W02",
+    "id": "vocab-L4-U08-W372",
     "word": "private",
     "ipa": "/prˈaɪvət/",
     "vietnamesePhonetic": "Private",
@@ -5671,7 +5671,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U08-W03",
+    "id": "vocab-L4-U08-W373",
     "word": "public",
     "ipa": "/pˈʌblɪk/",
     "vietnamesePhonetic": "Public",
@@ -5685,7 +5685,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U08-W04",
+    "id": "vocab-L4-U08-W374",
     "word": "download",
     "ipa": "/dˈaʊnlˌoʊd/",
     "vietnamesePhonetic": "Download",
@@ -5699,7 +5699,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U08-W05",
+    "id": "vocab-L4-U08-W375",
     "word": "upload",
     "ipa": "/ˈʌplˌoʊd/",
     "vietnamesePhonetic": "Upload",
@@ -5713,7 +5713,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U08-W06",
+    "id": "vocab-L4-U08-W376",
     "word": "online",
     "ipa": "/ˈɔnlˌaɪn/",
     "vietnamesePhonetic": "Online",
@@ -5727,7 +5727,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U08-W07",
+    "id": "vocab-L4-U08-W377",
     "word": "safe",
     "ipa": "/sˈeɪf/",
     "vietnamesePhonetic": "Safe",
@@ -5741,7 +5741,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U08-W08",
+    "id": "vocab-L4-U08-W378",
     "word": "dangerous",
     "ipa": "/dˈeɪndʒɚəs/",
     "vietnamesePhonetic": "Dangerous",
@@ -5755,7 +5755,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U08-W09",
+    "id": "vocab-L4-U08-W379",
     "word": "report",
     "ipa": "/ripˈɔrt/",
     "vietnamesePhonetic": "Report",
@@ -5769,7 +5769,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U08-W10",
+    "id": "vocab-L4-U08-W380",
     "word": "permission",
     "ipa": "/pɚmˈɪʃən/",
     "vietnamesePhonetic": "Permission",
@@ -5783,7 +5783,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U09-W01",
+    "id": "vocab-L4-U09-W381",
     "word": "character",
     "ipa": "/kˈɛrɪktɚ/",
     "vietnamesePhonetic": "Character",
@@ -5797,7 +5797,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U09-W02",
+    "id": "vocab-L4-U09-W382",
     "word": "setting",
     "ipa": "/sˈɛtɪŋ/",
     "vietnamesePhonetic": "Setting",
@@ -5811,7 +5811,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U09-W03",
+    "id": "vocab-L4-U09-W383",
     "word": "beginning",
     "ipa": "/bɪɡˈɪnɪŋ/",
     "vietnamesePhonetic": "Beginning",
@@ -5825,7 +5825,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U09-W04",
+    "id": "vocab-L4-U09-W384",
     "word": "middle",
     "ipa": "/mˈɪdəl/",
     "vietnamesePhonetic": "Middle",
@@ -5839,7 +5839,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U09-W05",
+    "id": "vocab-L4-U09-W385",
     "word": "ending",
     "ipa": "/ˈɛndɪŋ/",
     "vietnamesePhonetic": "Ending",
@@ -5853,7 +5853,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U09-W06",
+    "id": "vocab-L4-U09-W386",
     "word": "event",
     "ipa": "/ɪvˈɛnt/",
     "vietnamesePhonetic": "Event",
@@ -5867,7 +5867,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U09-W07",
+    "id": "vocab-L4-U09-W387",
     "word": "adventure",
     "ipa": "/ædvˈɛntʃɚ/",
     "vietnamesePhonetic": "Adventure",
@@ -5881,7 +5881,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U09-W08",
+    "id": "vocab-L4-U09-W388",
     "word": "mystery",
     "ipa": "/mˈɪstɚi/",
     "vietnamesePhonetic": "Mystery",
@@ -5895,7 +5895,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U09-W09",
+    "id": "vocab-L4-U09-W389",
     "word": "imagine",
     "ipa": "/ˌɪmˈædʒən/",
     "vietnamesePhonetic": "Imagine",
@@ -5909,7 +5909,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U09-W10",
+    "id": "vocab-L4-U09-W390",
     "word": "create",
     "ipa": "/kriˈeɪt/",
     "vietnamesePhonetic": "Create",
@@ -5923,7 +5923,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U10-W01",
+    "id": "vocab-L4-U10-W391",
     "word": "dream",
     "ipa": "/drˈim/",
     "vietnamesePhonetic": "Dream",
@@ -5937,7 +5937,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U10-W02",
+    "id": "vocab-L4-U10-W392",
     "word": "goal",
     "ipa": "/ɡˈoʊl/",
     "vietnamesePhonetic": "Goal",
@@ -5951,7 +5951,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U10-W03",
+    "id": "vocab-L4-U10-W393",
     "word": "future",
     "ipa": "/fjˈutʃɚ/",
     "vietnamesePhonetic": "Future",
@@ -5965,7 +5965,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U10-W04",
+    "id": "vocab-L4-U10-W394",
     "word": "practice",
     "ipa": "/prˈæktəs/",
     "vietnamesePhonetic": "Practice",
@@ -5979,7 +5979,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U10-W05",
+    "id": "vocab-L4-U10-W395",
     "word": "progress",
     "ipa": "/prˈɑɡrˌɛs/",
     "vietnamesePhonetic": "Progress",
@@ -5993,7 +5993,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U10-W06",
+    "id": "vocab-L4-U10-W396",
     "word": "success",
     "ipa": "/səksˈɛs/",
     "vietnamesePhonetic": "Success",
@@ -6007,7 +6007,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U10-W07",
+    "id": "vocab-L4-U10-W397",
     "word": "challenge",
     "ipa": "/tʃˈæləndʒ/",
     "vietnamesePhonetic": "Challenge",
@@ -6021,7 +6021,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U10-W08",
+    "id": "vocab-L4-U10-W398",
     "word": "learn",
     "ipa": "/lˈɝn/",
     "vietnamesePhonetic": "Learn",
@@ -6035,7 +6035,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U10-W09",
+    "id": "vocab-L4-U10-W399",
     "word": "achieve",
     "ipa": "/ətʃˈiv/",
     "vietnamesePhonetic": "Achieve",
@@ -6049,7 +6049,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U10-W10",
+    "id": "vocab-L4-U10-W400",
     "word": "promise",
     "ipa": "/prˈɑməs/",
     "vietnamesePhonetic": "Promise",
@@ -6063,7 +6063,7 @@ export const VOCABULARY_DATABASE = [
     "unit": 10
   },
   {
-    "id": "vocab-L1-L1-U11-W01",
+    "id": "vocab-L5-U01-W401",
     "word": "doll",
     "ipa": "/dɑl/",
     "vietnamesePhonetic": "Đon-lơ",
@@ -6072,12 +6072,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a doll.",
     "exampleVi": "Đây là búp bê.",
     "image": "🪆",
-    "level": "L1",
-    "category": "L1-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U11-W02",
+    "id": "vocab-L5-U01-W402",
     "word": "ball",
     "ipa": "/bɔl/",
     "vietnamesePhonetic": "Bo-lơ",
@@ -6086,12 +6086,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a ball.",
     "exampleVi": "Đây là quả bóng.",
     "image": "⚽",
-    "level": "L1",
-    "category": "L1-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U11-W03",
+    "id": "vocab-L5-U01-W403",
     "word": "kite",
     "ipa": "/kaɪt/",
     "vietnamesePhonetic": "Khai-tơ",
@@ -6100,12 +6100,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a kite.",
     "exampleVi": "Đây là con diều.",
     "image": "🪁",
-    "level": "L1",
-    "category": "L1-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U11-W04",
+    "id": "vocab-L5-U01-W404",
     "word": "robot",
     "ipa": "/roʊbɑt/",
     "vietnamesePhonetic": "Rô-bốt",
@@ -6114,12 +6114,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a robot.",
     "exampleVi": "Đây là rô-bốt.",
     "image": "🤖",
-    "level": "L1",
-    "category": "L1-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U11-W05",
+    "id": "vocab-L5-U01-W405",
     "word": "teddy bear",
     "ipa": "/tɛdi bɛr/",
     "vietnamesePhonetic": "Tét-đi bê-ơ",
@@ -6128,12 +6128,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a teddy bear.",
     "exampleVi": "Đây là gấu bông.",
     "image": "🧸",
-    "level": "L1",
-    "category": "L1-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U11-W06",
+    "id": "vocab-L5-U01-W406",
     "word": "blocks",
     "ipa": "/blɑks/",
     "vietnamesePhonetic": "Bơ-lóc-sơ",
@@ -6142,12 +6142,12 @@ export const VOCABULARY_DATABASE = [
     "example": "These are blocks.",
     "exampleVi": "Đây là khối xếp hình.",
     "image": "🧱",
-    "level": "L1",
-    "category": "L1-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U11-W07",
+    "id": "vocab-L5-U01-W407",
     "word": "puzzle",
     "ipa": "/pʌzʌl/",
     "vietnamesePhonetic": "Pơ-zơ-lơ",
@@ -6156,12 +6156,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a puzzle.",
     "exampleVi": "Đây là trò ghép hình.",
     "image": "🧩",
-    "level": "L1",
-    "category": "L1-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U11-W08",
+    "id": "vocab-L5-U01-W408",
     "word": "yo-yo",
     "ipa": "/joʊ joʊ/",
     "vietnamesePhonetic": "Dô-dô",
@@ -6170,12 +6170,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a yo-yo.",
     "exampleVi": "Đây là con quay yo-yo.",
     "image": "🪀",
-    "level": "L1",
-    "category": "L1-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U11-W09",
+    "id": "vocab-L5-U01-W409",
     "word": "drum",
     "ipa": "/drʌm/",
     "vietnamesePhonetic": "Đơ-răm",
@@ -6184,12 +6184,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a drum.",
     "exampleVi": "Đây là cái trống.",
     "image": "🥁",
-    "level": "L1",
-    "category": "L1-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U11-W10",
+    "id": "vocab-L5-U01-W410",
     "word": "toy train",
     "ipa": "/tɔɪ treɪn/",
     "vietnamesePhonetic": "Toi-tơ-ren",
@@ -6198,12 +6198,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a toy train.",
     "exampleVi": "Đây là tàu hỏa đồ chơi.",
     "image": "🚂",
-    "level": "L1",
-    "category": "L1-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L1-L1-U12-W11",
+    "id": "vocab-L5-U02-W411",
     "word": "ant",
     "ipa": "/ænt/",
     "vietnamesePhonetic": "En-tơ",
@@ -6212,12 +6212,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is an ant.",
     "exampleVi": "Đây là con kiến.",
     "image": "🐜",
-    "level": "L1",
-    "category": "L1-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U12-W12",
+    "id": "vocab-L5-U02-W412",
     "word": "bee",
     "ipa": "/bi/",
     "vietnamesePhonetic": "Bi",
@@ -6226,12 +6226,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a bee.",
     "exampleVi": "Đây là con ong.",
     "image": "🐝",
-    "level": "L1",
-    "category": "L1-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U12-W13",
+    "id": "vocab-L5-U02-W413",
     "word": "butterfly",
     "ipa": "/bʌtɝflaɪ/",
     "vietnamesePhonetic": "Bất-tơ-phlai",
@@ -6240,12 +6240,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a butterfly.",
     "exampleVi": "Đây là con bướm.",
     "image": "🦋",
-    "level": "L1",
-    "category": "L1-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U12-W14",
+    "id": "vocab-L5-U02-W414",
     "word": "mosquito",
     "ipa": "/mʌskitoʊ/",
     "vietnamesePhonetic": "Mốt-ski-tâu",
@@ -6254,12 +6254,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a mosquito.",
     "exampleVi": "Đây là con muỗi.",
     "image": "🦟",
-    "level": "L1",
-    "category": "L1-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U12-W15",
+    "id": "vocab-L5-U02-W415",
     "word": "fly",
     "ipa": "/flaɪ/",
     "vietnamesePhonetic": "Phlai",
@@ -6268,12 +6268,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a fly.",
     "exampleVi": "Đây là con ruồi.",
     "image": "🪰",
-    "level": "L1",
-    "category": "L1-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U12-W16",
+    "id": "vocab-L5-U02-W416",
     "word": "beetle",
     "ipa": "/bitʌl/",
     "vietnamesePhonetic": "Bi-tồ",
@@ -6282,12 +6282,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a beetle.",
     "exampleVi": "Đây là bọ cánh cứng.",
     "image": "🪲",
-    "level": "L1",
-    "category": "L1-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U12-W17",
+    "id": "vocab-L5-U02-W417",
     "word": "ladybug",
     "ipa": "/leɪdibʌɡ/",
     "vietnamesePhonetic": "Lê-đi-bắc",
@@ -6296,12 +6296,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a ladybug.",
     "exampleVi": "Đây là bọ rùa.",
     "image": "🐞",
-    "level": "L1",
-    "category": "L1-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U12-W18",
+    "id": "vocab-L5-U02-W418",
     "word": "grasshopper",
     "ipa": "/ɡræshɑpɝ/",
     "vietnamesePhonetic": "Gơ-rát-háp-pơ",
@@ -6310,12 +6310,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a grasshopper.",
     "exampleVi": "Đây là châu chấu.",
     "image": "🦗",
-    "level": "L1",
-    "category": "L1-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U12-W19",
+    "id": "vocab-L5-U02-W419",
     "word": "spider",
     "ipa": "/spaɪdɝ/",
     "vietnamesePhonetic": "Sơ-pai-đơ",
@@ -6324,12 +6324,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a spider.",
     "exampleVi": "Đây là con nhện.",
     "image": "🕷️",
-    "level": "L1",
-    "category": "L1-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U12-W20",
+    "id": "vocab-L5-U02-W420",
     "word": "caterpillar",
     "ipa": "/kætʌpɪlɝ/",
     "vietnamesePhonetic": "Két-tơ-pi-lơ",
@@ -6338,12 +6338,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a caterpillar.",
     "exampleVi": "Đây là sâu bướm.",
     "image": "🐛",
-    "level": "L1",
-    "category": "L1-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L1-L1-U13-W21",
+    "id": "vocab-L5-U03-W421",
     "word": "toothbrush",
     "ipa": "/tuθbrʌʃ/",
     "vietnamesePhonetic": "Tút-thơ-bơ-rắt",
@@ -6352,12 +6352,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a toothbrush.",
     "exampleVi": "Đây là bàn chải đánh răng.",
     "image": "🪥",
-    "level": "L1",
-    "category": "L1-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U13-W22",
+    "id": "vocab-L5-U03-W422",
     "word": "toothpaste",
     "ipa": "/tuθpeɪst/",
     "vietnamesePhonetic": "Tút-thơ-pết",
@@ -6366,12 +6366,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a toothpaste.",
     "exampleVi": "Đây là kem đánh răng.",
     "image": "🧴",
-    "level": "L1",
-    "category": "L1-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U13-W23",
+    "id": "vocab-L5-U03-W423",
     "word": "soap",
     "ipa": "/soʊp/",
     "vietnamesePhonetic": "Sốp-pơ",
@@ -6380,12 +6380,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a soap.",
     "exampleVi": "Đây là xà phòng.",
     "image": "🧼",
-    "level": "L1",
-    "category": "L1-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U13-W24",
+    "id": "vocab-L5-U03-W424",
     "word": "towel",
     "ipa": "/taʊʌl/",
     "vietnamesePhonetic": "Tao-vần",
@@ -6394,12 +6394,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a towel.",
     "exampleVi": "Đây là khăn tắm.",
     "image": "🧺",
-    "level": "L1",
-    "category": "L1-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U13-W25",
+    "id": "vocab-L5-U03-W425",
     "word": "comb",
     "ipa": "/koʊm/",
     "vietnamesePhonetic": "Côm-mơ",
@@ -6408,12 +6408,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a comb.",
     "exampleVi": "Đây là cái lược.",
     "image": "🪮",
-    "level": "L1",
-    "category": "L1-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U13-W26",
+    "id": "vocab-L5-U03-W426",
     "word": "mirror",
     "ipa": "/mɪrɝ/",
     "vietnamesePhonetic": "Mi-rơ",
@@ -6422,12 +6422,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a mirror.",
     "exampleVi": "Đây là gương.",
     "image": "🪞",
-    "level": "L1",
-    "category": "L1-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U13-W27",
+    "id": "vocab-L5-U03-W427",
     "word": "shower",
     "ipa": "/ʃaʊɝ/",
     "vietnamesePhonetic": "Sa-u-ơ",
@@ -6436,12 +6436,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a shower.",
     "exampleVi": "Đây là vòi sen.",
     "image": "🚿",
-    "level": "L1",
-    "category": "L1-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U13-W28",
+    "id": "vocab-L5-U03-W428",
     "word": "bathtub",
     "ipa": "/bæθtʌb/",
     "vietnamesePhonetic": "Bát-thơ-tắp",
@@ -6450,12 +6450,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a bathtub.",
     "exampleVi": "Đây là bồn tắm.",
     "image": "🛁",
-    "level": "L1",
-    "category": "L1-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U13-W29",
+    "id": "vocab-L5-U03-W429",
     "word": "toilet",
     "ipa": "/tɔɪlʌt/",
     "vietnamesePhonetic": "Toi-lét",
@@ -6464,12 +6464,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a toilet.",
     "exampleVi": "Đây là bồn cầu.",
     "image": "🚽",
-    "level": "L1",
-    "category": "L1-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U13-W30",
+    "id": "vocab-L5-U03-W430",
     "word": "sink",
     "ipa": "/sɪŋk/",
     "vietnamesePhonetic": "Sinh-kơ",
@@ -6478,12 +6478,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a sink.",
     "exampleVi": "Đây là bồn rửa.",
     "image": "🚰",
-    "level": "L1",
-    "category": "L1-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L1-L1-U14-W31",
+    "id": "vocab-L5-U04-W431",
     "word": "barn",
     "ipa": "/bɑrn/",
     "vietnamesePhonetic": "Ban-nơ",
@@ -6492,12 +6492,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a barn.",
     "exampleVi": "Đây là nhà kho nông trại.",
     "image": "🛖",
-    "level": "L1",
-    "category": "L1-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U14-W32",
+    "id": "vocab-L5-U04-W432",
     "word": "tractor",
     "ipa": "/træktɝ/",
     "vietnamesePhonetic": "Tơ-rác-tơ",
@@ -6506,12 +6506,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a tractor.",
     "exampleVi": "Đây là máy kéo.",
     "image": "🚜",
-    "level": "L1",
-    "category": "L1-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U14-W33",
+    "id": "vocab-L5-U04-W433",
     "word": "chicken",
     "ipa": "/tʃɪkʌn/",
     "vietnamesePhonetic": "Chi-kin",
@@ -6520,12 +6520,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a chicken.",
     "exampleVi": "Đây là con gà.",
     "image": "🐔",
-    "level": "L1",
-    "category": "L1-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U14-W34",
+    "id": "vocab-L5-U04-W434",
     "word": "rooster",
     "ipa": "/rustɝ/",
     "vietnamesePhonetic": "Rút-stơ",
@@ -6534,12 +6534,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a rooster.",
     "exampleVi": "Đây là gà trống.",
     "image": "🐓",
-    "level": "L1",
-    "category": "L1-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U14-W35",
+    "id": "vocab-L5-U04-W435",
     "word": "goat",
     "ipa": "/ɡoʊt/",
     "vietnamesePhonetic": "Gốt-tơ",
@@ -6548,12 +6548,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a goat.",
     "exampleVi": "Đây là con dê.",
     "image": "🐐",
-    "level": "L1",
-    "category": "L1-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U14-W36",
+    "id": "vocab-L5-U04-W436",
     "word": "donkey",
     "ipa": "/dɑŋki/",
     "vietnamesePhonetic": "Đông-ki",
@@ -6562,12 +6562,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a donkey.",
     "exampleVi": "Đây là con lừa.",
     "image": "🫏",
-    "level": "L1",
-    "category": "L1-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U14-W37",
+    "id": "vocab-L5-U04-W437",
     "word": "field",
     "ipa": "/fild/",
     "vietnamesePhonetic": "Phiu-đơ",
@@ -6576,12 +6576,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a field.",
     "exampleVi": "Đây là cánh đồng.",
     "image": "🌾",
-    "level": "L1",
-    "category": "L1-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U14-W38",
+    "id": "vocab-L5-U04-W438",
     "word": "fence",
     "ipa": "/fɛns/",
     "vietnamesePhonetic": "Phen-sơ",
@@ -6590,12 +6590,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a fence.",
     "exampleVi": "Đây là hàng rào.",
     "image": "🪵",
-    "level": "L1",
-    "category": "L1-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U14-W39",
+    "id": "vocab-L5-U04-W439",
     "word": "hay",
     "ipa": "/heɪ/",
     "vietnamesePhonetic": "Hei",
@@ -6604,12 +6604,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a hay.",
     "exampleVi": "Đây là cỏ khô.",
     "image": "🌾",
-    "level": "L1",
-    "category": "L1-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U14-W40",
+    "id": "vocab-L5-U04-W440",
     "word": "seed",
     "ipa": "/sid/",
     "vietnamesePhonetic": "Sít-đơ",
@@ -6618,12 +6618,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This is a seed.",
     "exampleVi": "Đây là hạt giống.",
     "image": "🫘",
-    "level": "L1",
-    "category": "L1-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L1-L1-U15-W41",
+    "id": "vocab-L5-U05-W441",
     "word": "big",
     "ipa": "/bɪɡ/",
     "vietnamesePhonetic": "Bích-gơ",
@@ -6632,12 +6632,12 @@ export const VOCABULARY_DATABASE = [
     "example": "It is big.",
     "exampleVi": "Nó to, lớn.",
     "image": "🐘",
-    "level": "L1",
-    "category": "L1-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U15-W42",
+    "id": "vocab-L5-U05-W442",
     "word": "small",
     "ipa": "/smɔl/",
     "vietnamesePhonetic": "Sơ-mol",
@@ -6646,12 +6646,12 @@ export const VOCABULARY_DATABASE = [
     "example": "It is small.",
     "exampleVi": "Nó nhỏ.",
     "image": "🐭",
-    "level": "L1",
-    "category": "L1-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U15-W43",
+    "id": "vocab-L5-U05-W443",
     "word": "tall",
     "ipa": "/tɔl/",
     "vietnamesePhonetic": "Tol-lơ",
@@ -6660,12 +6660,12 @@ export const VOCABULARY_DATABASE = [
     "example": "It is tall.",
     "exampleVi": "Nó cao.",
     "image": "🦒",
-    "level": "L1",
-    "category": "L1-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U15-W44",
+    "id": "vocab-L5-U05-W444",
     "word": "short",
     "ipa": "/ʃɔrt/",
     "vietnamesePhonetic": "Sót-tơ",
@@ -6674,12 +6674,12 @@ export const VOCABULARY_DATABASE = [
     "example": "It is short.",
     "exampleVi": "Nó thấp, ngắn.",
     "image": "🦔",
-    "level": "L1",
-    "category": "L1-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U15-W45",
+    "id": "vocab-L5-U05-W445",
     "word": "fast",
     "ipa": "/fæst/",
     "vietnamesePhonetic": "Phat-stơ",
@@ -6688,12 +6688,12 @@ export const VOCABULARY_DATABASE = [
     "example": "It is fast.",
     "exampleVi": "Nó nhanh.",
     "image": "🐆",
-    "level": "L1",
-    "category": "L1-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U15-W46",
+    "id": "vocab-L5-U05-W446",
     "word": "slow",
     "ipa": "/sloʊ/",
     "vietnamesePhonetic": "Sơ-lâu",
@@ -6702,12 +6702,12 @@ export const VOCABULARY_DATABASE = [
     "example": "It is slow.",
     "exampleVi": "Nó chậm.",
     "image": "🐢",
-    "level": "L1",
-    "category": "L1-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U15-W47",
+    "id": "vocab-L5-U05-W447",
     "word": "clean",
     "ipa": "/klin/",
     "vietnamesePhonetic": "Cơ-lin",
@@ -6716,12 +6716,12 @@ export const VOCABULARY_DATABASE = [
     "example": "It is clean.",
     "exampleVi": "Nó sạch.",
     "image": "🧽",
-    "level": "L1",
-    "category": "L1-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U15-W48",
+    "id": "vocab-L5-U05-W448",
     "word": "dirty",
     "ipa": "/dɝti/",
     "vietnamesePhonetic": "Đơ-ti",
@@ -6730,12 +6730,12 @@ export const VOCABULARY_DATABASE = [
     "example": "It is dirty.",
     "exampleVi": "Nó bẩn.",
     "image": "💩",
-    "level": "L1",
-    "category": "L1-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U15-W49",
+    "id": "vocab-L5-U05-W449",
     "word": "open",
     "ipa": "/oʊpʌn/",
     "vietnamesePhonetic": "Ô-pần",
@@ -6744,12 +6744,12 @@ export const VOCABULARY_DATABASE = [
     "example": "It is open.",
     "exampleVi": "Nó mở.",
     "image": "🔓",
-    "level": "L1",
-    "category": "L1-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L1-L1-U15-W50",
+    "id": "vocab-L5-U05-W450",
     "word": "closed",
     "ipa": "/kloʊzd/",
     "vietnamesePhonetic": "Cơ-lâu-zđơ",
@@ -6758,12 +6758,12 @@ export const VOCABULARY_DATABASE = [
     "example": "It is closed.",
     "exampleVi": "Nó đóng.",
     "image": "🔒",
-    "level": "L1",
-    "category": "L1-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L2-L2-U11-W51",
+    "id": "vocab-L5-U06-W451",
     "word": "math",
     "ipa": "/mæθ/",
     "vietnamesePhonetic": "Mát-thơ",
@@ -6772,12 +6772,12 @@ export const VOCABULARY_DATABASE = [
     "example": "I like math class.",
     "exampleVi": "Bé thích giờ học toán.",
     "image": "🔢",
-    "level": "L2",
-    "category": "L2-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U11-W52",
+    "id": "vocab-L5-U06-W452",
     "word": "English",
     "ipa": "/ˈɪŋɡlɪʃ/",
     "vietnamesePhonetic": "Ing-gơ-lish",
@@ -6786,12 +6786,12 @@ export const VOCABULARY_DATABASE = [
     "example": "I learn English every day.",
     "exampleVi": "Bé học tiếng Anh mỗi ngày.",
     "image": "🇬🇧",
-    "level": "L2",
-    "category": "L2-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U11-W53",
+    "id": "vocab-L5-U06-W453",
     "word": "science",
     "ipa": "/ˈsaɪəns/",
     "vietnamesePhonetic": "Sai-ân-sơ",
@@ -6800,12 +6800,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Science is so interesting.",
     "exampleVi": "Khoa học thật thú vị.",
     "image": "🔬",
-    "level": "L2",
-    "category": "L2-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U11-W54",
+    "id": "vocab-L5-U06-W454",
     "word": "history",
     "ipa": "/ˈhɪstəri/",
     "vietnamesePhonetic": "Hít-stơ-ri",
@@ -6814,12 +6814,12 @@ export const VOCABULARY_DATABASE = [
     "example": "We study history today.",
     "exampleVi": "Hôm nay chúng mình học lịch sử.",
     "image": "🏛️",
-    "level": "L2",
-    "category": "L2-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U11-W55",
+    "id": "vocab-L5-U06-W455",
     "word": "geography",
     "ipa": "/dʒiˈɑːɡrəfi/",
     "vietnamesePhonetic": "Gi-ó-gơ-ra-phi",
@@ -6828,12 +6828,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Geography maps are cool.",
     "exampleVi": "Bản đồ địa lý rất hay.",
     "image": "🗺️",
-    "level": "L2",
-    "category": "L2-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U11-W56",
+    "id": "vocab-L5-U06-W456",
     "word": "art",
     "ipa": "/ɑːrt/",
     "vietnamesePhonetic": "Át-tơ",
@@ -6842,12 +6842,12 @@ export const VOCABULARY_DATABASE = [
     "example": "I draw pictures in art class.",
     "exampleVi": "Bé vẽ tranh trong giờ mỹ thuật.",
     "image": "🎨",
-    "level": "L2",
-    "category": "L2-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U11-W57",
+    "id": "vocab-L5-U06-W457",
     "word": "music",
     "ipa": "/ˈmjuːzɪk/",
     "vietnamesePhonetic": "Miu-zíc",
@@ -6856,12 +6856,12 @@ export const VOCABULARY_DATABASE = [
     "example": "We sing songs in music class.",
     "exampleVi": "Chúng mình hát bài hát trong giờ âm nhạc.",
     "image": "🎵",
-    "level": "L2",
-    "category": "L2-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U11-W58",
+    "id": "vocab-L5-U06-W458",
     "word": "physical education",
     "ipa": "/ˈfɪzɪkəl ˌɛdʒʊˈkeɪʃən/",
     "vietnamesePhonetic": "Phi-zi-cồ Ét-dụ-kế-shần",
@@ -6870,12 +6870,12 @@ export const VOCABULARY_DATABASE = [
     "example": "We play games in physical education.",
     "exampleVi": "Chúng mình chơi trò chơi trong giờ thể dục.",
     "image": "⚽",
-    "level": "L2",
-    "category": "L2-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U11-W59",
+    "id": "vocab-L5-U06-W459",
     "word": "computer science",
     "ipa": "/kəmˈpjuːtər ˈsaɪəns/",
     "vietnamesePhonetic": "Cơm-piu-tơ Sai-ân-sơ",
@@ -6884,12 +6884,12 @@ export const VOCABULARY_DATABASE = [
     "example": "I use laptops in computer science.",
     "exampleVi": "Bé dùng máy tính trong giờ tin học.",
     "image": "💻",
-    "level": "L2",
-    "category": "L2-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U11-W60",
+    "id": "vocab-L5-U06-W460",
     "word": "literature",
     "ipa": "/ˈlɪtərətʃər/",
     "vietnamesePhonetic": "Li-tơ-rơ-chơ",
@@ -6898,12 +6898,12 @@ export const VOCABULARY_DATABASE = [
     "example": "We read stories in literature.",
     "exampleVi": "Chúng mình đọc truyện trong giờ ngữ văn.",
     "image": "📚",
-    "level": "L2",
-    "category": "L2-U11",
-    "unit": 11
+    "level": "L5",
+    "category": "L5-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L2-L2-U12-W61",
+    "id": "vocab-L5-U07-W461",
     "word": "spoon",
     "ipa": "/spuːn/",
     "vietnamesePhonetic": "Sơ-pun",
@@ -6912,12 +6912,12 @@ export const VOCABULARY_DATABASE = [
     "example": "I use a spoon to eat soup.",
     "exampleVi": "Bé dùng thìa để ăn súp.",
     "image": "🥄",
-    "level": "L2",
-    "category": "L2-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U12-W62",
+    "id": "vocab-L5-U07-W462",
     "word": "fork",
     "ipa": "/fɔːrk/",
     "vietnamesePhonetic": "Pho-cơ",
@@ -6926,12 +6926,12 @@ export const VOCABULARY_DATABASE = [
     "example": "I pick food with a fork.",
     "exampleVi": "Bé xiên thức ăn bằng nĩa.",
     "image": "🍴",
-    "level": "L2",
-    "category": "L2-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U12-W63",
+    "id": "vocab-L5-U07-W463",
     "word": "knife",
     "ipa": "/naɪf/",
     "vietnamesePhonetic": "Nai-phơ",
@@ -6940,12 +6940,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Be careful with the knife.",
     "exampleVi": "Hãy cẩn thận với con dao.",
     "image": "🔪",
-    "level": "L2",
-    "category": "L2-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U12-W64",
+    "id": "vocab-L5-U07-W464",
     "word": "plate",
     "ipa": "/pleɪt/",
     "vietnamesePhonetic": "Pơ-lết",
@@ -6954,12 +6954,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Put the cake on the plate.",
     "exampleVi": "Đặt bánh lên cái đĩa.",
     "image": "🍽️",
-    "level": "L2",
-    "category": "L2-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U12-W65",
+    "id": "vocab-L5-U07-W465",
     "word": "bowl",
     "ipa": "/boʊl/",
     "vietnamesePhonetic": "Bâu-lơ",
@@ -6968,12 +6968,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Rice is in the bowl.",
     "exampleVi": "Cơm ở trong bát.",
     "image": "🥣",
-    "level": "L2",
-    "category": "L2-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U12-W66",
+    "id": "vocab-L5-U07-W466",
     "word": "cup",
     "ipa": "/kʌp/",
     "vietnamesePhonetic": "Cắp-pơ",
@@ -6982,12 +6982,12 @@ export const VOCABULARY_DATABASE = [
     "example": "I drink water from a cup.",
     "exampleVi": "Bé uống nước từ cái cốc.",
     "image": "🥤",
-    "level": "L2",
-    "category": "L2-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U12-W67",
+    "id": "vocab-L5-U07-W467",
     "word": "pot",
     "ipa": "/pɑːt/",
     "vietnamesePhonetic": "Pót-tơ",
@@ -6996,12 +6996,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Mom cooks soup in a pot.",
     "exampleVi": "Mẹ nấu súp trong nồi.",
     "image": "🫕",
-    "level": "L2",
-    "category": "L2-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U12-W68",
+    "id": "vocab-L5-U07-W468",
     "word": "pan",
     "ipa": "/pæn/",
     "vietnamesePhonetic": "Pen",
@@ -7010,12 +7010,12 @@ export const VOCABULARY_DATABASE = [
     "example": "We fry eggs in a pan.",
     "exampleVi": "Chúng mình rán trứng bằng chảo.",
     "image": "🍳",
-    "level": "L2",
-    "category": "L2-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U12-W69",
+    "id": "vocab-L5-U07-W469",
     "word": "kettle",
     "ipa": "/ˈkɛtəl/",
     "vietnamesePhonetic": "Két-tồ",
@@ -7024,12 +7024,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The kettle is hot.",
     "exampleVi": "Ấm đun nước đang nóng.",
     "image": "🫖",
-    "level": "L2",
-    "category": "L2-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U12-W70",
+    "id": "vocab-L5-U07-W470",
     "word": "refrigerator",
     "ipa": "/rɪˈfrɪdʒəreɪtər/",
     "vietnamesePhonetic": "Ri-phri-giơ-rê-tơ",
@@ -7038,12 +7038,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Milk is in the refrigerator.",
     "exampleVi": "Sữa ở trong tủ lạnh.",
     "image": "🧊",
-    "level": "L2",
-    "category": "L2-U12",
-    "unit": 12
+    "level": "L5",
+    "category": "L5-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L2-L2-U13-W71",
+    "id": "vocab-L5-U08-W471",
     "word": "dolphin",
     "ipa": "/ˈdɑːlfɪn/",
     "vietnamesePhonetic": "Đôn-phin",
@@ -7052,12 +7052,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The dolphin jumps high.",
     "exampleVi": "Cá heo nhảy rất cao.",
     "image": "🐬",
-    "level": "L2",
-    "category": "L2-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U13-W72",
+    "id": "vocab-L5-U08-W472",
     "word": "whale",
     "ipa": "/weɪl/",
     "vietnamesePhonetic": "Quêu-lơ",
@@ -7066,12 +7066,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The whale is huge.",
     "exampleVi": "Cá voi rất khổng lồ.",
     "image": "🐋",
-    "level": "L2",
-    "category": "L2-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U13-W73",
+    "id": "vocab-L5-U08-W473",
     "word": "shark",
     "ipa": "/ʃɑːrk/",
     "vietnamesePhonetic": "Sác-cơ",
@@ -7080,12 +7080,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The shark swims fast.",
     "exampleVi": "Cá mập bơi rất nhanh.",
     "image": "🦈",
-    "level": "L2",
-    "category": "L2-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U13-W74",
+    "id": "vocab-L5-U08-W474",
     "word": "octopus",
     "ipa": "/ˈɑːktəpʊs/",
     "vietnamesePhonetic": "Óc-tơ-pớt-sơ",
@@ -7094,12 +7094,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The octopus has eight arms.",
     "exampleVi": "Bạch tuộc có tám xúc giác.",
     "image": "🐙",
-    "level": "L2",
-    "category": "L2-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U13-W75",
+    "id": "vocab-L5-U08-W475",
     "word": "crab",
     "ipa": "/kræb/",
     "vietnamesePhonetic": "Cơ-rép",
@@ -7108,12 +7108,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The crab walks sideways.",
     "exampleVi": "Con cua bò ngang.",
     "image": "🦀",
-    "level": "L2",
-    "category": "L2-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U13-W76",
+    "id": "vocab-L5-U08-W476",
     "word": "lobster",
     "ipa": "/ˈlɑːbstər/",
     "vietnamesePhonetic": "Lóp-stơ",
@@ -7122,12 +7122,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The lobster lives in the ocean.",
     "exampleVi": "Tôm hùm sống dưới đại dương.",
     "image": "🦞",
-    "level": "L2",
-    "category": "L2-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U13-W77",
+    "id": "vocab-L5-U08-W477",
     "word": "sea turtle",
     "ipa": "/siː ˈtɝːtəl/",
     "vietnamesePhonetic": "Si Tơ-tồ",
@@ -7136,12 +7136,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The sea turtle swims calmly.",
     "exampleVi": "Rùa biển bơi rất thong thả.",
     "image": "🐢",
-    "level": "L2",
-    "category": "L2-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U13-W78",
+    "id": "vocab-L5-U08-W478",
     "word": "seahorse",
     "ipa": "/ˈsiːhɔːrs/",
     "vietnamesePhonetic": "Si-hót-sơ",
@@ -7150,12 +7150,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The seahorse is small.",
     "exampleVi": "Cá ngựa rất nhỏ nhắn.",
     "image": "🐎",
-    "level": "L2",
-    "category": "L2-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U13-W79",
+    "id": "vocab-L5-U08-W479",
     "word": "jellyfish",
     "ipa": "/ˈdʒɛliˌfɪʃ/",
     "vietnamesePhonetic": "Giê-li-phít-shơ",
@@ -7164,12 +7164,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The jellyfish glows in water.",
     "exampleVi": "Con sứa phát sáng dưới nước.",
     "image": "🪼",
-    "level": "L2",
-    "category": "L2-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U13-W80",
+    "id": "vocab-L5-U08-W480",
     "word": "starfish",
     "ipa": "/ˈstɑːrfɪʃ/",
     "vietnamesePhonetic": "Sờ-ta-phít-shơ",
@@ -7178,12 +7178,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Starfish rest on the sand.",
     "exampleVi": "Sao biển nằm trên bãi cát.",
     "image": "🌟",
-    "level": "L2",
-    "category": "L2-U13",
-    "unit": 13
+    "level": "L5",
+    "category": "L5-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L2-L2-U14-W81",
+    "id": "vocab-L5-U09-W481",
     "word": "spring",
     "ipa": "/sprɪŋ/",
     "vietnamesePhonetic": "Sơ-pơ-ring",
@@ -7192,12 +7192,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Flowers bloom in spring.",
     "exampleVi": "Hoa nở vào mùa xuân.",
     "image": "🌸",
-    "level": "L2",
-    "category": "L2-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U14-W82",
+    "id": "vocab-L5-U09-W482",
     "word": "summer",
     "ipa": "/ˈsʌmər/",
     "vietnamesePhonetic": "Săm-mơ",
@@ -7206,12 +7206,12 @@ export const VOCABULARY_DATABASE = [
     "example": "We swim in summer.",
     "exampleVi": "Chúng mình đi bơi vào mùa hè.",
     "image": "☀️",
-    "level": "L2",
-    "category": "L2-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U14-W83",
+    "id": "vocab-L5-U09-W483",
     "word": "autumn",
     "ipa": "/ˈɔːtəm/",
     "vietnamesePhonetic": "Ó-tầm",
@@ -7220,12 +7220,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Leaves fall in autumn.",
     "exampleVi": "Lá rơi vào mùa thu.",
     "image": "🍂",
-    "level": "L2",
-    "category": "L2-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U14-W84",
+    "id": "vocab-L5-U09-W484",
     "word": "winter",
     "ipa": "/ˈwɪntər/",
     "vietnamesePhonetic": "Quin-tơ",
@@ -7234,12 +7234,12 @@ export const VOCABULARY_DATABASE = [
     "example": "It is cold in winter.",
     "exampleVi": "Trời lạnh vào mùa đông.",
     "image": "❄️",
-    "level": "L2",
-    "category": "L2-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U14-W85",
+    "id": "vocab-L5-U09-W485",
     "word": "blossom",
     "ipa": "/ˈblɑːsəm/",
     "vietnamesePhonetic": "Bơ-lót-sầm",
@@ -7248,12 +7248,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Peach blossom is pretty.",
     "exampleVi": "Hoa đào nở rất đẹp.",
     "image": "🌺",
-    "level": "L2",
-    "category": "L2-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U14-W86",
+    "id": "vocab-L5-U09-W486",
     "word": "sunlight",
     "ipa": "/ˈsʌnlaɪt/",
     "vietnamesePhonetic": "Săn-lai-tơ",
@@ -7262,12 +7262,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Sunlight is warm.",
     "exampleVi": "Ánh nắng thật ấm áp.",
     "image": "☀️",
-    "level": "L2",
-    "category": "L2-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U14-W87",
+    "id": "vocab-L5-U09-W487",
     "word": "fallen leaf",
     "ipa": "/ˈfɔːlən liːf/",
     "vietnamesePhonetic": "Pho-lần Líp-phơ",
@@ -7276,12 +7276,12 @@ export const VOCABULARY_DATABASE = [
     "example": "I see a red fallen leaf.",
     "exampleVi": "Bé thấy một chiếc lá rụng màu đỏ.",
     "image": "🍁",
-    "level": "L2",
-    "category": "L2-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U14-W88",
+    "id": "vocab-L5-U09-W488",
     "word": "snowman",
     "ipa": "/ˈsnoʊmæn/",
     "vietnamesePhonetic": "Sơ-nâu-men",
@@ -7290,12 +7290,12 @@ export const VOCABULARY_DATABASE = [
     "example": "We make a snowman in winter.",
     "exampleVi": "Chúng mình làm người tuyết vào mùa đông.",
     "image": "☃️",
-    "level": "L2",
-    "category": "L2-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U14-W89",
+    "id": "vocab-L5-U09-W489",
     "word": "umbrella",
     "ipa": "/ʌmˈbrɛlə/",
     "vietnamesePhonetic": "Ăm-bơ-re-la",
@@ -7304,12 +7304,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Take an umbrella on rainy days.",
     "exampleVi": "Hãy mang ô vào những ngày mưa.",
     "image": "☂️",
-    "level": "L2",
-    "category": "L2-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U14-W90",
+    "id": "vocab-L5-U09-W490",
     "word": "coat",
     "ipa": "/koʊt/",
     "vietnamesePhonetic": "Cốt-tơ",
@@ -7318,12 +7318,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Wear a warm coat.",
     "exampleVi": "Hãy mặc áo khoác ấm vào.",
     "image": "🧥",
-    "level": "L2",
-    "category": "L2-U14",
-    "unit": 14
+    "level": "L5",
+    "category": "L5-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L2-L2-U15-W91",
+    "id": "vocab-L5-U10-W491",
     "word": "left",
     "ipa": "/lɛft/",
     "vietnamesePhonetic": "Lép-phơ-tơ",
@@ -7332,12 +7332,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Turn left at the corner.",
     "exampleVi": "Rẽ trái ở góc đường.",
     "image": "⬅️",
-    "level": "L2",
-    "category": "L2-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U15-W92",
+    "id": "vocab-L5-U10-W492",
     "word": "right",
     "ipa": "/raɪt/",
     "vietnamesePhonetic": "Rai-tơ",
@@ -7346,12 +7346,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Turn right here.",
     "exampleVi": "Rẽ phải ở đây.",
     "image": "➡️",
-    "level": "L2",
-    "category": "L2-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U15-W93",
+    "id": "vocab-L5-U10-W493",
     "word": "straight",
     "ipa": "/streɪt/",
     "vietnamesePhonetic": "Sơ-tơ-rết-tơ",
@@ -7360,12 +7360,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Go straight ahead.",
     "exampleVi": "Đi thẳng về phía trước.",
     "image": "⬆️",
-    "level": "L2",
-    "category": "L2-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U15-W94",
+    "id": "vocab-L5-U10-W494",
     "word": "turn",
     "ipa": "/tɝːn/",
     "vietnamesePhonetic": "Tơn-nơ",
@@ -7374,12 +7374,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Turn around now.",
     "exampleVi": "Hãy xoay người lại nào.",
     "image": "🔄",
-    "level": "L2",
-    "category": "L2-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U15-W95",
+    "id": "vocab-L5-U10-W495",
     "word": "near",
     "ipa": "/nɪr/",
     "vietnamesePhonetic": "Ni-ơ",
@@ -7388,12 +7388,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The park is near my home.",
     "exampleVi": "Công viên ở gần nhà bé.",
     "image": "📍",
-    "level": "L2",
-    "category": "L2-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U15-W96",
+    "id": "vocab-L5-U10-W496",
     "word": "far",
     "ipa": "/fɑːr/",
     "vietnamesePhonetic": "Pha-ơ",
@@ -7402,12 +7402,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The moon is far away.",
     "exampleVi": "Mặt trăng ở rất xa.",
     "image": "🔭",
-    "level": "L2",
-    "category": "L2-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U15-W97",
+    "id": "vocab-L5-U10-W497",
     "word": "above",
     "ipa": "/əˈbʌv/",
     "vietnamesePhonetic": "Ơ-bắp-vơ",
@@ -7416,12 +7416,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The lamp is above the table.",
     "exampleVi": "Đèn ở phía trên bàn.",
     "image": "👆",
-    "level": "L2",
-    "category": "L2-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U15-W98",
+    "id": "vocab-L5-U10-W498",
     "word": "below",
     "ipa": "/bɪˈloʊ/",
     "vietnamesePhonetic": "Bi-lâu",
@@ -7430,12 +7430,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The shoes are below the bed.",
     "exampleVi": "Giày ở phía dưới gầm giường.",
     "image": "👇",
-    "level": "L2",
-    "category": "L2-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U15-W99",
+    "id": "vocab-L5-U10-W499",
     "word": "inside",
     "ipa": "/ɪnˈsaɪd/",
     "vietnamesePhonetic": "In-sai-đơ",
@@ -7444,12 +7444,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Toys are inside the box.",
     "exampleVi": "Đồ chơi ở bên trong hộp.",
     "image": "📥",
-    "level": "L2",
-    "category": "L2-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L2-L2-U15-W100",
+    "id": "vocab-L5-U10-W500",
     "word": "outside",
     "ipa": "/aʊtˈsaɪd/",
     "vietnamesePhonetic": "Ao-sai-đơ",
@@ -7458,12 +7458,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Let's play outside.",
     "exampleVi": "Chúng mình ra ngoài chơi nào.",
     "image": "📤",
-    "level": "L2",
-    "category": "L2-U15",
-    "unit": 15
+    "level": "L5",
+    "category": "L5-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L3-L3-U11-W101",
+    "id": "vocab-L6-U01-W501",
     "word": "menu",
     "ipa": "/ˈmɛnjuː/",
     "vietnamesePhonetic": "Me-niu",
@@ -7472,12 +7472,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Look at the food menu.",
     "exampleVi": "Hãy xem thực đơn món ăn.",
     "image": "📜",
-    "level": "L3",
-    "category": "L3-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U11-W102",
+    "id": "vocab-L6-U01-W502",
     "word": "waiter",
     "ipa": "/ˈweɪtər/",
     "vietnamesePhonetic": "Quây-tơ",
@@ -7486,12 +7486,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The waiter brings soup.",
     "exampleVi": "Anh bồi bàn mang súp tới.",
     "image": "🧑‍🍳",
-    "level": "L3",
-    "category": "L3-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U11-W103",
+    "id": "vocab-L6-U01-W503",
     "word": "waitress",
     "ipa": "/ˈweɪtrəs/",
     "vietnamesePhonetic": "Quây-trớt-sơ",
@@ -7500,12 +7500,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The waitress smiles kindly.",
     "exampleVi": "Chị bồi bàn mỉm cười thân thiện.",
     "image": "👩‍🍳",
-    "level": "L3",
-    "category": "L3-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U11-W104",
+    "id": "vocab-L6-U01-W504",
     "word": "order",
     "ipa": "/ˈɔːrdər/",
     "vietnamesePhonetic": "Ó-đơ",
@@ -7514,12 +7514,12 @@ export const VOCABULARY_DATABASE = [
     "example": "I order pizza.",
     "exampleVi": "Bé gọi món bánh pizza.",
     "image": "📝",
-    "level": "L3",
-    "category": "L3-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U11-W105",
+    "id": "vocab-L6-U01-W505",
     "word": "meal",
     "ipa": "/miːl/",
     "vietnamesePhonetic": "Miu-lơ",
@@ -7528,12 +7528,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Enjoy your meal!",
     "exampleVi": "Chúc bạn ngon miệng!",
     "image": "🍽️",
-    "level": "L3",
-    "category": "L3-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U11-W106",
+    "id": "vocab-L6-U01-W506",
     "word": "dessert",
     "ipa": "/dɪˈzɝːt/",
     "vietnamesePhonetic": "Đi-zớt-tơ",
@@ -7542,12 +7542,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Ice cream is dessert.",
     "exampleVi": "Kem là món tráng miệng.",
     "image": "🍨",
-    "level": "L3",
-    "category": "L3-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U11-W107",
+    "id": "vocab-L6-U01-W507",
     "word": "soup",
     "ipa": "/suːp/",
     "vietnamesePhonetic": "Súp-pơ",
@@ -7556,12 +7556,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The hot soup is yummy.",
     "exampleVi": "Món súp nóng thật ngon.",
     "image": "🥣",
-    "level": "L3",
-    "category": "L3-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U11-W108",
+    "id": "vocab-L6-U01-W508",
     "word": "salad",
     "ipa": "/ˈsæləd/",
     "vietnamesePhonetic": "Se-lật-đơ",
@@ -7570,12 +7570,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Fresh salad is good.",
     "exampleVi": "Món xa-lát tươi rất tốt.",
     "image": "🥗",
-    "level": "L3",
-    "category": "L3-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U11-W109",
+    "id": "vocab-L6-U01-W509",
     "word": "bill",
     "ipa": "/bɪl/",
     "vietnamesePhonetic": "Biu-lơ",
@@ -7584,12 +7584,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Dad pays the bill.",
     "exampleVi": "Bố thanh toán hóa đơn.",
     "image": "🧾",
-    "level": "L3",
-    "category": "L3-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U11-W110",
+    "id": "vocab-L6-U01-W510",
     "word": "tip",
     "ipa": "/tɪp/",
     "vietnamesePhonetic": "Típ-pơ",
@@ -7598,12 +7598,12 @@ export const VOCABULARY_DATABASE = [
     "example": "We leave a friendly tip.",
     "exampleVi": "Chúng mình để lại tiền bồi dưỡng.",
     "image": "🪙",
-    "level": "L3",
-    "category": "L3-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U01",
+    "unit": 1
   },
   {
-    "id": "vocab-L3-L3-U12-W111",
+    "id": "vocab-L6-U02-W511",
     "word": "office",
     "ipa": "/ˈɔːfɪs/",
     "vietnamesePhonetic": "Ó-phít-sơ",
@@ -7612,12 +7612,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Mom works in an office.",
     "exampleVi": "Mẹ làm việc ở văn phòng.",
     "image": "🏢",
-    "level": "L3",
-    "category": "L3-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U12-W112",
+    "id": "vocab-L6-U02-W512",
     "word": "manager",
     "ipa": "/ˈmænɪdʒər/",
     "vietnamesePhonetic": "Me-ni-giơ",
@@ -7626,12 +7626,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The manager leads team.",
     "exampleVi": "Người quản lý dẫn dắt đội ngũ.",
     "image": "🧑‍💼",
-    "level": "L3",
-    "category": "L3-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U12-W113",
+    "id": "vocab-L6-U02-W513",
     "word": "meeting",
     "ipa": "/ˈmiːtɪŋ/",
     "vietnamesePhonetic": "Mi-tinh",
@@ -7640,12 +7640,12 @@ export const VOCABULARY_DATABASE = [
     "example": "They start a meeting.",
     "exampleVi": "Họ bắt đầu cuộc họp.",
     "image": "🤝",
-    "level": "L3",
-    "category": "L3-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U12-W114",
+    "id": "vocab-L6-U02-W514",
     "word": "project",
     "ipa": "/ˈprɑːdʒɛkt/",
     "vietnamesePhonetic": "Pơ-ro-giếch-tơ",
@@ -7654,12 +7654,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Our project is creative.",
     "exampleVi": "Dự án của chúng mình rất sáng tạo.",
     "image": "📁",
-    "level": "L3",
-    "category": "L3-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U12-W115",
+    "id": "vocab-L6-U02-W515",
     "word": "document",
     "ipa": "/ˈdɑːkjʊmənt/",
     "vietnamesePhonetic": "Đó-kiu-mần-tơ",
@@ -7668,12 +7668,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Print this document.",
     "exampleVi": "In tài liệu này ra nào.",
     "image": "📄",
-    "level": "L3",
-    "category": "L3-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U12-W116",
+    "id": "vocab-L6-U02-W516",
     "word": "printer",
     "ipa": "/ˈprɪntər/",
     "vietnamesePhonetic": "Pơ-rin-tơ",
@@ -7682,12 +7682,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The printer makes copies.",
     "exampleVi": "Máy in tạo ra các bản sao.",
     "image": "🖨️",
-    "level": "L3",
-    "category": "L3-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U12-W117",
+    "id": "vocab-L6-U02-W517",
     "word": "desk",
     "ipa": "/dɛsk/",
     "vietnamesePhonetic": "Đét-skơ",
@@ -7696,12 +7696,12 @@ export const VOCABULARY_DATABASE = [
     "example": "My computer is on desk.",
     "exampleVi": "Máy tính ở trên bàn làm việc.",
     "image": "🖥️",
-    "level": "L3",
-    "category": "L3-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U12-W118",
+    "id": "vocab-L6-U02-W518",
     "word": "colleague",
     "ipa": "/ˈkɑːliːɡ/",
     "vietnamesePhonetic": "Co-lig-gơ",
@@ -7710,12 +7710,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Colleagues work together.",
     "exampleVi": "Đồng nghiệp làm việc cùng nhau.",
     "image": "👥",
-    "level": "L3",
-    "category": "L3-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U12-W119",
+    "id": "vocab-L6-U02-W519",
     "word": "schedule",
     "ipa": "/ˈskɛdʒuːl/",
     "vietnamesePhonetic": "Sơ-ke-du-lơ",
@@ -7724,12 +7724,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Check your daily schedule.",
     "exampleVi": "Kiểm tra lịch trình hằng ngày của con.",
     "image": "📅",
-    "level": "L3",
-    "category": "L3-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U12-W120",
+    "id": "vocab-L6-U02-W520",
     "word": "folder",
     "ipa": "/ˈfoʊldər/",
     "vietnamesePhonetic": "Phâu-đơ",
@@ -7738,12 +7738,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Put papers in folder.",
     "exampleVi": "Đặt giấy tờ vào kẹp hồ sơ.",
     "image": "📁",
-    "level": "L3",
-    "category": "L3-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U02",
+    "unit": 2
   },
   {
-    "id": "vocab-L3-L3-U13-W121",
+    "id": "vocab-L6-U03-W521",
     "word": "earthquake",
     "ipa": "/ˈɝːθkweɪk/",
     "vietnamesePhonetic": "Ớt-thơ-quếch-kơ",
@@ -7752,12 +7752,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The earth shakes in earthquake.",
     "exampleVi": "Mặt đất rung chuyển trong trận động đất.",
     "image": "🌋",
-    "level": "L3",
-    "category": "L3-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U13-W122",
+    "id": "vocab-L6-U03-W522",
     "word": "flood",
     "ipa": "/flʌd/",
     "vietnamesePhonetic": "Phơ-lất-đơ",
@@ -7766,12 +7766,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Heavy rain causes flood.",
     "exampleVi": "Mưa lớn gây ra lũ lụt.",
     "image": "🌊",
-    "level": "L3",
-    "category": "L3-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U13-W123",
+    "id": "vocab-L6-U03-W523",
     "word": "drought",
     "ipa": "/draʊt/",
     "vietnamesePhonetic": "Đơ-rao-tơ",
@@ -7780,12 +7780,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Plants need water in drought.",
     "exampleVi": "Cây cối cần nước trong đợt hạn hán.",
     "image": "☀️",
-    "level": "L3",
-    "category": "L3-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U13-W124",
+    "id": "vocab-L6-U03-W524",
     "word": "wildfire",
     "ipa": "/ˈwaɪldfaɪər/",
     "vietnamesePhonetic": "Quai-lơ-phai-ơ",
@@ -7794,12 +7794,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Firefighters stop wildfire.",
     "exampleVi": "Lính chữa cháy dập tắt đám cháy rừng.",
     "image": "🔥",
-    "level": "L3",
-    "category": "L3-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U13-W125",
+    "id": "vocab-L6-U03-W525",
     "word": "tornado",
     "ipa": "/tɔːrˈneɪdoʊ/",
     "vietnamesePhonetic": "Tor-nê-đâu",
@@ -7808,12 +7808,12 @@ export const VOCABULARY_DATABASE = [
     "example": "A tornado spins strong winds.",
     "exampleVi": "Lốc xoáy xoay quanh gió mạnh.",
     "image": "🌪️",
-    "level": "L3",
-    "category": "L3-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U13-W126",
+    "id": "vocab-L6-U03-W526",
     "word": "hurricane",
     "ipa": "/ˈhɝːəkən/",
     "vietnamesePhonetic": "Hơ-ri-ken",
@@ -7822,12 +7822,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Stay safe during a hurricane.",
     "exampleVi": "Hãy giữ an toàn trong trận bão lớn.",
     "image": "🌀",
-    "level": "L3",
-    "category": "L3-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U13-W127",
+    "id": "vocab-L6-U03-W527",
     "word": "volcano",
     "ipa": "/vɑːlˈkeɪnoʊ/",
     "vietnamesePhonetic": "Von-kê-nâu",
@@ -7836,12 +7836,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Lava flows from volcano.",
     "exampleVi": "Dung nham chảy ra từ núi lửa.",
     "image": "🌋",
-    "level": "L3",
-    "category": "L3-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U13-W128",
+    "id": "vocab-L6-U03-W528",
     "word": "landslide",
     "ipa": "/ˈlændslaɪd/",
     "vietnamesePhonetic": "Len-đơ-sơ-lai-đơ",
@@ -7850,12 +7850,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Mud falls down in landslide.",
     "exampleVi": "Bùn đất sạt lở xuống dốc.",
     "image": "🏔️",
-    "level": "L3",
-    "category": "L3-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U13-W129",
+    "id": "vocab-L6-U03-W529",
     "word": "tsunami",
     "ipa": "/tsuːˈnɑːmi/",
     "vietnamesePhonetic": "Su-na-mi",
@@ -7864,12 +7864,12 @@ export const VOCABULARY_DATABASE = [
     "example": "A tsunami brings giant waves.",
     "exampleVi": "Sóng thần mang theo những ngọn sóng khổng lồ.",
     "image": "🌊",
-    "level": "L3",
-    "category": "L3-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U13-W130",
+    "id": "vocab-L6-U03-W530",
     "word": "emergency",
     "ipa": "/ɪˈmɝːdʒənsi/",
     "vietnamesePhonetic": "I-mơ-giân-si",
@@ -7878,12 +7878,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Call help in emergency.",
     "exampleVi": "Gọi trợ giúp trong tình huống khẩn cấp.",
     "image": "🚨",
-    "level": "L3",
-    "category": "L3-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U03",
+    "unit": 3
   },
   {
-    "id": "vocab-L3-L3-U14-W131",
+    "id": "vocab-L6-U04-W531",
     "word": "telephone",
     "ipa": "/ˈtɛlɪfoʊn/",
     "vietnamesePhonetic": "Te-li-phôn",
@@ -7892,12 +7892,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The telephone is ringing.",
     "exampleVi": "Điện thoại bàn đang đổ chuông.",
     "image": "☎️",
-    "level": "L3",
-    "category": "L3-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U14-W132",
+    "id": "vocab-L6-U04-W532",
     "word": "smartphone",
     "ipa": "/ˈsmɑːrtfoʊn/",
     "vietnamesePhonetic": "Sơ-mát-phôn",
@@ -7906,12 +7906,12 @@ export const VOCABULARY_DATABASE = [
     "example": "I use a smartphone to learn.",
     "exampleVi": "Bé dùng điện thoại thông minh để học.",
     "image": "📱",
-    "level": "L3",
-    "category": "L3-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U14-W133",
+    "id": "vocab-L6-U04-W533",
     "word": "letter",
     "ipa": "/ˈlɛtər/",
     "vietnamesePhonetic": "Lét-tơ",
@@ -7920,12 +7920,12 @@ export const VOCABULARY_DATABASE = [
     "example": "I write a letter to grandma.",
     "exampleVi": "Bé viết một bức thư gửi bà.",
     "image": "✉️",
-    "level": "L3",
-    "category": "L3-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U14-W134",
+    "id": "vocab-L6-U04-W534",
     "word": "postcard",
     "ipa": "/ˈpoʊstkɑːrd/",
     "vietnamesePhonetic": "Pốt-stơ-cát",
@@ -7934,12 +7934,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Send a travel postcard.",
     "exampleVi": "Gửi một bưu thiếp du lịch.",
     "image": "🏙️",
-    "level": "L3",
-    "category": "L3-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U14-W135",
+    "id": "vocab-L6-U04-W535",
     "word": "microphone",
     "ipa": "/ˈmaɪkrəfoʊn/",
     "vietnamesePhonetic": "Mai-cro-phôn",
@@ -7948,12 +7948,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Sing loudly into microphone.",
     "exampleVi": "Hát thật to vào micrô.",
     "image": "🎙️",
-    "level": "L3",
-    "category": "L3-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U14-W136",
+    "id": "vocab-L6-U04-W536",
     "word": "radio",
     "ipa": "/ˈreɪdioʊ/",
     "vietnamesePhonetic": "Rê-đi-ô",
@@ -7962,12 +7962,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Listen to music on radio.",
     "exampleVi": "Nghe nhạc trên máy đài radio.",
     "image": "📻",
-    "level": "L3",
-    "category": "L3-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U14-W137",
+    "id": "vocab-L6-U04-W537",
     "word": "television",
     "ipa": "/ˈtɛləvɪʒən/",
     "vietnamesePhonetic": "Te-lơ-vi-giần",
@@ -7976,12 +7976,12 @@ export const VOCABULARY_DATABASE = [
     "example": "We watch cartoons on television.",
     "exampleVi": "Chúng mình xem hoạt hình trên ti vi.",
     "image": "📺",
-    "level": "L3",
-    "category": "L3-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U14-W138",
+    "id": "vocab-L6-U04-W538",
     "word": "newspaper",
     "ipa": "/ˈnuːzpeɪpər/",
     "vietnamesePhonetic": "Niu-zơ-pê-pơ",
@@ -7990,12 +7990,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Dad reads morning newspaper.",
     "exampleVi": "Bố đọc tờ báo buổi sáng.",
     "image": "📰",
-    "level": "L3",
-    "category": "L3-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U14-W139",
+    "id": "vocab-L6-U04-W539",
     "word": "magazine",
     "ipa": "/ˌmæɡəˈziːn/",
     "vietnamesePhonetic": "Me-gơ-zin",
@@ -8004,12 +8004,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This magazine has bright photos.",
     "exampleVi": "Tạp chí này có những bức ảnh tươi sáng.",
     "image": "📖",
-    "level": "L3",
-    "category": "L3-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U14-W140",
+    "id": "vocab-L6-U04-W540",
     "word": "camera",
     "ipa": "/ˈkæmrə/",
     "vietnamesePhonetic": "Kem-mơ-ra",
@@ -8018,12 +8018,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Take a picture with camera.",
     "exampleVi": "Chụp một bức ảnh bằng máy ảnh.",
     "image": "📷",
-    "level": "L3",
-    "category": "L3-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U04",
+    "unit": 4
   },
   {
-    "id": "vocab-L3-L3-U15-W141",
+    "id": "vocab-L6-U05-W541",
     "word": "young",
     "ipa": "/jʌŋ/",
     "vietnamesePhonetic": "Dăng",
@@ -8032,12 +8032,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The baby is very young.",
     "exampleVi": "Em bé còn rất trẻ tuổi.",
     "image": "👶",
-    "level": "L3",
-    "category": "L3-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U15-W142",
+    "id": "vocab-L6-U05-W542",
     "word": "old",
     "ipa": "/oʊld/",
     "vietnamesePhonetic": "Ô-lơ-đơ",
@@ -8046,12 +8046,12 @@ export const VOCABULARY_DATABASE = [
     "example": "My grandpa is wise and old.",
     "exampleVi": "Ông của bé lớn tuổi và uyên bác.",
     "image": "👴",
-    "level": "L3",
-    "category": "L3-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U15-W143",
+    "id": "vocab-L6-U05-W543",
     "word": "tall",
     "ipa": "/tɔːl/",
     "vietnamesePhonetic": "Tol-lơ",
@@ -8060,12 +8060,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The basketball player is tall.",
     "exampleVi": "Vận động viên bóng rổ rất cao lớn.",
     "image": "🦒",
-    "level": "L3",
-    "category": "L3-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U15-W144",
+    "id": "vocab-L6-U05-W544",
     "word": "short",
     "ipa": "/ʃɔːrt/",
     "vietnamesePhonetic": "Sót-tơ",
@@ -8074,12 +8074,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The little puppy is short.",
     "exampleVi": "Chú cún nhỏ rất thấp bé.",
     "image": "🦔",
-    "level": "L3",
-    "category": "L3-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U15-W145",
+    "id": "vocab-L6-U05-W545",
     "word": "thin",
     "ipa": "/θɪn/",
     "vietnamesePhonetic": "Thinh-nơ",
@@ -8088,12 +8088,12 @@ export const VOCABULARY_DATABASE = [
     "example": "He runs fast because he is thin.",
     "exampleVi": "Cậu ấy chạy nhanh vì mảnh khảnh.",
     "image": "🧍",
-    "level": "L3",
-    "category": "L3-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U15-W146",
+    "id": "vocab-L6-U05-W546",
     "word": "strong",
     "ipa": "/strɔːŋ/",
     "vietnamesePhonetic": "Sơ-tơ-rong",
@@ -8102,12 +8102,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Eating vegetables makes you strong.",
     "exampleVi": "Ăn rau củ giúp bạn khỏe mạnh.",
     "image": "🏋️",
-    "level": "L3",
-    "category": "L3-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U15-W147",
+    "id": "vocab-L6-U05-W547",
     "word": "beautiful",
     "ipa": "/ˈbjuːtɪfəl/",
     "vietnamesePhonetic": "Biu-ti-phù-lơ",
@@ -8116,12 +8116,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Mom looks beautiful today.",
     "exampleVi": "Hôm nay mẹ trông thật xinh đẹp.",
     "image": "🌸",
-    "level": "L3",
-    "category": "L3-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U15-W148",
+    "id": "vocab-L6-U05-W548",
     "word": "handsome",
     "ipa": "/ˈhænsəm/",
     "vietnamesePhonetic": "Hen-sầm",
@@ -8130,12 +8130,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The prince is handsome.",
     "exampleVi": "Hoàng tử rất đẹp trai.",
     "image": "🤵",
-    "level": "L3",
-    "category": "L3-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U15-W149",
+    "id": "vocab-L6-U05-W549",
     "word": "quiet",
     "ipa": "/ˈkwaɪət/",
     "vietnamesePhonetic": "Quai-ơ-tơ",
@@ -8144,12 +8144,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Be quiet in library.",
     "exampleVi": "Hãy giữ yên lặng trong thư viện.",
     "image": "🤫",
-    "level": "L3",
-    "category": "L3-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L3-L3-U15-W150",
+    "id": "vocab-L6-U05-W550",
     "word": "noisy",
     "ipa": "/ˈnɔɪzi/",
     "vietnamesePhonetic": "Noi-zi",
@@ -8158,12 +8158,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The playground is noisy.",
     "exampleVi": "Sân chơi rất ồn ào.",
     "image": "📢",
-    "level": "L3",
-    "category": "L3-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U05",
+    "unit": 5
   },
   {
-    "id": "vocab-L4-L4-U11-W151",
+    "id": "vocab-L6-U06-W551",
     "word": "addition",
     "ipa": "/əˈdɪʃən/",
     "vietnamesePhonetic": "Ơ-đi-shần",
@@ -8172,12 +8172,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Addition is two plus two.",
     "exampleVi": "Phép cộng là hai cộng hai.",
     "image": "➕",
-    "level": "L4",
-    "category": "L4-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U11-W152",
+    "id": "vocab-L6-U06-W552",
     "word": "subtraction",
     "ipa": "/səbˈtrækʃən/",
     "vietnamesePhonetic": "Sơ-bơ-tréc-shần",
@@ -8186,12 +8186,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Subtraction takes numbers away.",
     "exampleVi": "Phép trừ bớt các con số đi.",
     "image": "➖",
-    "level": "L4",
-    "category": "L4-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U11-W153",
+    "id": "vocab-L6-U06-W553",
     "word": "multiplication",
     "ipa": "/ˌmʌltəpləˈkeɪʃən/",
     "vietnamesePhonetic": "Măn-ti-pơ-li-kế-shần",
@@ -8200,12 +8200,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Learn your multiplication tables.",
     "exampleVi": "Hãy học thuộc bảng cửu chương phép nhân.",
     "image": "✖️",
-    "level": "L4",
-    "category": "L4-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U11-W154",
+    "id": "vocab-L6-U06-W554",
     "word": "division",
     "ipa": "/dɪˈvɪʒən/",
     "vietnamesePhonetic": "Đi-vi-giần",
@@ -8214,12 +8214,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Division splits into parts.",
     "exampleVi": "Phép chia chia đều thành các phần.",
     "image": "➗",
-    "level": "L4",
-    "category": "L4-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U11-W155",
+    "id": "vocab-L6-U06-W555",
     "word": "fraction",
     "ipa": "/ˈfrækʃən/",
     "vietnamesePhonetic": "Pơ-rác-shần",
@@ -8228,12 +8228,12 @@ export const VOCABULARY_DATABASE = [
     "example": "One half is a fraction.",
     "exampleVi": "Một phần hai là phân số.",
     "image": "🧮",
-    "level": "L4",
-    "category": "L4-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U11-W156",
+    "id": "vocab-L6-U06-W556",
     "word": "decimal",
     "ipa": "/ˈdɛsəməl/",
     "vietnamesePhonetic": "Đe-si-mần",
@@ -8242,12 +8242,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Zero point five is decimal.",
     "exampleVi": "Zero phẩy năm là số thập phân.",
     "image": "🔢",
-    "level": "L4",
-    "category": "L4-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U11-W157",
+    "id": "vocab-L6-U06-W557",
     "word": "percentage",
     "ipa": "/pərˈsɛntɪdʒ/",
     "vietnamesePhonetic": "Pơ-sen-ti-giơ",
@@ -8256,12 +8256,12 @@ export const VOCABULARY_DATABASE = [
     "example": "100 percentage is full.",
     "exampleVi": "100 phần trăm là trọn vẹn.",
     "image": "📊",
-    "level": "L4",
-    "category": "L4-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U11-W158",
+    "id": "vocab-L6-U06-W558",
     "word": "equation",
     "ipa": "/ɪˈkweɪʒən/",
     "vietnamesePhonetic": "I-quê-giần",
@@ -8270,12 +8270,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Solve math equation.",
     "exampleVi": "Giải phương trình toán học.",
     "image": "📐",
-    "level": "L4",
-    "category": "L4-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U11-W159",
+    "id": "vocab-L6-U06-W559",
     "word": "graph",
     "ipa": "/ɡræf/",
     "vietnamesePhonetic": "Gơ-rép-phơ",
@@ -8284,12 +8284,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Look at line graph.",
     "exampleVi": "Hãy nhìn vào biểu đồ đường.",
     "image": "📉",
-    "level": "L4",
-    "category": "L4-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U11-W160",
+    "id": "vocab-L6-U06-W560",
     "word": "measurement",
     "ipa": "/ˈmɛʒərmənt/",
     "vietnamesePhonetic": "Me-giơ-mần-tơ",
@@ -8298,12 +8298,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Use ruler for measurement.",
     "exampleVi": "Dùng thước kẻ để đo lường.",
     "image": "📏",
-    "level": "L4",
-    "category": "L4-U11",
-    "unit": 11
+    "level": "L6",
+    "category": "L6-U06",
+    "unit": 6
   },
   {
-    "id": "vocab-L4-L4-U12-W161",
+    "id": "vocab-L6-U07-W561",
     "word": "cell",
     "ipa": "/sɛl/",
     "vietnamesePhonetic": "Se-lơ",
@@ -8312,12 +8312,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Cells are tiny life units.",
     "exampleVi": "Tế bào là đơn vị sống tí hon.",
     "image": "🧬",
-    "level": "L4",
-    "category": "L4-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U12-W162",
+    "id": "vocab-L6-U07-W562",
     "word": "organ",
     "ipa": "/ˈɔːrɡən/",
     "vietnamesePhonetic": "Ó-gần",
@@ -8326,12 +8326,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The heart is an organ.",
     "exampleVi": "Trái tim là một cơ quan cơ thể.",
     "image": "🫀",
-    "level": "L4",
-    "category": "L4-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U12-W163",
+    "id": "vocab-L6-U07-W563",
     "word": "tissue",
     "ipa": "/ˈtɪʃuː/",
     "vietnamesePhonetic": "Ti-siu",
@@ -8340,12 +8340,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Cells build muscle tissue.",
     "exampleVi": "Các tế bào xây dựng nên mô cơ.",
     "image": "🔬",
-    "level": "L4",
-    "category": "L4-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U12-W164",
+    "id": "vocab-L6-U07-W564",
     "word": "bone",
     "ipa": "/boʊn/",
     "vietnamesePhonetic": "Bôn-nơ",
@@ -8354,12 +8354,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Calcium keeps bones strong.",
     "exampleVi": "Can-xi giúp xương chắc khỏe.",
     "image": "🦴",
-    "level": "L4",
-    "category": "L4-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U12-W165",
+    "id": "vocab-L6-U07-W565",
     "word": "muscle",
     "ipa": "/ˈmʌsəl/",
     "vietnamesePhonetic": "Mắc-sồ",
@@ -8368,12 +8368,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Exercise builds muscle.",
     "exampleVi": "Tập thể dục giúp phát triển cơ bắp.",
     "image": "🦾",
-    "level": "L4",
-    "category": "L4-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U12-W166",
+    "id": "vocab-L6-U07-W566",
     "word": "blood",
     "ipa": "/blʌd/",
     "vietnamesePhonetic": "Bơ-lất-đơ",
@@ -8382,12 +8382,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Heart pumps blood.",
     "exampleVi": "Trái tim bơm máu đi khắp cơ thể.",
     "image": "🩸",
-    "level": "L4",
-    "category": "L4-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U12-W167",
+    "id": "vocab-L6-U07-W567",
     "word": "heart",
     "ipa": "/hɑːrt/",
     "vietnamesePhonetic": "Hát-tơ",
@@ -8396,12 +8396,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Your heart beats constantly.",
     "exampleVi": "Trái tim bạn đập liên tục.",
     "image": "🫀",
-    "level": "L4",
-    "category": "L4-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U12-W168",
+    "id": "vocab-L6-U07-W568",
     "word": "brain",
     "ipa": "/breɪn/",
     "vietnamesePhonetic": "Bơ-ren",
@@ -8410,12 +8410,12 @@ export const VOCABULARY_DATABASE = [
     "example": "The brain controls thinking.",
     "exampleVi": "Bộ não điều khiển suy nghĩ.",
     "image": "🧠",
-    "level": "L4",
-    "category": "L4-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U12-W169",
+    "id": "vocab-L6-U07-W569",
     "word": "lung",
     "ipa": "/lʌŋ/",
     "vietnamesePhonetic": "Lăng",
@@ -8424,12 +8424,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Lungs help us breathe.",
     "exampleVi": "Lá phổi giúp chúng mình hít thở.",
     "image": "🫁",
-    "level": "L4",
-    "category": "L4-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U12-W170",
+    "id": "vocab-L6-U07-W570",
     "word": "stomach",
     "ipa": "/ˈstʌmək/",
     "vietnamesePhonetic": "Sơ-tăm-mắc",
@@ -8438,12 +8438,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Food digests in stomach.",
     "exampleVi": "Thức ăn tiêu hóa trong dạ dày.",
     "image": "🫄",
-    "level": "L4",
-    "category": "L4-U12",
-    "unit": 12
+    "level": "L6",
+    "category": "L6-U07",
+    "unit": 7
   },
   {
-    "id": "vocab-L4-L4-U13-W171",
+    "id": "vocab-L6-U08-W571",
     "word": "atom",
     "ipa": "/ˈætəm/",
     "vietnamesePhonetic": "É-tầm",
@@ -8452,12 +8452,12 @@ export const VOCABULARY_DATABASE = [
     "example": "An atom is very small.",
     "exampleVi": "Nguyên tử rất nhỏ bé.",
     "image": "⚛️",
-    "level": "L4",
-    "category": "L4-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U13-W172",
+    "id": "vocab-L6-U08-W572",
     "word": "molecule",
     "ipa": "/ˈmɑːlɪkjuːl/",
     "vietnamesePhonetic": "Mo-li-kiu-lơ",
@@ -8466,12 +8466,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Atoms join to make molecule.",
     "exampleVi": "Các nguyên tử kết hợp thành phân tử.",
     "image": "🧬",
-    "level": "L4",
-    "category": "L4-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U13-W173",
+    "id": "vocab-L6-U08-W573",
     "word": "element",
     "ipa": "/ˈɛləmənt/",
     "vietnamesePhonetic": "E-lơ-mần-tơ",
@@ -8480,12 +8480,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Oxygen is an element.",
     "exampleVi": "Oxy là một nguyên tố hóa học.",
     "image": "🧪",
-    "level": "L4",
-    "category": "L4-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U13-W174",
+    "id": "vocab-L6-U08-W574",
     "word": "compound",
     "ipa": "/ˈkɑːmpaʊnd/",
     "vietnamesePhonetic": "Com-pao-nđơ",
@@ -8494,12 +8494,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Water is a chemical compound.",
     "exampleVi": "Nước là một hợp chất hóa học.",
     "image": "⚗️",
-    "level": "L4",
-    "category": "L4-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U13-W175",
+    "id": "vocab-L6-U08-W575",
     "word": "acid",
     "ipa": "/ˈæsəd/",
     "vietnamesePhonetic": "É-sít-đơ",
@@ -8508,12 +8508,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Lemons contain citric acid.",
     "exampleVi": "Quả chanh chứa a-xít xí-trích.",
     "image": "🧪",
-    "level": "L4",
-    "category": "L4-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U13-W176",
+    "id": "vocab-L6-U08-W576",
     "word": "base",
     "ipa": "/beɪs/",
     "vietnamesePhonetic": "Bê-sơ",
@@ -8522,12 +8522,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Soap is a basic liquid.",
     "exampleVi": "Xà phòng là dung dịch ba-zơ.",
     "image": "🧪",
-    "level": "L4",
-    "category": "L4-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U13-W177",
+    "id": "vocab-L6-U08-W577",
     "word": "reaction",
     "ipa": "/riˈækʃən/",
     "vietnamesePhonetic": "Ri-éc-shần",
@@ -8536,12 +8536,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Mixing colors creates reaction.",
     "exampleVi": "Pha trộn màu sắc tạo ra phản ứng.",
     "image": "💥",
-    "level": "L4",
-    "category": "L4-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U13-W178",
+    "id": "vocab-L6-U08-W578",
     "word": "temperature",
     "ipa": "/ˈtɛmprətʃər/",
     "vietnamesePhonetic": "Tem-pơ-ra-chơ",
@@ -8550,12 +8550,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Check water temperature.",
     "exampleVi": "Kiểm tra nhiệt độ của nước.",
     "image": "🌡️",
-    "level": "L4",
-    "category": "L4-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U13-W179",
+    "id": "vocab-L6-U08-W579",
     "word": "laboratory",
     "ipa": "/ˈlæbrətɔːri/",
     "vietnamesePhonetic": "Le-bo-ra-to-ri",
@@ -8564,12 +8564,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Scientists work in laboratory.",
     "exampleVi": "Các nhà khoa học làm việc trong phòng thí nghiệm.",
     "image": "🔬",
-    "level": "L4",
-    "category": "L4-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U13-W180",
+    "id": "vocab-L6-U08-W580",
     "word": "chemical",
     "ipa": "/ˈkɛmɪkəl/",
     "vietnamesePhonetic": "Kem-mi-cồ",
@@ -8578,12 +8578,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Store chemicals safely.",
     "exampleVi": "Cất giữ hóa chất an toàn.",
     "image": "🧪",
-    "level": "L4",
-    "category": "L4-U13",
-    "unit": 13
+    "level": "L6",
+    "category": "L6-U08",
+    "unit": 8
   },
   {
-    "id": "vocab-L4-L4-U14-W181",
+    "id": "vocab-L6-U09-W581",
     "word": "canvas",
     "ipa": "/ˈkænvəs/",
     "vietnamesePhonetic": "Căn-vớt-sơ",
@@ -8592,12 +8592,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Paint picture on canvas.",
     "exampleVi": "Vẽ bức tranh lên khung canvas.",
     "image": "🖼️",
-    "level": "L4",
-    "category": "L4-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U14-W182",
+    "id": "vocab-L6-U09-W582",
     "word": "brush",
     "ipa": "/brʌʃ/",
     "vietnamesePhonetic": "Bơ-rắt-shơ",
@@ -8606,12 +8606,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Dip brush into paint.",
     "exampleVi": "Chúng mình nhúng cọ vẽ vào màu.",
     "image": "🖌️",
-    "level": "L4",
-    "category": "L4-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U14-W183",
+    "id": "vocab-L6-U09-W583",
     "word": "palette",
     "ipa": "/ˈpælət/",
     "vietnamesePhonetic": "Pe-lợt-tơ",
@@ -8620,12 +8620,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Mix colors on palette.",
     "exampleVi": "Pha trộn màu sắc trên bảng màu.",
     "image": "🎨",
-    "level": "L4",
-    "category": "L4-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U14-W184",
+    "id": "vocab-L6-U09-W584",
     "word": "sketch",
     "ipa": "/skɛtʃ/",
     "vietnamesePhonetic": "Sơ-kết-chơ",
@@ -8634,12 +8634,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Draw a pencil sketch.",
     "exampleVi": "Vẽ một bản phác thảo bằng bút chì.",
     "image": "✏️",
-    "level": "L4",
-    "category": "L4-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U14-W185",
+    "id": "vocab-L6-U09-W585",
     "word": "portrait",
     "ipa": "/ˈpɔːrtrət/",
     "vietnamesePhonetic": "Por-trơ-tơ",
@@ -8648,12 +8648,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This portrait looks beautiful.",
     "exampleVi": "Bức chân dung này trông thật đẹp.",
     "image": "🖼️",
-    "level": "L4",
-    "category": "L4-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U14-W186",
+    "id": "vocab-L6-U09-W586",
     "word": "landscape",
     "ipa": "/ˈlændskeɪp/",
     "vietnamesePhonetic": "Len-đơ-sơ-kếp",
@@ -8662,12 +8662,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Paint a mountain landscape.",
     "exampleVi": "Vẽ một bức tranh phong cảnh núi rừng.",
     "image": "🌄",
-    "level": "L4",
-    "category": "L4-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U14-W187",
+    "id": "vocab-L6-U09-W587",
     "word": "sculpture",
     "ipa": "/ˈskʌlptʃər/",
     "vietnamesePhonetic": "Sơ-cắp-chơ",
@@ -8676,12 +8676,12 @@ export const VOCABULARY_DATABASE = [
     "example": "See marble sculpture in museum.",
     "exampleVi": "Ngắm nhìn tượng điêu khắc cẩm thạch trong bảo tàng.",
     "image": "🗿",
-    "level": "L4",
-    "category": "L4-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U14-W188",
+    "id": "vocab-L6-U09-W588",
     "word": "gallery",
     "ipa": "/ˈɡæləri/",
     "vietnamesePhonetic": "Ge-lơ-ri",
@@ -8690,12 +8690,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Visit local art gallery.",
     "exampleVi": "Ghé thăm phòng triển lãm nghệ thuật địa phương.",
     "image": "🏛️",
-    "level": "L4",
-    "category": "L4-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U14-W189",
+    "id": "vocab-L6-U09-W589",
     "word": "pattern",
     "ipa": "/ˈpætərn/",
     "vietnamesePhonetic": "Pét-tơn",
@@ -8704,12 +8704,12 @@ export const VOCABULARY_DATABASE = [
     "example": "This rug has star pattern.",
     "exampleVi": "Tấm thảm này có hoa văn hình ngôi sao.",
     "image": "🏁",
-    "level": "L4",
-    "category": "L4-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U14-W190",
+    "id": "vocab-L6-U09-W590",
     "word": "texture",
     "ipa": "/ˈtɛkstʃər/",
     "vietnamesePhonetic": "Tếch-stơ-chơ",
@@ -8718,12 +8718,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Feel smooth texture of wood.",
     "exampleVi": "Cảm nhận kết cấu mịn màng của gỗ.",
     "image": "🧱",
-    "level": "L4",
-    "category": "L4-U14",
-    "unit": 14
+    "level": "L6",
+    "category": "L6-U09",
+    "unit": 9
   },
   {
-    "id": "vocab-L4-L4-U15-W191",
+    "id": "vocab-L6-U10-W591",
     "word": "citizen",
     "ipa": "/ˈsɪtɪzən/",
     "vietnamesePhonetic": "Si-ti-zần",
@@ -8732,12 +8732,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Be a good citizen.",
     "exampleVi": "Hãy là một người công dân tốt.",
     "image": "🧑‍🤝‍🧑",
-    "level": "L4",
-    "category": "L4-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U15-W192",
+    "id": "vocab-L6-U10-W592",
     "word": "community",
     "ipa": "/kəˈmjuːnəti/",
     "vietnamesePhonetic": "Cơm-miu-nơ-ti",
@@ -8746,12 +8746,12 @@ export const VOCABULARY_DATABASE = [
     "example": "We help our community.",
     "exampleVi": "Chúng mình giúp đỡ cộng đồng.",
     "image": "👥",
-    "level": "L4",
-    "category": "L4-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U15-W193",
+    "id": "vocab-L6-U10-W593",
     "word": "law",
     "ipa": "/lɔː/",
     "vietnamesePhonetic": "Lo-o",
@@ -8760,12 +8760,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Obey safety law.",
     "exampleVi": "Tuân thủ luật pháp an toàn.",
     "image": "⚖️",
-    "level": "L4",
-    "category": "L4-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U15-W194",
+    "id": "vocab-L6-U10-W594",
     "word": "rule",
     "ipa": "/ruːl/",
     "vietnamesePhonetic": "Ru-lơ",
@@ -8774,12 +8774,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Follow school rules.",
     "exampleVi": "Thực hiện theo các quy tắc trường học.",
     "image": "📜",
-    "level": "L4",
-    "category": "L4-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U15-W195",
+    "id": "vocab-L6-U10-W595",
     "word": "responsibility",
     "ipa": "/rɪˌspɑːnsəˈbɪləti/",
     "vietnamesePhonetic": "Ri-sơ-pon-si-bi-li-ti",
@@ -8788,12 +8788,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Cleaning room is my responsibility.",
     "exampleVi": "Dọn dẹp phòng là trách nhiệm của bé.",
     "image": "🤝",
-    "level": "L4",
-    "category": "L4-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U15-W196",
+    "id": "vocab-L6-U10-W596",
     "word": "right",
     "ipa": "/raɪt/",
     "vietnamesePhonetic": "Rai-tơ",
@@ -8802,12 +8802,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Children have right to learn.",
     "exampleVi": "Trẻ em có quyền được đi học.",
     "image": "🛡️",
-    "level": "L4",
-    "category": "L4-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U15-W197",
+    "id": "vocab-L6-U10-W597",
     "word": "equality",
     "ipa": "/ɪˈkwɑːləti/",
     "vietnamesePhonetic": "I-quó-li-ti",
@@ -8816,12 +8816,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Treat everyone with equality.",
     "exampleVi": "Đối xử với mọi người bằng sự bình đẳng.",
     "image": "⚖️",
-    "level": "L4",
-    "category": "L4-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U15-W198",
+    "id": "vocab-L6-U10-W598",
     "word": "respect",
     "ipa": "/rɪˈspɛkt/",
     "vietnamesePhonetic": "Ri-sơ-pếch-tơ",
@@ -8830,12 +8830,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Show respect to elders.",
     "exampleVi": "Thể hiện sự tôn trọng với người lớn tuổi.",
     "image": "🙇",
-    "level": "L4",
-    "category": "L4-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U15-W199",
+    "id": "vocab-L6-U10-W599",
     "word": "volunteer",
     "ipa": "/ˌvɑːlənˈtɪr/",
     "vietnamesePhonetic": "Von-lần-ti-ơ",
@@ -8844,12 +8844,12 @@ export const VOCABULARY_DATABASE = [
     "example": "Volunteers plant new trees.",
     "exampleVi": "Các tình nguyện viên trồng thêm cây mới.",
     "image": "🤲",
-    "level": "L4",
-    "category": "L4-U15",
-    "unit": 15
+    "level": "L6",
+    "category": "L6-U10",
+    "unit": 10
   },
   {
-    "id": "vocab-L4-L4-U15-W200",
+    "id": "vocab-L6-U10-W600",
     "word": "government",
     "ipa": "/ˈɡʌvərnmənt/",
     "vietnamesePhonetic": "Gă-vơn-mần-tơ",
@@ -8858,636 +8858,9 @@ export const VOCABULARY_DATABASE = [
     "example": "The government serves citizens.",
     "exampleVi": "Chính phủ phục vụ người dân.",
     "image": "🏛️",
-    "level": "L4",
-    "category": "L4-U15",
-    "unit": 15
-  }
-];
-
-export const ILLUSTRATED_POSTER_PAGES = [
-  {
-    pageNumber: 1,
-    title: "Illustrated English Vocabulary - Page 1",
-    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 1",
-    badge: "Level 1 • Khởi Động (40 Từ)",
-    sections: [
-      {
-        id: "L1-U01",
-        title: "Colors / Màu sắc",
-        theme: "red",
-        bgHeader: "bg-red-600 text-white",
-        borderColor: "border-red-500",
-        badgeBg: "bg-red-100 text-red-700",
-        icon: "🎨",
-        categoryId: "L1-U01",
-        words: ["red", "blue", "yellow", "green", "orange", "purple", "pink", "black", "white", "brown"]
-      },
-      {
-        id: "L1-U02",
-        title: "Numbers 1–10 / Số đếm 1–10",
-        theme: "blue",
-        bgHeader: "bg-blue-600 text-white",
-        borderColor: "border-blue-500",
-        badgeBg: "bg-blue-100 text-blue-700",
-        icon: "🔢",
-        categoryId: "L1-U02",
-        words: ["one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten"]
-      },
-      {
-        id: "L1-U03",
-        title: "Shapes / Hình dạng",
-        theme: "green",
-        bgHeader: "bg-emerald-600 text-white",
-        borderColor: "border-emerald-500",
-        badgeBg: "bg-emerald-100 text-emerald-700",
-        icon: "📐",
-        categoryId: "L1-U03",
-        words: ["circle", "square", "triangle", "rectangle", "star", "heart", "oval", "diamond", "line", "dot"]
-      },
-      {
-        id: "L1-U04",
-        title: "My Family / Gia đình của bé",
-        theme: "purple",
-        bgHeader: "bg-purple-600 text-white",
-        borderColor: "border-purple-500",
-        badgeBg: "bg-purple-100 text-purple-700",
-        icon: "👨‍👩‍👧‍👦",
-        categoryId: "L1-U04",
-        words: ["mother", "father", "sister", "brother", "grandmother", "grandfather", "baby", "family", "aunt", "uncle"]
-      }
-    ]
-  },
-  {
-    pageNumber: 2,
-    title: "Illustrated English Vocabulary - Page 2",
-    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 2",
-    badge: "Level 1 • Khởi Động (40 Từ)",
-    sections: [
-      {
-        id: "L1-U05",
-        title: "My Body / Cơ thể của bé",
-        theme: "red",
-        bgHeader: "bg-red-600 text-white",
-        borderColor: "border-red-500",
-        badgeBg: "bg-red-100 text-red-700",
-        icon: "👁️",
-        categoryId: "L1-U05",
-        words: ["head", "hair", "eye", "ear", "nose", "mouth", "hand", "arm", "leg", "foot"]
-      },
-      {
-        id: "L1-U06",
-        title: "Animals / Động vật quen thuộc",
-        theme: "blue",
-        bgHeader: "bg-blue-600 text-white",
-        borderColor: "border-blue-500",
-        badgeBg: "bg-blue-100 text-blue-700",
-        icon: "🐱",
-        categoryId: "L1-U06",
-        words: ["cat", "dog", "bird", "fish", "rabbit", "duck", "cow", "pig", "horse", "sheep"]
-      },
-      {
-        id: "L1-U07",
-        title: "Food and Drinks / Đồ ăn và thức uống",
-        theme: "green",
-        bgHeader: "bg-emerald-600 text-white",
-        borderColor: "border-emerald-500",
-        badgeBg: "bg-emerald-100 text-emerald-700",
-        icon: "🍱",
-        categoryId: "L1-U07",
-        words: ["apple", "banana", "orange", "rice", "bread", "milk", "egg", "cake", "water", "juice"]
-      },
-      {
-        id: "L1-U08",
-        title: "My Classroom / Lớp học của bé",
-        theme: "purple",
-        bgHeader: "bg-purple-600 text-white",
-        borderColor: "border-purple-500",
-        badgeBg: "bg-purple-100 text-purple-700",
-        icon: "🏫",
-        categoryId: "L1-U08",
-        words: ["book", "pen", "pencil", "ruler", "eraser", "bag", "chair", "table", "door", "window"]
-      }
-    ]
-  },
-  {
-    pageNumber: 3,
-    title: "Illustrated English Vocabulary - Page 3",
-    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 3",
-    badge: "Level 1 & Level 2 • Mở Rộng (40 Từ)",
-    sections: [
-      {
-        id: "L1-U09",
-        title: "Action Words / Động từ hành động",
-        theme: "red",
-        bgHeader: "bg-red-600 text-white",
-        borderColor: "border-red-500",
-        badgeBg: "bg-red-100 text-red-700",
-        icon: "🏃",
-        categoryId: "L1-U09",
-        words: ["run", "jump", "walk", "sit", "stand", "clap", "sing", "dance", "eat", "drink"]
-      },
-      {
-        id: "L1-U10",
-        title: "Feelings / Cảm xúc cơ bản",
-        theme: "blue",
-        bgHeader: "bg-blue-600 text-white",
-        borderColor: "border-blue-500",
-        badgeBg: "bg-blue-100 text-blue-700",
-        icon: "😊",
-        categoryId: "L1-U10",
-        words: ["happy", "sad", "angry", "scared", "tired", "hungry", "thirsty", "excited", "calm", "sleepy"]
-      },
-      {
-        id: "L2-U01",
-        title: "My Home / Ngôi nhà",
-        theme: "green",
-        bgHeader: "bg-emerald-600 text-white",
-        borderColor: "border-emerald-500",
-        badgeBg: "bg-emerald-100 text-emerald-700",
-        icon: "🏠",
-        categoryId: "L2-U01",
-        words: ["house", "living room", "bedroom", "kitchen", "bathroom", "garden", "bed", "sofa", "lamp", "clock"]
-      },
-      {
-        id: "L2-U02",
-        title: "Clothes / Quần áo",
-        theme: "purple",
-        bgHeader: "bg-purple-600 text-white",
-        borderColor: "border-purple-500",
-        badgeBg: "bg-purple-100 text-purple-700",
-        icon: "👕",
-        categoryId: "L2-U02",
-        words: ["shirt", "T-shirt", "dress", "skirt", "trousers", "shorts", "shoes", "socks", "hat", "jacket"]
-      }
-    ]
-  },
-  {
-    pageNumber: 4,
-    title: "Illustrated English Vocabulary - Page 4",
-    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 4",
-    badge: "Level 2 • Cơ Bản (40 Từ)",
-    sections: [
-      {
-        id: "L2-U03",
-        title: "Daily Routine / Sinh hoạt hằng ngày",
-        theme: "red",
-        bgHeader: "bg-red-600 text-white",
-        borderColor: "border-red-500",
-        badgeBg: "bg-red-100 text-red-700",
-        icon: "⏰",
-        categoryId: "L2-U03",
-        words: ["wake up", "brush", "wash", "get dressed", "have breakfast", "go to school", "study", "play", "have dinner", "sleep"]
-      },
-      {
-        id: "L2-U04",
-        title: "Weather / Thời tiết",
-        theme: "blue",
-        bgHeader: "bg-blue-600 text-white",
-        borderColor: "border-blue-500",
-        badgeBg: "bg-blue-100 text-blue-700",
-        icon: "🌤️",
-        categoryId: "L2-U04",
-        words: ["sunny", "rainy", "cloudy", "windy", "hot", "cold", "warm", "cool", "storm", "rainbow"]
-      },
-      {
-        id: "L2-U05",
-        title: "Transportation / Phương tiện giao thông",
-        theme: "green",
-        bgHeader: "bg-emerald-600 text-white",
-        borderColor: "border-emerald-500",
-        badgeBg: "bg-emerald-100 text-emerald-700",
-        icon: "🚗",
-        categoryId: "L2-U05",
-        words: ["bicycle", "motorbike", "car", "bus", "train", "plane", "boat", "taxi", "truck", "scooter"]
-      },
-      {
-        id: "L2-U06",
-        title: "Places in Town / Địa điểm trong thành phố",
-        theme: "purple",
-        bgHeader: "bg-purple-600 text-white",
-        borderColor: "border-purple-500",
-        badgeBg: "bg-purple-100 text-purple-700",
-        icon: "🏙️",
-        categoryId: "L2-U06",
-        words: ["school", "hospital", "park", "supermarket", "library", "zoo", "cinema", "restaurant", "bank", "post office"]
-      }
-    ]
-  },
-  {
-    pageNumber: 5,
-    title: "Illustrated English Vocabulary - Page 5",
-    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 5",
-    badge: "Level 2 • Cơ Bản (40 Từ)",
-    sections: [
-      {
-        id: "L2-U07",
-        title: "Jobs / Nghề nghiệp",
-        theme: "red",
-        bgHeader: "bg-red-600 text-white",
-        borderColor: "border-red-500",
-        badgeBg: "bg-red-100 text-red-700",
-        icon: "👷",
-        categoryId: "L2-U07",
-        words: ["teacher", "doctor", "nurse", "police officer", "firefighter", "farmer", "cook", "driver", "pilot", "artist"]
-      },
-      {
-        id: "L2-U08",
-        title: "Fruits and Vegetables / Trái cây và rau củ",
-        theme: "blue",
-        bgHeader: "bg-blue-600 text-white",
-        borderColor: "border-blue-500",
-        badgeBg: "bg-blue-100 text-blue-700",
-        icon: "🍎",
-        categoryId: "L2-U08",
-        words: ["mango", "grape", "watermelon", "strawberry", "pineapple", "carrot", "tomato", "potato", "corn", "cucumber"]
-      },
-      {
-        id: "L2-U09",
-        title: "Time and Calendar / Thời gian và lịch",
-        theme: "green",
-        bgHeader: "bg-emerald-600 text-white",
-        borderColor: "border-emerald-500",
-        badgeBg: "bg-emerald-100 text-emerald-700",
-        icon: "📅",
-        categoryId: "L2-U09",
-        words: ["morning", "afternoon", "evening", "night", "today", "tomorrow", "yesterday", "Monday", "weekend", "birthday"]
-      },
-      {
-        id: "L2-U10",
-        title: "Sports / Thể thao",
-        theme: "purple",
-        bgHeader: "bg-purple-600 text-white",
-        borderColor: "border-purple-500",
-        badgeBg: "bg-purple-100 text-purple-700",
-        icon: "⚽",
-        categoryId: "L2-U10",
-        words: ["football", "basketball", "badminton", "swimming", "running", "cycling", "tennis", "volleyball", "yoga", "skating"]
-      }
-    ]
-  },
-  {
-    pageNumber: 6,
-    title: "Illustrated English Vocabulary - Page 6",
-    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 6",
-    badge: "Level 2 & Level 3 • Mở Rộng (40 Từ)",
-    sections: [
-      {
-        id: "L2-U11",
-        title: "Nature / Thiên nhiên",
-        theme: "green",
-        bgHeader: "bg-emerald-600 text-white",
-        borderColor: "border-emerald-500",
-        badgeBg: "bg-emerald-100 text-emerald-700",
-        icon: "🌲",
-        categoryId: "L2-U11",
-        words: ["forest", "mountain", "river", "lake", "ocean", "beach", "island", "waterfall", "flower", "tree"]
-      },
-      {
-        id: "L2-U12",
-        title: "Health / Sức khỏe",
-        theme: "blue",
-        bgHeader: "bg-blue-600 text-white",
-        borderColor: "border-blue-500",
-        badgeBg: "bg-blue-100 text-blue-700",
-        icon: "🏥",
-        categoryId: "L2-U12",
-        words: ["healthy", "sick", "fever", "cough", "headache", "medicine", "doctor", "hospital", "exercise", "rest"]
-      },
-      {
-        id: "L2-U13",
-        title: "Shopping / Mua sắm",
-        theme: "red",
-        bgHeader: "bg-orange-600 text-white",
-        borderColor: "border-orange-500",
-        badgeBg: "bg-orange-100 text-orange-700",
-        icon: "🛒",
-        categoryId: "L2-U13",
-        words: ["shop", "price", "money", "cheap", "expensive", "buy", "sell", "pay", "receipt", "change"]
-      },
-      {
-        id: "L2-U14",
-        title: "Travel / Du lịch",
-        theme: "purple",
-        bgHeader: "bg-purple-600 text-white",
-        borderColor: "border-purple-500",
-        badgeBg: "bg-purple-100 text-purple-700",
-        icon: "✈️",
-        categoryId: "L2-U14",
-        words: ["ticket", "passport", "suitcase", "airport", "hotel", "map", "journey", "tourist", "visit", "arrive"]
-      }
-    ]
-  },
-  {
-    pageNumber: 7,
-    title: "Illustrated English Vocabulary - Page 7",
-    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 7",
-    badge: "Level 3 • Trung Cấp (40 Từ)",
-    sections: [
-      {
-        id: "L3-U01",
-        title: "Technology / Công nghệ",
-        theme: "red",
-        bgHeader: "bg-red-600 text-white",
-        borderColor: "border-red-500",
-        badgeBg: "bg-red-100 text-red-700",
-        icon: "💻",
-        categoryId: "L3-U01",
-        words: ["computer", "laptop", "tablet", "screen", "keyboard", "mouse", "internet", "website", "email", "password"]
-      },
-      {
-        id: "L3-U02",
-        title: "Hobbies / Sở thích",
-        theme: "blue",
-        bgHeader: "bg-blue-600 text-white",
-        borderColor: "border-blue-500",
-        badgeBg: "bg-blue-100 text-blue-700",
-        icon: "🎨",
-        categoryId: "L3-U02",
-        words: ["reading", "drawing", "painting", "cooking", "gardening", "singing", "dancing", "photography", "collecting", "camping"]
-      },
-      {
-        id: "L3-U03",
-        title: "My Community / Cộng đồng quanh bé",
-        theme: "green",
-        bgHeader: "bg-emerald-600 text-white",
-        borderColor: "border-emerald-500",
-        badgeBg: "bg-emerald-100 text-emerald-700",
-        icon: "🏘️",
-        categoryId: "L3-U03",
-        words: ["neighbor", "police station", "fire station", "museum", "bakery", "market", "playground", "traffic light", "crossing", "neighborhood"]
-      },
-      {
-        id: "L3-U04",
-        title: "Festivals and Parties / Lễ hội và tiệc",
-        theme: "purple",
-        bgHeader: "bg-purple-600 text-white",
-        borderColor: "border-purple-500",
-        badgeBg: "bg-purple-100 text-purple-700",
-        icon: "🎉",
-        categoryId: "L3-U04",
-        words: ["festival", "present", "party", "candle", "costume", "parade", "holiday", "celebrate", "decorate", "invitation"]
-      }
-    ]
-  },
-  {
-    pageNumber: 8,
-    title: "Illustrated English Vocabulary - Page 8",
-    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 8",
-    badge: "Level 3 • Trung Cấp (40 Từ)",
-    sections: [
-      {
-        id: "L3-U05",
-        title: "Personality / Tính cách",
-        theme: "red",
-        bgHeader: "bg-red-600 text-white",
-        borderColor: "border-red-500",
-        badgeBg: "bg-red-100 text-red-700",
-        icon: "❤️",
-        categoryId: "L3-U05",
-        words: ["kind", "friendly", "polite", "honest", "brave", "clever", "careful", "patient", "helpful", "shy"]
-      },
-      {
-        id: "L3-U06",
-        title: "Protect the Earth / Bảo vệ Trái Đất",
-        theme: "blue",
-        bgHeader: "bg-blue-600 text-white",
-        borderColor: "border-blue-500",
-        badgeBg: "bg-blue-100 text-blue-700",
-        icon: "🌍",
-        categoryId: "L3-U06",
-        words: ["recycle", "reuse", "reduce", "rubbish", "plastic", "paper", "glass", "electricity", "pollution", "protect"]
-      },
-      {
-        id: "L3-U07",
-        title: "Science Basics / Khoa học cơ bản",
-        theme: "green",
-        bgHeader: "bg-emerald-600 text-white",
-        borderColor: "border-emerald-500",
-        badgeBg: "bg-emerald-100 text-emerald-700",
-        icon: "🧪",
-        categoryId: "L3-U07",
-        words: ["experiment", "energy", "light", "sound", "heat", "force", "matter", "liquid", "solid", "gas"]
-      },
-      {
-        id: "L3-U08",
-        title: "Space / Không gian",
-        theme: "purple",
-        bgHeader: "bg-purple-600 text-white",
-        borderColor: "border-purple-500",
-        badgeBg: "bg-purple-100 text-purple-700",
-        icon: "🚀",
-        categoryId: "L3-U08",
-        words: ["planet", "Earth", "Moon", "Sun", "star", "astronaut", "rocket", "galaxy", "telescope", "gravity"]
-      }
-    ]
-  },
-  {
-    pageNumber: 9,
-    title: "Illustrated English Vocabulary - Page 9",
-    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 9",
-    badge: "Level 4 • Nâng Cao (40 Từ)",
-    sections: [
-      {
-        id: "L4-U01",
-        title: "Learning Words / Từ học thuật cơ bản",
-        theme: "red",
-        bgHeader: "bg-red-600 text-white",
-        borderColor: "border-red-500",
-        badgeBg: "bg-red-100 text-red-700",
-        icon: "📚",
-        categoryId: "L4-U01",
-        words: ["compare", "describe", "explain", "classify", "calculate", "observe", "predict", "result", "example", "information"]
-      },
-      {
-        id: "L4-U02",
-        title: "Communication / Giao tiếp",
-        theme: "blue",
-        bgHeader: "bg-blue-600 text-white",
-        borderColor: "border-blue-500",
-        badgeBg: "bg-blue-100 text-blue-700",
-        icon: "💬",
-        categoryId: "L4-U02",
-        words: ["opinion", "agree", "disagree", "suggest", "invite", "reply", "question", "answer", "message", "conversation"]
-      },
-      {
-        id: "L4-U03",
-        title: "Problem Solving / Giải quyết vấn đề",
-        theme: "green",
-        bgHeader: "bg-emerald-600 text-white",
-        borderColor: "border-emerald-500",
-        badgeBg: "bg-emerald-100 text-emerald-700",
-        icon: "💡",
-        categoryId: "L4-U03",
-        words: ["problem", "solution", "plan", "choice", "reason", "step", "check", "improve", "decide", "complete"]
-      },
-      {
-        id: "L4-U04",
-        title: "Complex Feelings / Cảm xúc nâng cao",
-        theme: "purple",
-        bgHeader: "bg-purple-600 text-white",
-        borderColor: "border-purple-500",
-        badgeBg: "bg-purple-100 text-purple-700",
-        icon: "🎭",
-        categoryId: "L4-U04",
-        words: ["proud", "worried", "surprised", "disappointed", "confident", "nervous", "curious", "lonely", "grateful", "embarrassed"]
-      }
-    ]
-  },
-  {
-    pageNumber: 10,
-    title: "Illustrated English Vocabulary - Page 10",
-    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 10",
-    badge: "Level 4 • Nâng Cao (40 Từ)",
-    sections: [
-      {
-        id: "L4-U05",
-        title: "Countries and Culture / Quốc gia và văn hóa",
-        theme: "red",
-        bgHeader: "bg-red-600 text-white",
-        borderColor: "border-red-500",
-        badgeBg: "bg-red-100 text-red-700",
-        icon: "🎎",
-        categoryId: "L4-U05",
-        words: ["country", "language", "culture", "tradition", "custom", "national", "local", "foreign", "famous", "history"]
-      },
-      {
-        id: "L4-U06",
-        title: "Digital Safety / An toàn số",
-        theme: "blue",
-        bgHeader: "bg-blue-600 text-white",
-        borderColor: "border-blue-500",
-        badgeBg: "bg-blue-100 text-blue-700",
-        icon: "🔒",
-        categoryId: "L4-U06",
-        words: ["account", "private", "public", "download", "upload", "online", "safe", "dangerous", "report", "permission"]
-      },
-      {
-        id: "L4-U07",
-        title: "Storytelling / Kể chuyện",
-        theme: "green",
-        bgHeader: "bg-emerald-600 text-white",
-        borderColor: "border-emerald-500",
-        badgeBg: "bg-emerald-100 text-emerald-700",
-        icon: "📖",
-        categoryId: "L4-U07",
-        words: ["character", "setting", "beginning", "middle", "ending", "event", "adventure", "mystery", "imagine", "create"]
-      },
-      {
-        id: "L4-U08",
-        title: "Goals and Growth / Mục tiêu và trưởng thành",
-        theme: "purple",
-        bgHeader: "bg-purple-600 text-white",
-        borderColor: "border-purple-500",
-        badgeBg: "bg-purple-100 text-purple-700",
-        icon: "🎯",
-        categoryId: "L4-U08",
-        words: ["dream", "goal", "future", "practice", "progress", "success", "challenge", "learn", "achieve", "promise"]
-      }
-    ]
-  },
-  {
-    pageNumber: 11,
-    title: "Illustrated English Vocabulary - Page 11",
-    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 11",
-    badge: "Level 4 • Nâng Cao - Khoa học, Hóa học & Cơ thể (40 Từ)",
-    sections: [
-      {
-        id: "L4-U09",
-        title: "Science & Experiment / Hóa học & Sinh học cơ bản",
-        theme: "red",
-        bgHeader: "bg-rose-600 text-white",
-        borderColor: "border-rose-500",
-        badgeBg: "bg-rose-100 text-rose-700",
-        icon: "🧪",
-        categoryId: "L4-U09",
-        words: ["cell", "atom", "molecule", "reaction", "organism", "DNA", "climate", "oxygen", "acid", "base"]
-      },
-      {
-        id: "L4-U10",
-        title: "Mathematics & Geometry / Toán học & Hình khối",
-        theme: "blue",
-        bgHeader: "bg-indigo-600 text-white",
-        borderColor: "border-indigo-500",
-        badgeBg: "bg-indigo-100 text-indigo-700",
-        icon: "🧮",
-        categoryId: "L4-U10",
-        words: ["cube", "sphere", "cylinder", "pyramid", "fraction", "percent", "plus", "minus", "multiply", "divide"]
-      },
-      {
-        id: "L4-U11",
-        title: "Art & Design / Nghệ thuật & Thiết kế",
-        theme: "green",
-        bgHeader: "bg-emerald-600 text-white",
-        borderColor: "border-emerald-500",
-        badgeBg: "bg-emerald-100 text-emerald-700",
-        icon: "🖼️",
-        categoryId: "L4-U11",
-        words: ["canvas", "brush", "sculpture", "gallery", "portrait", "landscape", "sketch", "texture", "pattern", "harmony"]
-      },
-      {
-        id: "L4-U12",
-        title: "Human Body Inside / Cơ thể người bên trong",
-        theme: "purple",
-        bgHeader: "bg-violet-600 text-white",
-        borderColor: "border-violet-500",
-        badgeBg: "bg-violet-100 text-violet-700",
-        icon: "🫀",
-        categoryId: "L4-U12",
-        words: ["brain", "heart", "lungs", "stomach", "bone", "muscle", "blood", "vein", "nerve", "skin"]
-      }
-    ]
-  },
-  {
-    pageNumber: 12,
-    title: "Illustrated English Vocabulary - Page 12",
-    subtitle: "Bảng từ vựng hình ảnh cho bé • Trang 12",
-    badge: "Level 4 • Đột Phá - Xã hội, Tương lai & Giá trị sống (40 Từ)",
-    sections: [
-      {
-        id: "L4-U13",
-        title: "Society & Citizenship / Xã hội & Công dân",
-        theme: "red",
-        bgHeader: "bg-amber-600 text-white",
-        borderColor: "border-amber-500",
-        badgeBg: "bg-amber-100 text-amber-700",
-        icon: "⚖️",
-        categoryId: "L4-U13",
-        words: ["law", "duty", "rights", "leader", "vote", "peace", "justice", "equality", "freedom", "volunteer"]
-      },
-      {
-        id: "L4-U14",
-        title: "Future Careers / Tương lai & Hướng nghiệp",
-        theme: "blue",
-        bgHeader: "bg-sky-600 text-white",
-        borderColor: "border-sky-500",
-        badgeBg: "bg-sky-100 text-sky-700",
-        icon: "🌟",
-        categoryId: "L4-U14",
-        words: ["architect", "engineer", "astronaut", "scientist", "inventor", "musician", "chef", "pilot", "lawyer", "entrepreneur"]
-      },
-      {
-        id: "L4-U15",
-        title: "Global Environment / Môi trường toàn cầu",
-        theme: "green",
-        bgHeader: "bg-teal-600 text-white",
-        borderColor: "border-teal-500",
-        badgeBg: "bg-teal-100 text-teal-700",
-        icon: "🌱",
-        categoryId: "L4-U15",
-        words: ["ecosystem", "biodiversity", "habitat", "solar power", "wind energy", "conservation", "sustainability", "atmosphere", "climate change", "footprint"]
-      },
-      {
-        id: "L4-U16",
-        title: "Wisdom & Values / Giá trị sống & Phẩm chất",
-        theme: "purple",
-        bgHeader: "bg-fuchsia-600 text-white",
-        borderColor: "border-fuchsia-500",
-        badgeBg: "bg-fuchsia-100 text-fuchsia-700",
-        icon: "💎",
-        categoryId: "L4-U16",
-        words: ["wisdom", "courage", "empathy", "integrity", "respect", "perseverance", "gratitude", "curiosity", "kindness", "responsibility"]
-      }
-    ]
+    "level": "L6",
+    "category": "L6-U10",
+    "unit": 10
   }
 ];
 
@@ -9586,6 +8959,16 @@ export function getSuperDetailedVocabInfo(item) {
     typeLabel: item.type || 'Từ Vựng cốt lõi'
   };
 }
+
+export const ILLUSTRATED_POSTER_PAGES = [
+  { id: 1, title: 'Trang 1: Bảng Màu & Số Đếm Kỳ Diệu 🎨🔢', icon: '🎨', level: 'L1', description: 'Khám phá các màu sắc rực rỡ và những số đếm cơ bản cùng mascot Pinky!' },
+  { id: 2, title: 'Trang 2: Thế Giới Động Vật Hoang Dã 🦁🐘', icon: '🦁', level: 'L2', description: 'Tìm hiểu sư tử, voi, hổ, khỉ và các bạn động vật đáng yêu!' },
+  { id: 3, title: 'Trang 3: Hoa Quả & Món Ăn Tuyệt Hảo 🍎🍉', icon: '🍎', level: 'L2', description: 'Thưởng thức các loại trái cây tươi ngon và đồ ăn bổ dưỡng!' },
+  { id: 4, title: 'Trang 4: Hành Trình Khám Phá Thiên Nhiên 🧭🌳', icon: '🧭', level: 'L3', description: 'Cùng la bàn và bản đồ du ngoạn rừng xanh đại ngàn!' },
+  { id: 5, title: 'Trang 5: Nguyệt Cầu & Vũ Trụ Bao La 🚀🪐', icon: '🚀', level: 'L4', description: 'Bay tới các hành tinh xa xôi và khám phá vũ trụ ngàn sao!' },
+  { id: 6, title: 'Trang 6: Thành Phố Thông Minh & Nghề Nghiệp 🏙️👨‍⚕️', icon: '🏙️', level: 'L5', description: 'Học về các ngành nghề cao quý và nhịp sống đô thị hiện đại!' },
+  { id: 7, title: 'Trang 7: Công Nghệ AI & Hội Nhập Toàn Cầu 💻🌐', icon: '🌐', level: 'L6', description: 'Trải nghiệm đỉnh cao tri thức chuẩn quốc tế CEFR B2-C1!' },
+];
 
 export default VOCABULARY_DATABASE;
 

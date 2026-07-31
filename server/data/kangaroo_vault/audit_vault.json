@@ -1,10 +1,26 @@
 {
   "_kangaroo_meta": {
     "vault": "audit_vault",
-    "lastHopTime": "2026-07-31T00:49:35.061Z",
-    "checksum": "kng-1785458975061-avc7yo"
+    "lastHopTime": "2026-07-31T03:48:22.744Z",
+    "checksum": "kng-1785469702744-l4luvm"
   },
   "payload": [
+    {
+      "id": "log-1785469701695-ba02",
+      "timestamp": "2026-07-31T03:48:21.695+00:00",
+      "event": "AUTH_LOGIN_SUCCESS",
+      "details": "Tác nhân 'Bé Minh Anh (Thần Đồng Tiếng Anh)' (KIDS_ENGLISH) đăng nhập thành công với Token HMAC",
+      "username": "behoctienganh",
+      "ip": "::1"
+    },
+    {
+      "id": "log-1785468595969-tlw0",
+      "timestamp": "2026-07-31T03:29:55.969+00:00",
+      "event": "AUTH_LOGIN_SUCCESS",
+      "details": "Tác nhân 'Bé Minh Anh (Thần Đồng Tiếng Anh)' (KIDS_ENGLISH) đăng nhập thành công với Token HMAC",
+      "username": "behoctienganh",
+      "ip": "::1"
+    },
     {
       "id": "log-1785458974234-e3xv",
       "timestamp": "2026-07-31T00:49:34.234+00:00",

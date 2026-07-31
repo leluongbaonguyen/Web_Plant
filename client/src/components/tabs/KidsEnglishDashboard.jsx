@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useRef } from 'react';
+import { useState, useMemo, useEffect, useRef, useCallback } from 'react';
 import {
   Volume2, Sparkles, Award, Star, RefreshCw, CheckCircle2, Heart, HelpCircle,
   Gamepad2, BookOpen, Smile, RotateCw, Play, Trophy, Flame, Music, Layers, Search,
@@ -6,19 +6,650 @@ import {
   Bot, Clock, BellRing, Send, MessageSquare, ShieldCheck, Plus, Edit, Trash2,
   Download, Upload, Settings, FileText, Mic, MicOff, Radio, Activity, Camera,
   History, Shield, FileCheck, Lock, UserCheck, ListChecks, UploadCloud, Database,
-  AlertTriangle, AlertCircle, Archive, Sliders, CheckSquare, FileSpreadsheet, Eye, EyeOff, Key
+  AlertTriangle, AlertCircle, Archive, Sliders, CheckSquare, FileSpreadsheet, Eye, EyeOff, Key, Home
 } from 'lucide-react';
 import { COURSE_LEVELS, VOCAB_CATEGORIES, VOCABULARY_DATABASE, ILLUSTRATED_POSTER_PAGES, getSuperDetailedVocabInfo } from '../../constants/kidsVocabularyDatabase.js';
 import LongmanEngine from '../../services/longmanDictionary.js';
+
+// ============================================================
+// SCROLL BOUNCE CARD - Tự phóng to & nhún nhảy khi scroll đến
+// ============================================================
+const SCROLL_BOUNCE_STYLE = `
+@keyframes scrollPopBounce {
+  0%   { transform: scale(0.72) translateY(18px); opacity: 0; }
+  55%  { transform: scale(1.18) translateY(-8px); opacity: 1; }
+  72%  { transform: scale(0.95) translateY(3px); }
+  84%  { transform: scale(1.08) translateY(-4px); }
+  93%  { transform: scale(0.98) translateY(1px); }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+.scroll-pop-bounce {
+  animation: scrollPopBounce 0.65s cubic-bezier(0.34,1.56,0.64,1) forwards;
+}
+`;
+
+if (typeof document !== 'undefined' && !document.getElementById('scroll-bounce-styles')) {
+  const style = document.createElement('style');
+  style.id = 'scroll-bounce-styles';
+  style.textContent = SCROLL_BOUNCE_STYLE;
+  document.head.appendChild(style);
+}
+
+// ============================================================
+// VOCAB ZOOM MODAL - Phóng to siêu chi tiết cho bé đọc dễ dàng
+// ============================================================
+const LEVEL_COLOR_MAP = {
+  L1: { bg: 'from-pink-600 via-rose-500 to-orange-400', border: 'border-pink-400', badge: 'bg-pink-500/20 text-pink-200 border-pink-400/60', label: 'L1 • Khởi Động', dot: 'bg-pink-400' },
+  L2: { bg: 'from-blue-600 via-cyan-500 to-teal-400', border: 'border-cyan-400', badge: 'bg-cyan-500/20 text-cyan-200 border-cyan-400/60', label: 'L2 • Cơ Bản', dot: 'bg-cyan-400' },
+  L3: { bg: 'from-purple-600 via-violet-500 to-indigo-400', border: 'border-violet-400', badge: 'bg-violet-500/20 text-violet-200 border-violet-400/60', label: 'L3 • Mở Rộng', dot: 'bg-violet-400' },
+  L4: { bg: 'from-amber-600 via-yellow-500 to-lime-400', border: 'border-yellow-400', badge: 'bg-yellow-500/20 text-yellow-200 border-yellow-400/60', label: 'L4 • Nâng Cao', dot: 'bg-yellow-400' },
+  L5: { bg: 'from-rose-600 via-pink-500 to-orange-400', border: 'border-rose-400', badge: 'bg-rose-500/20 text-rose-200 border-rose-400/60', label: 'L5 • Tiên Phong', dot: 'bg-rose-400' },
+  L6: { bg: 'from-teal-600 via-emerald-500 to-cyan-400', border: 'border-teal-400', badge: 'bg-teal-500/20 text-teal-200 border-teal-400/60', label: 'L6 • Quốc Tế', dot: 'bg-teal-400' },
+};
+
+const ZOOM_MODAL_STYLE = `
+@keyframes zoomPopIn {
+  0%   { transform: scale(0.5) translateY(60px) rotate(-3deg); opacity: 0; }
+  60%  { transform: scale(1.06) translateY(-8px) rotate(0.5deg); opacity: 1; }
+  80%  { transform: scale(0.97) translateY(3px); }
+  100% { transform: scale(1) translateY(0) rotate(0); opacity: 1; }
+}
+@keyframes zoomEmojiPop {
+  0%   { transform: scale(0); opacity: 0; }
+  50%  { transform: scale(1.35); opacity: 1; }
+  75%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+@keyframes shimmerSlide {
+  0%   { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.zoom-modal-card { animation: zoomPopIn 0.5s cubic-bezier(0.34,1.56,0.64,1) forwards; }
+.zoom-emoji-pop { animation: zoomEmojiPop 0.6s cubic-bezier(0.34,1.56,0.64,1) 0.2s both; }
+.shimmer-text {
+  background: linear-gradient(90deg, #fff 0%, #ffd700 40%, #fff 60%, #ffd700 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmerSlide 2.5s linear infinite;
+}
+`;
+
+if (typeof document !== 'undefined' && !document.getElementById('zoom-modal-styles')) {
+  const s = document.createElement('style');
+  s.id = 'zoom-modal-styles';
+  s.textContent = ZOOM_MODAL_STYLE;
+  document.head.appendChild(s);
+}
+
+function VocabZoomModal({ card, onClose, onPlayAudio, onToggleMastered, isMastered, onVoiceRecord, superDetail, getPhonetic, onNextWord, onPrevWord, hasNext, hasPrev }) {
+  if (!card) return null;
+  const lvl = LEVEL_COLOR_MAP[card.level] || LEVEL_COLOR_MAP.L1;
+  const example = card.example || card.sentence || '';
+  const exampleVi = card.exampleVi || card.sentenceVi || '';
+  const hint = superDetail?.memoryTip || card.hint || '';
+  const funFact = superDetail?.funFact || '';
+  const phonetic = superDetail?.vietnamesePhoneticDisplay || card.vietnamesePhonetic || getPhonetic?.(card.word) || '';
+  const syllable = superDetail?.syllableBreakdown || card.ipa || '';
+
+  return (
+    <div
+      className="fixed inset-0 z-[9999] flex items-center justify-center p-3 md:p-6"
+      style={{ background: 'rgba(0,0,0,0.88)', backdropFilter: 'blur(12px)' }}
+      onClick={onClose}
+    >
+      {/* Floating Side Arrow Button - Previous Word (Desktop) */}
+      {hasPrev && (
+        <button
+          onClick={(e) => { e.stopPropagation(); onPrevWord?.(); }}
+          className="hidden md:flex fixed left-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-slate-900/90 border-2 border-cyan-400 text-cyan-300 items-center justify-center text-2xl font-black shadow-2xl hover:scale-110 hover:bg-cyan-500 hover:text-slate-950 active:scale-95 transition z-[10000] cursor-pointer"
+          title="Xem từ trước đó (◀)"
+        >
+          ◀
+        </button>
+      )}
+
+      {/* Floating Side Arrow Button - Next Word (Desktop) */}
+      {hasNext && (
+        <button
+          onClick={(e) => { e.stopPropagation(); onNextWord?.(); }}
+          className="hidden md:flex fixed right-6 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-slate-900/90 border-2 border-pink-400 text-pink-300 items-center justify-center text-2xl font-black shadow-2xl hover:scale-110 hover:bg-pink-500 hover:text-slate-950 active:scale-95 transition z-[10000] cursor-pointer"
+          title="Xem từ tiếp theo (▶)"
+        >
+          ▶
+        </button>
+      )}
+
+      {/* Modal Card */}
+      <div
+        className="zoom-modal-card relative w-full max-w-md max-h-[95vh] overflow-y-auto rounded-[2rem] border-2 shadow-2xl flex flex-col gap-0"
+        style={{ background: 'linear-gradient(160deg, #0f172a 0%, #1e1b4b 50%, #0f172a 100%)' }}
+        onClick={e => e.stopPropagation()}
+      >
+        {/* === HEADER GRADIENT BANNER === */}
+        <div className={`relative bg-gradient-to-r ${lvl.bg} p-6 rounded-t-[2rem] overflow-hidden`}>
+          {/* Floating decorative circles */}
+          <div className="absolute -top-8 -right-8 w-32 h-32 rounded-full bg-white/10 blur-xl pointer-events-none" />
+          <div className="absolute -bottom-6 -left-6 w-24 h-24 rounded-full bg-white/10 blur-lg pointer-events-none" />
+
+          {/* Close Button */}
+          <button
+            onClick={onClose}
+            className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full bg-black/30 hover:bg-black/60 flex items-center justify-center text-white/80 hover:text-white transition active:scale-90"
+          >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round"/></svg>
+          </button>
+
+          {/* Level Badge */}
+          <div className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest mb-3 bg-black/25 text-white/90 border border-white/20`}>
+            <span className={`w-2 h-2 rounded-full ${lvl.dot}`} />
+            {lvl.label}
+          </div>
+
+          {/* Giant Emoji */}
+          <div className="zoom-emoji-pop text-center text-8xl sm:text-9xl drop-shadow-2xl leading-none mb-2">
+            {card.image}
+          </div>
+
+          {/* Word */}
+          <div className="text-center">
+            <h2 className="shimmer-text text-5xl sm:text-6xl font-black tracking-tight drop-shadow-2xl leading-tight">
+              {card.word}
+            </h2>
+            <p className="mt-2 text-white/70 font-mono text-base tracking-wider">{card.ipa}</p>
+            <div className="mt-2 inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full bg-black/30 border border-white/20 text-pink-200 font-black text-sm">
+              🗣️ {phonetic}
+            </div>
+          </div>
+        </div>
+
+        {/* === BODY CONTENT === */}
+        <div className="p-5 space-y-4">
+
+          {/* Meaning Card */}
+          <div className="rounded-2xl bg-gradient-to-r from-yellow-950/60 to-amber-950/60 border border-yellow-500/40 p-4 text-center space-y-1">
+            <p className="text-[10px] font-black uppercase tracking-widest text-yellow-400/70">🇻🇳 NGHĨA TIẾNG VIỆT</p>
+            <p className="text-3xl sm:text-4xl font-black text-yellow-300 leading-snug">{card.meaning}</p>
+            {card.type && (
+              <span className="inline-block px-3 py-0.5 rounded-full bg-yellow-500/20 border border-yellow-500/40 text-yellow-200 text-[11px] font-bold">
+                {card.type}
+              </span>
+            )}
+            {syllable && (
+              <p className="text-[11px] font-mono text-cyan-300 mt-1">🔤 {syllable}</p>
+            )}
+          </div>
+
+          {/* Example Sentence */}
+          {example && (
+            <div className="rounded-2xl bg-slate-800/80 border border-slate-600/40 p-4 space-y-2">
+              <p className="text-[10px] font-black uppercase tracking-widest text-cyan-400/70">💬 CÂU VÍ DỤ</p>
+              <p className="text-base font-bold text-white leading-relaxed">"{example}"</p>
+              {exampleVi && (
+                <p className="text-sm text-slate-300 italic">↪️ {exampleVi}</p>
+              )}
+            </div>
+          )}
+
+          {/* Memory Tip */}
+          {hint && (
+            <div className="rounded-2xl bg-purple-950/60 border border-purple-500/40 p-4 space-y-1">
+              <p className="text-[10px] font-black uppercase tracking-widest text-purple-400/70">💡 MẸO GHI NHỚ</p>
+              <p className="text-sm text-purple-200 leading-relaxed">{hint}</p>
+            </div>
+          )}
+
+          {/* Fun Fact */}
+          {funFact && (
+            <div className="rounded-2xl bg-emerald-950/60 border border-emerald-500/40 p-3 space-y-1">
+              <p className="text-[10px] font-black uppercase tracking-widest text-emerald-400/70">🧠 GÓC KIẾN THỨC THÚ VỊ</p>
+              <p className="text-xs text-emerald-200 leading-relaxed">{funFact}</p>
+            </div>
+          )}
+
+          {/* Action & Navigation Buttons */}
+          <div className="grid grid-cols-2 gap-2 pt-1">
+            {/* Sequential Navigation Row */}
+            <button
+              disabled={!hasPrev}
+              onClick={onPrevWord}
+              className="flex items-center justify-center gap-1.5 py-3.5 px-3 rounded-2xl bg-slate-800 border border-slate-700 text-slate-200 font-extrabold text-xs shadow-lg active:scale-95 transition hover:bg-slate-700 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              <span>◀ Từ Trước</span>
+            </button>
+
+            <button
+              disabled={!hasNext}
+              onClick={onNextWord}
+              className="flex items-center justify-center gap-1.5 py-3.5 px-3 rounded-2xl bg-gradient-to-r from-purple-600 to-pink-600 text-white font-black text-xs shadow-xl active:scale-95 transition hover:from-purple-500 hover:to-pink-500 disabled:opacity-30 disabled:cursor-not-allowed cursor-pointer"
+            >
+              <span>Từ Tiếp Theo ▶</span>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+
+            <button
+              onClick={() => onPlayAudio?.(card.word, false)}
+              className="flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white font-black text-sm shadow-xl active:scale-95 transition hover:from-cyan-500 hover:to-blue-500"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+              <span>Phát Âm 🔊</span>
+            </button>
+
+            <button
+              onClick={() => onPlayAudio?.(card.word, true)}
+              className="flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl bg-amber-600 text-white font-black text-sm shadow-lg active:scale-95 transition hover:bg-amber-500"
+            >
+              <span>🐢 Đọc Chậm</span>
+            </button>
+
+            <button
+              onClick={() => onVoiceRecord?.(card)}
+              className="col-span-2 flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl bg-gradient-to-r from-pink-600 to-purple-600 text-white font-black text-sm shadow-xl active:scale-95 transition hover:from-pink-500 hover:to-purple-500"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+              <span>🎙️ AI Chấm Phát Âm Cho Bé Minh Anh</span>
+            </button>
+
+            <button
+              onClick={() => onToggleMastered?.(card.id, card.word)}
+              className={`col-span-2 flex items-center justify-center gap-2 py-3.5 px-4 rounded-2xl font-black text-sm transition active:scale-95 border-2 ${
+                isMastered
+                  ? 'bg-emerald-500/20 border-emerald-400/60 text-emerald-300 hover:bg-emerald-500/30'
+                  : 'bg-gradient-to-r from-yellow-500 to-pink-500 border-yellow-400 text-slate-900 hover:from-yellow-400 hover:to-pink-400 shadow-xl'
+              }`}
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill={isMastered ? 'currentColor' : 'none'} stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              <span>{isMastered ? '✅ Đã Thuộc Từ Này Rồi!' : '⭐ Đánh Dấu Đã Thuộc (+2 Sao)'}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ScrollBounceCard({ children, delay = 0, className = '', style = {}, ...props }) {
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+  const [hasAnimated, setHasAnimated] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !hasAnimated) {
+          setTimeout(() => {
+            setVisible(true);
+            setHasAnimated(true);
+          }, delay);
+        }
+      },
+      { threshold: 0.25, rootMargin: '0px 0px -30px 0px' }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [delay, hasAnimated]);
+
+  return (
+    <div
+      ref={ref}
+      className={`${className} ${visible ? 'scroll-pop-bounce' : 'opacity-0'}`}
+      style={{ ...style }}
+      {...props}
+    >
+      {children}
+    </div>
+  );
+}
 
 export function KidsEnglishDashboard({ plan, addToast }) {
   const [selectedLevel, setSelectedLevel] = useState('all'); // 'all' | 'L1' | 'L2' | 'L3' | 'L4'
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeTab, setActiveTab] = useState('poster'); // 'poster' | 'flashcards' | 'quiz' | 'review_cycles' | 'vocab_manager'
+  const [activeTab, setActiveTab] = useState('home'); // 'home' | 'poster' | 'flashcards' | 'quiz' | 'review_cycles' | 'db_table'
   const [activePosterPage, setActivePosterPage] = useState(1); // 1 | 2 | 3 | 4 | 5 | 'all'
   const [currentPage, setCurrentPage] = useState(1);
   const pageSize = 12;
+
+  // 600 Vocabulary Expanded Database State & Persistence
+  const [vocabDatabase, setVocabDatabase] = useState(() => {
+    try {
+      const saved = localStorage.getItem('kids_custom_vocabulary_2000');
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        if (Array.isArray(parsed) && parsed.length < VOCABULARY_DATABASE.length) {
+          localStorage.setItem('kids_custom_vocabulary_2000', JSON.stringify(VOCABULARY_DATABASE));
+          return VOCABULARY_DATABASE;
+        }
+        return parsed;
+      }
+      return VOCABULARY_DATABASE;
+    } catch {
+      return VOCABULARY_DATABASE;
+    }
+  });
+
+  const saveVocabDatabase = (newList) => {
+    setVocabDatabase(newList);
+    try {
+      localStorage.setItem('kids_custom_vocabulary_2000', JSON.stringify(newList));
+    } catch (e) {
+      console.error('Error saving custom vocabulary database:', e);
+    }
+  };
+
+  // Active Spoken Word State for Visual Highlighting & Glowing Border
+  const [currentlySpeakingWord, setCurrentlySpeakingWord] = useState(null);
+
+  // Persistent Stars & Reward Progress
+  const [stars, setStars] = useState(() => {
+    try {
+      return parseInt(localStorage.getItem('kids_stars_2000') || '120', 10);
+    } catch {
+      return 120;
+    }
+  });
+
+  const [masteredCards, setMasteredCards] = useState(() => {
+    try {
+      const saved = localStorage.getItem('kids_mastered_words_2000');
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [adminLevelOverrides, setAdminLevelOverrides] = useState(() => {
+    try {
+      const saved = localStorage.getItem('kids_admin_level_overrides');
+      return saved ? JSON.parse(saved) : { L1: true };
+    } catch {
+      return { L1: true };
+    }
+  });
+
+  // Global Male AI Voice Speech Engine (Rõ ràng Cả Tiếng Anh & Tiếng Việt)
+  const playWordAudio = useCallback((text, slow = false) => {
+    if (!text || typeof window === 'undefined' || !('speechSynthesis' in window)) return;
+    try {
+      window.speechSynthesis.cancel();
+      const utterance = new SpeechSynthesisUtterance(text);
+      
+      const isVietnamese = /[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i.test(text);
+      const voices = window.speechSynthesis.getVoices();
+
+      if (isVietnamese) {
+        utterance.lang = 'vi-VN';
+        const maleViVoice = voices.find(v => 
+          v.lang.includes('vi') && (
+            v.name.toLowerCase().includes('male') || 
+            v.name.toLowerCase().includes('nam') || 
+            v.name.toLowerCase().includes('david') ||
+            v.name.toLowerCase().includes('an')
+          )
+        ) || voices.find(v => v.lang.includes('vi'));
+        if (maleViVoice) utterance.voice = maleViVoice;
+      } else {
+        utterance.lang = 'en-US';
+        const maleEnVoice = voices.find(v => 
+          v.lang.includes('en') && (
+            v.name.toLowerCase().includes('david') ||
+            v.name.toLowerCase().includes('male') ||
+            v.name.toLowerCase().includes('mark') ||
+            v.name.toLowerCase().includes('george') ||
+            v.name.toLowerCase().includes('guy') ||
+            v.name.toLowerCase().includes('james') ||
+            v.name.toLowerCase().includes('alex') ||
+            v.name.toLowerCase().includes('daniel')
+          )
+        ) || voices.find(v => v.lang.includes('en-US') || v.lang.includes('en-GB') || v.lang.includes('en'));
+        if (maleEnVoice) utterance.voice = maleEnVoice;
+      }
+
+      // Giọng Nam (Pitch 0.85 cho độ trầm ấm, Rate 0.88 cho giọng phát âm siêu rõ từng âm)
+      utterance.pitch = 0.85;
+      utterance.rate = slow ? 0.65 : 0.88;
+      utterance.volume = 1.0;
+      
+      const cleanWord = typeof text === 'string' ? text.trim().toLowerCase() : '';
+      setCurrentlySpeakingWord(cleanWord);
+
+      utterance.onend = () => setCurrentlySpeakingWord(null);
+      utterance.onerror = () => setCurrentlySpeakingWord(null);
+      
+      window.speechSynthesis.speak(utterance);
+    } catch (e) {
+      console.error(e);
+      setCurrentlySpeakingWord(null);
+    }
+  }, []);
+
+  // Preload SpeechSynthesis Voices for Male AI Speech Engine
+  useEffect(() => {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
+      window.speechSynthesis.getVoices();
+      window.speechSynthesis.onvoiceschanged = () => {
+        window.speechSynthesis.getVoices();
+      };
+    }
+  }, []);
+
+  // Toggle Mastered Card Handler
+  const handleToggleMastered = (cardId, wordText) => {
+    const targetKey = cardId || wordText;
+    setMasteredCards((prev) => {
+      const isMastered = prev.includes(targetKey);
+      let updated;
+      if (isMastered) {
+        updated = prev.filter((id) => id !== targetKey);
+        addToast?.(`Đã bỏ đánh dấu thuộc từ "${wordText}"`, 'info');
+      } else {
+        updated = [...prev, targetKey];
+        setStars((s) => {
+          const newS = s + 2;
+          try { localStorage.setItem('kids_stars_2000', newS.toString()); } catch(e){}
+          return newS;
+        });
+        addToast?.(`⭐ Giỏi quá Minh Anh ơi! Đã thuộc từ "${wordText}" (+2 Sao)!`, 'success');
+        playWordAudio(`Xuất sắc! Bé Minh Anh đã thuộc từ ${wordText}!`);
+      }
+      try {
+        localStorage.setItem('kids_mastered_words_2000', JSON.stringify(updated));
+      } catch (e) {}
+      return updated;
+    });
+  };
+
+  // Level Lock & Progression Logic (90% Threshold)
+  const isLevelUnlocked = useCallback((lvlId) => {
+    if (lvlId === 'L1') return true;
+    if (adminLevelOverrides[lvlId]) return true;
+
+    const lvlOrder = ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'];
+    const idx = lvlOrder.indexOf(lvlId);
+    if (idx <= 0) return true;
+
+    const prevLvlId = lvlOrder[idx - 1];
+    const prevWords = vocabDatabase.filter((w) => w.level === prevLvlId);
+    if (prevWords.length === 0) return true;
+
+    const masteredInPrev = prevWords.filter((w) => masteredCards.includes(w.id) || masteredCards.includes(w.word)).length;
+    const pct = (masteredInPrev / prevWords.length) * 100;
+    return pct >= 90;
+  }, [adminLevelOverrides, vocabDatabase, masteredCards]);
+
+  const levelStats = useMemo(() => {
+    const stats = {};
+    ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'].forEach((lvlId) => {
+      const lvlWords = vocabDatabase.filter((w) => w.level === lvlId);
+      const total = lvlWords.length || 100;
+      const mastered = lvlWords.filter((w) => masteredCards.includes(w.id) || masteredCards.includes(w.word)).length;
+      const pct = Math.min(100, Math.round((mastered / total) * 100));
+      stats[lvlId] = { total, mastered, pct };
+    });
+    return stats;
+  }, [vocabDatabase, masteredCards]);
+
+  const handleAdminToggleForceUnlock = (lvlId) => {
+    const updated = { ...adminLevelOverrides, [lvlId]: !adminLevelOverrides[lvlId] };
+    setAdminLevelOverrides(updated);
+    try {
+      localStorage.setItem('kids_admin_level_overrides', JSON.stringify(updated));
+    } catch (e) {}
+    addToast?.(`👨‍💼 Ba Bảo Nguyên đã ${updated[lvlId] ? 'mở cưỡng chế' : 'bật khóa'} Cấp độ ${lvlId}`, 'info');
+  };
+
+  const handleAdminQuickFill90Pct = (lvlId) => {
+    const lvlWords = vocabDatabase.filter((w) => w.level === lvlId);
+    const countToMaster = Math.ceil(lvlWords.length * 0.9);
+    const wordsToMaster = lvlWords.slice(0, countToMaster).map((w) => w.id || w.word);
+    
+    setMasteredCards((prev) => {
+      const combined = Array.from(new Set([...prev, ...wordsToMaster]));
+      try {
+        localStorage.setItem('kids_mastered_words_2000', JSON.stringify(combined));
+      } catch (e) {}
+      return combined;
+    });
+
+    addToast?.(`⚡ Đã nạp tự động 90% tiến độ cho Cấp độ ${lvlId}!`, 'success');
+  };
+
+  const handleResetLevelProgress = (lvlId) => {
+    if (window.confirm(`⚠️ XÁC NHẬN: Bạn có chắc chắn muốn reset toàn bộ tiến độ đã thuộc của Cấp độ ${lvlId}?`)) {
+      const lvlWords = vocabDatabase.filter((w) => w.level === lvlId).map((w) => w.id || w.word);
+      const lvlWordSet = new Set(lvlWords);
+      
+      setMasteredCards((prev) => {
+        const filtered = prev.filter((id) => !lvlWordSet.has(id));
+        try {
+          localStorage.setItem('kids_mastered_words_2000', JSON.stringify(filtered));
+        } catch (e) {}
+        return filtered;
+      });
+
+      addToast?.(`🔄 Đã reset tiến độ học của Cấp độ ${lvlId}`, 'info');
+    }
+  };
+
+  const handleResetAllProgress = () => {
+    if (window.confirm('⚠️ WARN: Bạn có chắc muốn XÓA SẠCH TOÀN BỘ tiến độ, sao ⭐ và thành tích của Minh Anh?')) {
+      setStars(0);
+      setMasteredCards([]);
+      setAdminLevelOverrides({ L1: true });
+      try {
+        localStorage.removeItem('kids_mastered_words_2000');
+        localStorage.removeItem('kids_stars_2000');
+        localStorage.removeItem('kids_admin_level_overrides');
+      } catch (e) {}
+      addToast?.('⚠️ Đã reset toàn bộ hệ thống về trạng thái ban đầu!', 'warning');
+    }
+  };
+
+  // Level Up Proficiency Test Modal States & Engine
+  const [showLevelUpTestModal, setShowLevelUpTestModal] = useState(false);
+  const [testLevelId, setTestLevelId] = useState('L1');
+  const [testQuestions, setTestQuestions] = useState([]);
+  const [currentTestQIndex, setCurrentTestQIndex] = useState(0);
+  const [testSelectedAnswers, setTestSelectedAnswers] = useState({});
+  const [testFinished, setTestFinished] = useState(false);
+  const [testScore, setTestScore] = useState(0);
+  const [testPassed, setTestPassed] = useState(false);
+
+  const handleStartLevelUpTest = (lvlId) => {
+    const levelWords = vocabDatabase.filter((w) => w.level === lvlId);
+    if (levelWords.length === 0) {
+      addToast?.('Chưa có từ vựng cho cấp độ này để tạo bài test!', 'warning');
+      return;
+    }
+
+    const shuffled = [...levelWords].sort(() => 0.5 - Math.random());
+    const selectedWords = shuffled.slice(0, 5);
+
+    const questions = selectedWords.map((targetWord, qIdx) => {
+      const otherWords = vocabDatabase.filter((w) => w.word !== targetWord.word);
+      const distractorShuffled = [...otherWords].sort(() => 0.5 - Math.random()).slice(0, 3);
+      const allChoices = [targetWord, ...distractorShuffled].sort(() => 0.5 - Math.random());
+      
+      const qTypes = ['meaning', 'image', 'word'];
+      const qType = qTypes[qIdx % 3];
+
+      return {
+        id: `q_${qIdx}_${Date.now()}`,
+        targetWord,
+        qType,
+        choices: allChoices,
+        correctChoiceId: targetWord.word
+      };
+    });
+
+    setTestLevelId(lvlId);
+    setTestQuestions(questions);
+    setCurrentTestQIndex(0);
+    setTestSelectedAnswers({});
+    setTestFinished(false);
+    setTestScore(0);
+    setTestPassed(false);
+    setShowLevelUpTestModal(true);
+
+    playWordAudio(`Bắt đầu Bài Test Đánh Giá Trình Độ Cấp độ ${lvlId}! Bé Minh Anh cố lên nhé!`);
+  };
+
+  const handleSelectTestAnswer = (qIndex, choiceWord) => {
+    setTestSelectedAnswers((prev) => ({ ...prev, [qIndex]: choiceWord }));
+  };
+
+  const handleNextTestQuestion = () => {
+    if (currentTestQIndex < testQuestions.length - 1) {
+      setCurrentTestQIndex((prev) => prev + 1);
+    } else {
+      let score = 0;
+      testQuestions.forEach((q, idx) => {
+        if (testSelectedAnswers[idx] === q.correctChoiceId) {
+          score += 1;
+        }
+      });
+
+      setTestScore(score);
+      setTestFinished(true);
+
+      const passed = score >= 4;
+      setTestPassed(passed);
+
+      if (passed) {
+        setShowFireworksOverlay(true);
+        setCelebrationMessage(`🎉 XUẤT SẮC! BÉ MINH ANH ĐÃ THI ĐỖ BÀI TEST LEVEL UP ${testLevelId} (${score}/5 ĐIỂM)! 🏆`);
+
+        const lvlOrder = ['L1', 'L2', 'L3', 'L4', 'L5', 'L6'];
+        const currentIdx = lvlOrder.indexOf(testLevelId);
+        if (currentIdx >= 0 && currentIdx < lvlOrder.length - 1) {
+          const nextLvlId = lvlOrder[currentIdx + 1];
+          setAdminLevelOverrides((prev) => {
+            const updated = { ...prev, [nextLvlId]: true };
+            try { localStorage.setItem('kids_admin_level_overrides', JSON.stringify(updated)); } catch(e){}
+            return updated;
+          });
+        }
+
+        setStars((prev) => {
+          const newS = prev + 50;
+          try { localStorage.setItem('kids_stars_2000', newS.toString()); } catch(e){}
+          return newS;
+        });
+
+        playWordAudio(`Chúc mừng con gái Nguyễn Ngọc Minh Anh đã xuất sắc vượt qua bài test trình độ ${testLevelId}! Con đã được mở khóa cấp độ mới và nhận thêm 50 ngôi sao!`);
+        addToast?.(`🎉 Xuất sắc! Minh Anh đã đỗ bài test ${testLevelId} (+50 ⭐) và mở khóa Cấp độ tiếp theo!`, 'success');
+      } else {
+        setShowSadOverlay(true);
+        playWordAudio(`Bé Minh Anh cố lên nhé! Con đạt ${score} trên 5 điểm. Hãy ôn tập lại một chút và thử lại lần nữa con nhé!`);
+        addToast?.(`💪 Bé Minh Anh đạt ${score}/5 điểm. Cần đạt 4/5 điểm để đỗ. Cố lên nhé con!`, 'info');
+      }
+    }
+  };
 
   // Data Table Pagination State (20 items/page by default)
   const [tablePage, setTablePage] = useState(1);
@@ -92,32 +723,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     }
   };
 
-  // 600 Vocabulary Expanded Database State & Persistence
-  const [vocabDatabase, setVocabDatabase] = useState(() => {
-    try {
-      const saved = localStorage.getItem('kids_custom_vocabulary_2000');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        if (Array.isArray(parsed) && parsed.length < VOCABULARY_DATABASE.length) {
-          localStorage.setItem('kids_custom_vocabulary_2000', JSON.stringify(VOCABULARY_DATABASE));
-          return VOCABULARY_DATABASE;
-        }
-        return parsed;
-      }
-      return VOCABULARY_DATABASE;
-    } catch {
-      return VOCABULARY_DATABASE;
-    }
-  });
 
-  const saveVocabDatabase = (newList) => {
-    setVocabDatabase(newList);
-    try {
-      localStorage.setItem('kids_custom_vocabulary_2000', JSON.stringify(newList));
-    } catch (e) {
-      console.error('Error saving custom vocabulary database:', e);
-    }
-  };
 
   // Dynamic Poster Pages State & Database Persistence
   const [posterPages, setPosterPages] = useState(() => {
@@ -1009,27 +1615,13 @@ export function KidsEnglishDashboard({ plan, addToast }) {
   const [pronunciationResult, setPronunciationResult] = useState(null);
 
   const [flippedCards, setFlippedCards] = useState({});
-  const [masteredCards, setMasteredCards] = useState(() => {
-    try {
-      const saved = localStorage.getItem('kids_mastered_words_2000');
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  const [stars, setStars] = useState(() => {
-    try {
-      const saved = localStorage.getItem('kids_earned_stars_2000');
-      return saved ? Number(saved) : 0;
-    } catch {
-      return 0;
-    }
-  });
 
   // Spotlight Enlarged Card State
   const [spotlightCard, setSpotlightCard] = useState(null);
   const [showSpotlightMeaning, setShowSpotlightMeaning] = useState(false);
+
+  // Vocab Zoom Modal State — Full-screen pop-up khi click thẻ trong bảng tranh
+  const [zoomModalCard, setZoomModalCard] = useState(null);
 
   // AI Manager & Study Reminder for Minh Anh State
   const [showAiModal, setShowAiModal] = useState(false);
@@ -1055,7 +1647,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     { id: 'unicorn', name: 'Pinky Kỳ Lân 🦄', icon: '🦄', quote: 'Pinky thả tim yêu thương tặng bé nè 💖!' },
     { id: 'dino', name: 'Dino Khủng Long 🦕', icon: '🦕', quote: 'Dino chúc bé học thật giỏi và đạt điểm 10 nha!' },
     { id: 'panda', name: 'Panda Gấu Trúc 🐼', icon: '🐼', quote: 'Panda tặng bé 100 ngôi sao lấp lánh ⭐!' },
-    { id: 'bunny', name: 'Bunny Thỏ Cute 🐰', icon: '🐰', quote: 'Bunny cùng bé chinh phục 400 từ vựng nhé!' }
+    { id: 'bunny', name: 'Bunny Thỏ Cute 🐰', icon: '🐰', quote: 'Bunny cùng bé chinh phục 600 từ vựng nhé!' }
   ], []);
 
   // Child Phonetic Vietnamese Reading Guide Helper
@@ -1078,37 +1670,6 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     return dict[lower] ? `Đọc là: "${dict[lower]}"` : `Từ: ${word}`;
   };
 
-  // Level Detailed Statistics Breakdown
-  const levelStats = useMemo(() => {
-    const calc = (lvlId) => {
-      const levelItems = vocabDatabase.filter((i) => i.level === lvlId);
-      const masteredInLevel = levelItems.filter((i) => masteredCards.includes(i.id));
-      const total = levelItems.length || 100;
-      const pct = Math.round((masteredInLevel.length / total) * 100);
-      return { total, mastered: masteredInLevel.length, pct };
-    };
-    return { L1: calc('L1'), L2: calc('L2'), L3: calc('L3'), L4: calc('L4'), L5: calc('L5'), L6: calc('L6') };
-  }, [vocabDatabase, masteredCards]);
-
-  // Parent Admin Level Unlock Overrides (Ba Bảo Nguyên privileges)
-  const [adminLevelOverrides, setAdminLevelOverrides] = useState(() => {
-    try {
-      const saved = localStorage.getItem('kids_admin_level_overrides');
-      return saved ? JSON.parse(saved) : { L1: true, L2: false, L3: false, L4: false, L5: false, L6: false };
-    } catch {
-      return { L1: true, L2: false, L3: false, L4: false, L5: false, L6: false };
-    }
-  });
-
-  const saveAdminLevelOverrides = (newOverrides) => {
-    setAdminLevelOverrides(newOverrides);
-    try {
-      localStorage.setItem('kids_admin_level_overrides', JSON.stringify(newOverrides));
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   // Level Lock Guidance Modal State
   const [showLevelLockModal, setShowLevelLockModal] = useState({
     isOpen: false,
@@ -1116,101 +1677,6 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     requiredPrevLevel: null,
     currentPrevPct: 0
   });
-
-  // Strict Level Unlock Verification Function (Sequential L1->L6; >= 90% threshold)
-  const isLevelUnlocked = (lvlId) => {
-    if (!lvlId || lvlId === 'all' || lvlId === 'L1') return true;
-    if (currentActor === 'bao_nguyen') return true; // Ba Bảo Nguyên always has full management access
-    if (adminLevelOverrides[lvlId]) return true; // Admin force-unlocked this level
-
-    const pctL1 = levelStats.L1?.pct || 0;
-    const pctL2 = levelStats.L2?.pct || 0;
-    const pctL3 = levelStats.L3?.pct || 0;
-    const pctL4 = levelStats.L4?.pct || 0;
-    const pctL5 = levelStats.L5?.pct || 0;
-
-    if (lvlId === 'L2') return pctL1 >= 90;
-    if (lvlId === 'L3') return pctL1 >= 90 && pctL2 >= 90;
-    if (lvlId === 'L4') return pctL1 >= 90 && pctL2 >= 90 && pctL3 >= 90;
-    if (lvlId === 'L5') return pctL1 >= 90 && pctL2 >= 90 && pctL3 >= 90 && pctL4 >= 90;
-    if (lvlId === 'L6') return pctL1 >= 90 && pctL2 >= 90 && pctL3 >= 90 && pctL4 >= 90 && pctL5 >= 90;
-
-    return true;
-  };
-
-  // Quick Action Handlers for Ba Bảo Nguyên (Parent Admin)
-  const handleAdminToggleForceUnlock = (lvlId) => {
-    if (currentActor !== 'bao_nguyen') {
-      if (addToast) addToast('Chỉ Quản trị viên Lê Lương Bảo Nguyên mới có quyền mở khóa cưỡng chế!', 'error');
-      return;
-    }
-    const nextState = {
-      ...adminLevelOverrides,
-      [lvlId]: !adminLevelOverrides[lvlId]
-    };
-    saveAdminLevelOverrides(nextState);
-    const statusText = nextState[lvlId] ? 'ĐÃ MỞ KHÓA CƯỠNG CHẾ 🔓' : 'ĐÃ KHÓA THEO TIẾN ĐỘ 90% 🔒';
-    if (addToast) addToast(`👨‍💼 [Bảo Nguyên Admin] Đã cập nhật ${lvlId}: ${statusText}`, 'info');
-  };
-
-  const handleAdminQuickFill90Pct = (lvlId) => {
-    if (currentActor !== 'bao_nguyen') {
-      if (addToast) addToast('Chỉ Quản trị viên Lê Lương Bảo Nguyên mới có quyền thao tác!', 'error');
-      return;
-    }
-    const levelItems = vocabDatabase.filter((i) => i.level === lvlId);
-    const targetCount = Math.ceil((levelItems.length || 150) * 0.9);
-    const newMasteredIds = new Set(masteredCards);
-
-    levelItems.slice(0, targetCount).forEach((i) => newMasteredIds.add(i.id));
-    const nextMastered = Array.from(newMasteredIds);
-
-    setMasteredCards(nextMastered);
-    try {
-      localStorage.setItem('kids_mastered_words_2000', JSON.stringify(nextMastered));
-    } catch (e) {}
-
-    if (addToast) addToast(`🔓 Đã nạp nhanh 90% tiến độ thuộc từ cho ${lvlId}! Level tiếp theo đã tự động mở khóa cho Minh Anh!`, 'success');
-    playWordAudio(`Đã mở khóa level mới cho bé Minh Anh!`);
-  };
-
-  // Reset tiến độ học tập theo từng level (chỉ Admin)
-  const handleResetLevelProgress = (lvlId) => {
-    if (currentActor !== 'bao_nguyen') {
-      if (addToast) addToast('Chỉ Quản trị viên Lê Lương Bảo Nguyên mới có quyền reset tiến độ!', 'error');
-      return;
-    }
-    if (!window.confirm(`Xác nhận reset tiến độ học của cấp độ ${lvlId}? Toàn bộ từ đã thuộc ở ${lvlId} sẽ bị xóa!`)) return;
-    const levelItemIds = new Set(vocabDatabase.filter(i => i.level === lvlId).map(i => i.id));
-    const newMastered = masteredCards.filter(id => !levelItemIds.has(id));
-    setMasteredCards(newMastered);
-    try { localStorage.setItem('kids_mastered_words_2000', JSON.stringify(newMastered)); } catch(e) {}
-    logAuditEvent('RESET', 'LEVEL_PROGRESS', lvlId, { count: masteredCards.length - newMastered.length }, null, `Reset tiến độ học ${lvlId}`);
-    if (addToast) addToast(`🔄 Đã reset tiến độ học tập Cấp Độ ${lvlId}! (${masteredCards.length - newMastered.length} từ đã xóa)`, 'warning');
-  };
-
-  // Reset TOÀN BỘ tiến độ học (chỉ Admin)
-  const handleResetAllProgress = () => {
-    if (currentActor !== 'bao_nguyen') {
-      if (addToast) addToast('Chỉ Quản trị viên mới có quyền reset toàn bộ tiến độ!', 'error');
-      return;
-    }
-    if (!window.confirm('⚠️ CẢNH BÁO: Reset toàn bộ tiến độ học tập của Minh Anh? Tất cả từ đã thuộc, sao ⭐ và thành tích sẽ bị xóa sạch!')) return;
-    const totalBefore = masteredCards.length;
-    setMasteredCards([]);
-    setStars(0);
-    setClaimedRewards([]);
-    try {
-      localStorage.setItem('kids_mastered_words_2000', JSON.stringify([]));
-      localStorage.setItem('kids_stars_total', '0');
-      localStorage.setItem('kids_claimed_rewards', JSON.stringify([]));
-    } catch(e) {}
-    logAuditEvent('RESET', 'ALL_PROGRESS', 'FULL_RESET', { totalWords: totalBefore, stars }, null, 'Reset toàn bộ tiến độ học tập');
-    if (addToast) addToast(`🔄 Đã reset toàn bộ tiến độ! (${totalBefore} từ, ${stars} sao đã xóa). Minh Anh bắt đầu lại từ đầu!`, 'warning');
-    playWordAudio('Đã reset toàn bộ tiến độ học tập. Minh Anh hãy bắt đầu lại từ đầu nhé!');
-  };
-
-  // Mascot Speech Bubble State
   const [mascotQuoteIndex, setMascotQuoteIndex] = useState(0);
   const mascotQuotes = [
     "💖 Tặng con gái yêu NGUYỄN NGỌC MINH ANH - Chúc con luôn luôn học giỏi, ngoan ngoãn và xinh đẹp! 🎀✨",
@@ -1656,21 +2122,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
     setCurrentPage(1);
   };
 
-  const playWordAudio = (text, slow = false) => {
-    if (!('speechSynthesis' in window)) {
-      if (addToast) addToast('Trình duyệt không hỗ trợ đọc giọng nói Web Speech', 'error');
-      return;
-    }
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
 
-    // AI Voice Guard: Detect Vietnamese diacritics vs English vocabulary
-    const isVietnamese = /[àáảãạăằắẳẵặâầấẩẫậèéẻẽẹêềếểễệìíỉĩịòóỏõọôồốổỗộơờớởỡợùúủũụưừứửữựỳýỷỹỵđ]/i.test(text);
-    utterance.lang = isVietnamese ? 'vi-VN' : 'en-US';
-    utterance.rate = slow ? 0.65 : (isVietnamese ? 1.0 : 0.9);
-    utterance.pitch = isVietnamese ? 1.0 : 1.1;
-    window.speechSynthesis.speak(utterance);
-  };
 
   const toggleFlip = (id) => {
     setFlippedCards((prev) => ({
@@ -2071,316 +2523,18 @@ export function KidsEnglishDashboard({ plan, addToast }) {
         </div>
       </div>
 
-      {/* 3D Dynamic Animated Hero Banner - DEDICATED TO DAUGHTER NGUYỄN NGỌC MINH ANH */}
-      <div className="relative overflow-hidden rounded-3xl border-2 border-pink-400/60 bg-gradient-to-r from-pink-950/90 via-slate-900 to-purple-950/90 p-6 md:p-8 shadow-2xl backdrop-blur-2xl">
-        <div className="absolute top-0 right-0 -mt-10 -mr-10 h-72 w-72 rounded-full bg-pink-500/25 blur-3xl pointer-events-none animate-pulse"></div>
-        <div className="absolute bottom-0 left-1/3 -mb-10 h-56 w-56 rounded-full bg-cyan-500/20 blur-3xl pointer-events-none animate-pulse"></div>
+      {/* Main Dedicated Page Feature Tabs Header */}
+      <div className="flex flex-wrap rounded-2xl bg-slate-950 p-1.5 border border-slate-800 gap-1 sticky top-2 z-40 shadow-2xl backdrop-blur-xl">
+        <button
+          onClick={() => setActiveTab('home')}
+          className={`flex-1 py-3 px-4 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 ${
+            activeTab === 'home' ? 'bg-gradient-to-r from-pink-500 via-purple-500 to-indigo-600 text-white shadow-lg border border-pink-300 scale-105' : 'text-slate-400 hover:text-slate-200'
+          }`}
+        >
+          <Home className="h-4 w-4 text-pink-300" />
+          <span>🏠 Trang Chủ</span>
+        </button>
 
-        <div className="relative z-10 flex flex-wrap items-center justify-between gap-6">
-          <div className="space-y-3 max-w-2xl">
-            {/* SPECIAL DEDICATION BANNER TO DAUGHTER */}
-            <div className="inline-flex items-center gap-2 rounded-full border-2 border-pink-400 bg-pink-500/20 px-4 py-2 text-xs font-black text-pink-200 shadow-xl animate-pulse">
-              <Heart className="h-4 w-4 text-pink-400 fill-pink-400 animate-bounce" />
-              <span className="tracking-wide">💖 MÓN QUÀ TẶNG CON GÁI NGUYỄN NGỌC MINH ANH - CHÚC CON LUÔN LUÔN HỌC GIỎI! 💖</span>
-            </div>
-
-            <h1 className="text-2xl md:text-4xl font-extrabold font-heading text-white tracking-tight leading-tight">
-              Khóa Học Tiếng Anh <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-yellow-300 to-cyan-300">Siêu Dễ Thương Cho Minh Anh</span> 🦄
-            </h1>
-
-            <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
-              Thiết kế dành riêng cho con gái yêu <span className="font-bold text-pink-300">Nguyễn Ngọc Minh Anh</span>: 4 Cấp độ chuẩn CEFR (Basic - Elementary - Intermediate - Advanced).
-            </p>
-
-            {/* Live Interactive Mascot Encouragement Speech */}
-            <div className="rounded-2xl border border-pink-400/50 bg-slate-950/80 p-4 flex items-center gap-3.5 shadow-xl animate-fadeIn">
-              <div className="text-4xl animate-bounce">🦄</div>
-              <div>
-                <div className="text-[10px] font-bold uppercase tracking-wider text-pink-400 flex items-center gap-1">
-                  <Sparkles className="h-3 w-3 text-pink-400 animate-spin-slow" />
-                  <span>Lời Chúc Yêu Thương Tới Minh Anh:</span>
-                </div>
-                <div className="text-xs md:text-sm font-black text-white mt-0.5">{mascotQuotes[mascotQuoteIndex]}</div>
-              </div>
-            </div>
-
-            {/* Quick Stats & Star Badges */}
-            <div className="flex flex-wrap items-center gap-3 pt-1">
-              <div className="flex items-center gap-2 rounded-2xl border border-yellow-500/50 bg-yellow-950/80 px-4 py-2 text-xs font-black text-yellow-300 shadow-lg">
-                <Star className="h-4.5 w-4.5 text-yellow-400 fill-yellow-400 animate-bounce" />
-                <span>{stars} Ngôi Sao Bé Ngoan Của Minh Anh</span>
-              </div>
-
-              <div className="flex items-center gap-2 rounded-2xl border border-emerald-500/50 bg-emerald-950/80 px-4 py-2 text-xs font-black text-emerald-300 shadow-lg">
-                <CheckCircle2 className="h-4.5 w-4.5 text-emerald-400" />
-                <span>Đã Thuộc {masteredCards.length} / {VOCABULARY_DATABASE.length} Từ</span>
-              </div>
-            </div>
-
-            {/* Automated Target Milestones Progress Bar */}
-            <div className="p-4 rounded-2xl border border-yellow-500/40 bg-slate-950/90 space-y-2 shadow-inner">
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-extrabold text-yellow-300 flex items-center gap-1.5">
-                  <Trophy className="h-4 w-4 text-yellow-400" /> Tiến Độ Tự Động Đạt Target Mở Quà Minh Anh:
-                </span>
-                <span className="font-mono-code font-bold text-yellow-400">
-                  {stars} / {TARGET_MILESTONES.find((m) => !claimedRewards.includes(m.id))?.starsNeeded || 500} ⭐
-                </span>
-              </div>
-              
-              <div className="w-full h-3 rounded-full bg-slate-800 overflow-hidden p-0.5 border border-slate-700">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-yellow-400 via-amber-400 to-pink-500 transition-all duration-500"
-                  style={{
-                    width: `${Math.min(
-                      100,
-                      (stars / (TARGET_MILESTONES.find((m) => !claimedRewards.includes(m.id))?.starsNeeded || 500)) * 100
-                    )}%`,
-                  }}
-                ></div>
-              </div>
-
-              <div className="flex justify-between items-center text-[10px] font-bold">
-                <span className="text-slate-300">🎯 Mục Tiêu: {TARGET_MILESTONES.find((m) => !claimedRewards.includes(m.id))?.title || 'Đã Đạt Tất Cả Target! 🎉'}</span>
-                <span className="text-yellow-300">🎁 Phần Thưởng: {TARGET_MILESTONES.find((m) => !claimedRewards.includes(m.id))?.reward || 'Cúp Vàng'}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Interactive Cute Pet Companion Selector */}
-          <div className="p-6 md:p-8 rounded-3xl border-2 border-pink-400/90 bg-slate-900/95 shadow-2xl backdrop-blur-md space-y-4 w-full sm:w-auto min-w-[320px] md:min-w-[420px] flex-1">
-            <div className="text-center space-y-3">
-              <div className="text-xs md:text-sm font-black uppercase tracking-wider text-pink-300 flex items-center justify-center gap-1.5">
-                <Heart className="h-4 w-4 text-pink-400 fill-pink-400 animate-bounce" /> Chọn Bạn Nhỏ Đồng Hành:
-              </div>
-              <div className="text-7xl md:text-8xl animate-bounce drop-shadow-2xl cursor-pointer hover:scale-110 transition-transform" onClick={() => playWordAudio(PETS.find((p) => p.id === activePet)?.quote || '')}>
-                {PETS.find((p) => p.id === activePet)?.icon || '🦄'}
-              </div>
-              <div className="text-base md:text-lg font-black text-white font-heading">
-                {PETS.find((p) => p.id === activePet)?.name}
-              </div>
-              <p className="text-xs md:text-sm font-bold text-pink-200 bg-pink-950/80 p-3 rounded-2xl border border-pink-500/50 italic shadow-inner">
-                "{PETS.find((p) => p.id === activePet)?.quote}"
-              </p>
-            </div>
-
-            {/* Pet Switch Buttons */}
-            <div className="grid grid-cols-4 gap-2 pt-2">
-              {PETS.map((pet) => (
-                <button
-                  key={pet.id}
-                  onClick={() => {
-                    setActivePet(pet.id);
-                    playWordAudio(pet.quote);
-                  }}
-                  className={`p-3 rounded-2xl text-2xl md:text-3xl transition border flex items-center justify-center cursor-pointer ${
-                    activePet === pet.id
-                      ? 'bg-pink-600 border-2 border-pink-300 text-white shadow-xl scale-110'
-                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-200 hover:scale-105'
-                  }`}
-                  title={pet.name}
-                >
-                  {pet.icon}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ========================================================================= */}
-      {/* COURSE ROADMAP SELECTOR: 4 CEFR LEVELS (STRICT SEQUENTIAL 90% UNLOCK) */}
-      {/* ========================================================================= */}
-      <div className="space-y-3">
-        {/* Parent Admin Control Panel for Ba Bảo Nguyên */}
-        {currentActor === 'bao_nguyen' && (
-          <div className="p-4 rounded-3xl border-2 border-purple-500/60 bg-gradient-to-r from-purple-950 via-slate-900 to-indigo-950 shadow-2xl space-y-3 animate-fadeIn">
-            <div className="flex flex-wrap items-center justify-between gap-3 border-b border-purple-500/30 pb-2">
-              <div className="flex items-center gap-2 text-xs font-black text-purple-200">
-                <ShieldCheck className="h-4 w-4 text-purple-400" />
-                <span>👨‍💼 BẢNG QUẢN LÝ KHÓA CẤP ĐỘ (ĐẶC QUYỀN LÊ LƯƠNG BẢO NGUYÊN)</span>
-              </div>
-              <div className="text-[11px] font-bold text-emerald-400 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-500/40">
-                ✓ Toàn quyền Mở/Khóa Cưỡng Chế
-              </div>
-            </div>
-
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
-              {['L1', 'L2', 'L3', 'L4', 'L5', 'L6'].map((lvlId) => {
-                const isOverridden = adminLevelOverrides[lvlId];
-                const stats = levelStats[lvlId] || { pct: 0 };
-                return (
-                  <div key={lvlId} className="p-2.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
-                    <div className="flex items-center justify-between font-extrabold text-white">
-                      <span>{lvlId} ({stats.pct}%)</span>
-                      <span className={isOverridden ? 'text-amber-400' : 'text-cyan-400'}>
-                        {isOverridden ? '🔓 Mở Cưỡng Chế' : '🔒 Khóa 90%'}
-                      </span>
-                    </div>
-
-                    <div className="flex flex-col gap-1">
-                      <button
-                        onClick={() => handleAdminToggleForceUnlock(lvlId)}
-                        className={`w-full py-1 px-2 rounded-xl text-[10px] font-black transition border ${
-                          isOverridden
-                            ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 hover:bg-amber-500/30'
-                            : 'bg-indigo-600 text-white border-indigo-400 hover:bg-indigo-500'
-                        }`}
-                      >
-                        {isOverridden ? '🔒 Bật Lại Khóa 90%' : '🔓 Mở Cưỡng Chế Ngay'}
-                      </button>
-
-                      <button
-                        onClick={() => handleAdminQuickFill90Pct(lvlId)}
-                        className="w-full py-1 px-2 rounded-xl text-[10px] font-black bg-emerald-950 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-800 transition"
-                      >
-                        ⚡ Nạp 90% Tiến Độ
-                      </button>
-
-                      {/* Nút Reset Tiến Độ Level */}
-                      <button
-                        onClick={() => handleResetLevelProgress(lvlId)}
-                        className="w-full py-1 px-2 rounded-xl text-[10px] font-black bg-rose-950 text-rose-300 border border-rose-500/40 hover:bg-rose-800 transition"
-                        title={`Xóa sạch tiến độ học của ${lvlId}`}
-                      >
-                        🔄 Reset Tiến Độ {lvlId}
-                      </button>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-
-            {/* Nút Reset Toàn Bộ Tiến Độ */}
-            <div className="pt-2 border-t border-purple-500/30">
-              <button
-                onClick={handleResetAllProgress}
-                className="w-full py-2.5 px-4 rounded-2xl text-xs font-black bg-gradient-to-r from-rose-900 to-red-900 text-rose-200 border border-rose-500/50 hover:from-rose-800 hover:to-red-800 transition flex items-center justify-center gap-2 shadow-lg"
-                title="Xóa sạch TOÀN BỘ tiến độ, sao ⭐ và thành tích của Minh Anh"
-              >
-                <RefreshCw className="h-3.5 w-3.5" />
-                ⚠️ RESET TOÀN BỘ TIẾN ĐỘ HỌC TẬP MINH ANH (Xóa Sao ⭐ + Từ Đã Thuộc + Thành Tích)
-              </button>
-            </div>
-          </div>
-        )}
-
-
-        <div className="text-xs font-extrabold uppercase tracking-wider text-cyan-300 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <GraduationCap className="h-4 w-4 text-cyan-400" />
-            <span>Lộ Trình 4 Cấp Độ (Minh Anh Học Theo Thứ Tự • Mở Cấp Tiếp Theo Khi Đạt ≥ 90%):</span>
-          </div>
-          <button
-            onClick={() => handleLevelChange('all')}
-            className={`px-3 py-1 rounded-full text-xs font-black border transition ${
-              selectedLevel === 'all'
-                ? 'bg-cyan-500 text-slate-950 border-cyan-400 shadow-md'
-                : 'bg-slate-900 text-cyan-300 border-slate-700 hover:bg-slate-800'
-            }`}
-          >
-            🌈 Tất Cả 4 Cấp Độ
-          </button>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-          {COURSE_LEVELS.map((lvl) => {
-            const isSelected = selectedLevel === lvl.id;
-            const unlocked = isLevelUnlocked(lvl.id);
-            const stats = levelStats[lvl.id] || { total: 150, mastered: 0, pct: 0 };
-            const isForceUnlocked = adminLevelOverrides[lvl.id];
-
-            return (
-              <button
-                key={lvl.id}
-                onClick={() => handleLevelChange(lvl.id)}
-                className={`p-4 rounded-2xl border text-left transition-all duration-300 relative overflow-hidden group ${
-                  isSelected
-                    ? `bg-slate-900 border-2 ${lvl.color} shadow-xl scale-[1.02]`
-                    : unlocked
-                    ? 'bg-slate-950/80 border-slate-800 text-slate-400 hover:bg-slate-900 hover:text-slate-200'
-                    : 'bg-slate-950/50 border-rose-950 text-slate-500 opacity-95 hover:border-amber-500/50'
-                }`}
-              >
-                {/* Lock Badge Header */}
-                <div className="flex items-center justify-between mb-2">
-                  <div className="flex items-center gap-1.5">
-                    <span className={`text-3xl transition-transform duration-300 ${unlocked ? 'group-hover:scale-125' : 'grayscale opacity-70'}`}>
-                      {lvl.icon}
-                    </span>
-                    {!unlocked && <Lock className="h-5 w-5 text-amber-400 animate-pulse" />}
-                  </div>
-
-                  <div className="flex flex-col items-end gap-1">
-                    <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-black border ${lvl.bgBadge}`}>
-                      {lvl.badge}
-                    </span>
-                    
-                    <span className={`text-[9px] font-black px-2 py-0.5 rounded-full border ${
-                      !unlocked
-                        ? 'bg-rose-950/90 text-rose-300 border-rose-500/50'
-                        : isForceUnlocked
-                        ? 'bg-amber-950/90 text-amber-300 border-amber-500/50'
-                        : currentActor === 'bao_nguyen'
-                        ? 'bg-purple-950/90 text-purple-300 border-purple-500/50'
-                        : 'bg-emerald-950/90 text-emerald-300 border-emerald-500/50'
-                    }`}>
-                      {!unlocked
-                        ? '🔒 Khóa (Cần ≥90% Level trước)'
-                        : isForceUnlocked
-                        ? '🔓 Admin Mở Cưỡng Chế'
-                        : currentActor === 'bao_nguyen'
-                        ? '👨‍💼 Admin Quản Trị'
-                        : '🟢 Đã Mở Khóa'}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="font-extrabold text-sm text-white flex items-center justify-between">
-                  <span>{lvl.name}</span>
-                </div>
-                <div className="text-[11px] text-slate-400 mt-1 line-clamp-2">{lvl.description}</div>
-
-                {/* Progress Bar & 90% Threshold Line */}
-                <div className="mt-3 pt-2 border-t border-slate-800 space-y-1 text-[11px] font-mono-code font-bold">
-                  <div className="flex items-center justify-between">
-                    <span className="text-cyan-300">{lvl.targetWords} Từ</span>
-                    <span className={stats.pct >= 90 ? 'text-emerald-400' : 'text-amber-300'}>
-                      Thuộc: {stats.mastered}/{stats.total} ({stats.pct}%)
-                    </span>
-                  </div>
-
-                  <div className="relative h-2 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-700">
-                    <div
-                      className={`h-full transition-all duration-500 ${
-                        stats.pct >= 90
-                          ? 'bg-gradient-to-r from-emerald-400 to-teal-300'
-                          : 'bg-gradient-to-r from-amber-500 to-orange-400'
-                      }`}
-                      style={{ width: `${stats.pct}%` }}
-                    ></div>
-                    {/* 90% Milestone Marker Line */}
-                    <div
-                      className="absolute top-0 bottom-0 left-[90%] w-0.5 bg-yellow-300 z-10 shadow-[0_0_8px_rgba(253,224,71,0.8)]"
-                      title="Vạch ngưỡng mở khóa Level tiếp theo (90%)"
-                    ></div>
-                  </div>
-
-                  <div className="flex justify-between text-[9px] text-slate-500 pt-0.5">
-                    <span>Tiến độ bài học</span>
-                    <span className="text-yellow-400 font-bold">⭐ Ngưỡng mở: 90%</span>
-                  </div>
-                </div>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
-
-
-      {/* Main Feature Tabs (Illustrated Poster Charts vs Flashcard Gallery vs Timed Quiz Game vs Spaced Repetition Review vs AI Manager) */}
-      <div className="flex flex-wrap rounded-2xl bg-slate-950 p-1.5 border border-slate-800 gap-1">
         <button
           onClick={() => setActiveTab('poster')}
           className={`flex-1 py-3 px-4 rounded-xl text-xs font-black transition flex items-center justify-center gap-2 ${
@@ -2388,7 +2542,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           }`}
         >
           <Sparkles className="h-4 w-4 text-yellow-300 animate-spin-slow" />
-          <span>🖼️ Bảng Minh Họa ({posterPages.length} Trang)</span>
+          <span>📖 Trang Khóa Học ({posterPages.length} Trang)</span>
         </button>
 
         <button
@@ -2398,7 +2552,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           }`}
         >
           <BookOpen className="h-4 w-4" />
-          <span>📚 Kho Từ Vựng ({vocabDatabase.length} Từ)</span>
+          <span>📚 Trang Thư Viện Thẻ ({vocabDatabase.length} Từ)</span>
         </button>
 
         <button
@@ -2408,7 +2562,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           }`}
         >
           <Gamepad2 className="h-4 w-4 text-yellow-300 animate-pulse" />
-          <span>🎮 Bài Tập & Trò Chơi ⏰</span>
+          <span>🎮 Trang Bài Tập & Game ⏰</span>
         </button>
 
         <button
@@ -2418,7 +2572,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           }`}
         >
           <RotateCw className="h-4 w-4 text-amber-300" />
-          <span>🔄 Chu Kỳ Ôn Tập 5 Bước</span>
+          <span>🔄 Trang Chu Kỳ Ôn Tập</span>
         </button>
 
         {currentActor === 'bao_nguyen' && (
@@ -2430,7 +2584,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
               }`}
             >
               <FileText className="h-4 w-4 text-cyan-300" />
-              <span>🗃️ Bảng CSDL (Data Table)</span>
+              <span>🗃️ Trang CSDL & Excel</span>
             </button>
 
             <button
@@ -2440,7 +2594,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
               }`}
             >
               <UploadCloud className="h-4 w-4 text-emerald-300" />
-              <span>🚀 Wizard Nhập Hàng Loạt</span>
+              <span>🚀 Wizard Nhập Dữ Liệu</span>
             </button>
 
             <button
@@ -2483,6 +2637,513 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           <span>🤖 AI Nhắc Học</span>
         </button>
       </div>
+
+      {/* ========================================================================= */}
+      {/* VIEW HOME: DEDICATED HOME DASHBOARD & LAUNCHPAD PAGE */}
+      {/* ========================================================================= */}
+      {activeTab === 'home' && (
+        <div className="space-y-6 animate-fadeIn font-sans">
+          {/* Page Title & Breadcrumb Header */}
+          <div className="flex flex-wrap items-center justify-between gap-3 p-5 rounded-3xl border-2 border-pink-400/60 bg-gradient-to-r from-pink-950/90 via-slate-950 to-purple-950/90 shadow-2xl backdrop-blur-xl">
+            <div className="flex items-center gap-3">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-pink-500 to-purple-600 text-white text-2xl shadow-lg border border-pink-300">
+                🏠
+              </div>
+              <div>
+                <h2 className="text-xl md:text-2xl font-black text-white font-heading tracking-tight">
+                  TRANG CHỦ HỌC TIẾNG ANH MINH ANH 🦄✨
+                </h2>
+                <p className="text-xs font-bold text-pink-200">
+                  Trung tâm học tập, theo dõi sao ⭐, bạn nhỏ đồng hành & khởi động bài học siêu chi tiết
+                </p>
+              </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="px-3.5 py-1.5 rounded-full text-xs font-black bg-pink-500/20 text-pink-300 border border-pink-400/50 flex items-center gap-1.5 shadow">
+                <Sparkles className="h-4 w-4 text-yellow-300 animate-pulse" />
+                Màn Hình Chính Độc Lập
+              </span>
+            </div>
+          </div>
+
+          {/* 3D Dynamic Animated Hero Banner - DEDICATED TO DAUGHTER NGUYỄN NGỌC MINH ANH */}
+          <div className="relative overflow-hidden rounded-3xl border-2 border-pink-400/60 bg-gradient-to-r from-pink-950/90 via-slate-900 to-purple-950/90 p-6 md:p-8 shadow-2xl backdrop-blur-2xl">
+            <div className="absolute top-0 right-0 -mt-10 -mr-10 h-72 w-72 rounded-full bg-pink-500/25 blur-3xl pointer-events-none animate-pulse"></div>
+            <div className="absolute bottom-0 left-1/3 -mb-10 h-56 w-56 rounded-full bg-cyan-500/20 blur-3xl pointer-events-none animate-pulse"></div>
+
+            <div className="relative z-10 flex flex-wrap items-center justify-between gap-6">
+              <div className="space-y-3 max-w-2xl">
+                {/* SPECIAL DEDICATION BANNER TO DAUGHTER */}
+                <div className="inline-flex items-center gap-2 rounded-full border-2 border-pink-400 bg-pink-500/20 px-4 py-2 text-xs font-black text-pink-200 shadow-xl animate-pulse">
+                  <Heart className="h-4 w-4 text-pink-400 fill-pink-400 animate-bounce" />
+                  <span className="tracking-wide">💖 MÓN QUÀ TẶNG CON GÁI NGUYỄN NGỌC MINH ANH - CHÚC CON LUÔN LUÔN HỌC GIỎI! 💖</span>
+                </div>
+
+                <h1 className="text-2xl md:text-4xl font-extrabold font-heading text-white tracking-tight leading-tight">
+                  Khóa Học Tiếng Anh <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-yellow-300 to-cyan-300">Siêu Dễ Thương Cho Minh Anh</span> 🦄
+                </h1>
+
+                <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
+                  Thiết kế dành riêng cho con gái yêu <span className="font-bold text-pink-300">Nguyễn Ngọc Minh Anh</span>: 4 Cấp độ chuẩn CEFR (Basic - Elementary - Intermediate - Advanced).
+                </p>
+
+                {/* Live Interactive Mascot Encouragement Speech */}
+                <div className="rounded-2xl border border-pink-400/50 bg-slate-950/80 p-4 flex items-center gap-3.5 shadow-xl animate-fadeIn">
+                  <div className="text-4xl animate-bounce">🦄</div>
+                  <div>
+                    <div className="text-[10px] font-bold uppercase tracking-wider text-pink-400 flex items-center gap-1">
+                      <Sparkles className="h-3 w-3 text-pink-400 animate-spin-slow" />
+                      <span>Lời Chúc Yêu Thương Tới Minh Anh:</span>
+                    </div>
+                    <div className="text-xs md:text-sm font-black text-white mt-0.5">{mascotQuotes[mascotQuoteIndex]}</div>
+                  </div>
+                </div>
+
+                {/* Quick Stats & Star Badges */}
+                <div className="flex flex-wrap items-center gap-3 pt-1">
+                  <div className="flex items-center gap-2 rounded-2xl border border-yellow-500/50 bg-yellow-950/80 px-4 py-2 text-xs font-black text-yellow-300 shadow-lg">
+                    <Star className="h-4.5 w-4.5 text-yellow-400 fill-yellow-400 animate-bounce" />
+                    <span>{stars} Ngôi Sao Bé Ngoan Của Minh Anh</span>
+                  </div>
+
+                  <div className="flex items-center gap-2 rounded-2xl border border-emerald-500/50 bg-emerald-950/80 px-4 py-2 text-xs font-black text-emerald-300 shadow-lg">
+                    <CheckCircle2 className="h-4.5 w-4.5 text-emerald-400" />
+                    <span>Đã Thuộc {masteredCards.length} / {VOCABULARY_DATABASE.length} Từ</span>
+                  </div>
+                </div>
+
+                {/* Automated Target Milestones Progress Bar */}
+                <div className="p-4 rounded-2xl border border-yellow-500/40 bg-slate-950/90 space-y-2 shadow-inner">
+                  <div className="flex items-center justify-between text-xs">
+                    <span className="font-extrabold text-yellow-300 flex items-center gap-1.5">
+                      <Trophy className="h-4 w-4 text-yellow-400" /> Tiến Độ Tự Động Đạt Target Mở Quà Minh Anh:
+                    </span>
+                    <span className="font-mono-code font-bold text-yellow-400">
+                      {stars} / {TARGET_MILESTONES.find((m) => !claimedRewards.includes(m.id))?.starsNeeded || 500} ⭐
+                    </span>
+                  </div>
+                  
+                  <div className="w-full h-3 rounded-full bg-slate-800 overflow-hidden p-0.5 border border-slate-700">
+                    <div
+                      className="h-full rounded-full bg-gradient-to-r from-yellow-400 via-amber-400 to-pink-500 transition-all duration-500"
+                      style={{
+                        width: `${Math.min(
+                          100,
+                          (stars / (TARGET_MILESTONES.find((m) => !claimedRewards.includes(m.id))?.starsNeeded || 500)) * 100
+                        )}%`,
+                      }}
+                    ></div>
+                  </div>
+
+                  <div className="flex justify-between items-center text-[10px] font-bold">
+                    <span className="text-slate-300">🎯 Mục Tiêu: {TARGET_MILESTONES.find((m) => !claimedRewards.includes(m.id))?.title || 'Đã Đạt Tất Cả Target! 🎉'}</span>
+                    <span className="text-yellow-300">🎁 Phần Thưởng: {TARGET_MILESTONES.find((m) => !claimedRewards.includes(m.id))?.reward || 'Cúp Vàng'}</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Interactive Cute Pet Companion Selector */}
+              <div className="p-6 md:p-8 rounded-3xl border-2 border-pink-400/90 bg-slate-900/95 shadow-2xl backdrop-blur-md space-y-4 w-full sm:w-auto min-w-[320px] md:min-w-[420px] flex-1">
+                <div className="text-center space-y-3">
+                  <div className="text-xs md:text-sm font-black uppercase tracking-wider text-pink-300 flex items-center justify-center gap-1.5">
+                    <Heart className="h-4 w-4 text-pink-400 fill-pink-400 animate-bounce" /> Chọn Bạn Nhỏ Đồng Hành:
+                  </div>
+                  <div className="text-7xl md:text-8xl animate-bounce drop-shadow-2xl cursor-pointer hover:scale-110 transition-transform" onClick={() => playWordAudio(PETS.find((p) => p.id === activePet)?.quote || '')}>
+                    {PETS.find((p) => p.id === activePet)?.icon || '🦄'}
+                  </div>
+                  <div className="text-base md:text-lg font-black text-white font-heading">
+                    {PETS.find((p) => p.id === activePet)?.name}
+                  </div>
+                  <p className="text-xs md:text-sm font-bold text-pink-200 bg-pink-950/80 p-3 rounded-2xl border border-pink-500/50 italic shadow-inner">
+                    "{PETS.find((p) => p.id === activePet)?.quote}"
+                  </p>
+                </div>
+
+                {/* Pet Switch Buttons */}
+                <div className="grid grid-cols-4 gap-2 pt-2">
+                  {PETS.map((pet) => (
+                    <button
+                      key={pet.id}
+                      onClick={() => {
+                        setActivePet(pet.id);
+                        playWordAudio(pet.quote);
+                      }}
+                      className={`p-3 rounded-2xl text-2xl md:text-3xl transition border flex items-center justify-center cursor-pointer ${
+                        activePet === pet.id
+                          ? 'bg-pink-600 border-2 border-pink-300 text-white shadow-xl scale-110'
+                          : 'bg-slate-950 border-slate-800 text-slate-400 hover:bg-slate-800 hover:text-slate-200 hover:scale-105'
+                      }`}
+                      title={pet.name}
+                    >
+                      {pet.icon}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* COURSE ROADMAP SELECTOR: 4 CEFR LEVELS */}
+          <div className="space-y-3">
+            {/* Parent Admin Control Panel for Ba Bảo Nguyên */}
+            {currentActor === 'bao_nguyen' && (
+              <div className="p-4 rounded-3xl border-2 border-purple-500/60 bg-gradient-to-r from-purple-950 via-slate-900 to-indigo-950 shadow-2xl space-y-3 animate-fadeIn">
+                <div className="flex flex-wrap items-center justify-between gap-3 border-b border-purple-500/30 pb-2">
+                  <div className="flex items-center gap-2 text-xs font-black text-purple-200">
+                    <ShieldCheck className="h-4 w-4 text-purple-400" />
+                    <span>👨‍💼 BẢNG QUẢN LÝ KHÓA CẤP ĐỘ (ĐẶC QUYỀN LÊ LƯƠNG BẢO NGUYÊN)</span>
+                  </div>
+                  <div className="text-[11px] font-bold text-emerald-400 bg-emerald-950/80 px-2.5 py-0.5 rounded-full border border-emerald-500/40">
+                    ✓ Toàn quyền Mở/Khóa Cưỡng Chế
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2">
+                  {['L1', 'L2', 'L3', 'L4', 'L5', 'L6'].map((lvlId) => {
+                    const isOverridden = adminLevelOverrides[lvlId];
+                    const stats = levelStats[lvlId] || { pct: 0 };
+                    return (
+                      <div key={lvlId} className="p-2.5 rounded-2xl bg-slate-950 border border-slate-800 space-y-2 text-xs">
+                        <div className="flex items-center justify-between font-extrabold text-white">
+                          <span>{lvlId} ({stats.pct}%)</span>
+                          <span className={isOverridden ? 'text-amber-400' : 'text-cyan-400'}>
+                            {isOverridden ? '🔓 Mở Cưỡng Chế' : '🔒 Khóa 90%'}
+                          </span>
+                        </div>
+
+                        <div className="flex flex-col gap-1">
+                          <button
+                            onClick={() => handleAdminToggleForceUnlock(lvlId)}
+                            className={`w-full py-1 px-2 rounded-xl text-[10px] font-black transition border ${
+                              isOverridden
+                                ? 'bg-amber-500/20 text-amber-300 border-amber-500/40 hover:bg-amber-500/30'
+                                : 'bg-indigo-600 text-white border-indigo-400 hover:bg-indigo-500'
+                            }`}
+                          >
+                            {isOverridden ? '🔒 Bật Lại Khóa 90%' : '🔓 Mở Cưỡng Chế Ngay'}
+                          </button>
+
+                          <button
+                            onClick={() => handleAdminQuickFill90Pct(lvlId)}
+                            className="w-full py-1 px-2 rounded-xl text-[10px] font-black bg-emerald-950 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-800 transition"
+                          >
+                            ⚡ Nạp 90% Tiến Độ
+                          </button>
+
+                          {/* Nút Reset Tiến Độ Level */}
+                          <button
+                            onClick={() => handleResetLevelProgress(lvlId)}
+                            className="w-full py-1 px-2 rounded-xl text-[10px] font-black bg-rose-950 text-rose-300 border border-rose-500/40 hover:bg-rose-800 transition"
+                            title={`Xóa sạch tiến độ học của ${lvlId}`}
+                          >
+                            🔄 Reset Tiến Độ {lvlId}
+                          </button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Nút Reset Toàn Bộ Tiến Độ */}
+                <div className="pt-2 border-t border-purple-500/30">
+                  <button
+                    onClick={handleResetAllProgress}
+                    className="w-full py-2.5 px-4 rounded-2xl text-xs font-black bg-gradient-to-r from-rose-900 to-red-900 text-rose-200 border border-rose-500/50 hover:from-rose-800 hover:to-red-800 transition flex items-center justify-center gap-2 shadow-lg"
+                    title="Xóa sạch TOÀN BỘ tiến độ, sao ⭐ và thành tích của Minh Anh"
+                  >
+                    <RefreshCw className="h-3.5 w-3.5" />
+                    ⚠️ RESET TOÀN BỘ TIẾN ĐỘ HỌC TẬP MINH ANH (Xóa Sao ⭐ + Từ Đã Thuộc + Thành Tích)
+                  </button>
+                </div>
+              </div>
+            )}
+
+            <div className="text-xs font-extrabold uppercase tracking-wider text-cyan-300 flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <GraduationCap className="h-4 w-4 text-cyan-400" />
+                <span>Lộ Trình 4 Cấp Độ (Minh Anh Học Theo Thứ Tự • Mở Cấp Tiếp Theo Khi Đạt ≥ 90%):</span>
+              </div>
+              <button
+                onClick={() => handleLevelChange('all')}
+                className={`px-3 py-1 rounded-full text-xs font-black border transition ${
+                  selectedLevel === 'all'
+                    ? 'bg-cyan-500 text-slate-950 border-cyan-400 shadow-md'
+                    : 'bg-slate-900 text-cyan-300 border-slate-700 hover:bg-slate-800'
+                }`}
+              >
+                🌈 Tất Cả 4 Cấp Độ
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {COURSE_LEVELS.map((lvl) => {
+                const isSelected = selectedLevel === lvl.id;
+                const unlocked = isLevelUnlocked(lvl.id);
+                const stats = levelStats[lvl.id] || { total: 150, mastered: 0, pct: 0 };
+                const isForceUnlocked = adminLevelOverrides[lvl.id];
+
+                return (
+                  <button
+                    key={lvl.id}
+                    onClick={() => {
+                      handleLevelChange(lvl.id);
+                      setActiveTab('poster');
+                    }}
+                    className={`p-4 rounded-2xl border text-left transition-all duration-300 relative overflow-hidden group ${
+                      isSelected
+                        ? `bg-slate-900 border-2 ${lvl.color} shadow-xl scale-[1.02]`
+                        : unlocked
+                        ? 'bg-slate-950/80 border-slate-800 text-slate-400 hover:bg-slate-900 hover:text-slate-200'
+                        : 'bg-slate-950/50 border-rose-950 text-slate-500 opacity-95 hover:border-amber-500/50'
+                    }`}
+                  >
+                    {/* Lock Badge Header */}
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-1.5">
+                        <span className={`text-3xl transition-transform duration-300 ${unlocked ? 'group-hover:scale-125' : 'grayscale opacity-70'}`}>
+                          {lvl.icon}
+                        </span>
+                        {!unlocked && <Lock className="h-5 w-5 text-amber-400 animate-pulse" />}
+                      </div>
+
+                      <div className="flex flex-col items-end gap-1">
+                        <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-black border ${lvl.bgBadge}`}>
+                          {lvl.badge}
+                        </span>
+                        
+                        <span className={`text-[9px] font-black px-2 py-0.5 rounded-full border ${
+                          !unlocked
+                            ? 'bg-rose-950/90 text-rose-300 border-rose-500/50'
+                            : isForceUnlocked
+                            ? 'bg-amber-950/90 text-amber-300 border-amber-500/50'
+                            : currentActor === 'bao_nguyen'
+                            ? 'bg-purple-950/90 text-purple-300 border-purple-500/50'
+                            : 'bg-emerald-950/90 text-emerald-300 border-emerald-500/50'
+                        }`}>
+                          {!unlocked
+                            ? '🔒 Khóa (Cần ≥90% Level trước)'
+                            : isForceUnlocked
+                            ? '🔓 Admin Mở Cưỡng Chế'
+                            : currentActor === 'bao_nguyen'
+                            ? '👨‍💼 Admin Quản Trị'
+                            : '🟢 Đã Mở Khóa'}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="font-extrabold text-sm text-white flex items-center justify-between">
+                      <span>{lvl.name}</span>
+                    </div>
+                    <div className="text-[11px] text-slate-400 mt-1 line-clamp-2">{lvl.description}</div>
+
+                    {/* Progress Bar & 90% Threshold Line */}
+                    <div className="mt-3 pt-2 border-t border-slate-800 space-y-1 text-[11px] font-mono-code font-bold">
+                      <div className="flex items-center justify-between">
+                        <span className="text-cyan-300">{lvl.targetWords} Từ</span>
+                        <span className={stats.pct >= 90 ? 'text-emerald-400' : 'text-amber-300'}>
+                          Thuộc: {stats.mastered}/{stats.total} ({stats.pct}%)
+                        </span>
+                      </div>
+
+                      <div className="relative h-2 w-full bg-slate-900 rounded-full overflow-hidden border border-slate-700">
+                        <div
+                          className={`h-full transition-all duration-500 ${
+                            stats.pct >= 90
+                              ? 'bg-gradient-to-r from-emerald-400 to-teal-300'
+                              : 'bg-gradient-to-r from-amber-500 to-orange-400'
+                          }`}
+                          style={{ width: `${stats.pct}%` }}
+                        ></div>
+                        {/* 90% Milestone Marker Line */}
+                        <div
+                          className="absolute top-0 bottom-0 left-[90%] w-0.5 bg-yellow-300 z-10 shadow-[0_0_8px_rgba(253,224,71,0.8)]"
+                          title="Vạch ngưỡng mở khóa Level tiếp theo (90%)"
+                        ></div>
+                      </div>
+
+                      <div className="flex justify-between text-[9px] text-slate-500 pt-0.5">
+                        <span>Tiến độ bài học</span>
+                        <span className="text-yellow-400 font-bold">⭐ Ngưỡng mở: 90%</span>
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          {/* Home Dedicated Function Pages Launcher Cards Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 pt-2">
+            
+            {/* CARD 1: TRANG KHÓA HỌC & BẢNG TRANH */}
+            <div
+              onClick={() => setActiveTab('poster')}
+              className="group relative overflow-hidden rounded-3xl border-2 border-pink-400/70 bg-gradient-to-br from-slate-900 via-purple-950 to-slate-950 p-6 shadow-2xl transition-all duration-300 hover:scale-[1.03] hover:border-pink-300 hover:shadow-[0_0_35px_rgba(236,72,153,0.4)] cursor-pointer flex flex-col justify-between"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-5xl group-hover:scale-110 transition-transform">🖼️</span>
+                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-pink-500/20 text-pink-300 border border-pink-400/50">
+                    TRANG 1 • KHÓA HỌC
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-white group-hover:text-pink-300 transition-colors font-heading">
+                    📖 Trang Khóa Học & Bảng Tranh
+                  </h3>
+                  <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                    Lộ trình 6 cấp độ CEFR (Basic ➡ Quốc tế) với 2000 từ vựng cốt lõi trình bày dạng 3D Poster minh họa siêu sinh động.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-bold text-cyan-300 pt-1">
+                  <span>• Phát âm TTS</span>
+                  <span>• Phóng to Zoom</span>
+                  <span>• Autoplay 30s</span>
+                </div>
+              </div>
+              <div className="pt-5 flex items-center justify-between border-t border-slate-800/80 mt-4">
+                <span className="text-xs font-black text-pink-300">{posterPages.length} Trang Tranh • 2000 Từ</span>
+                <button className="px-4 py-2 rounded-2xl bg-gradient-to-r from-pink-500 to-purple-600 text-white text-xs font-black shadow-lg group-hover:scale-105 transition">
+                  Mở Trang Khóa Học ➔
+                </button>
+              </div>
+            </div>
+
+            {/* CARD 2: TRANG THƯ VIỆN THẺ TỪ VỰNG */}
+            <div
+              onClick={() => setActiveTab('flashcards')}
+              className="group relative overflow-hidden rounded-3xl border-2 border-cyan-400/70 bg-gradient-to-br from-slate-900 via-cyan-950 to-slate-950 p-6 shadow-2xl transition-all duration-300 hover:scale-[1.03] hover:border-cyan-300 hover:shadow-[0_0_35px_rgba(34,211,238,0.4)] cursor-pointer flex flex-col justify-between"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-5xl group-hover:scale-110 transition-transform">📚</span>
+                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-cyan-500/20 text-cyan-300 border border-cyan-400/50">
+                    TRANG 2 • THƯ VIỆN THẺ
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-white group-hover:text-cyan-300 transition-colors font-heading">
+                    📚 Trang Thư Viện Thẻ Từ Vựng
+                  </h3>
+                  <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                    Kho từ vựng 2000 thẻ với bộ lọc tìm kiếm thông minh, phát âm chậm 🐢, ví dụ câu Anh - Việt & mẹo ghi nhớ siêu đỉnh.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-bold text-cyan-200 pt-1">
+                  <span>• Lọc loại từ</span>
+                  <span>• Đánh dấu Đã Thuộc ⭐</span>
+                </div>
+              </div>
+              <div className="pt-5 flex items-center justify-between border-t border-slate-800/80 mt-4">
+                <span className="text-xs font-black text-cyan-300">Tổng {vocabDatabase.length} Từ Vựng</span>
+                <button className="px-4 py-2 rounded-2xl bg-gradient-to-r from-cyan-600 to-blue-600 text-white text-xs font-black shadow-lg group-hover:scale-105 transition">
+                  Mở Kho Từ Vựng ➔
+                </button>
+              </div>
+            </div>
+
+            {/* CARD 3: TRANG BÀI TẬP & TRÒ CHƠI */}
+            <div
+              onClick={() => setActiveTab('quiz')}
+              className="group relative overflow-hidden rounded-3xl border-2 border-yellow-400/70 bg-gradient-to-br from-slate-900 via-amber-950 to-slate-950 p-6 shadow-2xl transition-all duration-300 hover:scale-[1.03] hover:border-yellow-300 hover:shadow-[0_0_35px_rgba(250,204,21,0.4)] cursor-pointer flex flex-col justify-between"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-5xl group-hover:scale-110 transition-transform">🎮</span>
+                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-yellow-500/20 text-yellow-300 border border-yellow-400/50">
+                    TRANG 3 • BÀI TẬP & GAME
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-white group-hover:text-yellow-300 transition-colors font-heading">
+                    🎮 Trang Bài Tập & Trò Chơi
+                  </h3>
+                  <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                    Góc bài tập trắc nghiệm âm thanh, lật thẻ nhớ, AI chấm phát âm giọng nói và thi đấu tích điểm Sao ⭐ cho bé.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-bold text-yellow-200 pt-1">
+                  <span>• Pháo hoa mừng</span>
+                  <span>• Streak Engine 🔥</span>
+                </div>
+              </div>
+              <div className="pt-5 flex items-center justify-between border-t border-slate-800/80 mt-4">
+                <span className="text-xs font-black text-yellow-300">Tích Lũy ⭐ Ngôi Sao</span>
+                <button className="px-4 py-2 rounded-2xl bg-gradient-to-r from-yellow-500 to-amber-600 text-slate-950 text-xs font-black shadow-lg group-hover:scale-105 transition">
+                  Vào Luyện Tập ➔
+                </button>
+              </div>
+            </div>
+
+            {/* CARD 4: TRANG CHU KỲ ÔN TẬP */}
+            <div
+              onClick={() => setActiveTab('review_cycles')}
+              className="group relative overflow-hidden rounded-3xl border-2 border-purple-400/70 bg-gradient-to-br from-slate-900 via-purple-950 to-slate-950 p-6 shadow-2xl transition-all duration-300 hover:scale-[1.03] hover:border-purple-300 hover:shadow-[0_0_35px_rgba(192,132,252,0.4)] cursor-pointer flex flex-col justify-between"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-5xl group-hover:scale-110 transition-transform">🔄</span>
+                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-purple-500/20 text-purple-300 border border-purple-400/50">
+                    TRANG 4 • ÔN TẬP 5 BƯỚC
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-white group-hover:text-purple-300 transition-colors font-heading">
+                    🔄 Trang Chu Kỳ Ôn Tập Khoa Học
+                  </h3>
+                  <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                    Phương pháp lặp lại ngắt quãng Spaced Repetition 5 mốc (1 ngày, 3 ngày, 7 ngày, 14 ngày, 30 ngày) giúp nhớ lâu vĩnh viễn.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-bold text-purple-200 pt-1">
+                  <span>• Ebbinghaus Curve</span>
+                  <span>• Tự động nhắc</span>
+                </div>
+              </div>
+              <div className="pt-5 flex items-center justify-between border-t border-slate-800/80 mt-4">
+                <span className="text-xs font-black text-purple-300">Nhớ Từ Vựng Vĩnh Viễn</span>
+                <button className="px-4 py-2 rounded-2xl bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-xs font-black shadow-lg group-hover:scale-105 transition">
+                  Vào Trang Ôn Tập ➔
+                </button>
+              </div>
+            </div>
+
+            {/* CARD 5: TRANG QUẢN LÝ DỮ LIỆU & EXCEL (CHO BA BẢO NGUYÊN) */}
+            <div
+              onClick={() => setActiveTab('db_table')}
+              className="group relative overflow-hidden rounded-3xl border-2 border-emerald-400/70 bg-gradient-to-br from-slate-900 via-emerald-950 to-slate-950 p-6 shadow-2xl transition-all duration-300 hover:scale-[1.03] hover:border-emerald-300 hover:shadow-[0_0_35px_rgba(52,211,153,0.4)] cursor-pointer flex flex-col justify-between"
+            >
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-5xl group-hover:scale-110 transition-transform">🗃️</span>
+                  <span className="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-400/50">
+                    TRANG 5 • CSDL & EXCEL
+                  </span>
+                </div>
+                <div>
+                  <h3 className="text-xl font-black text-white group-hover:text-emerald-300 transition-colors font-heading">
+                    🗃️ Trang Quản Lý Dữ Liệu & Excel
+                  </h3>
+                  <p className="text-xs text-slate-300 mt-1 leading-relaxed">
+                    Quản trị toàn bộ cơ sở dữ liệu từ vựng: Thêm/Sửa/Xóa từ vựng, Nhập tệp Excel mẫu tự động, Khôi phục thùng rác & Reset tiến độ.
+                  </p>
+                </div>
+                <div className="flex items-center gap-2 text-xs font-bold text-emerald-200 pt-1">
+                  <span>• CRUD Data</span>
+                  <span>• Auto Calculation</span>
+                </div>
+              </div>
+              <div className="pt-5 flex items-center justify-between border-t border-slate-800/80 mt-4">
+                <span className="text-xs font-black text-emerald-300">Đặc quyền Ba Bảo Nguyên</span>
+                <button className="px-4 py-2 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white text-xs font-black shadow-lg group-hover:scale-105 transition">
+                  Mở Trang Quản Lý ➔
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      )}
 
       {/* ========================================================================= */}
       {/* VIEW 0: DYNAMIC ILLUSTRATED VOCABULARY POSTER PAGES (PAGES 1 -> N) */}
@@ -2660,109 +3321,139 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           {/* Render Active Page (or All Pages) */}
           {posterPages.filter(
             (pg) => activePosterPage === 'all' || pg.pageNumber === activePosterPage
-          ).map((pageObj) => (
-            <div
-              key={pageObj.pageNumber}
-              className="rounded-3xl border-2 border-slate-800 bg-slate-950/90 p-5 md:p-6 space-y-6 shadow-2xl backdrop-blur-xl"
-            >
-              {/* Page Title & Subtitle */}
-              <div className="flex flex-wrap items-center justify-between border-b border-slate-800 pb-3 gap-2">
-                <div className="flex items-center gap-3">
-                  <div className="h-10 w-10 rounded-2xl bg-gradient-to-tr from-pink-500 to-purple-600 text-white font-black text-lg flex items-center justify-center shadow-lg">
-                    {pageObj.pageNumber}
+          ).map((pageObj) => {
+            const pageFlatWords = [];
+            pageObj.sections.forEach((sec) => {
+              sec.words.forEach((w) => {
+                const v = vocabDatabase.find((item) => item.word.toLowerCase() === w.toLowerCase());
+                if (v) pageFlatWords.push(v);
+              });
+            });
+
+            return (
+              <div
+                key={pageObj.pageNumber}
+                className="rounded-3xl border-2 border-slate-800 bg-slate-950/90 p-5 md:p-6 space-y-6 shadow-2xl backdrop-blur-xl"
+              >
+                {/* Page Title & Subtitle */}
+                <div className="flex flex-wrap items-center justify-between border-b border-slate-800 pb-3 gap-2">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-9 w-9 items-center justify-center rounded-2xl bg-cyan-600 font-extrabold text-white text-sm shadow-lg shadow-cyan-600/30">
+                      {pageObj.pageNumber}
+                    </span>
+                    <div>
+                      <h3 className="text-lg font-black text-white tracking-tight">
+                        {pageObj.title}
+                      </h3>
+                      <p className="text-xs font-bold text-slate-400">
+                        {pageObj.subtitle}
+                      </p>
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-lg md:text-xl font-black text-white font-heading">
-                      {pageObj.title}
-                    </h3>
-                    <p className="text-xs text-slate-400">{pageObj.subtitle}</p>
-                  </div>
+
+                  <span className="rounded-full bg-cyan-950/80 border border-cyan-500/30 px-3.5 py-1 text-xs font-extrabold text-cyan-300 shadow">
+                    {pageObj.pageNumber === 1 ? 'Level 1 • Khởi Động (40 Từ)' : pageObj.pageNumber === 2 ? 'Level 2 • Cơ Bản (40 Từ)' : pageObj.pageNumber === 3 ? 'Level 3 • Mở Rộng (40 Từ)' : pageObj.pageNumber === 4 ? 'Level 4 • Nâng Cao (40 Từ)' : 'Level 5 • Tiên Phong (40 Từ)'}
+                  </span>
                 </div>
 
-                <span className="px-3 py-1 rounded-full text-xs font-bold bg-pink-950 text-pink-300 border border-pink-500/40">
-                  {pageObj.badge}
-                </span>
-              </div>
+                {/* 4 Thematic Color Grids Per Page */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+                  {pageObj.sections.map((section) => {
+                    const sectionVocab = section.words
+                      .map((w) => vocabDatabase.find((item) => item.word.toLowerCase() === w.toLowerCase()))
+                      .filter(Boolean);
 
-              {/* 4 Quadrants Grid (2x2 Layout representing the 4 color-coded sections on each poster page) */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {pageObj.sections.map((section) => {
-                  const sectionVocab = section.words
-                    .map((wStr) =>
-                      vocabDatabase.find((v) => v.word.toLowerCase() === wStr.toLowerCase())
-                    )
-                    .filter(Boolean);
-
-                  return (
-                    <div
-                      key={section.id}
-                      className={`rounded-3xl border-2 ${section.borderColor} bg-slate-900/95 overflow-hidden shadow-xl space-y-3 flex flex-col justify-between`}
-                    >
-                      {/* Section Colorful Header Banner */}
-                      <div className={`${section.bgHeader} p-3.5 flex items-center justify-between shadow-md`}>
-                        <div className="flex items-center gap-2 font-black text-sm uppercase tracking-wider">
-                          <span className="text-xl">{section.icon}</span>
-                          <span>{section.title}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleOpenSuperAdd(section.categoryId, section.id.startsWith('L1') ? 'L1' : section.id.startsWith('L2') ? 'L2' : section.id.startsWith('L3') ? 'L3' : 'L4');
-                            }}
-                            className="px-2.5 py-1 rounded-xl text-[10px] font-black bg-black/40 hover:bg-black/80 text-yellow-300 border border-yellow-400/40 flex items-center gap-1 transition shadow hover:scale-105 active:scale-95"
-                            title="Thêm từ vựng mới vào chủ đề này"
-                          >
-                            <Plus className="h-3 w-3 text-yellow-300" />
-                            <span>Thêm Từ</span>
-                          </button>
-
-                          <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-black/30 text-white border border-white/20">
-                            {sectionVocab.length} Từ
-                          </span>
-                        </div>
-                      </div>
-
-                      {/* Section Cards Grid (10 Items) */}
-                      <div className="p-3.5 grid grid-cols-2 sm:grid-cols-5 gap-2.5">
-                        {sectionVocab.map((item, idx) => {
-                          const detailedInfo = getSuperDetailedVocabInfo(item);
-                          const isMastered = masteredCards.includes(item.id);
-
-                          return (
-                            <div
-                              key={item.id}
-                              onClick={() => {
-                                setSpotlightCard(item);
-                                setShowSpotlightMeaning(false);
-                                playWordAudio(item.word, false);
+                    return (
+                      <div
+                        key={section.id}
+                        className={`rounded-3xl border-2 ${section.borderColor} bg-slate-900/95 overflow-hidden shadow-xl space-y-3 flex flex-col justify-between`}
+                      >
+                        {/* Section Colorful Header Banner */}
+                        <div className={`${section.bgHeader} p-3.5 flex items-center justify-between shadow-md`}>
+                          <div className="flex items-center gap-2 font-black text-sm uppercase tracking-wider">
+                            <span className="text-xl">{section.icon}</span>
+                            <span>{section.title}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleOpenSuperAdd(section.categoryId, section.id.startsWith('L1') ? 'L1' : section.id.startsWith('L2') ? 'L2' : section.id.startsWith('L3') ? 'L3' : 'L4');
                               }}
-                              className={`group relative rounded-2xl border p-2.5 text-center transition-all duration-300 cursor-pointer flex flex-col justify-between ${
-                                isMastered
-                                  ? 'border-emerald-500/50 bg-emerald-950/40 hover:border-emerald-400'
-                                  : 'border-slate-800 bg-slate-950 hover:border-cyan-400 hover:scale-[1.04] shadow-md'
-                              }`}
+                              className="px-2.5 py-1 rounded-xl text-[10px] font-black bg-black/40 hover:bg-black/80 text-yellow-300 border border-yellow-400/40 flex items-center gap-1 transition shadow hover:scale-105 active:scale-95"
+                              title="Thêm từ vựng mới vào chủ đề này"
                             >
+                              <Plus className="h-3 w-3 text-yellow-300" />
+                              <span>Thêm Từ</span>
+                            </button>
+
+                            <span className="px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-black/30 text-white border border-white/20">
+                              {sectionVocab.length} Từ
+                            </span>
+                          </div>
+                        </div>
+
+                        {/* Section Cards Grid (10 Items) */}
+                        <div className="p-3.5 grid grid-cols-2 sm:grid-cols-5 gap-2.5">
+                          {sectionVocab.map((item, idx) => {
+                            const detailedInfo = getSuperDetailedVocabInfo(item);
+                            const isMastered = masteredCards.includes(item.id);
+
+                            // Strict 1-card highlight evaluation:
+                            const isSpeaking = currentlySpeakingWord && currentlySpeakingWord === item.word.toLowerCase();
+                            const currentAutoplayItem = isPosterAutoplay ? pageFlatWords[posterAutoplayWordIndex] : null;
+                            const isAutoplayActive = isPosterAutoplay && currentAutoplayItem && currentAutoplayItem.id === item.id;
+
+                            const isReadingCard = currentlySpeakingWord ? isSpeaking : isPosterAutoplay ? isAutoplayActive : false;
+                            const isSpotlightCard = !currentlySpeakingWord && !isPosterAutoplay && spotlightCard?.id === item.id;
+                            const isActiveCard = isReadingCard || isSpotlightCard;
+
+                            return (
+                              <ScrollBounceCard
+                                key={item.id}
+                                delay={idx * 60}
+                                onClick={() => {
+                                  setZoomModalCard(item);
+                                  setSpotlightCard(item);
+                                  setShowSpotlightMeaning(false);
+                                  playWordAudio(item.word, false);
+                                }}
+                                className={`group relative rounded-2xl p-2.5 text-center transition-all duration-300 cursor-pointer flex flex-col justify-between ${
+                                  isActiveCard
+                                    ? 'border-2 border-yellow-300 ring-4 ring-yellow-400/90 bg-gradient-to-b from-yellow-950/80 via-slate-900 to-amber-950/80 shadow-[0_0_30px_rgba(250,204,21,0.85)] scale-[1.08] z-20 animate-pulse'
+                                    : isMastered
+                                    ? 'border border-emerald-500/50 bg-emerald-950/40 hover:border-cyan-400 hover:ring-2 hover:ring-cyan-400/60 hover:scale-[1.05] hover:shadow-[0_0_20px_rgba(34,211,238,0.6)] hover:z-10 shadow-md'
+                                    : 'border border-slate-800 bg-slate-950 hover:border-cyan-400 hover:ring-2 hover:ring-cyan-400/60 hover:scale-[1.05] hover:shadow-[0_0_20px_rgba(34,211,238,0.6)] hover:z-10 shadow-md'
+                                }`}
+                              >
+                                {/* Top Speaking/Active Indicator Ribbon */}
+                                {isReadingCard && (
+                                  <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-2 py-0.5 rounded-full bg-yellow-400 text-slate-950 text-[9px] font-black uppercase tracking-wider shadow-lg flex items-center gap-1 z-30 animate-bounce whitespace-nowrap">
+                                    <Volume2 className="h-2.5 w-2.5 text-slate-950 animate-pulse" />
+                                    <span>ĐANG ĐỌC...</span>
+                                  </div>
+                                )}
+
                               {/* Top Index Badge & Mastered Icon */}
                               <div className="flex items-center justify-between text-[9px] font-mono-code text-slate-400 mb-1">
-                                <span className="font-bold text-slate-300">#{idx + 1}</span>
+                                <span className={`font-bold ${isActiveCard ? 'text-yellow-300 font-black' : 'text-slate-300'}`}>#{idx + 1}</span>
                                 {isMastered && <Star className="h-3 w-3 fill-emerald-400 text-emerald-400" />}
                               </div>
 
                               {/* Card Emoji Icon */}
-                              <div className="text-3xl sm:text-4xl py-1 drop-shadow-md group-hover:scale-125 transition-transform duration-300">
+                              <div className={`text-3xl sm:text-4xl py-1 drop-shadow-md transition-transform duration-300 ${isActiveCard ? 'scale-125' : 'group-hover:scale-125'}`}>
                                 {item.image}
                               </div>
 
                               {/* Card Text & Phonetics */}
                               <div className="space-y-0.5 my-1">
-                                <div className="font-black text-xs text-white group-hover:text-cyan-300 line-clamp-1">
+                                <div className={`font-black text-xs line-clamp-1 ${isActiveCard ? 'text-yellow-200 text-sm font-black' : 'text-white group-hover:text-cyan-300'}`}>
                                   {item.word}
                                 </div>
-                                <div className="text-[10px] font-extrabold text-pink-300 bg-pink-950/70 px-1.5 py-0.5 rounded-md border border-pink-500/30 line-clamp-1">
+                                <div className={`text-[10px] font-extrabold px-1.5 py-0.5 rounded-md border line-clamp-1 ${isActiveCard ? 'bg-yellow-400/20 text-yellow-200 border-yellow-400/50' : 'text-pink-300 bg-pink-950/70 border-pink-500/30'}`}>
                                   {detailedInfo?.vietnamesePhoneticDisplay || item.vietnamesePhonetic}
                                 </div>
-                                <div className="text-[11px] font-bold text-yellow-300 line-clamp-1">
+                                <div className={`text-[11px] font-bold line-clamp-1 ${isActiveCard ? 'text-amber-200 font-black' : 'text-yellow-300'}`}>
                                   {item.meaning}
                                 </div>
                               </div>
@@ -2774,7 +3465,11 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                                     e.stopPropagation();
                                     playWordAudio(item.word, false);
                                   }}
-                                  className="flex-1 py-1 rounded-xl bg-slate-900 border border-slate-700 text-[10px] font-bold text-cyan-300 hover:bg-cyan-600 hover:text-white transition flex items-center justify-center gap-1"
+                                  className={`flex-1 py-1 rounded-xl text-[10px] font-bold transition flex items-center justify-center gap-1 ${
+                                    isActiveCard
+                                      ? 'bg-yellow-400 text-slate-950 font-black shadow-md'
+                                      : 'bg-slate-900 border border-slate-700 text-cyan-300 hover:bg-cyan-600 hover:text-white'
+                                  }`}
                                 >
                                   <Volume2 className="h-3 w-3" />
                                   <span>Phát Âm</span>
@@ -2802,7 +3497,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                                   <Trash2 className="h-3 w-3" />
                                 </button>
                               </div>
-                            </div>
+                            </ScrollBounceCard>
                           );
                         })}
                       </div>
@@ -2811,7 +3506,8 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                 })}
               </div>
             </div>
-          ))}
+          );
+        })}
         </div>
       )}
 
@@ -2978,6 +3674,9 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                     const isSelected = spotlightCard?.id === card.id;
                     const isFlipped = Boolean(flippedCards[card.id]);
                     const isMastered = masteredCards.includes(card.id);
+                    const isSpeaking = currentlySpeakingWord === card.word.toLowerCase();
+
+                    const isActiveCard = isSelected || isSpeaking;
 
                     return (
                       <div
@@ -2987,12 +3686,19 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                           setShowSpotlightMeaning(false);
                           playWordAudio(card.word, false);
                         }}
-                        className={`group relative rounded-3xl border p-4 shadow-xl transition-all duration-300 backdrop-blur-xl bg-slate-900/90 hover:scale-[1.03] cursor-pointer flex flex-col justify-between perspective-1000 ${
-                          isSelected
-                            ? 'border-cyan-400 ring-2 ring-cyan-500/50 bg-slate-900 shadow-cyan-500/20'
-                            : 'border-slate-800 hover:border-cyan-500/40'
+                        className={`group relative rounded-3xl border p-4 shadow-xl transition-all duration-300 backdrop-blur-xl bg-slate-900/90 cursor-pointer flex flex-col justify-between perspective-1000 ${
+                          isActiveCard
+                            ? 'border-2 border-yellow-300 ring-4 ring-yellow-400/90 bg-gradient-to-b from-yellow-950/80 via-slate-900 to-amber-950/80 shadow-[0_0_30px_rgba(250,204,21,0.85)] scale-[1.04] z-20 animate-pulse'
+                            : 'border-slate-800 hover:border-cyan-400 hover:ring-2 hover:ring-cyan-400/60 hover:scale-[1.03] hover:shadow-[0_0_20px_rgba(34,211,238,0.5)]'
                         }`}
                       >
+                        {/* Top Speaking Indicator Ribbon */}
+                        {isSpeaking && (
+                          <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-0.5 rounded-full bg-yellow-400 text-slate-950 text-[10px] font-black uppercase tracking-wider shadow-lg flex items-center gap-1 z-30 animate-bounce whitespace-nowrap">
+                            <Volume2 className="h-3 w-3 text-slate-950 animate-pulse" />
+                            <span>ĐANG ĐỌC...</span>
+                          </div>
+                        )}
                         {/* Card Header Info - Always upright */}
                         <div className="flex items-center justify-between text-xs font-bold border-b border-slate-800/80 pb-2 mb-2">
                           <span className="rounded-full bg-slate-950 border border-slate-800 px-2 py-0.5 text-[10px] text-cyan-300 font-mono-code">
@@ -6191,6 +6897,261 @@ export function KidsEnglishDashboard({ plan, addToast }) {
                 )}
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* ============================================================ */}
+      {/* VOCAB ZOOM MODAL - Full-screen khi click thẻ trong bảng tranh */}
+      {/* ============================================================ */}
+      {zoomModalCard && (() => {
+        const currentPg = typeof activePosterPage === 'number' ? activePosterPage : 1;
+        const currentPageObj = posterPages.find((p) => p.pageNumber === currentPg) || posterPages[0];
+        
+        let activeWordList = [];
+        if (activeTab === 'poster' && currentPageObj) {
+          currentPageObj.sections.forEach((sec) => {
+            sec.words.forEach((w) => {
+              const v = vocabDatabase.find((item) => item.word.toLowerCase() === w.toLowerCase());
+              if (v) activeWordList.push(v);
+            });
+          });
+        }
+        if (activeWordList.length === 0) {
+          activeWordList = filteredDatabase.length > 0 ? filteredDatabase : vocabDatabase;
+        }
+
+        const currIdx = activeWordList.findIndex(item => item.id === zoomModalCard.id || item.word.toLowerCase() === zoomModalCard.word.toLowerCase());
+        const hasPrev = currIdx > 0;
+        const hasNext = currIdx >= 0 && currIdx < activeWordList.length - 1;
+
+        const handlePrevZoomWord = () => {
+          if (hasPrev) {
+            const prevItem = activeWordList[currIdx - 1];
+            setZoomModalCard(prevItem);
+            setSpotlightCard(prevItem);
+            playWordAudio(prevItem.word, false);
+          }
+        };
+
+        const handleNextZoomWord = () => {
+          if (hasNext) {
+            const nextItem = activeWordList[currIdx + 1];
+            setZoomModalCard(nextItem);
+            setSpotlightCard(nextItem);
+            playWordAudio(nextItem.word, false);
+          }
+        };
+
+        return (
+          <VocabZoomModal
+            card={zoomModalCard}
+            onClose={() => setZoomModalCard(null)}
+            onPlayAudio={playWordAudio}
+            onToggleMastered={toggleMastered}
+            isMastered={masteredCards.includes(zoomModalCard.id)}
+            onVoiceRecord={(item) => {
+              setZoomModalCard(null);
+              handleStartVoiceRecording(item);
+            }}
+            superDetail={getSuperDetailedVocabInfo(zoomModalCard)}
+            getPhonetic={getVietnamesePhoneticGuide}
+            onNextWord={handleNextZoomWord}
+            onPrevWord={handlePrevZoomWord}
+            hasNext={hasNext}
+            hasPrev={hasPrev}
+          />
+        );
+      })()}
+      {/* ========================================================================= */}
+      {/* BÀI TEST ĐÁNH GIÁ TRÌNH ĐỘ LÊN LEVEL MODAL (LEVEL UP TEST ENGINE) */}
+      {/* ========================================================================= */}
+      {showLevelUpTestModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/85 backdrop-blur-xl animate-fadeIn">
+          <div className="relative w-full max-w-2xl rounded-3xl border-2 border-yellow-400/80 bg-gradient-to-b from-slate-900 via-purple-950 to-slate-950 p-6 md:p-8 shadow-[0_0_50px_rgba(234,179,8,0.3)] space-y-6">
+            
+            {/* Modal Header */}
+            <div className="flex items-center justify-between border-b border-yellow-500/30 pb-4">
+              <div className="flex items-center gap-3">
+                <div className="p-3 rounded-2xl bg-yellow-500/20 border border-yellow-400 text-yellow-300 animate-bounce">
+                  <Trophy className="h-8 w-8 text-yellow-300" />
+                </div>
+                <div>
+                  <h2 className="text-xl md:text-2xl font-black text-white font-heading">
+                    🎓 BÀI TEST THĂNG HẠNG {testLevelId}
+                  </h2>
+                  <p className="text-xs text-yellow-200">
+                    Đánh giá năng lực từ vựng bé Minh Anh • Đạt ≥ 4/5 câu để mở Level tiếp theo! 🚀
+                  </p>
+                </div>
+              </div>
+              <button
+                onClick={() => setShowLevelUpTestModal(false)}
+                className="p-2 rounded-xl bg-slate-800 text-slate-400 hover:text-white hover:bg-slate-700 transition"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            {!testFinished ? (
+              <div className="space-y-6">
+                {/* Progress bar */}
+                <div className="space-y-1">
+                  <div className="flex justify-between text-xs font-bold text-slate-300">
+                    <span>Câu hỏi {currentTestQIndex + 1} / {testQuestions.length}</span>
+                    <span className="text-yellow-400 font-mono-code font-black">
+                      Tiến độ: {Math.round(((currentTestQIndex + 1) / testQuestions.length) * 100)}%
+                    </span>
+                  </div>
+                  <div className="h-3 w-full bg-slate-950 rounded-full border border-slate-800 overflow-hidden">
+                    <div
+                      className="h-full bg-gradient-to-r from-yellow-400 via-amber-500 to-pink-500 transition-all duration-300"
+                      style={{ width: `${((currentTestQIndex + 1) / testQuestions.length) * 100}%` }}
+                    ></div>
+                  </div>
+                </div>
+
+                {/* Question Card */}
+                {testQuestions[currentTestQIndex] && (() => {
+                  const q = testQuestions[currentTestQIndex];
+                  const selectedChoice = testSelectedAnswers[currentTestQIndex];
+
+                  return (
+                    <div className="space-y-5">
+                      <div className="p-6 rounded-2xl bg-slate-900/90 border-2 border-purple-500/40 text-center space-y-3 shadow-xl">
+                        <div className="flex items-center justify-center gap-3">
+                          <span className="text-6xl animate-pulse">{q.targetWord.image || '⭐'}</span>
+                          <button
+                            onClick={() => playWordAudio(q.targetWord.word, false)}
+                            className="p-3 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-400 hover:bg-cyan-500/40 transition active:scale-95 shadow-lg"
+                            title="Nghe phát âm chuẩn"
+                          >
+                            <Volume2 className="h-6 w-6" />
+                          </button>
+                        </div>
+
+                        <div>
+                          <p className="text-xs font-bold text-slate-400 uppercase tracking-widest">
+                            {q.qType === 'meaning'
+                              ? `Nghĩa tiếng Việt của từ "${q.targetWord.word}" là gì?`
+                              : q.qType === 'image'
+                              ? `Hình ảnh đại diện cho từ "${q.targetWord.word}" là gì?`
+                              : `Từ Tiếng Anh tương ứng với nghĩa "${q.targetWord.meaning}"?`}
+                          </p>
+                          <h3 className="text-2xl font-black text-yellow-300 mt-1">
+                            {q.qType === 'meaning' ? q.targetWord.word : q.qType === 'image' ? q.targetWord.word : q.targetWord.meaning}
+                          </h3>
+                        </div>
+                      </div>
+
+                      {/* Multiple Choice Options */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        {q.choices.map((choice, cIdx) => {
+                          const isSelected = selectedChoice === choice.word;
+                          return (
+                            <button
+                              key={cIdx}
+                              onClick={() => handleSelectTestAnswer(currentTestQIndex, choice.word)}
+                              className={`p-4 rounded-2xl border-2 text-left font-bold text-sm transition-all duration-200 flex items-center justify-between ${
+                                isSelected
+                                  ? 'bg-gradient-to-r from-yellow-500/30 to-amber-500/30 border-yellow-400 text-yellow-200 shadow-[0_0_20px_rgba(250,204,21,0.4)] scale-[1.02]'
+                                  : 'bg-slate-900/60 border-slate-700/80 text-slate-200 hover:border-purple-400 hover:bg-slate-800/80'
+                              }`}
+                            >
+                              <div className="flex items-center gap-3">
+                                <span className="text-2xl">{choice.image || '⭐'}</span>
+                                <div>
+                                  <div className="text-white font-extrabold text-base">
+                                    {q.qType === 'meaning' ? choice.meaning : choice.word}
+                                  </div>
+                                  <div className="text-xs text-slate-400">
+                                    {choice.vietnamesePhonetic || choice.ipa}
+                                  </div>
+                                </div>
+                              </div>
+                              <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                                isSelected ? 'border-yellow-400 bg-yellow-400 text-slate-950 font-black' : 'border-slate-600'
+                              }`}>
+                                {isSelected ? '✓' : ''}
+                              </div>
+                            </button>
+                          );
+                        })}
+                      </div>
+
+                      {/* Submit / Next Question */}
+                      <div className="flex justify-end pt-2">
+                        <button
+                          disabled={!selectedChoice}
+                          onClick={handleNextTestQuestion}
+                          className={`px-8 py-3.5 rounded-2xl font-black text-sm transition-all duration-300 flex items-center gap-2 ${
+                            selectedChoice
+                              ? 'bg-gradient-to-r from-yellow-400 via-amber-500 to-pink-500 text-slate-950 shadow-xl hover:scale-105 cursor-pointer'
+                              : 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
+                          }`}
+                        >
+                          <span>{currentTestQIndex < testQuestions.length - 1 ? 'CÂU HỎI TIẾP THEO ➔' : 'HOÀN THÀNH BÀI TEST 🏁'}</span>
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+            ) : (
+              /* Test Results Screen */
+              <div className="text-center py-6 space-y-6 animate-fadeIn">
+                <div className="inline-block p-6 rounded-full bg-yellow-500/20 border-4 border-yellow-400 text-7xl shadow-2xl animate-bounce">
+                  {testPassed ? '🏆' : '💪'}
+                </div>
+
+                <div className="space-y-2">
+                  <h3 className={`text-3xl font-black ${testPassed ? 'text-emerald-400' : 'text-amber-300'}`}>
+                    {testPassed ? '🎉 XUẤT SẮC! BÉ NGUYỄN NGỌC MINH ANH ĐÃ ĐỖ BÀI TEST!' : 'BÉ MINH ANH CỐ LÊN NHÉ!'}
+                  </h3>
+                  <p className="text-base text-slate-300">
+                    Kết quả của bé: <span className="font-black text-yellow-300 text-xl">{testScore} / 5 câu đúng</span> ({Math.round((testScore / 5) * 100)}%)
+                  </p>
+                </div>
+
+                {testPassed ? (
+                  <div className="p-5 rounded-2xl bg-emerald-950/80 border-2 border-emerald-500/60 text-emerald-200 text-sm space-y-2">
+                    <p className="font-extrabold text-base">🚀 ĐÃ MỞ KHÓA THÀNH CÔNG CẤP ĐỘ TIẾP THEO!</p>
+                    <p className="text-xs text-emerald-300">
+                      Bé Minh Anh nhận được thưởng <span className="font-black text-yellow-300">+50 ⭐ Ngôi sao rực rỡ</span>! Hãy tiếp tục chinh phục kiến thức mới nhé!
+                    </p>
+                  </div>
+                ) : (
+                  <div className="p-5 rounded-2xl bg-rose-950/80 border-2 border-rose-500/60 text-rose-200 text-sm space-y-2">
+                    <p className="font-extrabold text-base">⚠️ CẦN ĐẠT TỐI THIỂU 4/5 CÂU ĐÚNG ĐỂ THĂNG HẠNG</p>
+                    <p className="text-xs text-rose-300">
+                      Bé Minh Anh hãy dành ít phút ôn tập lại các thẻ từ vựng chưa thuộc rồi bấm thử lại bài test nhé!
+                    </p>
+                  </div>
+                )}
+
+                <div className="flex items-center justify-center gap-4 pt-2">
+                  <button
+                    onClick={() => handleStartLevelUpTest(testLevelId)}
+                    className="px-6 py-3.5 rounded-2xl font-black text-sm bg-slate-800 text-white hover:bg-slate-700 transition border border-slate-600 flex items-center gap-2"
+                  >
+                    <RefreshCw className="h-4 w-4" />
+                    <span>Thử Lại Bài Test 🔄</span>
+                  </button>
+
+                  <button
+                    onClick={() => {
+                      setShowLevelUpTestModal(false);
+                      if (testPassed) {
+                        setActiveTab('poster');
+                      }
+                    }}
+                    className="px-8 py-3.5 rounded-2xl font-black text-sm bg-gradient-to-r from-yellow-400 via-amber-500 to-pink-500 text-slate-950 hover:scale-105 shadow-xl transition flex items-center gap-2"
+                  >
+                    <span>{testPassed ? '🚀 VÀO HỌC LEVEL MỚI NGAY!' : 'ĐÓNG CỬA SỔ TEST'}</span>
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}
