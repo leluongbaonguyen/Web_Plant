@@ -41,8 +41,8 @@ export function Dynamic3DBackground({ activeTab, customBgConfig }) {
 
     window.addEventListener('resize', handleResize);
 
-    // Particle definitions for 3D simulation
-    const particleCount = effectiveTheme === 'galaxy3d' ? 120 : effectiveTheme === 'neonwaves' ? 80 : 60;
+    // Particle definitions for 3D simulation — giảm số lượng để tối ưu hiệu năng
+    const particleCount = effectiveTheme === 'galaxy3d' ? 60 : effectiveTheme === 'neonwaves' ? 40 : 30;
     const particles = [];
 
     for (let i = 0; i < particleCount; i++) {
@@ -65,22 +65,32 @@ export function Dynamic3DBackground({ activeTab, customBgConfig }) {
     const horizontalItems = [];
     const cuteEmojis = ['🦄', '🧸', '🐱', '🐰', '🐶', '🌈', '👑', '🍭', '🌸', '✨', '⭐', '🎈', '🚀'];
 
-    for (let h = 0; h < 18; h++) {
+    // Giảm từ 18 xuống 6 emoji để giảm tải GPU
+    for (let h = 0; h < 6; h++) {
       horizontalItems.push({
         x: Math.random() * width,
         y: Math.random() * (height * 0.85),
-        z: Math.random() * 500 + 100, // Depth layer
+        z: Math.random() * 500 + 100,
         speedX: (Math.random() * 1.5 + 0.8) * config.speed,
         emoji: cuteEmojis[h % cuteEmojis.length],
         scale: Math.random() * 0.8 + 0.6,
-        rotation: Math.random() * Math.PI * 2,
-        rotSpeed: (Math.random() - 0.5) * 0.02,
+        rotation: 0,
+        rotSpeed: 0, // Tắt rotation để tiết kiệm ctx.save()/restore()
       });
     }
 
     let waveAngle = 0;
+    let lastFrameTime = 0;
+    const TARGET_FPS = 30; // Giới hạn 30fps thay vì 60fps để giảm tải
+    const FRAME_INTERVAL = 1000 / TARGET_FPS;
 
-    const render = () => {
+    const render = (timestamp) => {
+      // Throttle frame rate
+      if (timestamp - lastFrameTime < FRAME_INTERVAL) {
+        animationFrameId = requestAnimationFrame(render);
+        return;
+      }
+      lastFrameTime = timestamp;
       ctx.clearRect(0, 0, width, height);
 
       // Render Theme-Specific 3D Canvas Visuals
@@ -108,8 +118,7 @@ export function Dynamic3DBackground({ activeTab, customBgConfig }) {
             ctx.arc(px, py, size, 0, Math.PI * 2);
             ctx.fillStyle = p.color;
             ctx.globalAlpha = alpha;
-            ctx.shadowBlur = size * 4;
-            ctx.shadowColor = p.color;
+            // shadowBlur bị tắt vì cực kỳ tốn GPU trên mỗi frame
             ctx.fill();
           }
         });
@@ -154,8 +163,7 @@ export function Dynamic3DBackground({ activeTab, customBgConfig }) {
           ctx.rotate(waveAngle + idx);
           ctx.fillStyle = p.color;
           ctx.globalAlpha = 0.4;
-          ctx.shadowBlur = 15;
-          ctx.shadowColor = p.color;
+          // shadowBlur tắt để tối ưu
 
           ctx.beginPath();
           ctx.moveTo(0, -p.radius * 5);
@@ -186,26 +194,18 @@ export function Dynamic3DBackground({ activeTab, customBgConfig }) {
         }
       }
 
-      // Render Horizontal 3D Moving Emoji & Cute Icons (Chạy Ngang Ngang Trải Dài)
+      // Render Horizontal Moving Emoji (tối giản: không rotate, không shadowBlur)
+      ctx.globalAlpha = 0.5;
       horizontalItems.forEach((item) => {
         item.x += item.speedX;
         if (item.x > width + 60) {
           item.x = -60;
           item.y = Math.random() * (height * 0.85);
         }
-
-        item.rotation += item.rotSpeed;
-
-        ctx.save();
-        ctx.translate(item.x, item.y);
-        ctx.rotate(item.rotation);
         ctx.font = `${Math.floor(28 * item.scale)}px sans-serif`;
-        ctx.globalAlpha = 0.5;
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = '#ec4899';
-        ctx.fillText(item.emoji, 0, 0);
-        ctx.restore();
+        ctx.fillText(item.emoji, item.x, item.y);
       });
+      ctx.globalAlpha = 1;
 
       animationFrameId = requestAnimationFrame(render);
     };
@@ -224,6 +224,7 @@ export function Dynamic3DBackground({ activeTab, customBgConfig }) {
       style={{
         opacity: config.opacity !== undefined ? config.opacity : 0.85,
         filter: config.blur ? `blur(${config.blur}px)` : 'none',
+        willChange: 'transform', // GPU compositing hint
       }}
     >
       {/* Render Custom Image or Video Background with Horizontal Continuous 3D Scrolling if Image set */}

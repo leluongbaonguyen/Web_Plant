@@ -272,8 +272,8 @@ function MainAppContent() {
       }
     };
 
-    // Fast 2-second real-time sync cycle
-    const syncInterval = setInterval(performSync, 2000);
+    // Sync mỗi 30 giây thay vì 2 giây — giảm tải server & network đáng kể
+    const syncInterval = setInterval(performSync, 30000);
 
     // Instant sync on window focus / tab activation
     const handleWindowFocus = () => performSync();
