@@ -807,7 +807,8 @@ export function KidsEnglishDashboard({ plan, addToast }) {
       if (saved) {
         const parsed = JSON.parse(saved);
         if (Array.isArray(parsed) && parsed.length >= ILLUSTRATED_POSTER_PAGES.length) {
-          return parsed;
+          const isAllValid = parsed.every((p) => Array.isArray(p.sections) && p.sections.length > 0);
+          if (isAllValid) return parsed;
         }
       }
       return ILLUSTRATED_POSTER_PAGES;
@@ -815,6 +816,18 @@ export function KidsEnglishDashboard({ plan, addToast }) {
       return ILLUSTRATED_POSTER_PAGES;
     }
   });
+
+  // Auto-sync Guard: Ensure client automatically upgrades to full 12 poster pages if stale 7-page cache exists in localStorage
+  useEffect(() => {
+    if (!Array.isArray(posterPages) || posterPages.length < ILLUSTRATED_POSTER_PAGES.length) {
+      setPosterPages(ILLUSTRATED_POSTER_PAGES);
+      try {
+        localStorage.setItem('kids_custom_poster_pages_2000', JSON.stringify(ILLUSTRATED_POSTER_PAGES));
+      } catch (e) {
+        console.error('Error auto-syncing poster pages:', e);
+      }
+    }
+  }, [posterPages]);
 
   const savePosterPages = (newList) => {
     setPosterPages(newList);
