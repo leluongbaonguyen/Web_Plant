@@ -51,52 +51,52 @@ export function Header({
 
   return (
     <header className="no-print space-y-3 font-sans">
-      {/* Top Navigation Bar */}
-      <div className="flex flex-wrap items-center justify-between gap-3 bg-slate-900/90 backdrop-blur-md p-3 md:p-4 rounded-2xl border border-slate-800/80 shadow-sm">
+      {/* Top Navigation Bar with Ultra Glassmorphism */}
+      <div className="flex flex-wrap items-center justify-between gap-3 bg-gradient-to-r from-slate-900/95 via-purple-950/80 to-slate-900/95 backdrop-blur-xl p-3 md:p-4 rounded-3xl border-2 border-pink-500/30 shadow-[0_10px_35px_rgba(0,0,0,0.5)]">
         {/* Brand & Title */}
         <div className="flex items-center gap-3">
           <button
             onClick={handleLogoClick}
             title="Bấm 3 lần để mở Cổng Admin Ẩn"
-            className={`flex h-10 w-10 items-center justify-center rounded-xl text-white shadow-md hover:scale-105 transition shrink-0 ${
+            className={`flex h-12 w-12 items-center justify-center rounded-2xl text-white shadow-[0_8px_20px_rgba(236,72,153,0.4)] hover:scale-110 active:scale-95 transition shrink-0 border-2 ${
               isKidsActor
-                ? 'bg-gradient-to-br from-cyan-500 to-blue-600'
-                : 'bg-gradient-to-br from-indigo-600 to-purple-600'
+                ? 'bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-600 border-pink-300'
+                : 'bg-gradient-to-br from-indigo-600 via-purple-600 to-pink-600 border-indigo-300'
             }`}
           >
-            {isKidsActor ? '🔤' : <Sparkles className="h-5 w-5" />}
+            {isKidsActor ? <span className="text-2xl animate-wiggle">🦄</span> : <Sparkles className="h-6 w-6 text-yellow-300 animate-pulse" />}
           </button>
 
           <div className="space-y-1">
             <div className="flex items-center gap-2 flex-wrap">
-              <h1 className="text-base md:text-lg font-extrabold tracking-tight text-white font-heading">
+              <h1 className="text-base md:text-xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-pink-300 via-purple-200 to-indigo-300 font-heading drop-shadow-md">
                 {isKidsActor
-                  ? 'GIAO DIỆN CHUYÊN BIỆT: BÉ HỌC TIẾNG ANH FLASHCARD 🔤'
-                  : meta?.title || 'LỊCH SINH HOẠT THÔNG MINH & QUẢN LÝ TIẾN ĐỘ TUẦN'}
+                  ? '🌸 GIAO DIỆN HỌC TIẾNG ANH FLASHCARD SIÊU CUTE (MINH ANH) 🔤✨'
+                  : meta?.title || '👑 LỊCH SINH HOẠT THÔNG MINH & QUẢN LÝ TIẾN ĐỘ TUẦN'}
               </h1>
               <button
                 onClick={onOpenRoleModal}
                 className={cx(
-                  'flex items-center gap-1 rounded-lg border px-2 py-0.5 text-[10px] font-bold transition hover:opacity-80',
+                  'flex items-center gap-1 rounded-full border-2 px-3 py-0.5 text-[11px] font-black transition hover:scale-105 shadow-md',
                   roleInfo.color
                 )}
                 title="Quản lý vai trò & RBAC"
               >
-                <ShieldCheck className="h-3 w-3" />
+                <ShieldCheck className="h-3.5 w-3.5" />
                 <span>{roleInfo.badge}</span>
               </button>
             </div>
 
             <div className="flex items-center gap-2 text-xs flex-wrap">
-              <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/30 px-2.5 py-0.5 text-[10px] font-black text-emerald-400">
-                <span className="relative flex h-2 w-2">
+              <div className="inline-flex items-center gap-1.5 rounded-full bg-emerald-500/15 border-2 border-emerald-500/40 px-3 py-0.5 text-[10px] font-black text-emerald-300 shadow-sm">
+                <span className="relative flex h-2.5 w-2.5">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
                 </span>
                 <span>REALTIME SYNC ACTIVE ({lastSyncedTime ? lastSyncedTime.toLocaleTimeString('vi-VN') : 'Tự động'})</span>
               </div>
 
-              <span className={isSaving ? 'text-amber-400 font-medium animate-pulse text-[11px]' : 'text-slate-400 text-[11px]'}>
+              <span className={isSaving ? 'text-amber-300 font-extrabold animate-pulse text-[11px]' : 'text-slate-300 text-[11px] font-bold'}>
                 {saveStatus}
               </span>
             </div>
