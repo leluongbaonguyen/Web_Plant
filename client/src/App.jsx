@@ -26,6 +26,7 @@ import { playChimeSound, playSpecialAlarmSound, stopSpecialAlarmSound } from './
 
 function MainAppContent() {
   const { role, permissions, isAuthenticated } = useRole();
+  const isKidsActor = role === 'kids_english';
 
   const [plan, setPlan] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -557,19 +558,23 @@ function MainAppContent() {
         lastSyncedTime={lastSyncedTime}
       />
 
-      {/* Live Reminder Banner */}
-      <LiveReminderBanner
-        liveScheduleStatus={liveScheduleStatus}
-        onOpenReminders={() => setShowNotificationDrawer(true)}
-        onMarkDone={handleMarkDone}
-      />
+      {/* Live Reminder Banner (Hidden for Student Minh Anh) */}
+      {!isKidsActor && (
+        <LiveReminderBanner
+          liveScheduleStatus={liveScheduleStatus}
+          onOpenReminders={() => setShowNotificationDrawer(true)}
+          onMarkDone={handleMarkDone}
+        />
+      )}
 
-      {/* Dynamic Mobile & PC Automation Dock */}
-      <MobileAutomationDock
-        plan={plan}
-        onUpdatePlan={handleUpdatePlan}
-        addToast={addToast}
-      />
+      {/* Dynamic Mobile & PC Automation Dock (Hidden for Student Minh Anh) */}
+      {!isKidsActor && (
+        <MobileAutomationDock
+          plan={plan}
+          onUpdatePlan={handleUpdatePlan}
+          addToast={addToast}
+        />
+      )}
 
       {/* Active Tab View Rendering */}
       <main className="w-full">
