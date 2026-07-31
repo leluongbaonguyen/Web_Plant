@@ -1497,7 +1497,7 @@ export function KidsEnglishDashboard({ plan, addToast }) {
             </h1>
 
             <p className="text-xs md:text-sm text-slate-300 leading-relaxed">
-              Thiết kế dành riêng cho con gái yêu **Nguyễn Ngọc Minh Anh**: 4 Cấp độ chuẩn CEFR (Basic - Elementary - Intermediate - Advanced), 4,000 từ vựng minh họa sinh động, lật thẻ 3D & icon động xoay tròn tự động đọc Tiếng Anh!
+              Thiết kế dành riêng cho con gái yêu <span className="font-bold text-pink-300">Nguyễn Ngọc Minh Anh</span>: 4 Cấp độ chuẩn CEFR (Basic - Elementary - Intermediate - Advanced).
             </p>
 
             {/* Live Interactive Mascot Encouragement Speech */}
