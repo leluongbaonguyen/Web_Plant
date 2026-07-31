@@ -9,7 +9,8 @@ import { ButlerAiAssistant } from './components/ButlerAiAssistant.jsx';
 import { MobileBottomNav } from './components/common/MobileBottomNav.jsx';
 import { ToastContainer } from './components/common/ToastContainer.jsx';
 import { NoteModal } from './components/common/NoteModal.jsx';
-import { NotificationModal } from './components/modals/NotificationModal.jsx';
+import { SystemErrorModal } from './components/modals/SystemErrorModal.jsx';
+import { lookupSystemError } from './utils/systemErrorCatalog.js';
 import { RoleSelectorModal } from './components/RoleSelectorModal.jsx';
 import { SecretAdminModal } from './components/SecretAdminModal.jsx';
 import { StateHistoryModal } from './components/StateHistoryModal.jsx';
@@ -68,6 +69,8 @@ function MainAppContent() {
   const [showRoleModal, setShowRoleModal] = useState(false);
   const [showSecretAdminModal, setShowSecretAdminModal] = useState(false);
   const [showStateHistoryModal, setShowStateHistoryModal] = useState(false);
+  const [showSystemErrorModal, setShowSystemErrorModal] = useState(false);
+  const [activeSystemError, setActiveSystemError] = useState(null);
 
   const [isAlarmPlaying, setIsAlarmPlaying] = useState(false);
   const [alarmSecondsLeft, setAlarmSecondsLeft] = useState(60);
@@ -82,13 +85,42 @@ function MainAppContent() {
   const planRef = useRef(plan);
   planRef.current = plan;
 
-  const addToast = (message, type = 'info') => {
+  const addToast = (message, type = 'info', errorCode = null) => {
     const id = uid('toast');
-    setToasts((prev) => [...prev, { id, message, type }]);
+    setToasts((prev) => [...prev, { id, message, type, errorCode }]);
     setTimeout(() => {
       setToasts((prev) => prev.filter((t) => t.id !== id));
-    }, 3500);
+    }, 5500);
   };
+
+  const handleOpenErrorHandbook = (errOrCode) => {
+    setActiveSystemError(errOrCode || '500');
+    setShowSystemErrorModal(true);
+  };
+
+  // System Error Event Listener & Handbook Integration
+  useEffect(() => {
+    const handleSystemError = (e) => {
+      const detail = e.detail || {};
+      const catalogItem = lookupSystemError(detail.code || detail.status || detail.message);
+      addToast(`🚨 LỖI HỆ THỐNG [${catalogItem.code}]: ${catalogItem.title}`, 'error', catalogItem.code);
+    };
+
+    window.addEventListener('chrono_system_error', handleSystemError);
+
+    // Global Unhandled Rejection Catch
+    const handleUnhandledRejection = (event) => {
+      const reason = event.reason || {};
+      const catalogItem = lookupSystemError(reason.message || reason);
+      addToast(`⚠️ UNHANDLED ERROR [${catalogItem.code}]: ${catalogItem.title}`, 'error', catalogItem.code);
+    };
+    window.addEventListener('unhandledrejection', handleUnhandledRejection);
+
+    return () => {
+      window.removeEventListener('chrono_system_error', handleSystemError);
+      window.removeEventListener('unhandledrejection', handleUnhandledRejection);
+    };
+  }, []);
 
   // Register Service Worker for Mobile Push & Lock Screen Notifications
   useEffect(() => {
@@ -510,6 +542,7 @@ function MainAppContent() {
         onOpenRoleModal={() => setShowRoleModal(true)}
         onOpenSecretAdmin={() => setShowSecretAdminModal(true)}
         onOpenStateHistory={() => setShowStateHistoryModal(true)}
+        onOpenErrorHandbook={handleOpenErrorHandbook}
         onOpenReminders={() => setShowNotificationDrawer(true)}
         reminderBadgeCount={liveScheduleStatus.overdueSlots.length}
         onResetPlan={handleResetPlan}
@@ -631,6 +664,24 @@ function MainAppContent() {
         alarmSecondsLeft={alarmSecondsLeft}
         handleStopAlarm={handleStopAlarm}
       />
+
+      {/* Global Toast Container with Handbook Trigger */}
+      <ToastContainer toasts={toasts} onOpenErrorHandbook={handleOpenErrorHandbook} />
+
+      {/* System Error Handbook & Inspection Modal */}
+      {showSystemErrorModal && (
+        <SystemErrorModal
+          activeError={activeSystemError}
+          onClose={() => setShowSystemErrorModal(false)}
+          onTestSimulateError={(errCode) => {
+            window.dispatchEvent(
+              new CustomEvent('chrono_system_error', {
+                detail: { status: errCode, code: errCode, message: `Mô phỏng thử nghiệm mã lỗi ${errCode}` },
+              })
+            );
+          }}
+        />
+      )}
     </div>
   );
 }

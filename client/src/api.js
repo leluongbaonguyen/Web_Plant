@@ -44,7 +44,15 @@ async function request(url, options = {}) {
     ...(options.headers || {}),
   };
 
-  const response = await fetch(url, { ...options, headers });
+  const response = await fetch(url, { ...options, headers }).catch((err) => {
+    window.dispatchEvent(
+      new CustomEvent('chrono_system_error', {
+        detail: { status: 502, code: 'ECONNREFUSED', message: 'ECONNREFUSED - Từ chối kết nối mạng hoặc server ngắt kết nối.' },
+      })
+    );
+    throw err;
+  });
+
   if (!response.ok) {
     let message = 'Không thể kết nối máy chủ.';
     try {
@@ -57,7 +65,17 @@ async function request(url, options = {}) {
       setAuthToken('');
       window.dispatchEvent(new CustomEvent('chrono_unauthorized', { detail: { message } }));
     }
-    throw new Error(message);
+    
+    // Dispatch system error notification for handbook lookup
+    window.dispatchEvent(
+      new CustomEvent('chrono_system_error', {
+        detail: { status: response.status, message },
+      })
+    );
+
+    const err = new Error(message);
+    err.status = response.status;
+    throw err;
   }
   return response;
 }

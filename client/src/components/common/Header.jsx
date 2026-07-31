@@ -22,6 +22,7 @@ export function Header({
   onOpenRoleModal,
   onOpenSecretAdmin,
   onOpenStateHistory,
+  onOpenErrorHandbook,
   onOpenReminders,
   reminderBadgeCount,
   onDownloadJson,
@@ -112,6 +113,16 @@ export function Header({
           >
             <History className="h-4 w-4 text-cyan-400 animate-spin-slow" />
             <span>Lịch Sử & Khôi Phục</span>
+          </button>
+
+          {/* System Error Handbook Lookup Button */}
+          <button
+            onClick={() => onOpenErrorHandbook && onOpenErrorHandbook('500')}
+            className="flex items-center gap-1.5 rounded-xl border border-red-500/50 bg-red-950/70 px-3 py-1.5 text-xs font-black text-red-300 hover:bg-red-900/90 transition shadow-md cursor-pointer"
+            title="Tra Cứu Cẩm Nang & Chi Tiết Tất Cả Mã Lỗi Hệ Thống"
+          >
+            <Sparkles className="h-4 w-4 text-red-400 animate-pulse" />
+            <span>📚 Cẩm Nang Mã Lỗi</span>
           </button>
 
           {/* Bell Notification Button */}
