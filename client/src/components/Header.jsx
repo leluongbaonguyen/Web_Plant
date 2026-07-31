@@ -167,14 +167,7 @@ export function Header({
             </>
           )}
 
-          <button
-            onClick={onOpenSecretAdmin}
-            className="flex items-center gap-1.5 rounded-lg border border-red-500/30 bg-red-950/30 px-2.5 py-1.5 text-xs font-semibold text-red-300 hover:bg-red-900/50 transition"
-            title="Quản Trị Siêu Chi Tiết"
-          >
-            <Lock className="h-3.5 w-3.5 text-red-400" />
-            <span className="hidden sm:inline">Quản Trị Admin</span>
-          </button>
+
 
           <button
             onClick={onToggleFullscreen}

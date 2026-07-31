@@ -1709,15 +1709,6 @@ export function KidsEnglishDashboard({ plan, addToast }) {
           </select>
 
           <button
-            onClick={() => setShowBrdModal(true)}
-            className="px-3.5 py-1.5 rounded-xl font-black text-xs bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white shadow-lg hover:scale-105 transition flex items-center gap-1.5 border border-indigo-400 cursor-pointer"
-            title="Xem toàn văn tài liệu đặc tả nghiệp vụ BRD v2.0 & Tải tệp Word (.docx)"
-          >
-            <FileText className="h-4 w-4 text-indigo-300" />
-            <span>📜 Tài Liệu Đặc Tả BRD (CFP-BRD-IVB-002 v2.0)</span>
-          </button>
-
-          <button
             onClick={handleAutoEnrichSuperDetails}
             disabled={isEnrichingSuperDetails}
             className="px-3.5 py-1.5 rounded-xl font-black text-xs bg-gradient-to-r from-pink-500 via-purple-600 to-indigo-600 text-white shadow-lg hover:scale-105 transition flex items-center gap-1.5 border border-pink-400 cursor-pointer"
